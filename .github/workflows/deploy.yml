@@ -1,0 +1,13 @@
+name: Deploy All
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Firebase deploy (placeholder)
+        run: echo "Add firebase deploy steps here once secrets are set"

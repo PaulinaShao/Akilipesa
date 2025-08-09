@@ -1,0 +1,8 @@
+# root
+node_modules
+.env
+.DS_Store
+dist
+# firebase artifacts
+firebase/.firebase
+firebase/functions/lib
