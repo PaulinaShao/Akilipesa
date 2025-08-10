@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { 
-  Mic, MicOff, Video, VideoOff, PhoneOff, RotateCcw, 
-  UserPlus, Globe, Lock, Sparkles, Volume2, VolumeX 
+import {
+  Mic, MicOff, Video, VideoOff, PhoneOff, RotateCcw,
+  UserPlus, Globe, Lock, Sparkles
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -54,7 +54,6 @@ export default function CallPage() {
   
   const [localAudioEnabled, setLocalAudioEnabled] = useState(true);
   const [localVideoEnabled, setLocalVideoEnabled] = useState(mode === 'video');
-  const [speakerEnabled, setSpeakerEnabled] = useState(false);
   const [cameraFacing, setCameraFacing] = useState<'user' | 'environment'>('user');
 
   useEffect(() => {
