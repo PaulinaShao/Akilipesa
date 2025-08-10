@@ -5,7 +5,7 @@ import { auth } from '@/lib/firebase';
 import { mockUser } from '@/lib/mock-data';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { ToastContainer } from '@/components/Toast';
+import { ToastProvider } from '@/hooks/useToast';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 // Import pages
@@ -58,66 +58,65 @@ function App() {
   }
 
   return (
-    <Router>
-      <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-blue-50">
-        <Navbar 
-          user={currentUser ? {
-            name: currentUser.displayName || mockUser.name,
-            avatar: currentUser.photoURL || undefined
-          } : null}
-          onSignOut={handleSignOut}
-        />
-        
-        <main className="flex-grow pt-16">
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            
-            {/* Protected routes */}
-            <Route path="/dashboard" element={
-              <ProtectedRoute user={currentUser}>
-                <DashboardPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/calls" element={
-              <ProtectedRoute user={currentUser}>
-                <CallsPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/jobs" element={
-              <ProtectedRoute user={currentUser}>
-                <JobsPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/billing" element={
-              <ProtectedRoute user={currentUser}>
-                <BillingPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/settings" element={
-              <ProtectedRoute user={currentUser}>
-                <SettingsPage />
-              </ProtectedRoute>
-            } />
-            
-            {/* Catch all route */}
-            <Route path="*" element={
-              <div className="container-responsive section-padding text-center">
-                <h1 className="heading-2 mb-4">Page Not Found</h1>
-                <p className="text-slate-600 mb-8">The page you're looking for doesn't exist.</p>
-                <a href="/" className="btn-primary">Go Home</a>
-              </div>
-            } />
-          </Routes>
-        </main>
-        
-        <Footer />
-        <ToastContainer>
-          {/* Toast notifications will be rendered here */}
-        </ToastContainer>
-      </div>
-    </Router>
+    <ToastProvider>
+      <Router>
+        <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-blue-50">
+          <Navbar 
+            user={currentUser ? {
+              name: currentUser.displayName || mockUser.name,
+              avatar: currentUser.photoURL || undefined
+            } : null}
+            onSignOut={handleSignOut}
+          />
+          
+          <main className="flex-grow pt-16">
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              
+              {/* Protected routes */}
+              <Route path="/dashboard" element={
+                <ProtectedRoute user={currentUser}>
+                  <DashboardPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/calls" element={
+                <ProtectedRoute user={currentUser}>
+                  <CallsPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/jobs" element={
+                <ProtectedRoute user={currentUser}>
+                  <JobsPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/billing" element={
+                <ProtectedRoute user={currentUser}>
+                  <BillingPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/settings" element={
+                <ProtectedRoute user={currentUser}>
+                  <SettingsPage />
+                </ProtectedRoute>
+              } />
+              
+              {/* Catch all route */}
+              <Route path="*" element={
+                <div className="container-responsive section-padding text-center">
+                  <h1 className="heading-2 mb-4">Page Not Found</h1>
+                  <p className="text-slate-600 mb-8">The page you're looking for doesn't exist.</p>
+                  <a href="/" className="btn-primary">Go Home</a>
+                </div>
+              } />
+            </Routes>
+          </main>
+          
+          <Footer />
+        </div>
+      </Router>
+    </ToastProvider>
   );
 }
 
