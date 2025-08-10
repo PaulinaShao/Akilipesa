@@ -24,7 +24,7 @@ export default function CallsPage() {
   const [channelName, setChannelName] = useState('financial-consultation');
   const localVideoRef = useRef<HTMLDivElement>(null);
   const remoteVideoRef = useRef<HTMLDivElement>(null);
-  const intervalRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<ReturnType<typeof setInterval>>();
   const { addToast } = useToast();
 
   useEffect(() => {
