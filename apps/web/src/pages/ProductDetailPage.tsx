@@ -142,7 +142,6 @@ function StarRating({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'md
 }
 
 export default function ProductDetailPage() {
-  const { id } = useParams();
   const navigate = useNavigate();
   const [product] = useState<ProductData>(mockProduct);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
