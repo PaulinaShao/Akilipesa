@@ -136,6 +136,7 @@ export default {
         'slide-down': 'slideDown 0.3s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
         'like-pop': 'likePop 0.6s ease-out',
+        'spin-slow': 'spin 3s linear infinite',
       },
       keyframes: {
         'glow-pulse': {
