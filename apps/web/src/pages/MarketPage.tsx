@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ShoppingBag, Star, Filter, Search } from 'lucide-react';
+import { ShoppingBag, Star, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const categories = ['All', 'Fashion', 'Tech', 'Jewelry', 'Services', 'Food'];
