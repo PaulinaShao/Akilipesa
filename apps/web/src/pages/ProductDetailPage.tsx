@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Heart, Share, Star, StarHalf, Phone, Video, MessageCircle, ShoppingCart, Minus, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
