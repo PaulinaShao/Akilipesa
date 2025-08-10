@@ -37,7 +37,6 @@ const mockParticipants: CallParticipant[] = [
 ];
 
 export default function CallPage() {
-  const { channel } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const videoRef = useRef<HTMLVideoElement>(null);
