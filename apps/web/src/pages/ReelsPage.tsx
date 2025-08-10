@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, MessageCircle, Share, MoreHorizontal, Music2, ShoppingBag, Phone, Video } from 'lucide-react';
+import { Heart, MessageCircle, Share, MoreHorizontal, Music2, ShoppingBag, Phone, Video, Wallet, ChevronRight, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ReelData {
@@ -479,7 +479,34 @@ export default function ReelsPage() {
 
   return (
     <div className="reel-container">
-      <div 
+      {/* Wallet Banner */}
+      <div className="absolute top-4 left-4 right-4 z-20">
+        <button
+          onClick={() => navigate('/wallet')}
+          className="w-full glass rounded-2xl p-4 hover:bg-white/10 transition-all"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-accent to-primary rounded-full flex items-center justify-center">
+                <Wallet className="w-5 h-5 text-white" />
+              </div>
+              <div className="text-left">
+                <div className="flex items-center space-x-2">
+                  <span className="text-white font-bold text-lg">284,500 TSH</span>
+                  <div className="flex items-center space-x-1 px-2 py-1 bg-primary/20 rounded-full">
+                    <Star className="w-3 h-3 text-accent" />
+                    <span className="text-accent text-xs font-semibold">Premium</span>
+                  </div>
+                </div>
+                <p className="text-white/60 text-sm">Share to earn • +2,400 today</p>
+              </div>
+            </div>
+            <ChevronRight className="w-5 h-5 text-white/60" />
+          </div>
+        </button>
+      </div>
+
+      <div
         ref={containerRef}
         className="h-full overflow-y-auto snap-y snap-mandatory hide-scrollbar"
       >
