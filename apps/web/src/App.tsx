@@ -20,6 +20,7 @@ import SettingsPage from '@/pages/SettingsPage';
 function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [devModeUser, setDevModeUser] = useState<User | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -27,53 +28,27 @@ function App() {
       setLoading(false);
     });
 
+    // In development mode, create a simple mock user after a delay
+    if (import.meta.env.DEV && !user) {
+      setTimeout(() => {
+        const mockUserObject = {
+          uid: mockUser.id,
+          displayName: mockUser.name,
+          email: mockUser.email,
+        } as User;
+        setDevModeUser(mockUserObject);
+      }, 1000);
+    }
+
     return () => unsubscribe();
-  }, []);
+  }, [user]);
 
-  // For development, create a simple mock user that satisfies the User interface minimally
-  const createMockUser = (): User | null => {
-    if (!import.meta.env.DEV) return null;
-    
-    // Create a minimal mock that satisfies TypeScript
-    return {
-      uid: mockUser.id,
-      displayName: mockUser.name,
-      email: mockUser.email,
-      emailVerified: true,
-      isAnonymous: false,
-      photoURL: null,
-      providerData: [],
-      refreshToken: '',
-      tenantId: null,
-      metadata: {
-        creationTime: new Date().toISOString(),
-        lastSignInTime: new Date().toISOString(),
-      },
-      delete: async () => {},
-      getIdToken: async () => 'mock-token',
-      getIdTokenResult: async () => ({
-        token: 'mock-token',
-        authTime: new Date().toISOString(),
-        issuedAtTime: new Date().toISOString(),
-        expirationTime: new Date(Date.now() + 3600000).toISOString(),
-        signInProvider: 'custom',
-        signInSecondFactor: null,
-        claims: {},
-      }),
-      reload: async () => {},
-      toJSON: () => ({
-        uid: mockUser.id,
-        email: mockUser.email,
-        displayName: mockUser.name,
-      }),
-    } as User;
-  };
-
-  const currentUser = user || createMockUser();
+  const currentUser = user || devModeUser;
 
   const handleSignOut = async () => {
     try {
       await auth.signOut();
+      setDevModeUser(null);
     } catch (error) {
       console.error('Error signing out:', error);
     }
