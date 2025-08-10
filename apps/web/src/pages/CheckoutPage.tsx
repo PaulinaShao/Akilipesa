@@ -45,7 +45,6 @@ const mockDeliveryInfo: DeliveryInfo = {
 };
 
 export default function CheckoutPage() {
-  const { id } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const initialQty = parseInt(searchParams.get('qty') || '1');
