@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, Package, Truck, MapPin, Phone, MessageCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Truck, MapPin, Phone, MessageCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface OrderStatus {
