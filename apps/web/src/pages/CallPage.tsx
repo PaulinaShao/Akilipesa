@@ -199,27 +199,31 @@ export default function CallPage() {
         </div>
       )}
 
-      {/* Audio View (if audio call) */}
+      {/* Audio View (if audio call) - Show profile pictures like video call */}
       {callState.mode === 'audio' && (
-        <div className="absolute inset-0 bg-gradient-to-b from-bg-primary to-bg-secondary flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-40 h-40 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6">
-              {target === 'akili' ? (
-                <Sparkles className="w-20 h-20 text-white" />
-              ) : (
-                <img 
-                  src="https://images.unsplash.com/photo-1494790108755-2616b9d38aad?w=150&h=150&fit=crop&crop=face"
-                  alt="Contact"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              )}
-            </div>
-            <h2 className="text-2xl font-bold text-white mb-2">
-              {target === 'akili' ? 'AkiliPesa Assistant' : 'Amina Hassan'}
-            </h2>
-            <p className="text-white/60 text-lg">
-              {formatDuration(callState.duration)}
-            </p>
+        <div className="absolute inset-0">
+          {/* Remote participant profile picture (main area) */}
+          <div className="w-full h-full bg-black flex items-center justify-center">
+            {target === 'akili' ? (
+              <div className="w-48 h-48 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                <Sparkles className="w-24 h-24 text-white" />
+              </div>
+            ) : (
+              <img
+                src="https://images.unsplash.com/photo-1494790108755-2616b9d38aad?w=300&h=300&fit=crop&crop=face"
+                alt="Contact"
+                className="w-48 h-48 rounded-full object-cover border-4 border-white/20"
+              />
+            )}
+          </div>
+
+          {/* Self profile picture (corner preview like video calls) */}
+          <div className="absolute top-4 right-4 w-32 h-40 bg-gray-800 rounded-xl overflow-hidden border-2 border-white/20 flex items-center justify-center">
+            <img
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+              alt="You"
+              className="w-20 h-20 rounded-full object-cover"
+            />
           </div>
         </div>
       )}
@@ -279,33 +283,22 @@ export default function CallPage() {
             )}
           </button>
 
-          {/* Speaker Button (audio mode) */}
-          {callState.mode === 'audio' && (
-            <button
-              onClick={() => setSpeakerEnabled(!speakerEnabled)}
-              className={cn(
-                'w-16 h-16 rounded-full flex items-center justify-center transition-all',
-                speakerEnabled 
-                  ? 'bg-primary hover:bg-primary/80' 
-                  : 'bg-white/20 hover:bg-white/30'
-              )}
-            >
-              {speakerEnabled ? (
-                <Volume2 className="w-8 h-8 text-white" />
-              ) : (
-                <VolumeX className="w-8 h-8 text-white" />
-              )}
-            </button>
-          )}
+          {/* Video Button (disabled in audio mode) */}
+          <button
+            className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center transition-all opacity-50 cursor-not-allowed"
+            disabled
+          >
+            <VideoOff className="w-8 h-8 text-white" />
+          </button>
 
-          {/* Video Toggle (video mode) */}
+          {/* Video Toggle (video mode only) */}
           {callState.mode === 'video' && (
             <button
               onClick={toggleVideo}
               className={cn(
                 'w-16 h-16 rounded-full flex items-center justify-center transition-all',
-                localVideoEnabled 
-                  ? 'bg-white/20 hover:bg-white/30' 
+                localVideoEnabled
+                  ? 'bg-white/20 hover:bg-white/30'
                   : 'bg-red-500 hover:bg-red-600'
               )}
             >
@@ -317,15 +310,13 @@ export default function CallPage() {
             </button>
           )}
 
-          {/* Switch Camera (video mode) */}
-          {callState.mode === 'video' && (
-            <button
-              onClick={switchCamera}
-              className="w-16 h-16 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-all"
-            >
-              <RotateCcw className="w-8 h-8 text-white" />
-            </button>
-          )}
+          {/* Switch Camera (for both audio and video calls) */}
+          <button
+            onClick={switchCamera}
+            className="w-16 h-16 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-all"
+          >
+            <RotateCcw className="w-8 h-8 text-white" />
+          </button>
 
           {/* Add Guest */}
           <button
