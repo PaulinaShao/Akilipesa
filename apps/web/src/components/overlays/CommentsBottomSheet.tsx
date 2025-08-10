@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { X, Heart, MoreHorizontal, Send, Smile } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Comment, User } from '@/features/feed/types';
+import { Comment } from '@/features/feed/types';
 import { mockComments } from '@/features/feed/mockData';
 
 interface CommentsBottomSheetProps {
