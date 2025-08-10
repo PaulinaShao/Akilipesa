@@ -346,6 +346,82 @@
   .admin-table td {
     @apply px-6 py-4 whitespace-nowrap text-sm text-slate-200 border-t border-slate-700/50;
   }
+
+  /* WalletChip styles */
+  .wallet-chip {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 50;
+    height: 40px;
+    max-width: 260px;
+    padding: 8px 12px;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    background: rgba(18, 14, 40, 0.35);
+    border: 1px solid rgba(125, 92, 255, 0.35);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    opacity: 1;
+    transform: translateY(0);
+    will-change: transform, opacity;
+  }
+
+  .wallet-chip:hover {
+    background: rgba(18, 14, 40, 0.45);
+    border-color: rgba(125, 92, 255, 0.5);
+  }
+
+  .wallet-chip.hide {
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+  }
+
+  .wallet-chip .chip-icon {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .wallet-chip .amount {
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  }
+
+  .wallet-chip .currency {
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+
+  .wallet-chip .plan-badge {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 8px;
+    line-height: 1.2;
+  }
+
+  .wallet-chip .chevron {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 300;
+    margin-left: auto;
+  }
+
+  /* Desktop styles */
+  @media (min-width: 768px) {
+    .wallet-chip {
+      left: 24px;
+      max-width: 300px;
+    }
+  }
 }
 
 @layer utilities {
