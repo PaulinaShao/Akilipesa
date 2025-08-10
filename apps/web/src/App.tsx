@@ -3,19 +3,17 @@ import { useState, useEffect } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { mockUser } from '@/lib/mock-data';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import MobileLayout from '@/components/layout/MobileLayout';
 import { ToastProvider } from '@/hooks/useToast';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 // Import pages
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
-import DashboardPage from '@/pages/DashboardPage';
-import CallsPage from '@/pages/CallsPage';
-import JobsPage from '@/pages/JobsPage';
-import BillingPage from '@/pages/BillingPage';
-import SettingsPage from '@/pages/SettingsPage';
+import DiscoverPage from '@/pages/DiscoverPage';
+import CreatePage from '@/pages/CreatePage';
+import InboxPage from '@/pages/InboxPage';
+import ProfilePage from '@/pages/ProfilePage';
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -56,10 +54,11 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="h-screen-safe bg-gem-dark flex-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-slate-600">Loading AkiliPesa...</p>
+          <div className="w-16 h-16 border-4 border-accent-500/30 border-t-accent-500 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-white/80 text-lg font-medium">AkiliPesa</p>
+          <div className="w-24 h-1 bg-gradient-to-r from-accent-600 to-glow-500 rounded-full mx-auto mt-2" />
         </div>
       </div>
     );
@@ -68,61 +67,50 @@ function App() {
   return (
     <ToastProvider>
       <Router>
-        <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-blue-50">
-          <Navbar 
-            user={currentUser ? {
-              name: currentUser.displayName || mockUser.name,
-              avatar: currentUser.photoURL || undefined
-            } : null}
-            onSignOut={handleSignOut}
-          />
-          
-          <main className="flex-grow pt-16">
-            <Routes>
-              {/* Public routes */}
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              
-              {/* Protected routes */}
-              <Route path="/dashboard" element={
-                <ProtectedRoute user={currentUser}>
-                  <DashboardPage />
-                </ProtectedRoute>
-              } />
-              <Route path="/calls" element={
-                <ProtectedRoute user={currentUser}>
-                  <CallsPage />
-                </ProtectedRoute>
-              } />
-              <Route path="/jobs" element={
-                <ProtectedRoute user={currentUser}>
-                  <JobsPage />
-                </ProtectedRoute>
-              } />
-              <Route path="/billing" element={
-                <ProtectedRoute user={currentUser}>
-                  <BillingPage />
-                </ProtectedRoute>
-              } />
-              <Route path="/settings" element={
-                <ProtectedRoute user={currentUser}>
-                  <SettingsPage />
-                </ProtectedRoute>
-              } />
-              
-              {/* Catch all route */}
-              <Route path="*" element={
-                <div className="container-responsive section-padding text-center">
-                  <h1 className="heading-2 mb-4">Page Not Found</h1>
-                  <p className="text-slate-600 mb-8">The page you're looking for doesn't exist.</p>
-                  <a href="/" className="btn-primary">Go Home</a>
+        <MobileLayout hideBottomNav={!currentUser}>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/login" element={<LoginPage />} />
+            
+            {/* Protected routes */}
+            <Route path="/" element={
+              <ProtectedRoute user={currentUser}>
+                <HomePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/discover" element={
+              <ProtectedRoute user={currentUser}>
+                <DiscoverPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/create" element={
+              <ProtectedRoute user={currentUser}>
+                <CreatePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/inbox" element={
+              <ProtectedRoute user={currentUser}>
+                <InboxPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile" element={
+              <ProtectedRoute user={currentUser}>
+                <ProfilePage />
+              </ProtectedRoute>
+            } />
+            
+            {/* Catch all route */}
+            <Route path="*" element={
+              <div className="h-screen-safe flex-center bg-gem-dark text-center p-8">
+                <div>
+                  <h1 className="text-2xl font-bold text-white mb-4">Page Not Found</h1>
+                  <p className="text-white/60 mb-8">The page you're looking for doesn't exist.</p>
+                  <a href="/" className="btn-gem">Go Home</a>
                 </div>
-              } />
-            </Routes>
-          </main>
-          
-          <Footer />
-        </div>
+              </div>
+            } />
+          </Routes>
+        </MobileLayout>
       </Router>
     </ToastProvider>
   );
