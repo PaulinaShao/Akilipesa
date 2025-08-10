@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Phone, Zap, Shield, Globe, Smartphone } from 'lucide-react';
+import { ArrowRight, Phone, Zap, Shield, Smartphone } from 'lucide-react';
 import TanzaniteLogo from '@/components/TanzaniteLogo';
 import { Card, CardContent, CardHeader } from '@/components/Card';
 import NumberInputTZ from '@/components/NumberInputTZ';
