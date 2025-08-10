@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
@@ -8,12 +8,30 @@ import { ToastProvider } from '@/hooks/useToast';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 // Import pages
-import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
-import DiscoverPage from '@/pages/DiscoverPage';
+import ReelsPage from '@/pages/ReelsPage';
+import SearchPage from '@/pages/SearchPage';
 import CreatePage from '@/pages/CreatePage';
 import InboxPage from '@/pages/InboxPage';
 import ProfilePage from '@/pages/ProfilePage';
+import MarketPage from '@/pages/MarketPage';
+import AdminPage from '@/pages/AdminPage';
+
+// Admin Guard Component
+function AdminRoute({ children, user }: { children: React.ReactNode; user: User | null }) {
+  // In a real app, check if user has admin role from Firebase claims
+  const isAdmin = user && (user.email?.includes('admin') || import.meta.env.DEV);
+  
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  if (!isAdmin) {
+    return <Navigate to="/reels" replace />;
+  }
+  
+  return <>{children}</>;
+}
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -43,23 +61,13 @@ function App() {
 
   const currentUser = user || devModeUser;
 
-  // Note: handleSignOut would be used in settings or profile menu
-  // const handleSignOut = async () => {
-  //   try {
-  //     await auth.signOut();
-  //     setDevModeUser(null);
-  //   } catch (error) {
-  //     console.error('Error signing out:', error);
-  //   }
-  // };
-
   if (loading) {
     return (
-      <div className="h-screen-safe bg-gem-dark flex-center">
+      <div className="h-screen-safe flex-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-accent-500/30 border-t-accent-500 rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-white/80 text-lg font-medium">AkiliPesa</p>
-          <div className="w-24 h-1 bg-gradient-to-r from-accent-600 to-glow-500 rounded-full mx-auto mt-2" />
+          <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-white text-lg font-medium">AkiliPesa</p>
+          <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto mt-2" />
         </div>
       </div>
     );
@@ -68,50 +76,197 @@ function App() {
   return (
     <ToastProvider>
       <Router>
-        <MobileLayout hideBottomNav={!currentUser}>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/login" element={<LoginPage />} />
-            
-            {/* Protected routes */}
-            <Route path="/" element={
-              <ProtectedRoute user={currentUser}>
-                <HomePage />
-              </ProtectedRoute>
-            } />
-            <Route path="/discover" element={
-              <ProtectedRoute user={currentUser}>
-                <DiscoverPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/create" element={
-              <ProtectedRoute user={currentUser}>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/login" element={<LoginPage />} />
+          
+          {/* Protected routes with mobile layout */}
+          <Route path="/" element={
+            <ProtectedRoute user={currentUser}>
+              <Navigate to="/reels" replace />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/reels" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <ReelsPage />
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/search" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <SearchPage />
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/create" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
                 <CreatePage />
-              </ProtectedRoute>
-            } />
-            <Route path="/inbox" element={
-              <ProtectedRoute user={currentUser}>
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/inbox" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
                 <InboxPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/profile" element={
-              <ProtectedRoute user={currentUser}>
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/profile" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
                 <ProfilePage />
-              </ProtectedRoute>
-            } />
-            
-            {/* Catch all route */}
-            <Route path="*" element={
-              <div className="h-screen-safe flex-center bg-gem-dark text-center p-8">
-                <div>
-                  <h1 className="text-2xl font-bold text-white mb-4">Page Not Found</h1>
-                  <p className="text-white/60 mb-8">The page you're looking for doesn't exist.</p>
-                  <a href="/" className="btn-gem">Go Home</a>
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Additional routes */}
+          <Route path="/market" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <MarketPage />
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Dynamic routes */}
+          <Route path="/reel/:id" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <ReelsPage />
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/profile/:userId" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <ProfilePage />
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/product/:sku" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <div className="h-screen-safe flex-center">
+                  <div className="text-center">
+                    <h1 className="heading-2 mb-4">Product Details</h1>
+                    <p className="text-white/60">Product page implementation</p>
+                  </div>
                 </div>
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/checkout/:sku" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <div className="h-screen-safe flex-center">
+                  <div className="text-center">
+                    <h1 className="heading-2 mb-4">Checkout</h1>
+                    <p className="text-white/60">Checkout page implementation</p>
+                  </div>
+                </div>
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/live/:channelId" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <div className="h-screen-safe flex-center">
+                  <div className="text-center">
+                    <h1 className="heading-2 mb-4">Live Session</h1>
+                    <p className="text-white/60">Live video call implementation</p>
+                  </div>
+                </div>
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/agents" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <div className="h-screen-safe flex-center">
+                  <div className="text-center">
+                    <h1 className="heading-2 mb-4">AI Agents</h1>
+                    <p className="text-white/60">AI agents directory</p>
+                  </div>
+                </div>
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/agent/:id" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <div className="h-screen-safe flex-center">
+                  <div className="text-center">
+                    <h1 className="heading-2 mb-4">Agent Details</h1>
+                    <p className="text-white/60">AI agent detail page</p>
+                  </div>
+                </div>
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/chat/:id" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <div className="h-screen-safe flex-center">
+                  <div className="text-center">
+                    <h1 className="heading-2 mb-4">Chat</h1>
+                    <p className="text-white/60">Chat conversation</p>
+                  </div>
+                </div>
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/settings" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <div className="h-screen-safe flex-center">
+                  <div className="text-center">
+                    <h1 className="heading-2 mb-4">Settings</h1>
+                    <p className="text-white/60">App settings and preferences</p>
+                  </div>
+                </div>
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Admin routes (no mobile layout) */}
+          <Route path="/admin" element={
+            <AdminRoute user={currentUser}>
+              <AdminPage />
+            </AdminRoute>
+          } />
+          
+          {/* Catch all route */}
+          <Route path="*" element={
+            <div className="h-screen-safe flex-center text-center p-8">
+              <div>
+                <h1 className="heading-2 mb-4">Page Not Found</h1>
+                <p className="text-white/60 mb-8">The page you're looking for doesn't exist.</p>
+                <button 
+                  onClick={() => window.location.href = '/reels'}
+                  className="btn-primary"
+                >
+                  Go Home
+                </button>
               </div>
-            } />
-          </Routes>
-        </MobileLayout>
+            </div>
+          } />
+        </Routes>
       </Router>
     </ToastProvider>
   );
