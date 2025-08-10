@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Minus, Plus, CreditCard, Smartphone, MapPin, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
