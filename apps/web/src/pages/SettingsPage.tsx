@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { User, Bell, Globe, Shield, CreditCard, LogOut, Save, Edit } from 'lucide-react';
+import { User, Bell, Shield, CreditCard, LogOut, Save, Edit } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/Card';
 import NumberInputTZ from '@/components/NumberInputTZ';
 import { getMockUser } from '@/lib/mock-data';
