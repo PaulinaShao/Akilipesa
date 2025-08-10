@@ -69,7 +69,7 @@ export default function BottomNav() {
       
       {/* Navigation content */}
       <div className="relative flex items-center justify-around px-2 py-2">
-        {navItems.map((item, index) => {
+        {navItems.map((item) => {
           const active = isActive(item.path);
           const IconComponent = active ? item.activeIcon : item.icon;
           
