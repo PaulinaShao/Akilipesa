@@ -16,6 +16,9 @@ import InboxPage from '@/pages/InboxPage';
 import ProfilePage from '@/pages/ProfilePage';
 import MarketPage from '@/pages/MarketPage';
 import AdminPage from '@/pages/AdminPage';
+import ProductDetailPage from '@/pages/ProductDetailPage';
+import CheckoutPage from '@/pages/CheckoutPage';
+import OrdersPage from '@/pages/OrdersPage';
 
 // Admin Guard Component
 function AdminRoute({ children, user }: { children: React.ReactNode; user: User | null }) {
@@ -153,26 +156,31 @@ function App() {
             </ProtectedRoute>
           } />
 
-          <Route path="/product/:sku" element={
+          <Route path="/product/:id" element={
             <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <div className="h-screen-safe flex-center">
-                  <div className="text-center">
-                    <h1 className="heading-2 mb-4">Product Details</h1>
-                    <p className="text-white/60">Product page implementation</p>
-                  </div>
-                </div>
-              </MobileLayout>
+              <ProductDetailPage />
             </ProtectedRoute>
           } />
 
-          <Route path="/checkout/:sku" element={
+          <Route path="/checkout/:id" element={
+            <ProtectedRoute user={currentUser}>
+              <CheckoutPage />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/orders/:id" element={
+            <ProtectedRoute user={currentUser}>
+              <OrdersPage />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/orders" element={
             <ProtectedRoute user={currentUser}>
               <MobileLayout>
                 <div className="h-screen-safe flex-center">
                   <div className="text-center">
-                    <h1 className="heading-2 mb-4">Checkout</h1>
-                    <p className="text-white/60">Checkout page implementation</p>
+                    <h1 className="heading-2 mb-4">All Orders</h1>
+                    <p className="text-white/60">Order history page</p>
                   </div>
                 </div>
               </MobileLayout>
