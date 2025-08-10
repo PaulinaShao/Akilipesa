@@ -24,19 +24,9 @@ export const functions = getFunctions(app);
 if (import.meta.env.DEV) {
   try {
     // Only connect if not already connected and if emulators are configured
-    if (!auth.emulatorConfig) {
-      connectAuthEmulator(auth, 'http://localhost:9099');
-    }
-    
-    // Check if firestore is already connected to emulator
-    const firestoreSettings = firestore._delegate?._settings || firestore.app;
-    if (!firestoreSettings?.host?.includes('localhost')) {
-      connectFirestoreEmulator(firestore, 'localhost', 8080);
-    }
-    
-    if (!functions.app.automaticDataCollectionEnabled) {
-      connectFunctionsEmulator(functions, 'localhost', 5001);
-    }
+    connectAuthEmulator(auth, 'http://localhost:9099');
+    connectFirestoreEmulator(firestore, 'localhost', 8080);
+    connectFunctionsEmulator(functions, 'localhost', 5001);
   } catch (error) {
     console.log('Emulators not available or already connected:', error);
   }
