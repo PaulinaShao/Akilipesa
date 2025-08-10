@@ -9,16 +9,8 @@ export default function HomePage() {
   const [showProducts, setShowProducts] = useState(false);
   const [selectedReelId, setSelectedReelId] = useState<string>('');
 
-  const handleOpenComments = (reelId: string) => {
-    setSelectedReelId(reelId);
-    setShowComments(true);
-  };
-
-  const handleOpenProducts = (reelId: string) => {
-    setSelectedReelId(reelId);
-    setShowProducts(true);
-  };
-
+  // These handlers would be passed to ReelsFeed component
+  // Currently ReelsFeed handles its own interactions
   const selectedReel = mockReels.find(reel => reel.id === selectedReelId);
 
   return (
