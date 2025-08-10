@@ -19,6 +19,7 @@ import AdminPage from '@/pages/AdminPage';
 import ProductDetailPage from '@/pages/ProductDetailPage';
 import CheckoutPage from '@/pages/CheckoutPage';
 import OrdersPage from '@/pages/OrdersPage';
+import WalletPage from '@/pages/WalletPage';
 
 // Admin Guard Component
 function AdminRoute({ children, user }: { children: React.ReactNode; user: User | null }) {
@@ -184,6 +185,12 @@ function App() {
                   </div>
                 </div>
               </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/wallet" element={
+            <ProtectedRoute user={currentUser}>
+              <WalletPage />
             </ProtectedRoute>
           } />
 
