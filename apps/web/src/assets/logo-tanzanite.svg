@@ -1,0 +1,22 @@
+<svg width="200" height="40" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tanzanite Gemstone -->
+  <g transform="translate(0, 4)">
+    <!-- Main facets -->
+    <path d="M16 2 L24 6 L20 16 L12 16 Z" fill="#2C3E9E"/>
+    <path d="M16 2 L20 16 L16 30 L8 16 Z" fill="#6C7BFF"/>
+    <path d="M24 6 L28 10 L20 16 L16 2 Z" fill="#9AD1FF"/>
+    <path d="M8 6 L16 2 L8 16 L4 10 Z" fill="#4854C7"/>
+    <path d="M8 16 L16 30 L12 26 L4 20 Z" fill="#2C3E9E"/>
+    <path d="M20 16 L28 20 L24 26 L16 30 Z" fill="#6C7BFF"/>
+    <path d="M4 10 L8 6 L8 16 L4 20 Z" fill="#1F2B70"/>
+    <path d="M28 10 L28 20 L24 26 L24 6 Z" fill="#5A6AE8"/>
+    <!-- Inner reflections -->
+    <path d="M16 8 L20 12 L16 20 L12 12 Z" fill="#B8C2FF" opacity="0.6"/>
+    <path d="M14 6 L18 4 L18 14 L14 14 Z" fill="#E6E9FF" opacity="0.4"/>
+  </g>
+  
+  <!-- AkiliPesa Text -->
+  <text x="40" y="25" font-family="Sora, Inter, sans-serif" font-weight="700" font-size="20" fill="#2C3E9E">
+    AkiliPesa
+  </text>
+</svg>
