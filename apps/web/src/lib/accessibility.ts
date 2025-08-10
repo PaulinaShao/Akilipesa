@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function announceToScreenReader(message: string): void {
   const announcement = document.createElement('div');
   announcement.setAttribute('aria-live', 'polite');
