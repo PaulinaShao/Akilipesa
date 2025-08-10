@@ -7,7 +7,7 @@ import { mockReels } from '@/features/feed/mockData';
 export default function HomePage() {
   const [showComments, setShowComments] = useState(false);
   const [showProducts, setShowProducts] = useState(false);
-  const [selectedReelId, setSelectedReelId] = useState<string>('');
+  const [selectedReelId] = useState<string>('');
 
   // These handlers would be passed to ReelsFeed component
   // Currently ReelsFeed handles its own interactions
