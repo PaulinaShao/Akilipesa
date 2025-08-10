@@ -206,7 +206,7 @@ export const sharePost = async (postId: string): Promise<boolean> => {
   }
 };
 
-export const savePost = async (postId: string, userId: string): Promise<boolean> => {
+export const savePost = async (postId: string, _userId: string): Promise<boolean> => {
   try {
     // Implement save to local storage or Firebase
     const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
@@ -233,13 +233,13 @@ export const reportPost = async (postId: string, reason: string): Promise<boolea
 };
 
 // Real-time listeners
-export const subscribeToComments = (postId: string, callback: (comments: any[]) => void) => {
+export const subscribeToComments = (postId: string, _callback: (comments: any[]) => void) => {
   // Implement Firestore real-time listener for comments
   console.log('Subscribing to comments for post:', postId);
   // This would use onSnapshot from Firestore
 };
 
-export const subscribeToLikes = (postId: string, callback: (likeCount: number) => void) => {
+export const subscribeToLikes = (postId: string, _callback: (likeCount: number) => void) => {
   // Implement Firestore real-time listener for likes
   console.log('Subscribing to likes for post:', postId);
   // This would use onSnapshot from Firestore
