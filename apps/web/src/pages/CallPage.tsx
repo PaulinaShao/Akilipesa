@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { 
   Mic, MicOff, Video, VideoOff, PhoneOff, RotateCcw, 
   UserPlus, Globe, Lock, Sparkles, Volume2, VolumeX 
