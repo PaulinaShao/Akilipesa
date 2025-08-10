@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Search, MoreVertical, Phone, Video, Heart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Search, MoreVertical, Phone, Video, Heart, Sparkles, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Message {
@@ -88,6 +89,7 @@ function getTimeAgo(date: Date): string {
 }
 
 export default function InboxPage() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
 
@@ -155,11 +157,73 @@ export default function InboxPage() {
 
       {/* Messages List */}
       <div className="divide-y divide-white/5">
+        {/* AI Assistant - Pinned */}
+        <div className="p-4 bg-gradient-to-r from-primary/10 to-secondary/10 border-b border-primary/20">
+          <div className="flex items-center space-x-3">
+            {/* AI Avatar */}
+            <div className="relative">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-green-500 border-2 border-bg-primary rounded-full" />
+            </div>
+
+            {/* AI Message content */}
+            <div
+              className="flex-1 min-w-0 cursor-pointer"
+              onClick={() => navigate('/chat/akili?role=system')}
+            >
+              <div className="flex-between mb-1">
+                <div className="flex items-center space-x-2">
+                  <span className="font-semibold text-white">
+                    Chat with AkiliPesa
+                  </span>
+                  <div className="w-4 h-4 bg-primary rounded-full flex items-center justify-center">
+                    <Sparkles className="w-2 h-2 text-white" />
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-white/50 text-sm">now</span>
+                </div>
+              </div>
+
+              <div className="flex-between">
+                <p className="text-sm text-white/80">
+                  💎 I'm here to help with payments, business, and more!
+                </p>
+
+                {/* Action buttons for AI */}
+                <div className="flex items-center space-x-1 ml-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate('/call/new?mode=audio&target=akili');
+                    }}
+                    className="p-1.5 hover:bg-white/10 rounded-full transition-colors"
+                  >
+                    <Phone className="w-4 h-4 text-green-400" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate('/call/new?mode=video&target=akili');
+                    }}
+                    className="p-1.5 hover:bg-white/10 rounded-full transition-colors"
+                  >
+                    <Video className="w-4 h-4 text-blue-400" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {filteredMessages.length > 0 ? (
           filteredMessages.map((message) => (
             <div
               key={message.id}
               className="p-4 hover:bg-white/5 transition-colors cursor-pointer"
+              onClick={() => navigate(`/chat/${message.user.id}`)}
             >
               <div className="flex items-center space-x-3">
                 {/* Avatar with online indicator */}
@@ -213,11 +277,23 @@ export default function InboxPage() {
                     
                     {/* Action buttons */}
                     <div className="flex items-center space-x-1 ml-2">
-                      <button className="p-1.5 hover:bg-white/10 rounded-full transition-colors">
-                        <Phone className="w-4 h-4 text-white/60" />
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/call/new?mode=audio&target=${message.user.id}`);
+                        }}
+                        className="p-1.5 hover:bg-white/10 rounded-full transition-colors"
+                      >
+                        <Phone className="w-4 h-4 text-green-400" />
                       </button>
-                      <button className="p-1.5 hover:bg-white/10 rounded-full transition-colors">
-                        <Video className="w-4 h-4 text-white/60" />
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/call/new?mode=video&target=${message.user.id}`);
+                        }}
+                        className="p-1.5 hover:bg-white/10 rounded-full transition-colors"
+                      >
+                        <Video className="w-4 h-4 text-blue-400" />
                       </button>
                     </div>
                   </div>
@@ -239,9 +315,18 @@ export default function InboxPage() {
       </div>
 
       {/* Quick Actions (floating) */}
-      <div className="fixed bottom-20 right-4 z-10">
-        <button className="w-14 h-14 bg-accent-500 rounded-full flex-center shadow-glow hover:scale-110 transition-transform">
-          <Search className="w-6 h-6 text-white" />
+      <div className="fixed bottom-20 right-4 z-10 flex flex-col space-y-3">
+        <button
+          onClick={() => navigate('/search?mode=users')}
+          className="w-12 h-12 bg-white/10 rounded-full flex-center shadow-lg hover:scale-110 transition-transform"
+        >
+          <Search className="w-5 h-5 text-white" />
+        </button>
+        <button
+          onClick={() => navigate('/create?mode=message')}
+          className="w-14 h-14 bg-accent rounded-full flex-center shadow-lg hover:scale-110 transition-transform"
+        >
+          <Plus className="w-6 h-6 text-black" />
         </button>
       </div>
     </div>
