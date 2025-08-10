@@ -43,14 +43,15 @@ function App() {
 
   const currentUser = user || devModeUser;
 
-  const handleSignOut = async () => {
-    try {
-      await auth.signOut();
-      setDevModeUser(null);
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
+  // Note: handleSignOut would be used in settings or profile menu
+  // const handleSignOut = async () => {
+  //   try {
+  //     await auth.signOut();
+  //     setDevModeUser(null);
+  //   } catch (error) {
+  //     console.error('Error signing out:', error);
+  //   }
+  // };
 
   if (loading) {
     return (
