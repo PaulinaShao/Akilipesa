@@ -221,11 +221,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen-safe flex flex-col">
-      {/* Background with radial overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-bg-primary via-bg-secondary to-bg-primary" />
-      <div className="absolute inset-0 bg-radial-gradient opacity-30" style={{
-        background: 'radial-gradient(circle at 30% 20%, rgba(138, 92, 246, 0.3) 0%, transparent 50%)',
+    <div className="min-h-screen-safe flex flex-col text-base">
+      {/* Background with improved dark Tanzanite gradient */}
+      <div className="absolute inset-0" style={{
+        background: 'linear-gradient(135deg, #0b0b16 0%, #130f2e 100%)'
+      }} />
+      <div className="absolute inset-0" style={{
+        background: 'radial-gradient(circle at 30% 20%, rgba(125, 92, 255, 0.3) 0%, transparent 50%)',
       }} />
       
       {/* Content */}
@@ -247,11 +249,11 @@ export default function LoginPage() {
             {/* Logo */}
             <div className="text-center mb-8">
               <TanzaniteLogo size="lg" className="justify-center mb-6" />
-              <h1 className="heading-2 mb-2 font-bold">
+              <h1 className="text-3xl font-bold mb-3 text-white leading-tight">
                 {step === 'input' ? 'Welcome Back' : 'Enter Code'}
               </h1>
-              <p className="text-muted">
-                {step === 'input' 
+              <p className="text-base text-white/70 leading-relaxed">
+                {step === 'input'
                   ? 'Sign in to continue to AkiliPesa'
                   : `We sent a code to ${method === 'phone' ? phoneNumber : email}`
                 }
@@ -293,47 +295,54 @@ export default function LoginPage() {
                   {/* Input Fields */}
                   {method === 'phone' ? (
                     <div>
-                      <label className="input-label">Phone Number</label>
+                      <label className="block text-white font-medium mb-3 text-base">Phone Number</label>
                       <NumberInputTZ
                         value={phoneNumber}
                         onChange={setPhoneNumber}
-                        placeholder="Enter your phone number"
-                        className={cn(errors.phone && "border-red-500")}
+                        placeholder="754 123 456"
+                        className={cn(
+                          "w-full px-4 py-4 text-base rounded-lg bg-white/5 border border-white/10",
+                          "text-white placeholder:text-gray-400 focus:border-primary focus:bg-white/10",
+                          "transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20",
+                          errors.phone && "border-red-500"
+                        )}
                       />
                       {errors.phone && (
-                        <p className="input-error">{errors.phone}</p>
+                        <p className="text-red-400 text-sm mt-2">{errors.phone}</p>
                       )}
                     </div>
                   ) : (
                     <div>
-                      <label className="input-label">Email Address</label>
+                      <label className="block text-white font-medium mb-3 text-base">Email Address</label>
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email"
+                        placeholder="hello@example.com"
                         className={cn(
-                          "input-field",
+                          "w-full px-4 py-4 text-base rounded-lg bg-white/5 border border-white/10",
+                          "text-white placeholder:text-gray-400 focus:border-primary focus:bg-white/10",
+                          "transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20",
                           errors.email && "border-red-500"
                         )}
                         autoComplete="email"
                       />
                       {errors.email && (
-                        <p className="input-error">{errors.email}</p>
+                        <p className="text-red-400 text-sm mt-2">{errors.email}</p>
                       )}
                     </div>
                   )}
 
                   {/* General Error */}
                   {errors.general && (
-                    <p className="input-error text-center">{errors.general}</p>
+                    <p className="text-red-400 text-sm text-center">{errors.general}</p>
                   )}
 
                   {/* Send Code Button */}
                   <button
                     onClick={handleSendCode}
                     disabled={isLoading}
-                    className="w-full btn-primary py-4 text-lg font-semibold disabled:opacity-50"
+                    className="w-full py-4 text-base font-semibold bg-primary hover:bg-primary/90 text-white rounded-lg transition-all duration-200 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-primary/20"
                   >
                     {isLoading ? (
                       <div className="flex items-center justify-center space-x-2">
@@ -351,7 +360,7 @@ export default function LoginPage() {
                       <div className="w-full border-t border-white/20" />
                     </div>
                     <div className="relative flex justify-center">
-                      <span className="px-4 glass text-sm text-white/60">Or continue with</span>
+                      <span className="px-4 bg-[#0b0b16] text-sm text-white/60">Or continue with</span>
                     </div>
                   </div>
 
@@ -359,7 +368,7 @@ export default function LoginPage() {
                   <div className="space-y-3">
                     <button
                       onClick={handleWhatsAppLogin}
-                      className="w-full btn-success py-4 flex items-center justify-center space-x-3"
+                      className="w-full py-4 text-base font-semibold bg-accent hover:bg-accent/90 text-black rounded-lg transition-all duration-200 flex items-center justify-center space-x-3 focus:outline-none focus:ring-2 focus:ring-accent/20"
                     >
                       <MessageCircle className="w-5 h-5" />
                       <span className="font-semibold">Continue with WhatsApp</span>
@@ -368,7 +377,7 @@ export default function LoginPage() {
                     <button
                       onClick={handleGoogleLogin}
                       disabled={isLoading}
-                      className="w-full btn-secondary py-4 flex items-center justify-center space-x-3 disabled:opacity-50"
+                      className="w-full py-4 text-base font-semibold bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/20 transition-all duration-200 flex items-center justify-center space-x-3 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-white/20"
                     >
                       <svg className="w-5 h-5" viewBox="0 0 24 24">
                         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -391,7 +400,7 @@ export default function LoginPage() {
                     />
                     
                     {errors.otp && (
-                      <p className="input-error text-center">{errors.otp}</p>
+                      <p className="text-red-400 text-sm text-center">{errors.otp}</p>
                     )}
                   </div>
 
@@ -399,7 +408,7 @@ export default function LoginPage() {
                   <button
                     onClick={handleVerifyOTP}
                     disabled={isLoading || otp.length !== 6}
-                    className="w-full btn-primary py-4 text-lg font-semibold disabled:opacity-50"
+                    className="w-full py-4 text-base font-semibold bg-primary hover:bg-primary/90 text-white rounded-lg transition-all duration-200 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-primary/20"
                   >
                     {isLoading ? (
                       <div className="flex items-center justify-center space-x-2">
@@ -413,7 +422,7 @@ export default function LoginPage() {
 
                   {/* Resend Code */}
                   <div className="text-center">
-                    <p className="text-muted mb-2">Didn't receive the code?</p>
+                    <p className="text-white/60 text-base mb-2">Didn't receive the code?</p>
                     <button
                       onClick={handleResendCode}
                       disabled={resendTimer > 0}
@@ -431,11 +440,6 @@ export default function LoginPage() {
               )}
             </div>
 
-            {/* reCAPTCHA Notice */}
-            <div className="mt-6">
-              <RecaptchaBadge variant="compact" className="justify-center" />
-            </div>
-
             {/* Legal */}
             <div className="mt-6 text-center">
               <p className="text-xs text-white/40 leading-relaxed">
@@ -443,6 +447,14 @@ export default function LoginPage() {
                 <Link to="/terms" className="text-primary hover:underline">Terms of Service</Link>
                 {' '}and{' '}
                 <Link to="/privacy" className="text-primary hover:underline">Privacy Policy</Link>
+              </p>
+            </div>
+
+            {/* reCAPTCHA Notice - moved below CTAs */}
+            <div className="mt-4">
+              <RecaptchaBadge variant="compact" className="justify-center" />
+              <p className="text-xs text-white/40 text-center mt-2 leading-relaxed">
+                This site is protected by reCAPTCHA and the Google Privacy Policy applies.
               </p>
             </div>
           </div>
