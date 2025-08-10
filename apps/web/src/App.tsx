@@ -30,24 +30,46 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  // For development, use mock user if no Firebase user and in dev mode
-  const currentUser = user || (import.meta.env.DEV ? {
-    uid: mockUser.id,
-    displayName: mockUser.name,
-    email: mockUser.email,
-    photoURL: undefined,
-    emailVerified: true,
-    isAnonymous: false,
-    metadata: {},
-    providerData: [],
-    refreshToken: '',
-    tenantId: null,
-    delete: async () => {},
-    getIdToken: async () => '',
-    getIdTokenResult: async () => ({} as any),
-    reload: async () => {},
-    toJSON: () => ({}),
-  } as User : null);
+  // For development, create a simple mock user that satisfies the User interface minimally
+  const createMockUser = (): User | null => {
+    if (!import.meta.env.DEV) return null;
+    
+    // Create a minimal mock that satisfies TypeScript
+    return {
+      uid: mockUser.id,
+      displayName: mockUser.name,
+      email: mockUser.email,
+      emailVerified: true,
+      isAnonymous: false,
+      photoURL: null,
+      providerData: [],
+      refreshToken: '',
+      tenantId: null,
+      metadata: {
+        creationTime: new Date().toISOString(),
+        lastSignInTime: new Date().toISOString(),
+      },
+      delete: async () => {},
+      getIdToken: async () => 'mock-token',
+      getIdTokenResult: async () => ({
+        token: 'mock-token',
+        authTime: new Date().toISOString(),
+        issuedAtTime: new Date().toISOString(),
+        expirationTime: new Date(Date.now() + 3600000).toISOString(),
+        signInProvider: 'custom',
+        signInSecondFactor: null,
+        claims: {},
+      }),
+      reload: async () => {},
+      toJSON: () => ({
+        uid: mockUser.id,
+        email: mockUser.email,
+        displayName: mockUser.name,
+      }),
+    } as User;
+  };
+
+  const currentUser = user || createMockUser();
 
   const handleSignOut = async () => {
     try {
