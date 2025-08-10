@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Plus, Activity, CreditCard, Clock, TrendingUp } from 'lucide-react';
-import { Card, CardContent, CardHeader } from '@/components/Card';
+import { Card, CardContent } from '@/components/Card';
 import JobCard from '@/components/JobCard';
 import { getMockJobs, getMockCalls, getMockUser, Job, Call } from '@/lib/mock-data';
-import { formatCurrency, formatDate } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
 export default function DashboardPage() {
   const [recentJobs, setRecentJobs] = useState<Job[]>([]);
