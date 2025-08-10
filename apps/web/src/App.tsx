@@ -30,12 +30,23 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  // For development, use mock user if no Firebase user
+  // For development, use mock user if no Firebase user and in dev mode
   const currentUser = user || (import.meta.env.DEV ? {
     uid: mockUser.id,
     displayName: mockUser.name,
     email: mockUser.email,
-    photoURL: undefined
+    photoURL: undefined,
+    emailVerified: true,
+    isAnonymous: false,
+    metadata: {},
+    providerData: [],
+    refreshToken: '',
+    tenantId: null,
+    delete: async () => {},
+    getIdToken: async () => '',
+    getIdTokenResult: async () => ({} as any),
+    reload: async () => {},
+    toJSON: () => ({}),
   } as User : null);
 
   const handleSignOut = async () => {
