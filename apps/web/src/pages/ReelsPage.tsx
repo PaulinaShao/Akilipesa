@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, MessageCircle, Share, MoreHorizontal, Music2, ShoppingBag, Phone } from 'lucide-react';
+import { Heart, MessageCircle, Share, MoreHorizontal, Music2, ShoppingBag, Phone, Video } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ReelData {
@@ -150,21 +150,25 @@ interface ReelCardProps {
   onComment: () => void;
   onShare: () => void;
   onShop: () => void;
+  onAudioCall: () => void;
+  onVideoCall: () => void;
   onLiveCall: () => void;
   onFollow: () => void;
   onProfileClick: () => void;
 }
 
-function ReelCard({ 
-  reel, 
-  isActive, 
-  onLike, 
-  onComment, 
-  onShare, 
-  onShop, 
-  onLiveCall, 
+function ReelCard({
+  reel,
+  isActive,
+  onLike,
+  onComment,
+  onShare,
+  onShop,
+  onAudioCall,
+  onVideoCall,
+  onLiveCall,
   onFollow,
-  onProfileClick 
+  onProfileClick
 }: ReelCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -328,10 +332,28 @@ function ReelCard({
           {formatNumber(reel.stats.shares)}
         </span>
 
+        {/* Audio Call */}
+        <button
+          onClick={onAudioCall}
+          className="reel-action-btn bg-green-500/20 border-green-500/50"
+        >
+          <Phone className="w-6 h-6 text-green-400" />
+        </button>
+        <span className="text-green-400 text-xs font-medium">Call</span>
+
+        {/* Video Call */}
+        <button
+          onClick={onVideoCall}
+          className="reel-action-btn bg-blue-500/20 border-blue-500/50"
+        >
+          <Video className="w-6 h-6 text-blue-400" />
+        </button>
+        <span className="text-blue-400 text-xs font-medium">Video</span>
+
         {/* Shop */}
         {reel.products && reel.products.length > 0 && (
           <>
-            <button 
+            <button
               onClick={onShop}
               className="reel-action-btn bg-yellow-500/20 border-yellow-500/50"
             >
@@ -341,10 +363,10 @@ function ReelCard({
           </>
         )}
 
-        {/* Live Call */}
+        {/* Live Call - only show for live users */}
         {reel.user.isLive && (
           <>
-            <button 
+            <button
               onClick={onLiveCall}
               className="reel-action-btn bg-red-500/20 border-red-500/50 animate-pulse"
             >
@@ -432,6 +454,14 @@ export default function ReelsPage() {
     }
   };
 
+  const handleAudioCall = (userId: string) => {
+    navigate(`/call/new?mode=audio&target=${userId}`);
+  };
+
+  const handleVideoCall = (userId: string) => {
+    navigate(`/call/new?mode=video&target=${userId}`);
+  };
+
   const handleLiveCall = (reelId: string) => {
     const reel = reels.find(r => r.id === reelId);
     if (reel?.user.isLive) {
@@ -462,6 +492,8 @@ export default function ReelsPage() {
               onComment={() => handleComment(reel.id)}
               onShare={() => handleShare(reel.id)}
               onShop={() => handleShop(reel.id)}
+              onAudioCall={() => handleAudioCall(reel.user.id)}
+              onVideoCall={() => handleVideoCall(reel.user.id)}
               onLiveCall={() => handleLiveCall(reel.id)}
               onFollow={() => handleFollow(reel.user.id)}
               onProfileClick={() => handleProfileClick(reel.user.id)}
