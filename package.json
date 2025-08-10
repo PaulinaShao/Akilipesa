@@ -1,0 +1,15 @@
+{
+  "name": "akilipesa-monorepo",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd firebase/functions && npm install && cd ../../apps/web && npm install",
+    "build": "cd apps/web && npm run build",
+    "dev": "cd apps/web && npm run dev",
+    "start": "cd apps/web && npm start"
+  },
+  "workspaces": [
+    "apps/web",
+    "firebase/functions",
+    "packages/shared"
+  ]
+}
