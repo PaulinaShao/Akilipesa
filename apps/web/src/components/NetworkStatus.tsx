@@ -25,7 +25,7 @@ export const NetworkStatus: React.FC = () => {
     }
 
     return () => {
-      window.removeEventListener('online', handleOffline);
+      window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
