@@ -146,19 +146,34 @@ export default function CallPage() {
 
   return (
     <div className="h-screen-safe bg-black relative overflow-hidden">
+      {/* Low Credits Warning */}
+      {showLowCreditsWarning && (
+        <div className="absolute top-20 left-4 right-4 z-50 bg-gradient-to-r from-red-500/90 to-red-600/90 backdrop-blur-sm border border-red-400/50 rounded-lg p-3">
+          <div className="flex items-center space-x-2">
+            <AlertTriangle className="w-5 h-5 text-white flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-white font-medium text-sm">Low Credits Warning</p>
+              <p className="text-white/90 text-xs">
+                {activeCall.metrics && `${activeCall.metrics.remainingCredits} credits remaining (${Math.floor(activeCall.metrics.remainingCredits / activeCall.metrics.creditsPerSecond)}s)`}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Video View (if video call) */}
-      {callState.mode === 'video' && (
+      {activeCall.type === 'video' && (
         <div className="absolute inset-0">
-          <video 
+          <video
             ref={videoRef}
             autoPlay
             muted
             className="w-full h-full object-cover"
           />
-          
+
           {/* Self video preview */}
           <div className="absolute top-4 right-4 w-32 h-48 bg-gray-800 rounded-xl overflow-hidden border-2 border-white/20">
-            <video 
+            <video
               autoPlay
               muted
               className="w-full h-full object-cover transform scale-x-[-1]"
@@ -167,12 +182,12 @@ export default function CallPage() {
         </div>
       )}
 
-      {/* Audio View (if audio call) - Show profile pictures like video call */}
-      {callState.mode === 'audio' && (
+      {/* Audio View (if audio call) - Show profile pictures */}
+      {activeCall.type === 'audio' && (
         <div className="absolute inset-0">
           {/* Remote participant profile picture (main area) */}
           <div className="w-full h-full bg-black flex items-center justify-center">
-            {target === 'akili' ? (
+            {targetId === 'akili' ? (
               <div className="w-48 h-48 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
                 <Sparkles className="w-24 h-24 text-white" />
               </div>
@@ -185,10 +200,10 @@ export default function CallPage() {
             )}
           </div>
 
-          {/* Self profile picture (corner preview like video calls) */}
+          {/* Self profile picture (corner preview) */}
           <div className="absolute top-4 right-4 w-32 h-40 bg-gray-800 rounded-xl overflow-hidden border-2 border-white/20 flex items-center justify-center">
             <img
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+              src={user?.avatar || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"}
               alt="You"
               className="w-20 h-20 rounded-full object-cover"
             />
