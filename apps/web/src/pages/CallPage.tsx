@@ -216,34 +216,67 @@ export default function CallPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2">
-              {callState.isPrivate ? (
+              {isPrivate ? (
                 <Lock className="w-5 h-5 text-white" />
               ) : (
                 <Globe className="w-5 h-5 text-white" />
               )}
               <span className="text-white text-sm font-medium">
-                {callState.isPrivate ? 'Private' : 'Public'}
+                {isPrivate ? 'Private' : 'Public'}
               </span>
             </div>
-            <button 
+            <button
               onClick={togglePrivacy}
               className="px-3 py-1 bg-white/20 rounded-full text-white text-xs hover:bg-white/30 transition-colors"
             >
               Switch
             </button>
           </div>
-          
+
           <div className="text-center">
             <p className="text-white font-medium">
-              {formatDuration(callState.duration)}
+              {activeCall.metrics ? formatDuration(activeCall.metrics.duration) : '00:00'}
             </p>
             <p className="text-white/60 text-xs">
-              {callState.participants.length} participant{callState.participants.length !== 1 ? 's' : ''}
+              {activeCall.participants.length} participant{activeCall.participants.length !== 1 ? 's' : ''}
             </p>
           </div>
-          
-          <div className="w-20" /> {/* Spacer for balance */}
+
+          {/* Credits Meter */}
+          <div className="flex items-center space-x-2">
+            <div className="bg-black/40 backdrop-blur-sm border border-white/20 rounded-lg px-3 py-1.5">
+              <div className="flex items-center space-x-2">
+                <Coins className="w-4 h-4 text-yellow-400" />
+                <div className="text-right">
+                  <p className="text-white text-xs font-medium">
+                    {activeCall.metrics ? activeCall.metrics.remainingCredits.toLocaleString() : user?.balance?.toLocaleString() || '0'}
+                  </p>
+                  <p className="text-white/60 text-xs">
+                    credits
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
+        {/* Credits Usage Bar */}
+        {activeCall.metrics && (
+          <div className="mt-3 bg-black/40 backdrop-blur-sm border border-white/20 rounded-lg p-2">
+            <div className="flex items-center justify-between text-xs text-white/80 mb-1">
+              <span>Credits Used: {activeCall.metrics.creditsUsed}</span>
+              <span>{activeCall.metrics.creditsPerSecond}/sec</span>
+            </div>
+            <div className="w-full bg-white/20 rounded-full h-1.5">
+              <div
+                className="bg-gradient-to-r from-green-400 to-yellow-400 h-1.5 rounded-full transition-all duration-1000"
+                style={{
+                  width: `${Math.min(100, (activeCall.metrics.creditsUsed / (activeCall.metrics.creditsUsed + activeCall.metrics.remainingCredits)) * 100)}%`
+                }}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Control Panel */}
