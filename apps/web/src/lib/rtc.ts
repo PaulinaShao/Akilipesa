@@ -104,7 +104,7 @@ export class RTCEngine {
     console.log('Leaving RTC channel:', this.channel);
     
     if (this.durationTimer) {
-      clearTimeout(this.durationTimer);
+      window.clearTimeout(this.durationTimer);
       this.durationTimer = null;
     }
 
