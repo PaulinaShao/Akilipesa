@@ -354,10 +354,11 @@ export default function LoginPage() {
                   {method === 'phone' ? (
                     <div>
                       <label className="block text-white font-medium mb-3 text-base">Phone Number</label>
-                      <NumberInputTZ
+                      <PhoneInputTZ
                         value={phoneNumber}
                         onChange={setPhoneNumber}
                         placeholder="7XX XXX XXX"
+                        error={errors.phone}
                         className={cn(
                           errors.phone && "border-red-500"
                         )}
