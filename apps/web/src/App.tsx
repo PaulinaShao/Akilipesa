@@ -142,13 +142,27 @@ function App() {
     // In development mode, create a simple mock user after a delay
     if (import.meta.env.DEV && !user) {
       setTimeout(() => {
-        const mockUserObject = {
+        const mockFirebaseUser = {
           uid: mockUser.id,
           displayName: mockUser.name,
           email: mockUser.email,
         } as User;
-        setDevModeUser(mockUserObject);
-        setAppUser(mockUserObject); // Update app store
+
+        const mockAppUser = {
+          id: mockUser.id,
+          name: mockUser.name,
+          username: mockUser.username,
+          email: mockUser.email,
+          phone: mockUser.phone,
+          avatar: mockUser.avatar,
+          verified: mockUser.verified,
+          plan: mockUser.plan,
+          balance: mockUser.balance,
+          earnings: mockUser.earnings,
+        };
+
+        setDevModeUser(mockFirebaseUser);
+        setAppUser(mockAppUser); // Update app store
       }, 1000);
     }
 
