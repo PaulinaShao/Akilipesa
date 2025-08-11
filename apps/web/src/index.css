@@ -95,12 +95,13 @@
     @apply bg-primary hover:bg-primary/90 text-white font-semibold px-6 py-3 rounded-2xl;
     @apply transition-all duration-200 shadow-lg hover:shadow-xl;
     @apply focus-outline active:scale-95;
-    background: linear-gradient(135deg, #8A5CF6 0%, #6E4BD9 100%);
-    box-shadow: 0 4px 20px rgba(138, 92, 246, 0.3);
+    background: var(--tz-gradient);
+    box-shadow: var(--shadow-glow);
   }
-  
+
   .btn-primary:hover {
-    box-shadow: 0 8px 30px rgba(138, 92, 246, 0.4);
+    box-shadow: 0 8px 30px rgba(110, 60, 230, 0.4);
+    transform: translateY(-1px);
   }
   
   .btn-secondary {
