@@ -21,6 +21,7 @@ import CheckoutPage from '@/pages/CheckoutPage';
 import OrdersPage from '@/pages/OrdersPage';
 import WalletPage from '@/pages/WalletPage';
 import CallPage from '@/pages/CallPage';
+import CameraCaptPage from '@/pages/CameraCaptPage';
 
 // Admin Guard Component
 function AdminRoute({ children, user }: { children: React.ReactNode; user: User | null }) {
@@ -217,6 +218,56 @@ function App() {
           <Route path="/call/new" element={
             <ProtectedRoute user={currentUser}>
               <CallPage />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/create/camera" element={
+            <ProtectedRoute user={currentUser}>
+              <CameraCaptPage />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/create/edit" element={
+            <ProtectedRoute user={currentUser}>
+              <div className="h-screen-safe flex-center">
+                <div className="text-center">
+                  <h1 className="heading-2 mb-4">Edit Media</h1>
+                  <p className="text-white/60">Media editing coming soon</p>
+                </div>
+              </div>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/create/ai" element={
+            <ProtectedRoute user={currentUser}>
+              <div className="h-screen-safe flex-center">
+                <div className="text-center">
+                  <h1 className="heading-2 mb-4">AI Creation</h1>
+                  <p className="text-white/60">AI-powered content creation coming soon</p>
+                </div>
+              </div>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/create/live" element={
+            <ProtectedRoute user={currentUser}>
+              <div className="h-screen-safe flex-center">
+                <div className="text-center">
+                  <h1 className="heading-2 mb-4">Go Live</h1>
+                  <p className="text-white/60">Live streaming coming soon</p>
+                </div>
+              </div>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/stories/:username" element={
+            <ProtectedRoute user={currentUser}>
+              <div className="h-screen-safe flex-center">
+                <div className="text-center">
+                  <h1 className="heading-2 mb-4">Stories</h1>
+                  <p className="text-white/60">Stories viewer coming soon</p>
+                </div>
+              </div>
             </ProtectedRoute>
           } />
 
