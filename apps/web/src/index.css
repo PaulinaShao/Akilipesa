@@ -422,6 +422,26 @@
       max-width: 300px;
     }
   }
+
+  /* Stories Rail styles */
+  .stories-rail {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    background: linear-gradient(180deg, rgba(11, 7, 18, 0.8) 0%, transparent 100%);
+    backdrop-filter: blur(4px);
+  }
+
+  .stories-rail .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stories-rail .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 @layer utilities {
