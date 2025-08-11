@@ -105,8 +105,20 @@ function App() {
     });
 
     // Initialize trial system
-    initializeToken();
-    fetchConfig();
+    const initTrialSystem = async () => {
+      try {
+        // Seed trial config if it doesn't exist
+        await seedTrialConfig(import.meta.env.DEV);
+
+        // Initialize trial token and fetch config
+        await initializeToken();
+        await fetchConfig();
+      } catch (error) {
+        console.error('Failed to initialize trial system:', error);
+      }
+    };
+
+    initTrialSystem();
 
     // In development mode, create a simple mock user after a delay
     if (import.meta.env.DEV && !user) {
