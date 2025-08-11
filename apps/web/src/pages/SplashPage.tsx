@@ -9,9 +9,9 @@ export default function SplashPage() {
 
   useEffect(() => {
     // Check if user has seen splash before
-    const hasSeenSplash = localStorage.getItem('akilipesa-splash-seen');
-    
-    if (hasSeenSplash) {
+    const hasSeenSplash = localStorage.getItem('ap.splashSeen');
+
+    if (hasSeenSplash === '1') {
       // Skip animation and go directly to reels
       navigate('/reels', { replace: true });
       return;
@@ -19,9 +19,9 @@ export default function SplashPage() {
 
     // Show splash animation
     const timer = setTimeout(() => {
-      localStorage.setItem('akilipesa-splash-seen', 'true');
+      localStorage.setItem('ap.splashSeen', '1');
       navigate('/reels', { replace: true });
-    }, 2200); // 1.2s animation + 1s buffer
+    }, 1200); // 1.2s animation as specified
 
     return () => clearTimeout(timer);
   }, [navigate]);
