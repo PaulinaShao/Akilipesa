@@ -30,7 +30,7 @@ if (import.meta.env.DEV && import.meta.env.VITE_FIREBASE_PROJECT_ID === 'demo-pr
     connectFunctionsEmulator(functions, 'localhost', 5001);
     console.log('Connected to Firebase emulators');
   } catch (error) {
-    console.warn('Firebase emulators not available, continuing in offline mode:', error.message);
+    console.warn('Firebase emulators not available, continuing in offline mode:', (error as any)?.message || error);
   }
 }
 
