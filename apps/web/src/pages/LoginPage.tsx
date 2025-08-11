@@ -170,9 +170,9 @@ export default function LoginPage() {
   };
 
   const handleWhatsAppLogin = () => {
-    // WhatsApp number for AkiliPesa verification
-    const WHATSAPP_NUMBER = 'whatsapp:+15557679073';
-    const phoneNumber = '+15557679073';
+    // WhatsApp number for AkiliPesa verification from environment
+    const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || 'whatsapp:+15557679073';
+    const phoneNumber = WHATSAPP_NUMBER.replace('whatsapp:', '');
 
     // Create WhatsApp deep link to request verification token
     const message = encodeURIComponent('Hello AkiliPesa! I need a verification token to sign in to my account.');
