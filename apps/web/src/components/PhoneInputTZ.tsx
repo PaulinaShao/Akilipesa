@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import PhoneInput from 'react-phone-number-input';
-import { formatPhoneNumber, isValidPhoneNumber } from 'react-phone-number-input';
+import { isValidPhoneNumber } from 'react-phone-number-input';
 import { cn } from '@/lib/utils';
 import 'react-phone-number-input/style.css';
 
@@ -14,7 +14,7 @@ interface PhoneInputTZProps {
 }
 
 const PhoneInputTZ = forwardRef<HTMLInputElement, PhoneInputTZProps>(
-  ({ value, onChange, placeholder = '7XX XXX XXX', className, error, disabled }, ref) => {
+  ({ value, onChange, placeholder = '7XX XXX XXX', className, error, disabled }, _ref) => {
     
     // Normalize input to E.164 format
     const handleChange = (newValue: string | undefined) => {
