@@ -41,8 +41,10 @@ export interface AppState {
   setLoading: (loading: boolean) => void;
   setStoriesVisible: (visible: boolean) => void;
   setBalanceBannerVisible: (visible: boolean) => void;
-  startCall: (params: { type: 'audio' | 'video'; agentId?: string; targetId?: string }) => void;
-  endCall: () => void;
+  startCall: (params: StartCallParams) => Promise<void>;
+  endCall: () => Promise<void>;
+  updateCallMetrics: (metrics: CallMetrics) => void;
+  updateCallParticipants: (participants: CallParticipant[]) => void;
   updateBalance: (amount: number) => void;
   updateEarnings: (amount: number) => void;
 }
