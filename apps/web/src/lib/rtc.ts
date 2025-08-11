@@ -67,7 +67,7 @@ export async function requestAuthenticatedCall(targetId: string, _config: CallCo
 export class RTCEngine {
   private channel: string | null = null;
   private uid: number | null = null;
-  private token: string | null = null;
+  private _token: string | null = null;
   private maxDuration: number = 0;
   private startTime: number = 0;
   private durationTimer: number | null = null;
