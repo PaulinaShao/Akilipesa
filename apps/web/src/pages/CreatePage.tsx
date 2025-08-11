@@ -590,7 +590,7 @@ export default function CreatePage() {
       <PricingPanel
         isOpen={showPricing}
         onClose={() => setShowPricing(false)}
-        onSubmit={setCurrentPricing}
+        onSubmit={(pricing) => console.log('Pricing set:', pricing)}
       />
     </div>
   );
