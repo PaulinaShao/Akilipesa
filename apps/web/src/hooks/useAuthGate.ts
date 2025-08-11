@@ -19,7 +19,7 @@ interface UseTrialGateReturn {
 }
 
 export function useAuthGate(): UseAuthGateReturn {
-  const { user } = useAuthStore();
+  const { user } = useAppStore();
   const { openAuthSheet } = useUIStore();
 
   const requireAuth = useCallback((action: () => void, actionType: GatedAction) => {
