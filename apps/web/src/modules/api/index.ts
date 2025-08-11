@@ -52,6 +52,34 @@ export interface OrderResponse {
  */
 export async function startJob(type: string, inputs: any): Promise<string> {
   try {
+    const { isFirebaseDemoMode } = await import('../lib/firebase');
+
+    // In demo mode, always create offline job
+    if (isFirebaseDemoMode) {
+      console.log('Demo mode: creating offline job');
+      const mockJobId = `demo_${type}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+      const offlineJob = {
+        id: mockJobId,
+        type,
+        inputs,
+        status: 'queued',
+        createdAt: new Date().toISOString(),
+        isOffline: true,
+        isDemo: true
+      };
+
+      try {
+        const existingJobs = JSON.parse(localStorage.getItem('offlineJobs') || '[]');
+        existingJobs.push(offlineJob);
+        localStorage.setItem('offlineJobs', JSON.stringify(existingJobs));
+      } catch (storageError) {
+        console.warn('Failed to store demo job:', storageError);
+      }
+
+      return mockJobId;
+    }
+
     const createJob = httpsCallable(functions, 'createJob');
     const result = await createJob({
       type,
