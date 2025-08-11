@@ -182,19 +182,15 @@ export default function LoginPage() {
     // Open WhatsApp in new tab/app
     window.open(whatsappUrl, '_blank');
 
+    // Switch to WhatsApp token input step
+    setMethod('whatsapp');
+    setStep('whatsapp-token');
+
     addToast({
       type: 'info',
-      title: 'WhatsApp Verification',
-      description: 'Message AkiliPesa on WhatsApp to receive your verification token',
+      title: 'WhatsApp Opened',
+      description: 'Enter the verification token you receive from AkiliPesa',
     });
-
-    // After user clicks WhatsApp, show a prompt to enter the token they received
-    setTimeout(() => {
-      const token = prompt('Enter the verification token you received from AkiliPesa on WhatsApp:');
-      if (token) {
-        handleWhatsAppTokenVerification(token);
-      }
-    }, 2000);
   };
 
   const handleWhatsAppTokenVerification = async (token: string) => {
