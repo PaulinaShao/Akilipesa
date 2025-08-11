@@ -23,6 +23,23 @@ interface Message {
 
 const mockMessages: Message[] = [
   {
+    id: 'akilipesa',
+    user: {
+      id: 'akilipesa',
+      username: 'akilipesa_ai',
+      name: 'AkiliPesa AI',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+      isOnline: true,
+    },
+    lastMessage: {
+      text: 'I understand you\'re facing cash flow challenges. Let me help you create a cash flow forecast...',
+      timestamp: new Date(Date.now() - 2 * 60 * 1000), // 2 minutes ago
+      isRead: false,
+      type: 'text',
+    },
+    unreadCount: 1,
+  },
+  {
     id: '1',
     user: {
       id: '1',
