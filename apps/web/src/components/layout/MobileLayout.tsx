@@ -22,7 +22,10 @@ export default function MobileLayout({ children, hideBottomNav = false }: Mobile
       <main className={`flex-1 overflow-hidden ${!shouldHideNav ? 'pb-16' : ''}`}>
         {children}
       </main>
-      
+
+      {/* AI Assistant floating button */}
+      <AIAssistantButton />
+
       {/* Bottom navigation */}
       {!shouldHideNav && <BottomNav />}
     </div>
