@@ -12,7 +12,6 @@ interface NumberInputTZProps {
 
 const NumberInputTZ = forwardRef<HTMLInputElement, NumberInputTZProps>(
   ({ value, onChange, placeholder = '7XX XXX XXX', className, error, disabled }, ref) => {
-    const [focused, setFocused] = useState(false);
 
     const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
       const inputValue = e.currentTarget.value.replace(/\D/g, ''); // Remove non-digits
