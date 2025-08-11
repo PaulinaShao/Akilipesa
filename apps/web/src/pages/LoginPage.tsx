@@ -63,11 +63,12 @@ function OTPInput({ value, onChange, onComplete }: OTPInputProps) {
 }
 
 export default function LoginPage() {
-  const [method, setMethod] = useState<'phone' | 'email'>('phone');
-  const [step, setStep] = useState<'input' | 'otp'>('input');
+  const [method, setMethod] = useState<'phone' | 'email' | 'whatsapp'>('phone');
+  const [step, setStep] = useState<'input' | 'otp' | 'whatsapp-token'>('input');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [otp, setOTP] = useState('');
+  const [whatsappToken, setWhatsappToken] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
   const [errors, setErrors] = useState<Record<string, string>>({});
