@@ -30,7 +30,9 @@ export interface AppState {
   activeCall: {
     id: string;
     type: 'audio' | 'video';
-    participants: string[];
+    channel: string;
+    participants: CallParticipant[];
+    metrics: CallMetrics | null;
     status: 'connecting' | 'connected' | 'ended';
   } | null;
   
