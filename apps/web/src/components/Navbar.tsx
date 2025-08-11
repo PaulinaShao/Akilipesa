@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, User, LogOut } from 'lucide-react';
-import TanzaniteLogo from './TanzaniteLogo';
+import AkiliLogo from './AkiliLogo';
 import { cn } from '@/lib/utils';
 
 interface NavbarProps {
