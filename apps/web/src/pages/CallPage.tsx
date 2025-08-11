@@ -114,7 +114,8 @@ export default function CallPage() {
     console.log('Add guest to call');
   };
 
-  if (!callState.isConnected) {
+  // Show connecting state
+  if (activeCall.status === 'connecting') {
     return (
       <div className="h-screen-safe bg-gradient-to-b from-bg-primary to-bg-secondary flex items-center justify-center">
         <div className="text-center">
