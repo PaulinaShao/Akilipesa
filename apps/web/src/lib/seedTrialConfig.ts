@@ -48,7 +48,7 @@ export async function seedTrialConfig(isDev: boolean = false): Promise<void> {
     }
 
     const config = isDev ? devTrialConfig : defaultTrialConfig;
-    
+
     await setDoc(configRef, {
       ...config,
       createdAt: new Date(),
@@ -57,8 +57,12 @@ export async function seedTrialConfig(isDev: boolean = false): Promise<void> {
 
     console.log('Trial config seeded successfully:', config);
   } catch (error) {
-    console.error('Failed to seed trial config:', error);
-    throw error;
+    console.warn('Failed to seed trial config (offline mode):', error.message);
+    // In offline mode, just log that we're using defaults
+    const config = isDev ? devTrialConfig : defaultTrialConfig;
+    console.log('Using default trial config in offline mode:', config);
+
+    // Don't throw error in offline mode, just continue with defaults
   }
 }
 
