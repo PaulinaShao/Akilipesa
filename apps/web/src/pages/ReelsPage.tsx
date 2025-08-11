@@ -489,9 +489,6 @@ export default function ReelsPage() {
 
   return (
     <div className="reel-container">
-      {/* Stories Rail - shows on first reel only */}
-      <StoriesRail showStories={currentIndex === 0} />
-
       <div
         ref={containerRef}
         className="h-full overflow-y-auto snap-y snap-mandatory hide-scrollbar"
