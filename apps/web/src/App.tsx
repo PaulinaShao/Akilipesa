@@ -14,7 +14,7 @@ import { TrialPaywall } from '@/components/trial/TrialPaywall';
 import { TrialPolicyPage } from '@/pages/TrialPolicyPage';
 import { useTrialStore } from '@/state/trialStore';
 import { useUIStore } from '@/state/uiStore';
-import { useAppStore } from '@/store';
+import { useAppStore, type User as AppUser } from '@/store';
 import { seedTrialConfig } from '@/lib/seedTrialConfig';
 
 // Import pages
