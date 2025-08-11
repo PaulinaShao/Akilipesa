@@ -283,6 +283,7 @@ export default function ChatPage() {
   const [newMessage, setNewMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [showAttachments, setShowAttachments] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
