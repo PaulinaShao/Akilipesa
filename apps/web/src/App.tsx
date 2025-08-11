@@ -102,21 +102,15 @@ function App() {
         <Router>
           <Routes>
           {/* Public routes */}
+          <Route path="/splash" element={<SplashPage />} />
           <Route path="/login" element={<LoginPage />} />
-          
-          {/* Protected routes with mobile layout */}
-          <Route path="/" element={
-            <ProtectedRoute user={currentUser}>
-              <Navigate to="/reels" replace />
-            </ProtectedRoute>
-          } />
-          
+
+          {/* Public feed (guest accessible) */}
+          <Route path="/" element={<Navigate to="/reels" replace />} />
           <Route path="/reels" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <ReelsPage />
-              </MobileLayout>
-            </ProtectedRoute>
+            <MobileLayout>
+              <ReelsPage />
+            </MobileLayout>
           } />
           
           <Route path="/search" element={
