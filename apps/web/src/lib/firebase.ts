@@ -27,6 +27,14 @@ export const firestore = getFirestore(app);
 export const db = firestore; // Alias for convenience
 export const functions = getFunctions(app);
 
+// Disable network for demo mode to prevent connection attempts
+if (isDemoMode) {
+  console.log('Demo mode detected - disabling Firebase network');
+  disableNetwork(firestore).catch(error => {
+    console.warn('Failed to disable Firebase network:', error);
+  });
+}
+
 // Connect to emulators in development (optional)
 if (import.meta.env.DEV && import.meta.env.VITE_FIREBASE_PROJECT_ID === 'demo-project') {
   try {
