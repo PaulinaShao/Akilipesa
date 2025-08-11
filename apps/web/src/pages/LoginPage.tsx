@@ -193,24 +193,21 @@ export default function LoginPage() {
     });
   };
 
-  const handleWhatsAppTokenVerification = async (token: string) => {
-    if (!token || token.length < 4) {
-      addToast({
-        type: 'error',
-        title: 'Invalid Token',
-        description: 'Please enter a valid verification token from WhatsApp',
-      });
+  const handleWhatsAppTokenVerification = async () => {
+    if (!whatsappToken || whatsappToken.length < 4) {
+      setErrors({ whatsappToken: 'Please enter a valid verification token from WhatsApp' });
       return;
     }
 
     setIsLoading(true);
+    setErrors({});
 
     try {
       // Simulate token verification
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       // For demo purposes, accept any token with 4+ characters
-      if (token.length >= 4) {
+      if (whatsappToken.length >= 4) {
         addToast({
           type: 'success',
           title: 'WhatsApp Login Successful',
@@ -218,18 +215,10 @@ export default function LoginPage() {
         });
         navigate(from, { replace: true });
       } else {
-        addToast({
-          type: 'error',
-          title: 'Invalid Token',
-          description: 'The verification token is incorrect. Please try again.',
-        });
+        setErrors({ whatsappToken: 'The verification token is incorrect. Please try again.' });
       }
     } catch (error) {
-      addToast({
-        type: 'error',
-        title: 'Verification Failed',
-        description: 'Unable to verify WhatsApp token. Please try again.',
-      });
+      setErrors({ whatsappToken: 'Unable to verify WhatsApp token. Please try again.' });
     } finally {
       setIsLoading(false);
     }
