@@ -391,6 +391,3 @@ class CallService {
 
 // Export singleton instance
 export const callService = new CallService();
-
-// Export types
-export type { CallConfig, CallParticipant, CallMetrics, StartCallParams };
