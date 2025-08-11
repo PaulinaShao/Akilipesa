@@ -25,6 +25,134 @@ export default function LoginPage() {
 
   const from = location.state?.from?.pathname || '/reels';
 
+  // Resend timer
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const interval = setInterval(() => {
+        setResendTimer(prev => prev - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [resendTimer]);
+
+  const handleSendCode = async () => {
+    setError('');
+
+    if (activeTab === 'phone') {
+      if (!phoneLocal || !isValidTZ(phoneLocal)) {
+        setError('Please enter a valid Tanzania phone number');
+        return;
+      }
+    } else {
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setError('Please enter a valid email address');
+        return;
+      }
+    }
+
+    setLoading(true);
+
+    try {
+      // Simulate sending code (replace with actual Firebase Auth)
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      setStep('code');
+      setResendTimer(30);
+      setLoading(false);
+    } catch (error) {
+      setError('Failed to send code. Please try again.');
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyCode = async () => {
+    if (code.length !== 6) {
+      setError('Please enter the complete 6-digit code');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      // Simulate code verification (replace with actual Firebase Auth)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Mock successful authentication
+      const mockUser = {
+        id: 'user-123',
+        name: 'Tanzania User',
+        username: activeTab === 'phone' ? phoneLocal : email.split('@')[0],
+        email: activeTab === 'email' ? email : `${phoneLocal}@phone.akilipesa.com`,
+        phone: phoneE164,
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+        verified: false,
+        plan: 'free' as const,
+        balance: 1000,
+        earnings: 0,
+      };
+
+      setUser(mockUser);
+      setStep('success');
+
+      // Navigate after short delay
+      setTimeout(() => {
+        navigate(from, { replace: true });
+      }, 1000);
+
+    } catch (error) {
+      setError('Invalid verification code. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleAuth = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      // Simulate Google auth (replace with actual Firebase Auth)
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      const mockUser = {
+        id: 'user-google-123',
+        name: 'Google User',
+        username: 'googleuser',
+        email: 'user@gmail.com',
+        phone: '',
+        avatar: 'https://images.unsplash.com/photo-1494790108755-2616b9d38aad?w=150&h=150&fit=crop&crop=face',
+        verified: true,
+        plan: 'free' as const,
+        balance: 1000,
+        earnings: 0,
+      };
+
+      setUser(mockUser);
+      navigate(from, { replace: true });
+
+    } catch (error) {
+      setError('Google sign-in failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResend = () => {
+    if (resendTimer > 0) return;
+    handleSendCode();
+  };
+
+  const handleBack = () => {
+    if (step === 'code') {
+      setStep('input');
+      setCode('');
+      setError('');
+    } else {
+      navigate('/reels');
+    }
+  };
+
   const validateInput = () => {
     const newErrors: Record<string, string> = {};
     
