@@ -15,11 +15,11 @@ export default function GoogleButton({ onClick, disabled, loading }: GoogleButto
       disabled={disabled || loading}
       className={`
         w-full flex items-center justify-center gap-3 px-4 py-3
-        bg-white border border-zinc-300 rounded-xl
-        text-zinc-700 font-medium text-sm
-        hover:bg-zinc-50 hover:border-zinc-400
-        focus:outline-none focus:ring-2 focus:ring-zinc-300
-        transition-all duration-200
+        bg-white/95 border border-white/20 rounded-xl
+        text-gray-700 font-medium text-sm
+        hover:bg-white hover:border-white/40
+        focus:outline-none focus:ring-2 focus:ring-[var(--tz-ice-400)]
+        transition-all duration-200 backdrop-blur-sm
         ${disabled || loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
       `}
     >
