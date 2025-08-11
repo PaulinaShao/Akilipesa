@@ -100,7 +100,7 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
-      setUser(firebaseUser); // Update auth store
+      setAppUser(firebaseUser); // Update app store
       setLoading(false);
     });
 
