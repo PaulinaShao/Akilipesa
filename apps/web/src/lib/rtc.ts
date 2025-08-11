@@ -75,7 +75,6 @@ export class RTCEngine {
   async join(rtcToken: RTCToken, onCallEnd?: () => void): Promise<void> {
     this.channel = rtcToken.channelName;
     this.uid = rtcToken.uid;
-    this._token = rtcToken.token;
     this.maxDuration = rtcToken.maxDuration;
     this.startTime = Date.now();
     this.onCallEnd = onCallEnd;
