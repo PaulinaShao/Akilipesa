@@ -125,13 +125,15 @@ export async function startJob(type: string, inputs: any): Promise<string> {
  */
 export function subscribeJob(id: string, callback: (job: Job | null) => void): () => void {
   try {
-    // Check if this is an offline job first
-    if (id.startsWith('offline_')) {
+    // Check if this is an offline or demo job first
+    if (id.startsWith('offline_') || id.startsWith('demo_')) {
       const offlineJobs = JSON.parse(localStorage.getItem('offlineJobs') || '[]');
       const offlineJob = offlineJobs.find((job: any) => job.id === id);
 
       if (offlineJob) {
-        // Simulate job processing for offline jobs
+        const isDemo = id.startsWith('demo_');
+
+        // Simulate job processing for offline/demo jobs
         setTimeout(() => {
           callback({
             id: offlineJob.id,
@@ -151,14 +153,19 @@ export function subscribeJob(id: string, callback: (job: Job | null) => void): (
             status: 'completed',
             inputs: offlineJob.inputs,
             outputs: {
-              url: `https://placeholder.com/400x400.png?text=Offline+${offlineJob.type}`,
-              metadata: { note: 'Offline simulation - sign up for real AI generation!' }
+              url: `https://placeholder.com/400x400.png?text=${isDemo ? 'Demo' : 'Offline'}+${offlineJob.type}`,
+              metadata: {
+                note: isDemo
+                  ? 'Demo simulation - experience AkiliPesa\'s AI features!'
+                  : 'Offline simulation - sign up for real AI generation!',
+                mode: isDemo ? 'demo' : 'offline'
+              }
             },
             progress: 100,
             createdAt: new Date(offlineJob.createdAt),
             updatedAt: new Date(),
           });
-        }, 5000);
+        }, isDemo ? 3000 : 5000); // Faster for demo mode
 
         return () => {}; // No cleanup needed for offline jobs
       }
