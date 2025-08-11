@@ -8,6 +8,9 @@
 /* Import sparkle animations */
 @import './styles/sparkle.css';
 
+/* Import Tanzanite brand design system */
+@import './styles/tanzanite.css';
+
 @layer base {
   :root {
     --color-bg-primary: #0B0712;
