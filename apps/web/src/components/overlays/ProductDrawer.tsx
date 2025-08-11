@@ -424,6 +424,21 @@ export default function ProductDrawer({
           </div>
         </div>
       </div>
+
+      {/* Share Modal */}
+      {selectedProductForShare && (
+        <ShareModal
+          isOpen={shareModalOpen}
+          onClose={() => {
+            setShareModalOpen(false);
+            setSelectedProductForShare(null);
+          }}
+          itemType="product"
+          itemId={selectedProductForShare.id}
+          itemName={selectedProductForShare.name}
+          currentUserId="current-user-id" // TODO: Replace with actual user ID
+        />
+      )}
     </>
   );
 }
