@@ -148,32 +148,124 @@ function ProductCard({
         </div>
       </div>
       
-      {/* Actions */}
-      <div className="flex items-center space-x-2">
-        <button 
-          onClick={handleAddToCart}
-          disabled={!product.inStock || isAddingToCart}
-          className={cn(
-            "flex-1 btn-gem py-3 flex items-center justify-center space-x-2",
-            !product.inStock && "opacity-50 cursor-not-allowed"
-          )}
-        >
-          {isAddingToCart ? (
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          ) : (
-            <>
-              <ShoppingCart className="w-5 h-5" />
-              <span>Add to Cart</span>
-            </>
-          )}
-        </button>
-        
-        <button 
-          onClick={() => onShare(product.id)}
-          className="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-lg flex-center transition-colors"
-        >
-          <Share className="w-5 h-5 text-white" />
-        </button>
+      {/* Add to Cart Button */}
+      <button
+        onClick={handleAddToCart}
+        disabled={!product.inStock || isAddingToCart}
+        className={cn(
+          "w-full btn-gem py-3 flex items-center justify-center space-x-2 mb-3",
+          !product.inStock && "opacity-50 cursor-not-allowed"
+        )}
+      >
+        {isAddingToCart ? (
+          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+        ) : (
+          <>
+            <ShoppingCart className="w-5 h-5" />
+            <span>Add to Cart</span>
+          </>
+        )}
+      </button>
+
+      {/* Social Actions Row */}
+      <div className="flex items-center justify-between">
+        {/* Left: Like & Comment */}
+        <div className="flex items-center space-x-1">
+          <button
+            onClick={handleLike}
+            className={cn(
+              "flex items-center space-x-1 px-3 py-2 rounded-lg transition-all",
+              isLiked
+                ? "bg-red-500/20 text-red-400"
+                : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+            )}
+          >
+            <ThumbsUp className={cn("w-4 h-4", isLiked && "fill-current")} />
+            <span className="text-sm">Like</span>
+          </button>
+
+          <button
+            onClick={() => onComment(product.id)}
+            className="flex items-center space-x-1 px-3 py-2 rounded-lg bg-white/5 text-white/70 hover:bg-white/10 hover:text-white transition-all"
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span className="text-sm">Comment</span>
+          </button>
+        </div>
+
+        {/* Right: Call Actions & More */}
+        <div className="flex items-center space-x-1">
+          <button
+            onClick={() => onCallVideo(product.seller?.id || product.shop.id)}
+            className="w-9 h-9 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded-lg flex-center transition-all"
+            title="Video Call"
+          >
+            <Video className="w-4 h-4" />
+          </button>
+
+          <button
+            onClick={() => onCallAudio(product.seller?.id || product.shop.id)}
+            className="w-9 h-9 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg flex-center transition-all"
+            title="Audio Call"
+          >
+            <Phone className="w-4 h-4" />
+          </button>
+
+          {/* More Menu */}
+          <div className="relative">
+            <button
+              onClick={() => setShowMoreMenu(!showMoreMenu)}
+              className="w-9 h-9 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white rounded-lg flex-center transition-all"
+              title="More"
+            >
+              <MoreHorizontal className="w-4 h-4" />
+            </button>
+
+            {/* More Dropdown */}
+            {showMoreMenu && (
+              <>
+                <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => setShowMoreMenu(false)}
+                />
+                <div className="absolute right-0 top-10 z-20 bg-[#1A1035] border border-white/20 rounded-lg py-2 min-w-[140px] shadow-xl">
+                  <button
+                    onClick={() => onShare(product.id)}
+                    className="w-full px-4 py-2 text-left text-white/80 hover:bg-white/10 hover:text-white transition-colors flex items-center space-x-2"
+                  >
+                    <Share className="w-4 h-4" />
+                    <span className="text-sm">Share</span>
+                  </button>
+
+                  <button
+                    onClick={handleCopyLink}
+                    className="w-full px-4 py-2 text-left text-white/80 hover:bg-white/10 hover:text-white transition-colors flex items-center space-x-2"
+                  >
+                    {linkCopied ? (
+                      <>
+                        <CheckCircle className="w-4 h-4 text-green-400" />
+                        <span className="text-sm text-green-400">Link Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4" />
+                        <span className="text-sm">Copy Link</span>
+                      </>
+                    )}
+                  </button>
+
+                  <button
+                    onClick={handleReport}
+                    className="w-full px-4 py-2 text-left text-red-400 hover:bg-red-500/10 transition-colors flex items-center space-x-2"
+                  >
+                    <Flag className="w-4 h-4" />
+                    <span className="text-sm">Report</span>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
