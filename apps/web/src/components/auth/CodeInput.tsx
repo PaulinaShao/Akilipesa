@@ -87,8 +87,8 @@ export default function CodeInput({
             inputMode="numeric"
             maxLength={1}
             value={values[index]}
-            onChange={(e) => handleChange(index, e.target.value)}
-            onKeyDown={(e) => handleKeyDown(index, e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(index, e.target.value)}
+            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(index, e)}
             onPaste={handlePaste}
             className={`
               w-12 h-12 text-center text-xl font-semibold
