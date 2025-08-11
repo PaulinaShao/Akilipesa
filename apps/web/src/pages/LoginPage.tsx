@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Phone, Mail, ArrowLeft, MessageCircle } from 'lucide-react';
+import { Phone, Mail, ArrowLeft } from 'lucide-react';
 import TanzaniteLogo from '@/components/TanzaniteLogo';
 import PhoneInputTZ from '@/components/PhoneInputTZ';
 import RecaptchaBadge from '@/components/RecaptchaBadge';
