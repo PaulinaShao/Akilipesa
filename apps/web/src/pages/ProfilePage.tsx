@@ -282,6 +282,20 @@ export default function ProfilePage() {
 
         {activeTab === 'earnings' && (
           <div className="space-y-4">
+            {/* Header with Analytics Button */}
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-white font-semibold flex items-center space-x-2">
+                <TrendingUp className="w-5 h-5 text-green-400" />
+                <span>Earnings Overview</span>
+              </h3>
+              <button
+                onClick={() => navigate('/analytics')}
+                className="text-green-400 hover:text-green-300 text-sm font-medium transition-colors"
+              >
+                View Analytics
+              </button>
+            </div>
+
             {/* Earnings Overview */}
             <div className="grid grid-cols-2 gap-4">
               <div className="card-gem p-4 text-center">
