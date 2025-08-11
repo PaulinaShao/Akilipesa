@@ -31,6 +31,11 @@ export const useUIStore = create<UIStore>()((set, get) => ({
     pendingActionType: undefined,
   },
 
+  trialPaywall: {
+    isOpen: false,
+    feature: undefined,
+  },
+
   openAuthSheet: (action, actionType) => {
     set({
       authSheet: {
