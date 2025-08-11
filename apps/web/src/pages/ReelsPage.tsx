@@ -499,6 +499,14 @@ export default function ReelsPage() {
     }
   };
 
+  const handleJoin = (reelId: string) => {
+    const reel = reels.find(r => r.id === reelId);
+    if (reel) {
+      startCall({ type: 'video', targetId: reel.user.id });
+      navigate(`/call/${reel.user.id}?type=video`);
+    }
+  };
+
   const handleFollow = (userId: string) => {
     console.log('Follow user:', userId);
   };
