@@ -291,6 +291,50 @@ export const useTrialStore = create<TrialState>((set, get) => ({
   incrementLocalReactions: () => {
     const current = getLocalReactions();
     setLocalReactions(current + 1);
+
+    // Also update local usage tracking
+    updateLocalUsage('reactions', 1);
+  },
+
+  // Helper method to update local usage when offline
+  updateLocalUsage: (type: 'chat' | 'call' | 'reaction', increment: number = 1) => {
+    const { usage } = get();
+    if (!usage) return;
+
+    const dayKey = getCurrentDayKey();
+    let newUsage = { ...usage };
+
+    // Reset if new day
+    if (usage.dayKey !== dayKey) {
+      newUsage = {
+        dayKey,
+        chatUsed: 0,
+        callsUsed: 0,
+        secondsUsed: 0,
+        reactionsUsed: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    }
+
+    // Update usage
+    switch (type) {
+      case 'chat':
+        newUsage.chatUsed += increment;
+        break;
+      case 'call':
+        newUsage.callsUsed += increment;
+        break;
+      case 'reaction':
+        newUsage.reactionsUsed += increment;
+        break;
+    }
+
+    newUsage.updatedAt = new Date();
+
+    // Save to localStorage and state
+    localStorage.setItem('ap.trialUsage', JSON.stringify(newUsage));
+    set({ usage: newUsage });
   },
 
   clearToken: () => {
