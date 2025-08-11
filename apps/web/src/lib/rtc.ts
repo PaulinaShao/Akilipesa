@@ -51,7 +51,7 @@ export async function requestTrialCall(targetId: string, config: CallConfig = { 
 }
 
 // Request authenticated user call token (unlimited)
-export async function requestAuthenticatedCall(targetId: string, config: CallConfig = { video: true, audio: true }): Promise<RTCToken> {
+export async function requestAuthenticatedCall(targetId: string, _config: CallConfig = { video: true, audio: true }): Promise<RTCToken> {
   // This would call a different function for authenticated users
   // For now, return a mock response
   return {
