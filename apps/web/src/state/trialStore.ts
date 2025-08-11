@@ -230,7 +230,11 @@ export const useTrialStore = create<TrialState>((set, get) => ({
       const isInHappyHour = checkHappyHour(config);
       set({ config, isInHappyHour });
     } catch (error) {
-      console.error('Failed to fetch trial config:', error);
+      console.warn('Failed to fetch trial config, using defaults:', error);
+      // Always provide a working config, even if fetch fails
+      const defaultConfig = getDefaultTrialConfig();
+      const isInHappyHour = checkHappyHour(defaultConfig);
+      set({ config: defaultConfig, isInHappyHour });
     }
   },
 
