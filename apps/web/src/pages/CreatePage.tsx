@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Camera, Video, Music, Users, Mic, Sparkles, Upload, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -60,6 +61,7 @@ const createOptions: CreateOption[] = [
 ];
 
 export default function CreatePage() {
+  const navigate = useNavigate();
   const [showUpload, setShowUpload] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
@@ -89,9 +91,8 @@ export default function CreatePage() {
     
     if (functionType) {
       try {
-        // Call Firebase function
-        // await createJob({ type: functionType, prompt: userPrompt });
-        console.log('Would call /functions/createJob with type:', functionType);
+        // Navigate to AI creation flow
+        navigate('/create/ai', { state: { type: functionType } });
       } catch (error) {
         console.error('AI generation failed:', error);
       }
@@ -100,16 +101,14 @@ export default function CreatePage() {
 
   const handleRegularCreation = (type: string) => {
     console.log('Starting creation:', type);
-    
+
     switch (type) {
       case 'video':
-        // Open camera for video recording
-        break;
       case 'photo':
-        // Open camera for photo
+        navigate('/create/camera');
         break;
       case 'live':
-        // Start live stream
+        navigate('/create/live');
         break;
     }
   };
