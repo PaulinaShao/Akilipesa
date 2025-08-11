@@ -222,12 +222,9 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen-safe flex flex-col text-base">
-      {/* Background with improved dark Tanzanite gradient */}
+      {/* Background with deep radial Tanzanite gradient */}
       <div className="absolute inset-0" style={{
-        background: 'linear-gradient(135deg, #0b0b16 0%, #130f2e 100%)'
-      }} />
-      <div className="absolute inset-0" style={{
-        background: 'radial-gradient(circle at 30% 20%, rgba(125, 92, 255, 0.3) 0%, transparent 50%)',
+        background: 'radial-gradient(1200px 700px at 20% 0%, #1A1035 0%, #0B0A15 50%, #07060E 100%)'
       }} />
       
       {/* Content */}
@@ -249,7 +246,10 @@ export default function LoginPage() {
             {/* Logo */}
             <div className="text-center mb-8">
               <TanzaniteLogo size="lg" className="justify-center mb-6" />
-              <h1 className="text-3xl font-bold mb-3 text-white leading-tight">
+              <h1 className="text-3xl font-bold mb-3 text-white leading-tight" style={{
+                letterSpacing: '0.2px',
+                textShadow: '0 1px 0 rgba(255, 255, 255, 0.04)'
+              }}>
                 {step === 'input' ? 'Welcome Back' : 'Enter Code'}
               </h1>
               <p className="text-base text-white/70 leading-relaxed">
@@ -260,8 +260,11 @@ export default function LoginPage() {
               </p>
             </div>
 
-            {/* Form Card */}
-            <div className="card space-y-6">
+            {/* Form Card - Tanzanite Glass */}
+            <div className="space-y-6 rounded-2xl border border-white/18 p-6" style={{
+              background: 'linear-gradient(180deg, #0B0A15 0%, #15102B 100%)',
+              boxShadow: '0 12px 40px rgba(46, 20, 80, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06)'
+            }}>
               {step === 'input' ? (
                 <>
                   {/* Method Toggle */}
@@ -368,10 +371,13 @@ export default function LoginPage() {
                   <div className="space-y-3">
                     <button
                       onClick={handleWhatsAppLogin}
-                      className="w-full py-4 text-base font-semibold bg-accent hover:bg-accent/90 text-black rounded-lg transition-all duration-200 flex items-center justify-center space-x-3 focus:outline-none focus:ring-2 focus:ring-accent/20"
+                      className="w-full py-3 h-12 rounded-xl bg-[#25D366] hover:bg-[#1FB256] text-[#0B0A15] font-bold transition-all duration-200 flex items-center justify-center space-x-3 focus:outline-none focus:ring-2 focus:ring-[#25D366]/20"
+                      aria-label="Continue with WhatsApp"
                     >
-                      <MessageCircle className="w-5 h-5" />
-                      <span className="font-semibold">Continue with WhatsApp</span>
+                      <div className="w-5 h-5 bg-[#075E54] rounded-full flex items-center justify-center">
+                        <MessageCircle className="w-3 h-3 text-white" />
+                      </div>
+                      <span className="font-bold">Continue with WhatsApp</span>
                     </button>
 
                     <button
