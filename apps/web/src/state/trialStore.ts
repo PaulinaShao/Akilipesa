@@ -95,11 +95,14 @@ function getDefaultTrialConfig(): TrialConfig {
 async function fetchTrialUsage(deviceToken: string): Promise<TrialUsage | null> {
   try {
     const { doc, getDoc } = await import('firebase/firestore');
-    const { db } = await import('../lib/firebase');
+    const { db, safeFirebaseOperation } = await import('../lib/firebase');
 
-    const usageDoc = await getDoc(doc(db, 'trials', deviceToken));
+    const usageDoc = await safeFirebaseOperation(
+      () => getDoc(doc(db, 'trials', deviceToken)),
+      'fetch trial usage'
+    );
 
-    if (!usageDoc.exists()) {
+    if (!usageDoc || !usageDoc.exists()) {
       return getLocalTrialUsage();
     }
 
