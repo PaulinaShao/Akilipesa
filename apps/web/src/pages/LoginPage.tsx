@@ -302,11 +302,8 @@ export default function LoginPage() {
                       <NumberInputTZ
                         value={phoneNumber}
                         onChange={setPhoneNumber}
-                        placeholder="754 123 456"
+                        placeholder="7XX XXX XXX"
                         className={cn(
-                          "w-full px-4 py-4 text-base rounded-lg bg-white/5 border border-white/10",
-                          "text-white placeholder:text-gray-400 focus:border-primary focus:bg-white/10",
-                          "transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20",
                           errors.phone && "border-red-500"
                         )}
                       />
