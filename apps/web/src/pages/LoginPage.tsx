@@ -170,15 +170,72 @@ export default function LoginPage() {
   };
 
   const handleWhatsAppLogin = () => {
-    // Deep link to WhatsApp (this would be implemented with actual WhatsApp Business API)
-    const whatsappUrl = `https://wa.me/255123456789?text=I want to login to AkiliPesa`;
+    // WhatsApp number for AkiliPesa verification
+    const WHATSAPP_NUMBER = 'whatsapp:+15557679073';
+    const phoneNumber = '+15557679073';
+
+    // Create WhatsApp deep link to request verification token
+    const message = encodeURIComponent('Hello AkiliPesa! I need a verification token to sign in to my account.');
+    const whatsappUrl = `https://wa.me/${phoneNumber.replace('+', '')}?text=${message}`;
+
+    // Open WhatsApp in new tab/app
     window.open(whatsappUrl, '_blank');
-    
+
     addToast({
       type: 'info',
-      title: 'WhatsApp Login',
-      description: 'Complete the verification in WhatsApp',
+      title: 'WhatsApp Verification',
+      description: 'Message AkiliPesa on WhatsApp to receive your verification token',
     });
+
+    // After user clicks WhatsApp, show a prompt to enter the token they received
+    setTimeout(() => {
+      const token = prompt('Enter the verification token you received from AkiliPesa on WhatsApp:');
+      if (token) {
+        handleWhatsAppTokenVerification(token);
+      }
+    }, 2000);
+  };
+
+  const handleWhatsAppTokenVerification = async (token: string) => {
+    if (!token || token.length < 4) {
+      addToast({
+        type: 'error',
+        title: 'Invalid Token',
+        description: 'Please enter a valid verification token from WhatsApp',
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Simulate token verification
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // For demo purposes, accept any token with 4+ characters
+      if (token.length >= 4) {
+        addToast({
+          type: 'success',
+          title: 'WhatsApp Login Successful',
+          description: 'Welcome to AkiliPesa!',
+        });
+        navigate(from, { replace: true });
+      } else {
+        addToast({
+          type: 'error',
+          title: 'Invalid Token',
+          description: 'The verification token is incorrect. Please try again.',
+        });
+      }
+    } catch (error) {
+      addToast({
+        type: 'error',
+        title: 'Verification Failed',
+        description: 'Unable to verify WhatsApp token. Please try again.',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleLogin = async () => {
