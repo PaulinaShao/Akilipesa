@@ -226,7 +226,7 @@ export default function CameraCaptPage() {
             className="p-2 hover:bg-white/10 rounded-full transition-colors"
           >
             {flashMode === 'off' ? (
-              <FlashOff className="w-6 h-6 text-white" />
+              <ZapOff className="w-6 h-6 text-white" />
             ) : (
               <Zap className="w-6 h-6 text-yellow-400" />
             )}
