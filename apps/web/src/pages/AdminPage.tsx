@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Users, 
-  Video, 
-  ShoppingBag, 
-  DollarSign, 
-  TrendingUp, 
-  Activity,
+import {
+  Users,
+  Video,
+  ShoppingBag,
+  DollarSign,
   Settings,
   Shield,
   BarChart3,
@@ -15,7 +13,6 @@ import {
   Phone,
   Search,
   Edit,
-  Trash2,
   Ban,
   CheckCircle,
   XCircle,
