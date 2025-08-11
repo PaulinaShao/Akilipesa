@@ -153,8 +153,7 @@ export function calculateShareEarnings(
 export function createShareMessage(
   itemType: 'product' | 'reel' | 'user' | 'shop',
   itemName: string,
-  referralUrl: string,
-  platformType: 'whatsapp' | 'facebook' | 'twitter' | 'telegram' | 'copy' = 'copy'
+  referralUrl: string
 ): string {
   const messages = {
     product: `Check out this amazing product: ${itemName}! 🛍️\n\nShop now and get the best deals: ${referralUrl}\n\n#AkiliPesa #ShoppingDeals`,
