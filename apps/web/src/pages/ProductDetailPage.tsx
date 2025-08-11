@@ -326,7 +326,7 @@ export default function ProductDetailPage() {
         <div>
           <h3 className="font-bold text-white mb-3">Features</h3>
           <div className="space-y-2">
-            {product.features.map((feature, index) => (
+            {product.features.map((feature: string, index: number) => (
               <div key={index} className="flex items-center space-x-2 text-white/80">
                 <Shield className="w-4 h-4 text-green-400" />
                 <span>{feature}</span>
