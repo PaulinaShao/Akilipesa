@@ -18,3 +18,12 @@ export function prettyTZ(local: string): string {
 export function isValidTZ(local: string): boolean {
   return /^\d{9}$/.test(local) && /^[67]/.test(local);
 }
+
+export function formatTZPhone(local: string): string {
+  if (!local) return '';
+  const cleaned = local.replace(/\D/g, '');
+  if (cleaned.length >= 9) {
+    return `+255 ${cleaned.slice(0,3)} ${cleaned.slice(3,6)} ${cleaned.slice(6,9)}`;
+  }
+  return `+255 ${cleaned}`;
+}
