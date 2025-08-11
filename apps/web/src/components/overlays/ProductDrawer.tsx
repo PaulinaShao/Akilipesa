@@ -204,7 +204,7 @@ function ProductCard({
         {/* Right: Call Actions & More */}
         <div className="flex items-center space-x-1">
           <button
-            onClick={() => onCallVideo(product.seller?.id || product.shop.id)}
+            onClick={() => onCallVideo(product.shop.id)}
             className="w-9 h-9 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded-lg flex-center transition-all"
             title="Video Call"
           >
@@ -212,7 +212,7 @@ function ProductCard({
           </button>
 
           <button
-            onClick={() => onCallAudio(product.seller?.id || product.shop.id)}
+            onClick={() => onCallAudio(product.shop.id)}
             className="w-9 h-9 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg flex-center transition-all"
             title="Audio Call"
           >
