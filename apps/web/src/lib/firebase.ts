@@ -21,15 +21,16 @@ export const firestore = getFirestore(app);
 export const db = firestore; // Alias for convenience
 export const functions = getFunctions(app);
 
-// Connect to emulators in development
-if (import.meta.env.DEV) {
+// Connect to emulators in development (optional)
+if (import.meta.env.DEV && import.meta.env.VITE_FIREBASE_PROJECT_ID === 'demo-project') {
   try {
-    // Only connect if not already connected and if emulators are configured
+    // Only connect to emulators if using demo project
     connectAuthEmulator(auth, 'http://localhost:9099');
     connectFirestoreEmulator(firestore, 'localhost', 8080);
     connectFunctionsEmulator(functions, 'localhost', 5001);
+    console.log('Connected to Firebase emulators');
   } catch (error) {
-    console.log('Emulators not available or already connected:', error);
+    console.warn('Firebase emulators not available, continuing in offline mode:', error.message);
   }
 }
 
