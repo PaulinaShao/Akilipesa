@@ -354,7 +354,11 @@ export default function ChatPage() {
   };
 
   const handleFileUpload = (type: 'image' | 'file') => {
-    fileInputRef.current?.click();
+    // Set file input accept type based on parameter
+    if (fileInputRef.current) {
+      fileInputRef.current.accept = type === 'image' ? 'image/*,video/*' : '.pdf,.doc,.docx,.txt';
+      fileInputRef.current.click();
+    }
     setShowAttachments(false);
   };
 
