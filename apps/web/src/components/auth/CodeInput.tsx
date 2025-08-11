@@ -102,7 +102,7 @@ export default function CodeInput({
           />
         ))}
       </div>
-      <p className="text-center text-xs text-zinc-500">
+      <p className="text-center text-xs text-[var(--tz-muted)]">
         Enter the 6-digit code sent via SMS or WhatsApp
       </p>
       {!!error && (
