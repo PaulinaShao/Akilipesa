@@ -13,16 +13,16 @@
 
 @layer base {
   :root {
-    --color-bg-primary: #0B0712;
+    --color-bg-primary: #0B0B1A;
     --color-bg-secondary: #130D22;
-    --color-bg-card: rgba(20, 16, 32, 0.72);
-    --color-primary: #8A5CF6;
-    --color-secondary: #6E4BD9;
-    --color-accent: #33FFC1;
-    --color-text-primary: #FFFFFF;
-    --color-text-secondary: #B8B4C8;
+    --color-bg-card: rgba(19, 17, 37, 0.5);
+    --color-primary: #6E3CE6;
+    --color-secondary: #2C3CFF;
+    --color-accent: #6BB6FF;
+    --color-text-primary: #EDECF7;
+    --color-text-secondary: #B2ACCF;
     --color-text-muted: #6B6B8A;
-    
+
     color-scheme: dark;
   }
   
