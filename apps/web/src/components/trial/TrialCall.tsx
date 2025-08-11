@@ -68,6 +68,9 @@ export const TrialCall: React.FC<TrialCallProps> = ({
           audio: audioEnabled,
           isTrialCall: true,
         });
+
+        // Track usage locally for offline mode
+        updateLocalUsage('call', 1);
       }
 
       await rtcEngine.join(rtcToken, () => {
