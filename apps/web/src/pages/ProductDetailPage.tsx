@@ -161,11 +161,11 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = () => {
     // Add to cart logic
-    console.log('Added to cart:', { productId: id, quantity });
+    console.log('Added to cart:', { productId: id });
   };
 
   const handleBuyNow = () => {
-    navigate(`/checkout/${id}?quantity=${quantity}`);
+    navigate(`/checkout/${id}`);
   };
 
   const handleShare = () => {
