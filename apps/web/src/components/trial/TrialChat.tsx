@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, Bot, User, AlertCircle, Zap } from 'lucide-react';
 import { useTrialStore } from '../../state/trialStore';
-import { useAuthStore } from '../../store';
+import { useAppStore } from '../../store';
 import { useGatedChat } from '../../hooks/useAuthGate';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '../../lib/firebase';
