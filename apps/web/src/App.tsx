@@ -12,6 +12,7 @@ import AuthSheet from '@/components/auth/AuthSheet';
 import { TrialBadge } from '@/components/trial/TrialBadge';
 import { TrialPaywall } from '@/components/trial/TrialPaywall';
 import { TrialPolicyPage } from '@/pages/TrialPolicyPage';
+import { TrialDebug } from '@/components/trial/TrialDebug';
 import { useTrialStore } from '@/state/trialStore';
 import { useUIStore } from '@/state/uiStore';
 import { useAppStore, type User as AppUser } from '@/store';
