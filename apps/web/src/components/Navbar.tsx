@@ -39,7 +39,7 @@ export default function Navbar({ user, onSignOut }: NavbarProps) {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
-            <TanzaniteLogo size="md" />
+            <AkiliLogo variant="compact" />
           </Link>
 
           {/* Desktop Navigation */}
