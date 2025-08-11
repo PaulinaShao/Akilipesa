@@ -173,6 +173,7 @@ function ReelCard({
   onAudioCall,
   onVideoCall,
   onLiveCall,
+  onJoin,
   onFollow,
   onProfileClick
 }: ReelCardProps) {
