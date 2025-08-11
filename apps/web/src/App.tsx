@@ -148,17 +148,17 @@ function App() {
           email: mockUser.email,
         } as User;
 
-        const mockAppUser = {
+        const mockAppUser: AppUser = {
           id: mockUser.id,
           name: mockUser.name,
-          username: mockUser.username,
+          username: mockUser.email?.split('@')[0] || 'user',
           email: mockUser.email,
           phone: mockUser.phone,
-          avatar: mockUser.avatar,
-          verified: mockUser.verified,
-          plan: mockUser.plan,
-          balance: mockUser.balance,
-          earnings: mockUser.earnings,
+          avatar: '',
+          verified: true,
+          plan: 'free',
+          balance: 0,
+          earnings: 0,
         };
 
         setDevModeUser(mockFirebaseUser);
