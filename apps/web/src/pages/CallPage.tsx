@@ -2,9 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Mic, MicOff, Video, VideoOff, PhoneOff, RotateCcw,
-  UserPlus, Globe, Lock, Sparkles
+  UserPlus, Globe, Lock, Sparkles, Coins, AlertTriangle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAppStore } from '@/store';
+import { callService } from '@/lib/callService';
+import type { CallParticipant, CallMetrics } from '@/lib/callService';
 
 interface CallParticipant {
   id: string;
