@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAppStore } from '@/store';
-import PhoneInput from '@/components/auth/PhoneInput';
 import CodeInput from '@/components/auth/CodeInput';
 import GoogleButton from '@/components/auth/GoogleButton';
 import AkiliLogo from '@/components/AkiliLogo';
