@@ -300,10 +300,18 @@ export default function ProfilePage() {
 
             {/* Referral Earnings */}
             <div className="card-gem p-4">
-              <h3 className="text-white font-semibold mb-3 flex items-center space-x-2">
-                <Users className="w-5 h-5 text-accent-400" />
-                <span>Referral Program</span>
-              </h3>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-white font-semibold flex items-center space-x-2">
+                  <Users className="w-5 h-5 text-accent-400" />
+                  <span>Referral Program</span>
+                </h3>
+                <button
+                  onClick={() => navigate('/referrals')}
+                  className="text-accent-400 hover:text-accent-300 text-sm font-medium transition-colors"
+                >
+                  View All
+                </button>
+              </div>
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
                   <div className="text-xl font-bold text-white">{profileData.referrals.count}</div>
