@@ -40,16 +40,22 @@ export interface TrialState {
 
 // Firebase functions
 async function issueTrialToken(): Promise<string> {
-  const { httpsCallable } = await import('firebase/functions');
-  const { functions } = await import('../lib/firebase');
-  
-  const issueToken = httpsCallable(functions, 'issueTrialToken');
-  const result = await issueToken({ 
-    deviceInfo: getDeviceInfo(),
-    timestamp: Date.now() 
-  });
-  
-  return (result.data as any).deviceToken;
+  try {
+    const { httpsCallable } = await import('firebase/functions');
+    const { functions } = await import('../lib/firebase');
+
+    const issueToken = httpsCallable(functions, 'issueTrialToken');
+    const result = await issueToken({
+      deviceInfo: getDeviceInfo(),
+      timestamp: Date.now()
+    });
+
+    return (result.data as any).deviceToken;
+  } catch (error) {
+    console.warn('Failed to get server token, using local fallback:', error);
+    // Generate a local fallback token for offline mode
+    return `local_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
 }
 
 async function fetchTrialConfig(): Promise<TrialConfig> {
