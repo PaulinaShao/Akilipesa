@@ -3,15 +3,11 @@ export const TZ_CC = "+255";
 
 export function normalizeTZ(input: string): { e164: string; local: string } {
   let n = (input || "").replace(/[^\d+]/g, "");
-  // Strip prefixes and normalize to local 9 digits
   if (n.startsWith("+255")) n = n.slice(4);
   else if (n.startsWith("255")) n = n.slice(3);
   else if (n.startsWith("0")) n = n.slice(1);
-  // Keep only digits
   n = n.replace(/\D/g, "").slice(0, 9);
-  const local = n;
-  const e164 = local ? `${TZ_CC}${local}` : "";
-  return { e164, local };
+  return { e164: n ? TZ_CC + n : "", local: n };
 }
 
 export function prettyTZ(local: string): string {
