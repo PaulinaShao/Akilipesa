@@ -157,6 +157,7 @@ interface ReelCardProps {
   onAudioCall: () => void;
   onVideoCall: () => void;
   onLiveCall: () => void;
+  onJoin: () => void;
   onFollow: () => void;
   onProfileClick: () => void;
 }
