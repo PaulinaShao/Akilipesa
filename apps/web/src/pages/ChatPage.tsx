@@ -359,7 +359,8 @@ export default function ChatPage() {
   };
 
   const makeCall = (type: 'audio' | 'video') => {
-    navigate(`/call/akilipesa?type=${type}`);
+    const callTarget = isAkiliPesaChat ? 'akilipesa' : id;
+    navigate(`/call/${callTarget}?type=${type}`);
   };
 
   return (
