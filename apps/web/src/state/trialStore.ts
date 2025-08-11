@@ -208,6 +208,10 @@ export const useTrialStore = create<TrialState>((set, get) => ({
       set({ deviceToken: token });
     } catch (error) {
       console.error('Failed to initialize trial token:', error);
+      // In offline mode, still set a local token
+      const fallbackToken = `offline_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      setDeviceToken(fallbackToken);
+      set({ deviceToken: fallbackToken });
     } finally {
       set({ isLoading: false });
     }
