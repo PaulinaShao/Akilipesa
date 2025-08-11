@@ -9,51 +9,18 @@ import { useAppStore } from '@/store';
 import { callService } from '@/lib/callService';
 import type { CallParticipant, CallMetrics } from '@/lib/callService';
 
-interface CallParticipant {
-  id: string;
-  name: string;
-  avatar: string;
-  isHost: boolean;
-  audioEnabled: boolean;
-  videoEnabled: boolean;
-  isCurrentUser?: boolean;
-}
-
-interface CallState {
-  isConnected: boolean;
-  isPrivate: boolean;
-  mode: 'audio' | 'video';
-  duration: number;
-  participants: CallParticipant[];
-}
-
-const mockParticipants: CallParticipant[] = [
-  {
-    id: 'current',
-    name: 'You',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
-    isHost: true,
-    audioEnabled: true,
-    videoEnabled: true,
-    isCurrentUser: true
-  }
-];
-
 export default function CallPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const videoRef = useRef<HTMLVideoElement>(null);
-  
-  const mode = searchParams.get('mode') as 'audio' | 'video' || 'audio';
-  const target = searchParams.get('target');
-  
-  const [callState, setCallState] = useState<CallState>({
-    isConnected: false,
-    isPrivate: true,
-    mode,
-    duration: 0,
-    participants: mockParticipants
-  });
+
+  const { activeCall, endCall, user } = useAppStore();
+
+  const callType = searchParams.get('type') as 'audio' | 'video' || 'audio';
+  const targetId = searchParams.get('target');
+
+  const [isPrivate, setIsPrivate] = useState(true);
+  const [showLowCreditsWarning, setShowLowCreditsWarning] = useState(false);
   
   const [localAudioEnabled, setLocalAudioEnabled] = useState(true);
   const [localVideoEnabled, setLocalVideoEnabled] = useState(mode === 'video');
