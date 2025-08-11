@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useUIStore } from '../state/uiStore';
-import { useAuthStore } from '../store';
+import { useAppStore } from '../store';
 import { useTrialStore } from '../state/trialStore';
 
 type GatedAction = 'like' | 'comment' | 'follow' | 'share' | 'message' | 'buy' | 'live' | 'call' | 'chat';
