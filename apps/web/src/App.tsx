@@ -106,7 +106,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
 
           {/* Public feed (guest accessible) */}
-          <Route path="/" element={<Navigate to="/reels" replace />} />
+          <Route path="/" element={<Navigate to="/splash" replace />} />
           <Route path="/reels" element={
             <MobileLayout>
               <ReelsPage />
