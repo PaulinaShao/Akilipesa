@@ -362,7 +362,7 @@ export default function CreatePage() {
 
   const handleStartAIJob = async (inputs: any) => {
     try {
-      const jobId = await startJob(inputs.type, inputs);
+      const jobId = await startJob(inputs);
       console.log('Started AI job:', jobId);
       // Navigate to job status page or show success
       navigate('/jobs', { state: { jobId } });
