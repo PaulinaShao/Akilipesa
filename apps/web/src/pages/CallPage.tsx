@@ -308,7 +308,7 @@ export default function CallPage() {
           </button>
 
           {/* Video Toggle (video mode only) */}
-          {callState.mode === 'video' && (
+          {activeCall.type === 'video' && (
             <button
               onClick={toggleVideo}
               className={cn(
@@ -346,14 +346,14 @@ export default function CallPage() {
           <button
             onClick={addAkiliAgent}
             className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 flex items-center justify-center transition-all"
-            disabled={callState.participants.some(p => p.id === 'akili')}
+            disabled={activeCall.participants.some(p => p.uid === 'akili')}
           >
             <Sparkles className="w-8 h-8 text-white" />
           </button>
 
           {/* End Call */}
           <button
-            onClick={endCall}
+            onClick={handleEndCall}
             className="w-16 h-16 rounded-full bg-red-500 hover:bg-red-600 flex items-center justify-center transition-all"
           >
             <PhoneOff className="w-8 h-8 text-white" />
