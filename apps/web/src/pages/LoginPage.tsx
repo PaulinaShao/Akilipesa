@@ -258,6 +258,11 @@ export default function LoginPage() {
       setStep('input');
       setOTP('');
       setErrors({});
+    } else if (step === 'whatsapp-token') {
+      setStep('input');
+      setMethod('phone');
+      setWhatsappToken('');
+      setErrors({});
     } else {
       navigate('/');
     }
