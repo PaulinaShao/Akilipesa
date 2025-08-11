@@ -42,6 +42,14 @@ export interface TrialState {
 // Firebase functions
 async function issueTrialToken(): Promise<string> {
   try {
+    const { isFirebaseDemoMode } = await import('../lib/firebase');
+
+    // In demo mode, always use local token
+    if (isFirebaseDemoMode) {
+      console.log('Demo mode: using local trial token');
+      return `demo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    }
+
     const { httpsCallable } = await import('firebase/functions');
     const { functions } = await import('../lib/firebase');
 
