@@ -99,7 +99,19 @@ export function isValidEmail(email: string): boolean {
 }
 
 export function isValidTanzanianPhone(phone: string): boolean {
-  const cleaned = phone.replace(/\D/g, '');
-  // Tanzania phone numbers: +255 followed by 9 digits
-  return /^(255|0)[67]\d{8}$/.test(cleaned);
+  // Accept E.164 format (+255xxxxxxxxx) and normalize other formats
+  const cleaned = phone.replace(/[^\d+]/g, '');
+
+  // Normalize to E.164 format first
+  let normalized = cleaned;
+  if (cleaned.startsWith('0')) {
+    normalized = '+255' + cleaned.slice(1);
+  } else if (cleaned.startsWith('255')) {
+    normalized = '+' + cleaned;
+  } else if (cleaned.match(/^[6789]/)) {
+    normalized = '+255' + cleaned;
+  }
+
+  // Check E.164 format for Tanzania mobile numbers (6,7,8,9 prefixes)
+  return /^\+255[6789]\d{8}$/.test(normalized);
 }
