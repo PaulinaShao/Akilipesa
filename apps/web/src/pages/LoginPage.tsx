@@ -8,75 +8,20 @@ import CodeInput from '@/components/auth/CodeInput';
 import GoogleButton from '@/components/auth/GoogleButton';
 import { isValidTZ } from '@/lib/phone';
 
-interface OTPInputProps {
-  value: string;
-  onChange: (value: string) => void;
-  onComplete: () => void;
-}
-
-function OTPInput({ value, onChange, onComplete }: OTPInputProps) {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const newValue = e.target.value.replace(/[^0-9]/g, '');
-    if (newValue.length <= 1) {
-      const newOTP = value.split('');
-      newOTP[index] = newValue;
-      const result = newOTP.join('');
-      onChange(result);
-      
-      // Auto-advance to next input
-      if (newValue && index < 5) {
-        const nextInput = document.getElementById(`otp-${index + 1}`);
-        nextInput?.focus();
-      }
-      
-      // Auto-submit when complete
-      if (result.length === 6 && !result.includes('')) {
-        setTimeout(onComplete, 100);
-      }
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
-    if (e.key === 'Backspace' && !value[index] && index > 0) {
-      const prevInput = document.getElementById(`otp-${index - 1}`);
-      prevInput?.focus();
-    }
-  };
-
-  return (
-    <div className="flex space-x-2 justify-center">
-      {Array.from({ length: 6 }).map((_, index) => (
-        <input
-          key={index}
-          id={`otp-${index}`}
-          type="text"
-          inputMode="numeric"
-          maxLength={1}
-          value={value[index] || ''}
-          onChange={(e) => handleChange(e, index)}
-          onKeyDown={(e) => handleKeyDown(e, index)}
-          className="w-12 h-12 text-center text-lg font-bold bg-white/5 border border-white/20 rounded-lg text-white focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-          autoComplete="one-time-code"
-        />
-      ))}
-    </div>
-  );
-}
-
 export default function LoginPage() {
-  const [method, setMethod] = useState<'phone' | 'email' | 'whatsapp'>('phone');
-  const [step, setStep] = useState<'input' | 'otp' | 'whatsapp-token'>('input');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [activeTab, setActiveTab] = useState<'phone' | 'email'>('phone');
+  const [step, setStep] = useState<'input' | 'code' | 'success'>('input');
+  const [phoneE164, setPhoneE164] = useState('');
+  const [phoneLocal, setPhoneLocal] = useState('');
   const [email, setEmail] = useState('');
-  const [otp, setOTP] = useState('');
-  const [whatsappToken, setWhatsappToken] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [code, setCode] = useState('');
   const [resendTimer, setResendTimer] = useState(0);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
   const navigate = useNavigate();
   const location = useLocation();
-  const { addToast } = useToast();
+  const { setUser } = useAppStore();
 
   const from = location.state?.from?.pathname || '/reels';
 
