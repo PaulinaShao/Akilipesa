@@ -125,27 +125,29 @@ const PhoneInputTZ = forwardRef<HTMLInputElement, PhoneInputTZProps>(
           </p>
         )}
 
-        <style jsx>{`
-          .phone-input-wrapper :global(.PhoneInputCountry) {
-            display: none !important;
-          }
-          .phone-input-wrapper :global(.PhoneInputInput) {
-            padding-left: 68px !important;
-            background: rgba(255, 255, 255, 0.04) !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
-            border-radius: 0.75rem !important;
-            height: 3rem !important;
-            color: rgba(255, 255, 255, 0.9) !important;
-          }
-          .phone-input-wrapper :global(.PhoneInputInput::placeholder) {
-            color: rgba(255, 255, 255, 0.4) !important;
-          }
-          .phone-input-wrapper :global(.PhoneInputInput:focus) {
-            outline: none !important;
-            border-color: #7C6BFF !important;
-            box-shadow: 0 0 0 4px rgba(124, 107, 255, 0.35) !important;
-          }
-        `}</style>
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            .phone-input-wrapper .PhoneInputCountry {
+              display: none !important;
+            }
+            .phone-input-wrapper .PhoneInputInput {
+              padding-left: 68px !important;
+              background: rgba(255, 255, 255, 0.04) !important;
+              border: 1px solid rgba(255, 255, 255, 0.12) !important;
+              border-radius: 0.75rem !important;
+              height: 3rem !important;
+              color: rgba(255, 255, 255, 0.9) !important;
+            }
+            .phone-input-wrapper .PhoneInputInput::placeholder {
+              color: rgba(255, 255, 255, 0.4) !important;
+            }
+            .phone-input-wrapper .PhoneInputInput:focus {
+              outline: none !important;
+              border-color: #7C6BFF !important;
+              box-shadow: 0 0 0 4px rgba(124, 107, 255, 0.35) !important;
+            }
+          `
+        }} />
       </div>
     );
   }
