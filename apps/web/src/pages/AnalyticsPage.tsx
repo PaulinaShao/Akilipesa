@@ -1,18 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  ArrowLeft, 
-  TrendingUp, 
-  TrendingDown, 
-  Eye, 
-  Heart, 
+  ArrowLeft,
+  TrendingUp,
+  TrendingDown,
+  Eye,
+  Heart,
   MessageCircle,
-  Share,
   Users,
-  Clock,
-  Calendar,
-  Download,
-  Filter
+  Download
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
