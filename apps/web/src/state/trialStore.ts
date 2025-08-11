@@ -27,7 +27,7 @@ export interface TrialState {
   usage: TrialUsage | null;
   isLoading: boolean;
   isInHappyHour: boolean;
-  
+
   // Actions
   initializeToken: () => Promise<void>;
   fetchConfig: () => Promise<void>;
@@ -35,6 +35,7 @@ export interface TrialState {
   canUseFeature: (feature: 'chat' | 'call' | 'reaction') => boolean;
   getRemainingQuota: (feature: 'chat' | 'call' | 'reaction') => number;
   incrementLocalReactions: () => void;
+  updateLocalUsage: (type: 'chat' | 'call' | 'reaction', increment?: number) => void;
   clearToken: () => void;
 }
 
