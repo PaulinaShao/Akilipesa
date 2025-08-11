@@ -31,8 +31,6 @@ import AnalyticsPage from '@/pages/AnalyticsPage';
 import ReferralsPage from '@/pages/ReferralsPage';
 import SettingsPage from '@/pages/SettingsPage';
 import ChatPage from '@/pages/ChatPage';
-import ProductDetailPage from '@/pages/ProductDetailPage';
-import WalletPage from '@/pages/WalletPage';
 import PlansPage from '@/pages/PlansPage';
 
 // Admin Guard Component
