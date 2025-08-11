@@ -10,7 +10,6 @@ import {
   Smartphone, 
   DollarSign,
   Receipt,
-  History,
   Send,
   Eye,
   EyeOff
