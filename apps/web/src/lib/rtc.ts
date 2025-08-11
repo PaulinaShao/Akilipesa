@@ -89,7 +89,7 @@ export class RTCEngine {
 
     // Start duration timer for trial calls
     if (this.maxDuration > 0) {
-      this.durationTimer = setTimeout(() => {
+      this.durationTimer = window.setTimeout(() => {
         console.log('Trial call duration limit reached');
         this.leave();
         this.onCallEnd?.();
