@@ -67,21 +67,93 @@ export const useAppStore = create<AppState>()(
       setStoriesVisible: (storiesVisible) => set({ storiesVisible }),
       setBalanceBannerVisible: (balanceBannerVisible) => set({ balanceBannerVisible }),
       
-      startCall: (params) => {
-        const callId = `call-${Date.now()}`;
-        const activeCall = {
-          id: callId,
-          type: params.type,
-          participants: [params.agentId || params.targetId || 'unknown'],
-          status: 'connecting' as const,
-        };
-        set({ activeCall });
-        
-        // Navigate to call page (this would be handled by the component)
-        console.log('Starting call:', params);
+      startCall: async (params) => {
+        const { user } = get();
+        if (!user) {
+          throw new Error('User must be authenticated to start a call');
+        }
+
+        try {
+          const callId = `call-${Date.now()}`;
+          const activeCall = {
+            id: callId,
+            type: params.type,
+            channel: '',
+            participants: [],
+            metrics: null,
+            status: 'connecting' as const,
+          };
+          set({ activeCall });
+
+          // Set up call service callbacks
+          callService.setCallbacks({
+            onMetricsUpdate: (metrics) => {
+              const { updateCallMetrics } = get();
+              updateCallMetrics(metrics);
+            },
+            onParticipantUpdate: (participants) => {
+              const { updateCallParticipants } = get();
+              updateCallParticipants(participants);
+            },
+            onCallEnd: () => {
+              const { endCall } = get();
+              endCall();
+            },
+          });
+
+          // Start the call
+          const callConfig = await callService.startCall(params, user.balance);
+
+          // Update call state with connection info
+          set({
+            activeCall: {
+              ...activeCall,
+              channel: callConfig.channel,
+              status: 'connected',
+            }
+          });
+
+          console.log('Call started successfully:', callConfig);
+        } catch (error) {
+          console.error('Failed to start call:', error);
+          set({ activeCall: null });
+          throw error;
+        }
       },
-      
-      endCall: () => set({ activeCall: null }),
+
+      endCall: async () => {
+        try {
+          await callService.endCall();
+          set({ activeCall: null });
+        } catch (error) {
+          console.error('Error ending call:', error);
+          set({ activeCall: null });
+        }
+      },
+
+      updateCallMetrics: (metrics) => {
+        const { activeCall } = get();
+        if (activeCall) {
+          set({
+            activeCall: {
+              ...activeCall,
+              metrics,
+            }
+          });
+        }
+      },
+
+      updateCallParticipants: (participants) => {
+        const { activeCall } = get();
+        if (activeCall) {
+          set({
+            activeCall: {
+              ...activeCall,
+              participants,
+            }
+          });
+        }
+      },
       
       updateBalance: (amount) => {
         const { user } = get();
