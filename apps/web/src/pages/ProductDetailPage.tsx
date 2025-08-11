@@ -242,7 +242,7 @@ export default function ProductDetailPage() {
         
         {product.images.length > 1 && (
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {product.images.map((_, index) => (
+            {product.images.map((_: string, index: number) => (
               <button
                 key={index}
                 onClick={() => setActiveImageIndex(index)}
