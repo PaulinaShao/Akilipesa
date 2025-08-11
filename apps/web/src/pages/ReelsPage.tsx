@@ -426,15 +426,25 @@ export default function ReelsPage() {
     const scrollTop = container.scrollTop;
     const itemHeight = container.clientHeight;
     const newIndex = Math.round(scrollTop / itemHeight);
-    
+
+    // Update current reel index
     if (newIndex !== currentIndex && newIndex >= 0 && newIndex < reels.length) {
       setCurrentIndex(newIndex);
     }
 
+    // Update scroll position and visibility states
+    setScrollTop(scrollTop);
+
+    // Hide stories after scrolling down 120px, show when back at top
+    setStoriesVisible(scrollTop < 120);
+
+    // Hide balance banner after scrolling (only shown on first reel)
+    setBalanceBannerVisible(scrollTop < 50 && newIndex === 0);
+
     setIsScrolling(true);
     const timer = setTimeout(() => setIsScrolling(false), 150);
     return () => clearTimeout(timer);
-  }, [currentIndex, reels.length]);
+  }, [currentIndex, reels.length, setStoriesVisible, setBalanceBannerVisible]);
 
   useEffect(() => {
     const container = containerRef.current;
