@@ -243,14 +243,13 @@ export const TrialChat: React.FC<TrialChatProps> = ({
 // Helper functions for AI responses
 async function getTrialAIResponse(message: string): Promise<string> {
   const deviceToken = getDeviceToken();
-  
+
   if (!deviceToken) {
     throw new Error('No trial token available. Please refresh the page.');
   }
 
-  const guestChat = httpsCallable(functions, 'guestChat');
-  
   try {
+    const guestChat = httpsCallable(functions, 'guestChat');
     const result = await guestChat({
       deviceToken,
       message: message.slice(0, 500), // Limit message length
@@ -258,17 +257,16 @@ async function getTrialAIResponse(message: string): Promise<string> {
 
     return (result.data as any).reply;
   } catch (error: any) {
-    console.error('Trial chat error:', error);
-    
-    if (error.code === 'functions/resource-exhausted') {
-      throw new Error('Daily chat quota exceeded. Sign up for unlimited AI conversations!');
-    } else if (error.code === 'functions/invalid-argument') {
-      throw new Error('Message too long or invalid. Please try a shorter message.');
-    } else if (error.code === 'functions/permission-denied') {
-      throw new Error('Invalid trial token. Please refresh the page.');
-    }
-    
-    throw new Error('Failed to get AI response. Please try again.');
+    console.warn('Server AI chat failed, using offline response:', error);
+
+    // Offline fallback responses
+    const offlineResponses = [
+      `Thanks for asking about "${message.slice(0, 30)}...". I'm currently in offline mode, but I'd love to help you explore AkiliPesa's features! Sign up for full AI conversations.`,
+      `Great question! While I'm offline right now, I can see you're interested in "${message.slice(0, 30)}...". Join AkiliPesa for unlimited AI assistance and trading insights.`,
+      `I appreciate your message about "${message.slice(0, 30)}...". I'm in trial mode with limited responses. Sign up to unlock full AI conversations and personalized trading advice!`,
+    ];
+
+    return offlineResponses[Math.floor(Math.random() * offlineResponses.length)];
   }
 }
 
