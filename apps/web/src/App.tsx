@@ -401,6 +401,9 @@ function App() {
           } />
           </Routes>
         </Router>
+
+        {/* Global AuthSheet */}
+        <AuthSheet />
       </ToastProvider>
     </QueryClientProvider>
   );
