@@ -15,6 +15,8 @@ import {
   Gift
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import ShareModal from '@/components/ShareModal';
+import ProfileSettingsModal from '@/components/ProfileSettingsModal';
 
 const profileData = {
   user: {
