@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Zap, Heart, MessageCircle, Phone, Clock } from 'lucide-react';
 import { useTrialStore } from '../../state/trialStore';
-import { useUIStore } from '../../state/uiStore';
+// import { useUIStore } from '../../state/uiStore'; // Not used in this component
 
 interface TrialPaywallProps {
   isOpen: boolean;
