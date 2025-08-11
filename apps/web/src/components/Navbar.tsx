@@ -34,7 +34,7 @@ export default function Navbar({ user, onSignOut }: NavbarProps) {
   const visibleNavigation = navigation.filter(item => !item.protected || user);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/20">
+    <nav className="fixed top-0 left-0 right-0 z-50 tz-glass-card border-b border-[var(--glass-stroke)]">
       <div className="container-responsive">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
