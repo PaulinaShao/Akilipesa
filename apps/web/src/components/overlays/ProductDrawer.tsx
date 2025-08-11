@@ -24,15 +24,24 @@ interface ProductCardProps {
   onCopyLink: (productId: string) => void;
 }
 
-function ProductCard({ 
-  product, 
-  onAddToCart, 
-  onToggleFavorite, 
-  onShare, 
-  onViewShop 
+function ProductCard({
+  product,
+  onAddToCart,
+  onToggleFavorite,
+  onShare,
+  onViewShop,
+  onLike,
+  onComment,
+  onCallVideo,
+  onCallAudio,
+  onReport,
+  onCopyLink
 }: ProductCardProps) {
   const [isFavorited, setIsFavorited] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const handleAddToCart = async () => {
     setIsAddingToCart(true);
