@@ -11,83 +11,103 @@ interface NumberInputTZProps {
 }
 
 const NumberInputTZ = forwardRef<HTMLInputElement, NumberInputTZProps>(
-  ({ value, onChange, placeholder = 'Enter your phone number', className, error, disabled }, ref) => {
+  ({ value, onChange, placeholder = '7XX XXX XXX', className, error, disabled }, ref) => {
     const [focused, setFocused] = useState(false);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      let inputValue = e.target.value.replace(/\D/g, ''); // Remove non-digits
+    const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+      const inputValue = e.currentTarget.value.replace(/\D/g, ''); // Remove non-digits
       
-      // Handle different input patterns
-      if (inputValue.startsWith('255')) {
-        // Already has country code
-        onChange(inputValue);
-      } else if (inputValue.startsWith('0')) {
-        // Remove leading 0 and add 255
-        onChange('255' + inputValue.slice(1));
-      } else if (inputValue.length > 0) {
-        // Add 255 prefix
-        onChange('255' + inputValue);
-      } else {
-        onChange('');
-      }
-    };
-
-    const formatDisplayValue = (val: string) => {
-      if (!val) return '';
-      
-      // Remove country code for display if present
-      let displayValue = val;
-      if (val.startsWith('255')) {
-        displayValue = val.slice(3);
+      // Normalize to Tanzania format
+      let normalized = inputValue;
+      if (normalized.startsWith('255')) {
+        normalized = normalized;
+      } else if (normalized.startsWith('0')) {
+        normalized = '255' + normalized.slice(1);
+      } else if (normalized.startsWith('7') || normalized.startsWith('6')) {
+        normalized = '255' + normalized;
+      } else if (normalized.length && !normalized.startsWith('255')) {
+        normalized = '255' + normalized;
       }
       
-      // Format as XXX XXX XXX
-      displayValue = displayValue.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
+      // Limit to 12 digits total (255 + 9 digits)
+      normalized = normalized.slice(0, 12);
       
-      return displayValue;
+      // Store the E.164 format
+      const e164 = normalized.length === 12 ? '+' + normalized : '';
+      e.currentTarget.dataset.e164 = e164;
+      
+      onChange(normalized);
     };
 
-    const displayValue = formatDisplayValue(value);
+    const getDisplayValue = () => {
+      if (!value) return '';
+      // Show only the part after 255
+      return value.startsWith('255') ? value.slice(3) : value;
+    };
+
+    const isValid = () => {
+      return /^2557\d{8}$/.test(value);
+    };
 
     return (
       <div className="relative">
-        <div className="relative">
-          {/* Country Code Display */}
-          <div className="absolute left-0 top-0 h-full flex items-center pl-4 text-slate-600 bg-slate-50 border-r border-slate-300 rounded-l-tanzanite">
-            <span className="text-sm font-medium">+255</span>
-          </div>
-          
-          {/* Input Field */}
-          <input
-            ref={ref}
-            type="tel"
-            value={displayValue}
-            onChange={handleChange}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            placeholder={placeholder}
-            disabled={disabled}
-            className={cn(
-              'input pl-16 pr-4',
-              focused && 'ring-2 ring-primary-500/20 border-primary-500',
-              error && 'border-danger ring-2 ring-danger/20',
-              disabled && 'opacity-50 cursor-not-allowed',
-              className
-            )}
-          />
-        </div>
+        {/* +255 Prefix */}
+        <span className={cn(
+          "absolute left-3 top-1/2 -translate-y-1/2",
+          "h-7 px-2 rounded-md flex items-center",
+          "bg-white/8 text-[#BBD0FF] font-semibold text-sm tracking-wide select-none",
+          "pointer-events-none z-10"
+        )}>
+          +255
+        </span>
+        
+        {/* Input Field */}
+        <input
+          ref={ref}
+          type="tel"
+          inputMode="numeric"
+          autoComplete="tel"
+          aria-label="Tanzania phone number"
+          value={getDisplayValue()}
+          onInput={handleInput}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          placeholder={placeholder}
+          disabled={disabled}
+          className={cn(
+            "w-full h-12 rounded-xl pl-[68px] pr-12",
+            "bg-white/4 border border-white/12",
+            "text-white/90 placeholder:text-white/40",
+            "focus:outline-none focus:ring-4 focus:ring-[#7C6BFF]/35 focus:border-[#7C6BFF]",
+            "transition-all duration-200",
+            error && "border-red-500 focus:ring-red-500/35",
+            disabled && "opacity-50 cursor-not-allowed",
+            className
+          )}
+        />
+        
+        {/* Validity Indicator */}
+        {value && (
+          <span className={cn(
+            "absolute right-3 top-1/2 -translate-y-1/2",
+            "text-xs px-2 py-1 rounded-md bg-white/10",
+            isValid() ? "text-green-400" : "text-red-400"
+          )}>
+            {isValid() ? "✅ Valid" : "❌ Invalid"}
+          </span>
+        )}
         
         {/* Error Message */}
         {error && (
-          <p className="mt-2 text-sm text-danger">
+          <p className="mt-2 text-sm text-red-400">
             {error}
           </p>
         )}
         
         {/* Helper Text */}
         {!error && (
-          <p className="mt-2 text-xs text-slate-500">
-            Format: XXX XXX XXX (without country code)
+          <p className="mt-1.5 text-xs text-white/65">
+            Format: 7XX XXX XXX (no country code)
           </p>
         )}
       </div>
