@@ -10,6 +10,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/lib/queryClient';
 
 // Import pages
+import SplashPage from '@/pages/SplashPage';
 import LoginPage from '@/pages/LoginPage';
 import ReelsPage from '@/pages/ReelsPage';
 import SearchPage from '@/pages/SearchPage';
