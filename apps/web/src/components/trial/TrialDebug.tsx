@@ -5,6 +5,20 @@ import { useAppStore } from '../../store';
 export const TrialDebug: React.FC = () => {
   const { user } = useAppStore();
   const { deviceToken, config, usage, isLoading, canUseFeature, getRemainingQuota } = useTrialStore();
+  const [isDemoMode, setIsDemoMode] = useState(false);
+
+  useEffect(() => {
+    // Check demo mode
+    const checkDemoMode = async () => {
+      try {
+        const { isFirebaseDemoMode } = await import('../../lib/firebase');
+        setIsDemoMode(isFirebaseDemoMode);
+      } catch (error) {
+        console.warn('Failed to check demo mode:', error);
+      }
+    };
+    checkDemoMode();
+  }, []);
 
   // Only show in development
   if (!import.meta.env.DEV) return null;
