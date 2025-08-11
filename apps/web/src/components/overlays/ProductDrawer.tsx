@@ -332,14 +332,26 @@ export default function ProductDrawer({
     // TODO: Open comment drawer or navigate to product detail
   };
 
-  const handleCallVideo = (sellerId: string) => {
-    console.log('Video call seller:', sellerId);
-    // TODO: Implement video call functionality
+  const handleCallVideo = async (sellerId: string) => {
+    try {
+      await startCall({ type: 'video', targetId: sellerId });
+      navigate(`/call/${sellerId}?type=video`);
+      onClose(); // Close the product drawer
+    } catch (error) {
+      console.error('Failed to start video call:', error);
+      // TODO: Show error toast
+    }
   };
 
-  const handleCallAudio = (sellerId: string) => {
-    console.log('Audio call seller:', sellerId);
-    // TODO: Implement audio call functionality
+  const handleCallAudio = async (sellerId: string) => {
+    try {
+      await startCall({ type: 'audio', targetId: sellerId });
+      navigate(`/call/${sellerId}?type=audio`);
+      onClose(); // Close the product drawer
+    } catch (error) {
+      console.error('Failed to start audio call:', error);
+      // TODO: Show error toast
+    }
   };
 
   const handleReport = (productId: string) => {
