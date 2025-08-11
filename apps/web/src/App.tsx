@@ -390,12 +390,9 @@ function App() {
               <div>
                 <h1 className="heading-2 mb-4">Page Not Found</h1>
                 <p className="text-white/60 mb-8">The page you're looking for doesn't exist.</p>
-                <button 
-                  onClick={() => window.location.href = '/reels'}
-                  className="btn-primary"
-                >
+                <Link to="/reels" className="btn-primary">
                   Go Home
-                </button>
+                </Link>
               </div>
             </div>
           } />
