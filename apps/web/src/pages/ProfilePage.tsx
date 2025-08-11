@@ -23,7 +23,7 @@ const profileData = {
     id: 'current-user',
     username: 'your_username',
     name: 'Your Name',
-    bio: 'Content creator & entrepreneur 🚀\nBuilding with AI in Tanzania 🇹🇿\nTech • Fashion • Culture',
+    bio: 'Content creator & entrepreneur 🚀\nBuilding with AI in Tanzania 🇹���\nTech • Fashion • Culture',
     avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop&crop=face',
     verified: true,
     isLive: false,
@@ -115,13 +115,13 @@ export default function ProfilePage() {
           <h1 className="text-xl font-bold text-white">@{profileData.user.username}</h1>
           <div className="flex items-center space-x-2">
             <button
-              onClick={() => navigator.share ? navigator.share({ title: 'Check out my profile', url: window.location.href }) : navigator.clipboard.writeText(window.location.href)}
+              onClick={() => setShowShareModal(true)}
               className="p-2 hover:bg-white/10 rounded-full transition-colors"
             >
               <Share className="w-5 h-5 text-white" />
             </button>
             <button
-              onClick={() => navigate('/settings')}
+              onClick={() => setShowSettingsModal(true)}
               className="p-2 hover:bg-white/10 rounded-full transition-colors"
             >
               <Settings className="w-5 h-5 text-white" />
