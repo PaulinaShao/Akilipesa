@@ -52,7 +52,7 @@ export interface OrderResponse {
  */
 export async function startJob(type: string, inputs: any): Promise<string> {
   try {
-    const { isFirebaseDemoMode } = await import('../lib/firebase');
+    const { isFirebaseDemoMode } = await import('../../lib/firebase');
 
     // In demo mode, always create offline job
     if (isFirebaseDemoMode) {
@@ -268,7 +268,7 @@ export function subscribeUserJobs(userId: string, callback: (jobs: Job[]) => voi
  */
 export async function finishCall(data: CallFinishData): Promise<void> {
   try {
-    const { isFirebaseDemoMode } = await import('../lib/firebase');
+    const { isFirebaseDemoMode } = await import('../../lib/firebase');
 
     if (isFirebaseDemoMode) {
       console.log('Demo mode: call finished locally:', data);
@@ -289,7 +289,7 @@ export async function finishCall(data: CallFinishData): Promise<void> {
  */
 export async function createOrder(payload: Partial<Order>): Promise<OrderResponse> {
   try {
-    const { isFirebaseDemoMode } = await import('../lib/firebase');
+    const { isFirebaseDemoMode } = await import('../../lib/firebase');
 
     if (isFirebaseDemoMode) {
       console.log('Demo mode: creating demo order:', payload);
@@ -326,7 +326,7 @@ export async function getRtcToken(channel: string, uid?: number): Promise<{
   expiryTime: number;
 }> {
   try {
-    const { isFirebaseDemoMode } = await import('../lib/firebase');
+    const { isFirebaseDemoMode } = await import('../../lib/firebase');
 
     if (isFirebaseDemoMode) {
       console.log('Demo mode: creating demo RTC token');
