@@ -58,15 +58,6 @@ const PhoneInputTZ = forwardRef<HTMLInputElement, PhoneInputTZProps>(
       return isValidPhoneNumber(value, 'TZ');
     };
 
-    const getDisplayValue = () => {
-      if (!value) return '';
-      try {
-        return formatPhoneNumber(value);
-      } catch {
-        return value;
-      }
-    };
-
     return (
       <div className="relative">
         <div className="phone-input-wrapper">
