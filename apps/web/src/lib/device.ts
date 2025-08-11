@@ -16,6 +16,7 @@ export function getDeviceId(): string {
   if (!deviceId) {
     deviceId = uuidv4();
     localStorage.setItem(DEVICE_ID_KEY, deviceId);
+    return deviceId;
   }
   return deviceId;
 }
