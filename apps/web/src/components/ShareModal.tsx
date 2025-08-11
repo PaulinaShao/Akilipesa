@@ -1,12 +1,9 @@
 import { useState } from 'react';
-import { 
-  X, 
-  Copy, 
-  MessageCircle, 
-  Mail, 
-  Facebook, 
-  Twitter, 
-  Instagram, 
+import {
+  X,
+  Copy,
+  MessageCircle,
+  Mail,
   Send,
   QrCode,
   Link
