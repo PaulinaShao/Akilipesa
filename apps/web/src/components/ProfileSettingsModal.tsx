@@ -100,7 +100,7 @@ const otherProfileOptions = [
   {
     id: 'block',
     label: 'Block User',
-    icon: Block,
+    icon: UserX,
     action: 'block',
     color: 'text-red-400'
   },
