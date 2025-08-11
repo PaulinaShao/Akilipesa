@@ -7,8 +7,8 @@ interface TanzaniteLogoProps {
   showText?: boolean;
 }
 
-export default function TanzaniteLogo({ className, size = 'md', showText = true }: TanzaniteLogoProps) {
-  // Map old sizes to new variant
+export default function TanzaniteLogo({ className }: TanzaniteLogoProps) {
+  // Legacy component - use AkiliLogo instead
   return (
     <AkiliLogo
       variant="compact"
