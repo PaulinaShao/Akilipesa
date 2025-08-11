@@ -61,8 +61,8 @@ export default function WalletChip({ className, balance, plan }: WalletChipProps
       )}
     >
       {/* Wallet Icon */}
-      <div className="w-8 h-8 bg-primary/20 rounded-xl flex-center">
-        <Wallet className="w-4 h-4 text-primary" />
+      <div className="w-7 h-7 bg-[var(--tz-gem-500)]/20 rounded-lg flex items-center justify-center">
+        <Wallet className="w-3.5 h-3.5 text-[var(--tz-gem-500)]" />
       </div>
       
       {/* Balance Info */}
