@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import BottomNav from './BottomNav';
+import AIAssistantButton from '../AIAssistantButton';
 
 interface MobileLayoutProps {
   children: ReactNode;
