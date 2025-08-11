@@ -16,6 +16,12 @@ interface ProductCardProps {
   onToggleFavorite: (productId: string) => void;
   onShare: (productId: string) => void;
   onViewShop: (shopId: string) => void;
+  onLike: (productId: string) => void;
+  onComment: (productId: string) => void;
+  onCallVideo: (sellerId: string) => void;
+  onCallAudio: (sellerId: string) => void;
+  onReport: (productId: string) => void;
+  onCopyLink: (productId: string) => void;
 }
 
 function ProductCard({ 
