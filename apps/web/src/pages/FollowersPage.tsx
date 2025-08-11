@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, UserPlus, UserCheck, MessageCircle, Phone, Video } from 'lucide-react';
 import { useGatedFollow, useGatedMessage } from '../hooks/useAuthGate';
