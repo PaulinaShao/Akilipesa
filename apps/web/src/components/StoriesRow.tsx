@@ -54,10 +54,9 @@ const mockStories: Story[] = [
 
 interface StoriesRowProps {
   className?: string;
-  onScroll?: (scrollTop: number) => void;
 }
 
-export default function StoriesRow({ className, onScroll }: StoriesRowProps) {
+export default function StoriesRow({ className }: StoriesRowProps) {
   const navigate = useNavigate();
   const { storiesVisible } = useAppStore();
   const [stories] = useState<Story[]>(mockStories);
