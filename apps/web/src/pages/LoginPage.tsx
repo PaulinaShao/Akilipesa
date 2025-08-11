@@ -447,6 +447,62 @@ export default function LoginPage() {
                     </button>
                   </div>
                 </>
+              ) : step === 'whatsapp-token' ? (
+                <>
+                  {/* WhatsApp Token Input */}
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-white font-medium mb-3 text-base">Verification Token</label>
+                      <input
+                        type="text"
+                        value={whatsappToken}
+                        onChange={(e) => setWhatsappToken(e.target.value.toUpperCase())}
+                        placeholder="Enter token from WhatsApp"
+                        className={cn(
+                          "w-full px-4 py-4 text-base rounded-lg bg-white/5 border border-white/10",
+                          "text-white placeholder:text-gray-400 focus:border-primary focus:bg-white/10",
+                          "transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20",
+                          "text-center font-mono text-lg tracking-widest",
+                          errors.whatsappToken && "border-red-500"
+                        )}
+                        autoComplete="off"
+                        maxLength={20}
+                      />
+                      {errors.whatsappToken && (
+                        <p className="text-red-400 text-sm mt-2 text-center">{errors.whatsappToken}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Verify Button */}
+                  <button
+                    onClick={handleWhatsAppTokenVerification}
+                    disabled={isLoading || whatsappToken.length < 4}
+                    className="w-full py-4 text-base font-semibold bg-primary hover:bg-primary/90 text-white rounded-lg transition-all duration-200 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center justify-center space-x-2">
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <span>Verifying...</span>
+                      </div>
+                    ) : (
+                      'Verify Token'
+                    )}
+                  </button>
+
+                  {/* Help Text */}
+                  <div className="text-center">
+                    <p className="text-white/60 text-sm mb-2">
+                      Open WhatsApp and check your message from AkiliPesa
+                    </p>
+                    <button
+                      onClick={handleWhatsAppLogin}
+                      className="text-primary hover:text-primary/80 font-medium text-sm"
+                    >
+                      Resend WhatsApp Message
+                    </button>
+                  </div>
+                </>
               ) : (
                 <>
                   {/* OTP Input */}
@@ -456,7 +512,7 @@ export default function LoginPage() {
                       onChange={setOTP}
                       onComplete={handleVerifyOTP}
                     />
-                    
+
                     {errors.otp && (
                       <p className="text-red-400 text-sm text-center">{errors.otp}</p>
                     )}
@@ -486,8 +542,8 @@ export default function LoginPage() {
                       disabled={resendTimer > 0}
                       className={cn(
                         "font-semibold transition-colors",
-                        resendTimer > 0 
-                          ? "text-white/40 cursor-not-allowed" 
+                        resendTimer > 0
+                          ? "text-white/40 cursor-not-allowed"
                           : "text-primary hover:text-primary/80"
                       )}
                     >
