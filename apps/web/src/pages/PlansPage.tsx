@@ -210,7 +210,7 @@ export default function PlansPage() {
   };
 
   const getCurrentPlanFeatures = () => {
-    const currentPlan = plans?.find(p => p.tier === user?.plan);
+    const currentPlan = plans?.find((p: Plan) => p.tier === user?.plan);
     return currentPlan?.features || [];
   };
 
