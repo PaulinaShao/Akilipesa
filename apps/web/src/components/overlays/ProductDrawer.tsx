@@ -4,6 +4,8 @@ import { cn } from '@/lib/utils';
 import { Product } from '@/features/feed/types';
 import { formatCurrency } from '@/features/feed/mockData';
 import { createReferralLink } from '@/lib/referral';
+import { useAppStore } from '@/store';
+import { useNavigate } from 'react-router-dom';
 import ShareModal from './ShareModal';
 
 interface ProductDrawerProps {
