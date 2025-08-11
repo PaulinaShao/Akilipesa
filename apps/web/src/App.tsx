@@ -95,7 +95,7 @@ function App() {
 
   // Initialize trial system
   const { initializeToken, fetchConfig } = useTrialStore();
-  const { setUser } = useAppStore();
+  const { setUser: setAppUser } = useAppStore();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
