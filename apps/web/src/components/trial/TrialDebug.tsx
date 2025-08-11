@@ -29,6 +29,10 @@ export const TrialDebug: React.FC = () => {
       
       <div className="space-y-1">
         <div>
+          <span className="text-zinc-400">Mode:</span> {isDemoMode ? '🎭 Demo' : '🌐 Production'}
+        </div>
+
+        <div>
           <span className="text-zinc-400">User:</span> {user ? '✅ Authenticated' : '❌ Guest'}
         </div>
         
