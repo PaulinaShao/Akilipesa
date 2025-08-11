@@ -517,6 +517,9 @@ export default function ReelsPage() {
 
   return (
     <div className="reel-container">
+      {/* Stories Row */}
+      <StoriesRow />
+
       <div
         ref={containerRef}
         className="h-full overflow-y-auto snap-y snap-mandatory hide-scrollbar"
