@@ -211,12 +211,7 @@ function ReelCard({
   return (
     <div className="reel-card">
       {/* WalletChip - only show on first reel */}
-      {isFirst && (
-        <WalletChip
-          balance={284500}
-          plan="Premium"
-        />
-      )}
+      {isFirst && <WalletChip />}
       {/* Video */}
       <video
         ref={videoRef}
