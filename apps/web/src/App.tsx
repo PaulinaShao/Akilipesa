@@ -99,8 +99,13 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
+      setUser(firebaseUser); // Update auth store
       setLoading(false);
     });
+
+    // Initialize trial system
+    initializeToken();
+    fetchConfig();
 
     // In development mode, create a simple mock user after a delay
     if (import.meta.env.DEV && !user) {
@@ -111,11 +116,12 @@ function App() {
           email: mockUser.email,
         } as User;
         setDevModeUser(mockUserObject);
+        setUser(mockUserObject); // Update auth store
       }, 1000);
     }
 
     return () => unsubscribe();
-  }, [user]);
+  }, [user, initializeToken, fetchConfig, setUser]);
 
   const currentUser = user || devModeUser;
 
