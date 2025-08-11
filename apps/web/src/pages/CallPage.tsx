@@ -7,7 +7,6 @@ import {
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store';
 import { callService } from '@/lib/callService';
-import type { CallParticipant, CallMetrics } from '@/lib/callService';
 
 export default function CallPage() {
   const navigate = useNavigate();
