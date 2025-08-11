@@ -74,13 +74,13 @@ export default function Navbar({ user, onSignOut }: NavbarProps) {
                       <User className="w-4 h-4 text-white" />
                     </div>
                   )}
-                  <span className="text-sm font-medium text-slate-700">
+                  <span className="text-sm font-medium text-[var(--tz-ink)]">
                     {user.name}
                   </span>
                 </div>
                 <button
                   onClick={onSignOut}
-                  className="text-slate-500 hover:text-slate-700 p-2 rounded-lg hover:bg-slate-100 transition-colors"
+                  className="text-slate-500 hover:text-[var(--tz-ink)] p-2 rounded-lg hover:bg-slate-100 transition-colors"
                   title="Sign out"
                 >
                   <LogOut className="w-4 h-4" />
@@ -146,7 +146,7 @@ export default function Navbar({ user, onSignOut }: NavbarProps) {
                         <User className="w-4 h-4 text-white" />
                       </div>
                     )}
-                    <span className="text-sm font-medium text-slate-700">
+                    <span className="text-sm font-medium text-[var(--tz-ink)]">
                       {user.name}
                     </span>
                   </div>
