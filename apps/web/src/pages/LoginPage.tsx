@@ -298,12 +298,19 @@ export default function LoginPage() {
                 letterSpacing: '0.2px',
                 textShadow: '0 1px 0 rgba(255, 255, 255, 0.04)'
               }}>
-                {step === 'input' ? 'Welcome Back' : 'Enter Code'}
+                {step === 'input'
+                  ? 'Welcome Back'
+                  : step === 'whatsapp-token'
+                    ? 'WhatsApp Verification'
+                    : 'Enter Code'
+                }
               </h1>
               <p className="text-base text-white/70 leading-relaxed">
                 {step === 'input'
                   ? 'Sign in to continue to AkiliPesa'
-                  : `We sent a code to ${method === 'phone' ? phoneNumber : email}`
+                  : step === 'whatsapp-token'
+                    ? 'Enter the verification token from AkiliPesa WhatsApp'
+                    : `We sent a code to ${method === 'phone' ? phoneNumber : email}`
                 }
               </p>
             </div>
