@@ -478,6 +478,14 @@ function App() {
             </ProtectedRoute>
           } />
 
+          <Route path="/jobs" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <JobsPage />
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
           {/* Admin routes (no mobile layout) */}
           <Route path="/admin" element={
             <AdminRoute user={currentUser}>
