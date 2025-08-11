@@ -62,8 +62,12 @@ function ProductCard({
   };
 
   const handleCopyLink = async () => {
-    const productUrl = `${window.location.origin}/product/${product.id}`;
-    await navigator.clipboard.writeText(productUrl);
+    // TODO: Get current user ID from auth context
+    const currentUserId = 'current-user-id'; // Replace with actual user ID
+
+    // Create referral link for share-to-earn
+    const referralLink = createReferralLink(currentUserId, 'product', product.id);
+    await navigator.clipboard.writeText(referralLink.referralUrl);
     setLinkCopied(true);
     setTimeout(() => setLinkCopied(false), 2000);
     onCopyLink(product.id);
