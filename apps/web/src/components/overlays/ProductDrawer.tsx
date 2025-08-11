@@ -305,22 +305,11 @@ export default function ProductDrawer({
   };
 
   const handleShare = (productId: string) => {
-    console.log('Share product:', productId);
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
-    // TODO: Get current user ID from auth context
-    const currentUserId = 'current-user-id'; // Replace with actual user ID
-
-    // Create referral link for share-to-earn
-    const referralLink = createReferralLink(currentUserId, 'product', productId);
-    const shareMessage = createShareMessage('product', product.name, referralLink.referralUrl);
-
-    // For now, copy to clipboard with referral link
-    navigator.clipboard.writeText(shareMessage);
-    console.log('Referral link created:', referralLink);
-
-    // TODO: Show share options modal
+    setSelectedProductForShare(product);
+    setShareModalOpen(true);
   };
 
   const handleViewShop = (shopId: string) => {
