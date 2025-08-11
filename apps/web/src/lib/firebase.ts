@@ -3,6 +3,12 @@ import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator, enableNetwork, disableNetwork } from 'firebase/firestore';
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
 
+// Check if we're in demo mode (using default/demo config)
+const isDemoMode = import.meta.env.VITE_FIREBASE_PROJECT_ID === 'demo-project' ||
+                   import.meta.env.VITE_FIREBASE_API_KEY === 'demo-api-key' ||
+                   !import.meta.env.VITE_FIREBASE_PROJECT_ID ||
+                   !import.meta.env.VITE_FIREBASE_API_KEY;
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'demo-api-key',
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'demo-project.firebaseapp.com',
