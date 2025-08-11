@@ -3,7 +3,8 @@ import { X, ShoppingCart, Star, Share, Heart, ExternalLink, MessageCircle, Thumb
 import { cn } from '@/lib/utils';
 import { Product } from '@/features/feed/types';
 import { formatCurrency } from '@/features/feed/mockData';
-import { createReferralLink, createShareMessage, shareVia } from '@/lib/referral';
+import { createReferralLink } from '@/lib/referral';
+import ShareModal from './ShareModal';
 
 interface ProductDrawerProps {
   isOpen: boolean;
