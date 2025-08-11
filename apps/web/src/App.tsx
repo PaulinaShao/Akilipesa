@@ -505,6 +505,7 @@ function App() {
         {/* Trial System Components */}
         <TrialBadge />
         <TrialPaywallContainer />
+        <TrialDebug />
       </ToastProvider>
     </QueryClientProvider>
   );
