@@ -541,6 +541,7 @@ export default function ReelsPage() {
               onAudioCall={() => handleAudioCall(reel.user.id)}
               onVideoCall={() => handleVideoCall(reel.user.id)}
               onLiveCall={() => handleLiveCall(reel.id)}
+              onJoin={() => handleJoin(reel.id)}
               onFollow={() => handleFollow(reel.user.id)}
               onProfileClick={() => handleProfileClick(reel.user.id)}
             />
