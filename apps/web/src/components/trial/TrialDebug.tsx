@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTrialStore } from '../../state/trialStore';
 import { useAppStore } from '../../store';
 
