@@ -80,6 +80,9 @@ export const TrialChat: React.FC<TrialChatProps> = ({
       } else {
         // Guest user - trial AI chat
         response = await getTrialAIResponse(message);
+
+        // Track usage locally for offline mode
+        updateLocalUsage('chat', 1);
       }
 
       const aiMessage: Message = {
