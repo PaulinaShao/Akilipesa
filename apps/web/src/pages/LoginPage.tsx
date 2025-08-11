@@ -363,9 +363,6 @@ export default function LoginPage() {
                           errors.phone && "border-red-500"
                         )}
                       />
-                      {errors.phone && (
-                        <p className="text-red-400 text-sm mt-2">{errors.phone}</p>
-                      )}
                     </div>
                   ) : (
                     <div>
