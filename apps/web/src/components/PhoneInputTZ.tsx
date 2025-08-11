@@ -62,7 +62,6 @@ const PhoneInputTZ = forwardRef<HTMLInputElement, PhoneInputTZProps>(
       <div className="relative">
         <div className="phone-input-wrapper">
           <PhoneInput
-            ref={ref}
             country="TZ"
             defaultCountry="TZ"
             value={value}
