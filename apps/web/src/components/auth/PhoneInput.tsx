@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { normalizeTZ, prettyTZ, isValidTZ } from "@/lib/phone";
+import { normalizeTZ } from "@/lib/phone";
 
 export default function PhoneInput({ value, onChange, error }: {
   value?: string; onChange: (e164: string, local: string) => void; error?: string;
