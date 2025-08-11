@@ -1,397 +1,531 @@
 import { useState } from 'react';
-import { User, Bell, Shield, CreditCard, LogOut, Save, Edit } from 'lucide-react';
-import { Card, CardContent, CardHeader } from '@/components/Card';
-import NumberInputTZ from '@/components/NumberInputTZ';
-import { getMockUser } from '@/lib/mock-data';
-import { useToast } from '@/hooks/useToast';
-import { cn, isValidEmail, isValidTanzanianPhone } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
+import { 
+  ArrowLeft, 
+  User, 
+  Shield, 
+  Bell, 
+  Eye, 
+  CreditCard,
+  HelpCircle,
+  LogOut,
+  ChevronRight,
+  Moon,
+  Sun,
+  Globe,
+  Lock,
+  Smartphone,
+  Mail,
+  Camera,
+  Trash2
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-interface UserSettings {
+interface UserProfile {
   name: string;
+  username: string;
   email: string;
   phone: string;
-  language: 'en' | 'sw';
-  notifications: {
-    email: boolean;
-    sms: boolean;
-    callReminders: boolean;
-    jobUpdates: boolean;
-  };
-  privacy: {
-    profileVisible: boolean;
-    dataSharing: boolean;
-    analytics: boolean;
-  };
+  bio: string;
+  avatar: string;
+  verified: boolean;
 }
 
-export default function SettingsPage() {
-  const [user] = useState(getMockUser());
-  const [settings, setSettings] = useState<UserSettings>({
-    name: user.name,
-    email: user.email,
-    phone: user.phone,
-    language: 'en',
-    notifications: {
-      email: true,
-      sms: true,
-      callReminders: true,
-      jobUpdates: true,
-    },
-    privacy: {
-      profileVisible: true,
-      dataSharing: false,
-      analytics: true,
-    },
-  });
-  const [isEditing, setIsEditing] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'privacy' | 'billing'>('profile');
-  const { addToast } = useToast();
+interface NotificationSettings {
+  pushNotifications: boolean;
+  emailNotifications: boolean;
+  smsNotifications: boolean;
+  marketingEmails: boolean;
+  postInteractions: boolean;
+  newFollowers: boolean;
+  mentions: boolean;
+  liveStreamAlerts: boolean;
+}
 
-  const tabs = [
-    { id: 'profile', name: 'Profile', icon: <User className="w-5 h-5" /> },
-    { id: 'notifications', name: 'Notifications', icon: <Bell className="w-5 h-5" /> },
-    { id: 'privacy', name: 'Privacy', icon: <Shield className="w-5 h-5" /> },
-    { id: 'billing', name: 'Billing', icon: <CreditCard className="w-5 h-5" /> },
+interface PrivacySettings {
+  profileVisibility: 'public' | 'friends' | 'private';
+  showEmail: boolean;
+  showPhone: boolean;
+  allowDirectMessages: boolean;
+  allowTagging: boolean;
+  showOnlineStatus: boolean;
+}
+
+const mockUserProfile: UserProfile = {
+  name: 'Paulina Shao',
+  username: 'paulina_shao',
+  email: 'paulina@example.com',
+  phone: '+255 123 456 789',
+  bio: 'Content creator & entrepreneur 🚀\nBuilding with AI in Tanzania 🇹🇿',
+  avatar: 'https://images.unsplash.com/photo-1494790108755-2616b9d38aad?w=150&h=150&fit=crop&crop=face',
+  verified: true,
+};
+
+const mockNotificationSettings: NotificationSettings = {
+  pushNotifications: true,
+  emailNotifications: true,
+  smsNotifications: false,
+  marketingEmails: true,
+  postInteractions: true,
+  newFollowers: true,
+  mentions: true,
+  liveStreamAlerts: true,
+};
+
+const mockPrivacySettings: PrivacySettings = {
+  profileVisibility: 'public',
+  showEmail: false,
+  showPhone: false,
+  allowDirectMessages: true,
+  allowTagging: true,
+  showOnlineStatus: true,
+};
+
+export default function SettingsPage() {
+  const navigate = useNavigate();
+  const [userProfile, setUserProfile] = useState<UserProfile>(mockUserProfile);
+  const [notificationSettings, setNotificationSettings] = useState<NotificationSettings>(mockNotificationSettings);
+  const [privacySettings, setPrivacySettings] = useState<PrivacySettings>(mockPrivacySettings);
+  const [selectedTab, setSelectedTab] = useState<'profile' | 'notifications' | 'privacy' | 'account'>('profile');
+  const [darkMode, setDarkMode] = useState(true);
+
+  const handleLogout = () => {
+    // Handle logout logic
+    navigate('/login');
+  };
+
+  const handleDeleteAccount = () => {
+    // Handle account deletion
+    console.log('Delete account requested');
+  };
+
+  const handleSaveProfile = () => {
+    console.log('Profile saved:', userProfile);
+  };
+
+  const handleNotificationChange = (key: keyof NotificationSettings) => {
+    setNotificationSettings(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  const handlePrivacyChange = (key: keyof PrivacySettings, value: any) => {
+    setPrivacySettings(prev => ({
+      ...prev,
+      [key]: value
+    }));
+  };
+
+  const settingsSections = [
+    {
+      title: 'Account',
+      items: [
+        { 
+          label: 'Edit Profile', 
+          icon: User, 
+          action: () => setSelectedTab('profile'),
+          badge: null 
+        },
+        { 
+          label: 'Notifications', 
+          icon: Bell, 
+          action: () => setSelectedTab('notifications'),
+          badge: null 
+        },
+        { 
+          label: 'Privacy & Security', 
+          icon: Shield, 
+          action: () => setSelectedTab('privacy'),
+          badge: null 
+        },
+        { 
+          label: 'Payment Methods', 
+          icon: CreditCard, 
+          action: () => navigate('/billing'),
+          badge: null 
+        },
+      ]
+    },
+    {
+      title: 'Preferences',
+      items: [
+        { 
+          label: 'Dark Mode', 
+          icon: darkMode ? Moon : Sun, 
+          action: () => setDarkMode(!darkMode),
+          badge: null,
+          toggle: true,
+          enabled: darkMode
+        },
+        { 
+          label: 'Language', 
+          icon: Globe, 
+          action: () => navigate('/settings/language'),
+          badge: 'English' 
+        },
+      ]
+    },
+    {
+      title: 'Support',
+      items: [
+        { 
+          label: 'Help Center', 
+          icon: HelpCircle, 
+          action: () => navigate('/help'),
+          badge: null 
+        },
+        { 
+          label: 'Contact Support', 
+          icon: Mail, 
+          action: () => navigate('/support'),
+          badge: null 
+        },
+      ]
+    },
+    {
+      title: 'Account',
+      items: [
+        { 
+          label: 'Account Settings', 
+          icon: Lock, 
+          action: () => setSelectedTab('account'),
+          badge: null 
+        },
+        { 
+          label: 'Log Out', 
+          icon: LogOut, 
+          action: handleLogout,
+          badge: null,
+          danger: true 
+        },
+      ]
+    }
   ];
 
-  const handleSave = async () => {
-    if (!isValidEmail(settings.email)) {
-      addToast({
-        type: 'error',
-        title: 'Invalid Email',
-        description: 'Please enter a valid email address',
-      });
-      return;
-    }
-
-    if (!isValidTanzanianPhone(settings.phone)) {
-      addToast({
-        type: 'error',
-        title: 'Invalid Phone Number',
-        description: 'Please enter a valid Tanzanian phone number',
-      });
-      return;
-    }
-
-    setIsSaving(true);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setIsEditing(false);
-      addToast({
-        type: 'success',
-        title: 'Settings Saved',
-        description: 'Your settings have been updated successfully',
-      });
-    } catch (error) {
-      addToast({
-        type: 'error',
-        title: 'Save Failed',
-        description: 'Unable to save settings. Please try again.',
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handleSignOut = () => {
-    addToast({
-      type: 'info',
-      title: 'Signed Out',
-      description: 'You have been signed out successfully',
-    });
-    // In a real app, this would sign out the user
-    window.location.href = '/';
-  };
+  const tabs = [
+    { id: 'profile', label: 'Profile' },
+    { id: 'notifications', label: 'Notifications' },
+    { id: 'privacy', label: 'Privacy' },
+    { id: 'account', label: 'Account' },
+  ];
 
   return (
-    <div className="container-responsive section-padding">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="heading-2 mb-2">Account Settings</h1>
-          <p className="text-slate-600">Manage your account preferences and settings</p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <Card>
-              <CardContent className="p-0">
-                <nav className="space-y-1">
-                  {tabs.map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id as any)}
-                      className={cn(
-                        'w-full flex items-center space-x-3 px-4 py-3 text-left rounded-lg transition-colors',
-                        activeTab === tab.id
-                          ? 'bg-primary-50 text-primary-600 border-r-2 border-primary-600'
-                          : 'text-slate-600 hover:bg-slate-50'
-                      )}
-                    >
-                      {tab.icon}
-                      <span className="font-medium">{tab.name}</span>
-                    </button>
-                  ))}
-                </nav>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Content */}
-          <div className="lg:col-span-3">
-            {activeTab === 'profile' && (
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <h2 className="heading-3">Profile Information</h2>
-                    {!isEditing ? (
-                      <button
-                        onClick={() => setIsEditing(true)}
-                        className="btn-secondary flex items-center space-x-2"
-                      >
-                        <Edit className="w-4 h-4" />
-                        <span>Edit</span>
-                      </button>
-                    ) : (
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => setIsEditing(false)}
-                          className="btn-secondary"
-                          disabled={isSaving}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          onClick={handleSave}
-                          className="btn-primary flex items-center space-x-2"
-                          disabled={isSaving}
-                        >
-                          {isSaving ? (
-                            <>
-                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                              <span>Saving...</span>
-                            </>
-                          ) : (
-                            <>
-                              <Save className="w-4 h-4" />
-                              <span>Save</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        value={settings.name}
-                        onChange={(e) => setSettings(prev => ({ ...prev, name: e.target.value }))}
-                        disabled={!isEditing}
-                        className={cn('input', !isEditing && 'bg-slate-50')}
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        value={settings.email}
-                        onChange={(e) => setSettings(prev => ({ ...prev, email: e.target.value }))}
-                        disabled={!isEditing}
-                        className={cn('input', !isEditing && 'bg-slate-50')}
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Phone Number
-                      </label>
-                      {isEditing ? (
-                        <NumberInputTZ
-                          value={settings.phone.replace('+', '')}
-                          onChange={(value) => setSettings(prev => ({ ...prev, phone: `+${value}` }))}
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          value={settings.phone}
-                          disabled
-                          className="input bg-slate-50"
-                        />
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Language
-                      </label>
-                      <select
-                        value={settings.language}
-                        onChange={(e) => setSettings(prev => ({ ...prev, language: e.target.value as 'en' | 'sw' }))}
-                        disabled={!isEditing}
-                        className={cn('input', !isEditing && 'bg-slate-50')}
-                      >
-                        <option value="en">English</option>
-                        <option value="sw">Kiswahili</option>
-                      </select>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {activeTab === 'notifications' && (
-              <Card>
-                <CardHeader>
-                  <h2 className="heading-3">Notification Preferences</h2>
-                  <p className="text-slate-600">Choose how you want to be notified about updates</p>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    {Object.entries(settings.notifications).map(([key, enabled]) => (
-                      <div key={key} className="flex items-center justify-between">
-                        <div>
-                          <h4 className="font-medium text-slate-900 capitalize">
-                            {key.replace(/([A-Z])/g, ' $1').trim()}
-                          </h4>
-                          <p className="text-sm text-slate-600">
-                            {key === 'email' && 'Receive important updates via email'}
-                            {key === 'sms' && 'Get SMS notifications for urgent matters'}
-                            {key === 'callReminders' && 'Reminders for scheduled AI calls'}
-                            {key === 'jobUpdates' && 'Updates when your AI jobs are completed'}
-                          </p>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={enabled}
-                            onChange={(e) => setSettings(prev => ({
-                              ...prev,
-                              notifications: {
-                                ...prev.notifications,
-                                [key]: e.target.checked,
-                              },
-                            }))}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {activeTab === 'privacy' && (
-              <Card>
-                <CardHeader>
-                  <h2 className="heading-3">Privacy & Security</h2>
-                  <p className="text-slate-600">Control your privacy and data sharing preferences</p>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    {Object.entries(settings.privacy).map(([key, enabled]) => (
-                      <div key={key} className="flex items-center justify-between">
-                        <div>
-                          <h4 className="font-medium text-slate-900 capitalize">
-                            {key.replace(/([A-Z])/g, ' $1').trim()}
-                          </h4>
-                          <p className="text-sm text-slate-600">
-                            {key === 'profileVisible' && 'Allow others to see your profile information'}
-                            {key === 'dataSharing' && 'Share anonymous usage data to improve services'}
-                            {key === 'analytics' && 'Enable analytics to personalize your experience'}
-                          </p>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={enabled}
-                            onChange={(e) => setSettings(prev => ({
-                              ...prev,
-                              privacy: {
-                                ...prev.privacy,
-                                [key]: e.target.checked,
-                              },
-                            }))}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {activeTab === 'billing' && (
-              <Card>
-                <CardHeader>
-                  <h2 className="heading-3">Billing Information</h2>
-                  <p className="text-slate-600">Manage your subscription and payment methods</p>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="p-4 bg-slate-50 rounded-lg">
-                        <h4 className="font-medium text-slate-900 mb-1">Current Plan</h4>
-                        <p className="text-2xl font-bold text-primary-600 capitalize">{user.plan}</p>
-                        <p className="text-sm text-slate-600">{user.credits} credits remaining</p>
-                      </div>
-                      <div className="p-4 bg-slate-50 rounded-lg">
-                        <h4 className="font-medium text-slate-900 mb-1">Next Billing</h4>
-                        <p className="text-slate-600">No recurring billing</p>
-                        <p className="text-sm text-slate-600">Pay-as-you-go plan</p>
-                      </div>
-                    </div>
-
-                    <div className="border-t pt-6">
-                      <button className="btn-primary w-full mb-4">
-                        View Billing History
-                      </button>
-                      <button className="btn-secondary w-full">
-                        Download Invoice
-                      </button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Sign Out Section */}
-            <Card className="mt-8 border-danger/20 bg-danger/5">
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium text-slate-900 mb-1">Sign Out</h3>
-                    <p className="text-sm text-slate-600">
-                      Sign out of your AkiliPesa account on this device
-                    </p>
-                  </div>
-                  <button
-                    onClick={handleSignOut}
-                    className="btn-secondary text-danger border-danger hover:bg-danger hover:text-white flex items-center space-x-2"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
-              </CardContent>
-            </Card>
+    <div className="h-screen-safe bg-gem-dark overflow-y-auto">
+      {/* Header */}
+      <div className="safe-top p-4 border-b border-white/10 sticky top-0 bg-gem-dark/95 backdrop-blur-sm z-10">
+        <div className="flex items-center space-x-4">
+          <button 
+            onClick={() => navigate(-1)}
+            className="p-2 hover:bg-white/10 rounded-full transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </button>
+          <div className="flex-1">
+            <h1 className="text-xl font-bold text-white">Settings</h1>
+            <p className="text-sm text-white/60">Manage your account and preferences</p>
           </div>
         </div>
       </div>
+
+      {selectedTab === 'profile' ? (
+        <div className="p-4 space-y-6">
+          {/* Profile Picture */}
+          <div className="text-center">
+            <div className="relative inline-block">
+              <img
+                src={userProfile.avatar}
+                alt={userProfile.name}
+                className="w-24 h-24 rounded-full border-4 border-accent-500/50"
+              />
+              <button className="absolute bottom-0 right-0 w-8 h-8 bg-accent-500 rounded-full flex-center">
+                <Camera className="w-4 h-4 text-white" />
+              </button>
+            </div>
+          </div>
+
+          {/* Profile Form */}
+          <div className="space-y-4">
+            <div>
+              <label className="text-white/80 text-sm font-medium block mb-2">Display Name</label>
+              <input
+                type="text"
+                value={userProfile.name}
+                onChange={(e) => setUserProfile(prev => ({ ...prev, name: e.target.value }))}
+                className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/60 focus:border-accent-400 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="text-white/80 text-sm font-medium block mb-2">Username</label>
+              <input
+                type="text"
+                value={userProfile.username}
+                onChange={(e) => setUserProfile(prev => ({ ...prev, username: e.target.value }))}
+                className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/60 focus:border-accent-400 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="text-white/80 text-sm font-medium block mb-2">Bio</label>
+              <textarea
+                value={userProfile.bio}
+                onChange={(e) => setUserProfile(prev => ({ ...prev, bio: e.target.value }))}
+                rows={3}
+                className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/60 focus:border-accent-400 focus:outline-none resize-none"
+              />
+            </div>
+
+            <div>
+              <label className="text-white/80 text-sm font-medium block mb-2">Email</label>
+              <input
+                type="email"
+                value={userProfile.email}
+                onChange={(e) => setUserProfile(prev => ({ ...prev, email: e.target.value }))}
+                className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/60 focus:border-accent-400 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="text-white/80 text-sm font-medium block mb-2">Phone</label>
+              <input
+                type="tel"
+                value={userProfile.phone}
+                onChange={(e) => setUserProfile(prev => ({ ...prev, phone: e.target.value }))}
+                className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/60 focus:border-accent-400 focus:outline-none"
+              />
+            </div>
+
+            <button 
+              onClick={handleSaveProfile}
+              className="w-full btn-gem py-3"
+            >
+              Save Changes
+            </button>
+          </div>
+        </div>
+      ) : selectedTab === 'notifications' ? (
+        <div className="p-4 space-y-6">
+          <div className="space-y-4">
+            <div className="card-gem p-4">
+              <h3 className="text-white font-semibold mb-4">Push Notifications</h3>
+              <div className="space-y-3">
+                {Object.entries(notificationSettings).filter(([key]) => 
+                  ['pushNotifications', 'postInteractions', 'newFollowers', 'mentions', 'liveStreamAlerts'].includes(key)
+                ).map(([key, value]) => (
+                  <div key={key} className="flex items-center justify-between">
+                    <span className="text-white/80 text-sm capitalize">
+                      {key.replace(/([A-Z])/g, ' $1').trim()}
+                    </span>
+                    <button
+                      onClick={() => handleNotificationChange(key as keyof NotificationSettings)}
+                      className={cn(
+                        'w-12 h-6 rounded-full transition-colors relative',
+                        value ? 'bg-accent-500' : 'bg-white/20'
+                      )}
+                    >
+                      <div className={cn(
+                        'w-4 h-4 bg-white rounded-full absolute top-1 transition-transform',
+                        value ? 'translate-x-7' : 'translate-x-1'
+                      )} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="card-gem p-4">
+              <h3 className="text-white font-semibold mb-4">Communication</h3>
+              <div className="space-y-3">
+                {Object.entries(notificationSettings).filter(([key]) => 
+                  ['emailNotifications', 'smsNotifications', 'marketingEmails'].includes(key)
+                ).map(([key, value]) => (
+                  <div key={key} className="flex items-center justify-between">
+                    <span className="text-white/80 text-sm capitalize">
+                      {key.replace(/([A-Z])/g, ' $1').trim()}
+                    </span>
+                    <button
+                      onClick={() => handleNotificationChange(key as keyof NotificationSettings)}
+                      className={cn(
+                        'w-12 h-6 rounded-full transition-colors relative',
+                        value ? 'bg-accent-500' : 'bg-white/20'
+                      )}
+                    >
+                      <div className={cn(
+                        'w-4 h-4 bg-white rounded-full absolute top-1 transition-transform',
+                        value ? 'translate-x-7' : 'translate-x-1'
+                      )} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : selectedTab === 'privacy' ? (
+        <div className="p-4 space-y-6">
+          <div className="card-gem p-4">
+            <h3 className="text-white font-semibold mb-4">Profile Visibility</h3>
+            <div className="space-y-3">
+              {(['public', 'friends', 'private'] as const).map((visibility) => (
+                <button
+                  key={visibility}
+                  onClick={() => handlePrivacyChange('profileVisibility', visibility)}
+                  className={cn(
+                    'w-full text-left p-3 rounded-lg transition-colors',
+                    privacySettings.profileVisibility === visibility
+                      ? 'bg-accent-500 text-white'
+                      : 'bg-white/10 text-white/80 hover:bg-white/20'
+                  )}
+                >
+                  <div className="font-medium capitalize">{visibility}</div>
+                  <div className="text-sm opacity-70">
+                    {visibility === 'public' && 'Anyone can see your profile'}
+                    {visibility === 'friends' && 'Only friends can see your profile'}
+                    {visibility === 'private' && 'Only you can see your profile'}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="card-gem p-4">
+            <h3 className="text-white font-semibold mb-4">Contact Information</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-white/80 text-sm">Show Email</span>
+                <button
+                  onClick={() => handlePrivacyChange('showEmail', !privacySettings.showEmail)}
+                  className={cn(
+                    'w-12 h-6 rounded-full transition-colors relative',
+                    privacySettings.showEmail ? 'bg-accent-500' : 'bg-white/20'
+                  )}
+                >
+                  <div className={cn(
+                    'w-4 h-4 bg-white rounded-full absolute top-1 transition-transform',
+                    privacySettings.showEmail ? 'translate-x-7' : 'translate-x-1'
+                  )} />
+                </button>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-white/80 text-sm">Show Phone</span>
+                <button
+                  onClick={() => handlePrivacyChange('showPhone', !privacySettings.showPhone)}
+                  className={cn(
+                    'w-12 h-6 rounded-full transition-colors relative',
+                    privacySettings.showPhone ? 'bg-accent-500' : 'bg-white/20'
+                  )}
+                >
+                  <div className={cn(
+                    'w-4 h-4 bg-white rounded-full absolute top-1 transition-transform',
+                    privacySettings.showPhone ? 'translate-x-7' : 'translate-x-1'
+                  )} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : selectedTab === 'account' ? (
+        <div className="p-4 space-y-6">
+          <div className="card-gem p-4">
+            <h3 className="text-white font-semibold mb-4">Account Actions</h3>
+            <div className="space-y-3">
+              <button className="w-full text-left p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors">
+                <div className="flex items-center space-x-3">
+                  <Lock className="w-5 h-5 text-white/60" />
+                  <div>
+                    <div className="text-white font-medium">Change Password</div>
+                    <div className="text-white/60 text-sm">Update your account password</div>
+                  </div>
+                </div>
+              </button>
+
+              <button className="w-full text-left p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors">
+                <div className="flex items-center space-x-3">
+                  <Smartphone className="w-5 h-5 text-white/60" />
+                  <div>
+                    <div className="text-white font-medium">Two-Factor Authentication</div>
+                    <div className="text-white/60 text-sm">Add extra security to your account</div>
+                  </div>
+                </div>
+              </button>
+
+              <button 
+                onClick={handleDeleteAccount}
+                className="w-full text-left p-3 bg-red-500/20 rounded-lg hover:bg-red-500/30 transition-colors"
+              >
+                <div className="flex items-center space-x-3">
+                  <Trash2 className="w-5 h-5 text-red-400" />
+                  <div>
+                    <div className="text-red-400 font-medium">Delete Account</div>
+                    <div className="text-red-400/70 text-sm">Permanently delete your account</div>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="p-4">
+          {settingsSections.map((section) => (
+            <div key={section.title} className="mb-8">
+              <h2 className="text-white/60 text-sm font-medium mb-4 uppercase tracking-wide">
+                {section.title}
+              </h2>
+              <div className="card-gem overflow-hidden">
+                {section.items.map((item, index) => {
+                  const IconComponent = item.icon;
+                  return (
+                    <button
+                      key={item.label}
+                      onClick={item.action}
+                      className={cn(
+                        'w-full flex items-center justify-between p-4 text-left transition-colors',
+                        index !== section.items.length - 1 && 'border-b border-white/10',
+                        item.danger ? 'hover:bg-red-500/10' : 'hover:bg-white/5'
+                      )}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <IconComponent className={cn(
+                          'w-5 h-5',
+                          item.danger ? 'text-red-400' : 'text-white/60'
+                        )} />
+                        <span className={cn(
+                          'font-medium',
+                          item.danger ? 'text-red-400' : 'text-white'
+                        )}>
+                          {item.label}
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center space-x-2">
+                        {item.toggle ? (
+                          <div className={cn(
+                            'w-12 h-6 rounded-full transition-colors relative',
+                            item.enabled ? 'bg-accent-500' : 'bg-white/20'
+                          )}>
+                            <div className={cn(
+                              'w-4 h-4 bg-white rounded-full absolute top-1 transition-transform',
+                              item.enabled ? 'translate-x-7' : 'translate-x-1'
+                            )} />
+                          </div>
+                        ) : (
+                          <>
+                            {item.badge && (
+                              <span className="text-white/60 text-sm">{item.badge}</span>
+                            )}
+                            <ChevronRight className="w-4 h-4 text-white/40" />
+                          </>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
