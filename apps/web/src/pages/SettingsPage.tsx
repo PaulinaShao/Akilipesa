@@ -5,7 +5,6 @@ import {
   User, 
   Shield, 
   Bell, 
-  Eye, 
   CreditCard,
   HelpCircle,
   LogOut,
@@ -49,6 +48,16 @@ interface PrivacySettings {
   allowDirectMessages: boolean;
   allowTagging: boolean;
   showOnlineStatus: boolean;
+}
+
+interface SettingsItem {
+  label: string;
+  icon: any;
+  action: () => void;
+  badge?: string | null;
+  toggle?: boolean;
+  enabled?: boolean;
+  danger?: boolean;
 }
 
 const mockUserProfile: UserProfile = {
@@ -145,7 +154,7 @@ export default function SettingsPage() {
           action: () => navigate('/billing'),
           badge: null 
         },
-      ]
+      ] as SettingsItem[]
     },
     {
       title: 'Preferences',
@@ -164,7 +173,7 @@ export default function SettingsPage() {
           action: () => navigate('/settings/language'),
           badge: 'English' 
         },
-      ]
+      ] as SettingsItem[]
     },
     {
       title: 'Support',
@@ -181,10 +190,10 @@ export default function SettingsPage() {
           action: () => navigate('/support'),
           badge: null 
         },
-      ]
+      ] as SettingsItem[]
     },
     {
-      title: 'Account',
+      title: 'Account Actions',
       items: [
         { 
           label: 'Account Settings', 
@@ -199,15 +208,8 @@ export default function SettingsPage() {
           badge: null,
           danger: true 
         },
-      ]
+      ] as SettingsItem[]
     }
-  ];
-
-  const tabs = [
-    { id: 'profile', label: 'Profile' },
-    { id: 'notifications', label: 'Notifications' },
-    { id: 'privacy', label: 'Privacy' },
-    { id: 'account', label: 'Account' },
   ];
 
   return (
