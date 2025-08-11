@@ -323,18 +323,35 @@ export default function ChatPage() {
       ));
     }, 2000);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const aiResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        content: 'I understand you\'re facing cash flow challenges. Let me help you create a cash flow forecast and identify strategies to improve your working capital...',
-        type: 'text',
-        sender: 'akilipesa',
-        timestamp: new Date(),
-        status: 'sent'
-      };
-      setMessages(prev => [...prev, aiResponse]);
-    }, 3000);
+    // Simulate AI response with typing indicator
+    if (isAkiliPesaChat) {
+      setIsTyping(true);
+
+      setTimeout(() => {
+        setIsTyping(false);
+
+        // Generate AI response based on user plan
+        const getAIResponse = () => {
+          const responses = {
+            free: 'Thanks for your message! Upgrade to Premium for detailed financial advice and personalized recommendations.',
+            basic: 'I understand your concern. Here\'s a basic overview of cash flow management principles...',
+            premium: 'I understand you\'re facing cash flow challenges. Let me help you create a detailed cash flow forecast and identify specific strategies to improve your working capital. Based on my analysis...',
+            pro: 'I understand you\'re facing cash flow challenges. Let me provide you with a comprehensive analysis using advanced AI models. I\'ll create a detailed cash flow forecast, identify optimization opportunities, and provide real-time market insights...'
+          };
+          return responses[mockUserPlan.type] || responses.free;
+        };
+
+        const aiResponse: Message = {
+          id: (Date.now() + 1).toString(),
+          content: getAIResponse(),
+          type: 'text',
+          sender: 'akilipesa',
+          timestamp: new Date(),
+          status: 'sent'
+        };
+        setMessages(prev => [...prev, aiResponse]);
+      }, 2500);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
