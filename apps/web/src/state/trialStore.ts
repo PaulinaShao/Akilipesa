@@ -246,7 +246,10 @@ export const useTrialStore = create<TrialState>((set, get) => ({
       const usage = await fetchTrialUsage(deviceToken);
       set({ usage });
     } catch (error) {
-      console.error('Failed to fetch trial usage:', error);
+      console.warn('Failed to fetch trial usage, using local data:', error);
+      // Always provide usage data, even if fetch fails
+      const localUsage = getLocalTrialUsage();
+      set({ usage: localUsage });
     }
   },
 
