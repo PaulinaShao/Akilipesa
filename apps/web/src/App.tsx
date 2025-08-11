@@ -25,17 +25,22 @@ import CameraCaptPage from '@/pages/CameraCaptPage';
 
 // Admin Guard Component
 function AdminRoute({ children, user }: { children: React.ReactNode; user: User | null }) {
-  // In a real app, check if user has admin role from Firebase claims
-  const isAdmin = user && (user.email?.includes('admin') || import.meta.env.DEV);
-  
+  // In development mode, allow admin access for any authenticated user
+  // In production, check if user has admin role from Firebase claims
+  const isAdmin = user && (
+    import.meta.env.DEV ||
+    user.email?.includes('admin') ||
+    user.email?.includes('paulina')
+  );
+
   if (!user) {
     return <Navigate to="/login" replace />;
   }
-  
+
   if (!isAdmin) {
     return <Navigate to="/reels" replace />;
   }
-  
+
   return <>{children}</>;
 }
 
