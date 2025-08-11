@@ -57,7 +57,7 @@ export async function seedTrialConfig(isDev: boolean = false): Promise<void> {
 
     console.log('Trial config seeded successfully:', config);
   } catch (error) {
-    console.warn('Failed to seed trial config (offline mode):', error.message);
+    console.warn('Failed to seed trial config (offline mode):', (error as any)?.message || error);
     // In offline mode, just log that we're using defaults
     const config = isDev ? devTrialConfig : defaultTrialConfig;
     console.log('Using default trial config in offline mode:', config);
