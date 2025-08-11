@@ -98,7 +98,7 @@ export function useTrialGate(): UseTrialGateReturn {
 
 // Combined hook for seamless auth + trial experience
 export function useGatedAction() {
-  const { user } = useAuthStore();
+  const { user } = useAppStore();
   const { openAuthSheet } = useUIStore();
   const { tryWithTrial } = useTrialGate();
 
