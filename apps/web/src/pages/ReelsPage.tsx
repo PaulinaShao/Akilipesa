@@ -475,27 +475,36 @@ export default function ReelsPage() {
   }, [handleScroll]);
 
   const handleLike = (reelId: string) => {
-    console.log('Like reel:', reelId);
+    gatedLike(() => {
+      console.log('Like reel:', reelId);
+      // TODO: Implement actual like functionality
+    });
   };
 
   const handleComment = (reelId: string) => {
-    navigate(`/reel/${reelId}`);
+    gatedComment(() => {
+      navigate(`/reel/${reelId}`);
+    });
   };
 
   const handleShare = (reelId: string) => {
-    if (navigator.share) {
-      navigator.share({
-        title: 'Check out this reel on AkiliPesa',
-        url: `${window.location.origin}/reel/${reelId}`,
-      });
-    }
+    gatedShare(() => {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Check out this reel on AkiliPesa',
+          url: `${window.location.origin}/reel/${reelId}`,
+        });
+      }
+    });
   };
 
   const handleShop = (reelId: string) => {
-    const reel = reels.find(r => r.id === reelId);
-    if (reel?.products?.[0]) {
-      navigate(`/product/${reel.products[0].id}`);
-    }
+    gatedBuy(() => {
+      const reel = reels.find(r => r.id === reelId);
+      if (reel?.products?.[0]) {
+        navigate(`/product/${reel.products[0].id}`);
+      }
+    });
   };
 
   const handleAudioCall = (userId: string) => {
