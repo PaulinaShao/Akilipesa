@@ -126,14 +126,24 @@ function App() {
     // Initialize trial system
     const initTrialSystem = async () => {
       try {
-        // Seed trial config if it doesn't exist
+        // Seed trial config if it doesn't exist (offline-safe)
         await seedTrialConfig(import.meta.env.DEV);
+      } catch (error) {
+        console.warn('Trial config seeding skipped (offline):', error.message);
+      }
 
-        // Initialize trial token and fetch config
+      try {
+        // Initialize trial token (with offline fallback)
         await initializeToken();
+      } catch (error) {
+        console.warn('Trial token initialization failed, continuing:', error.message);
+      }
+
+      try {
+        // Fetch config (with offline fallback)
         await fetchConfig();
       } catch (error) {
-        console.error('Failed to initialize trial system:', error);
+        console.warn('Trial config fetch failed, using defaults:', error.message);
       }
     };
 
