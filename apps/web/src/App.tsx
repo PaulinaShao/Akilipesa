@@ -6,6 +6,8 @@ import { mockUser } from '@/lib/mock-data';
 import MobileLayout from '@/components/layout/MobileLayout';
 import { ToastProvider } from '@/hooks/useToast';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/lib/queryClient';
 
 // Import pages
 import LoginPage from '@/pages/LoginPage';
