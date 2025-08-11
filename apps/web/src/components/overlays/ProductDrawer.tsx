@@ -277,12 +277,14 @@ function ProductCard({
   );
 }
 
-export default function ProductDrawer({ 
-  isOpen, 
-  products, 
-  onClose 
+export default function ProductDrawer({
+  isOpen,
+  products,
+  onClose
 }: ProductDrawerProps) {
   const [cartCount, setCartCount] = useState(0);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [selectedProductForShare, setSelectedProductForShare] = useState<Product | null>(null);
 
   useEffect(() => {
     if (isOpen && products.length === 0) {
