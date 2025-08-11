@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Camera, Video, Music, Users, Mic, Sparkles, Upload, X, MessageCircle, Image, DollarSign } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useJob, JobTypes, type JobType } from '@/modules/jobs';
-import { useAppStore } from '@/store';
 
 interface CreateOption {
   id: string;
