@@ -361,6 +361,20 @@ export default function ProfilePage() {
 
         {/* Saved and Purchases tabs now navigate to dedicated pages */}
       </div>
+
+      {/* Modals */}
+      <ShareModal
+        isOpen={showShareModal}
+        onClose={() => setShowShareModal(false)}
+        username={profileData.user.username}
+      />
+
+      <ProfileSettingsModal
+        isOpen={showSettingsModal}
+        onClose={() => setShowSettingsModal(false)}
+        isOwnProfile={true}
+        username={profileData.user.username}
+      />
     </div>
   );
 }
