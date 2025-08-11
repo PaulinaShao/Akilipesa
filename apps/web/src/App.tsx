@@ -129,7 +129,7 @@ function App() {
           email: mockUser.email,
         } as User;
         setDevModeUser(mockUserObject);
-        setUser(mockUserObject); // Update auth store
+        setAppUser(mockUserObject); // Update app store
       }, 1000);
     }
 
