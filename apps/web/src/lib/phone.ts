@@ -16,5 +16,5 @@ export function prettyTZ(local: string): string {
 }
 
 export function isValidTZ(local: string): boolean {
-  return /^\d{9}$/.test(local) && /^[67]/.test(local); // TZ mobile ranges typically 6/7…
+  return /^\d{9}$/.test(local) && /^[67]/.test(local);
 }
