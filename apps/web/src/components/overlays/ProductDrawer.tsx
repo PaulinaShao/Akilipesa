@@ -306,6 +306,36 @@ export default function ProductDrawer({
     // TODO: Navigate to shop page
   };
 
+  const handleLike = (productId: string) => {
+    console.log('Like product:', productId);
+    // TODO: Implement like functionality
+  };
+
+  const handleComment = (productId: string) => {
+    console.log('Comment on product:', productId);
+    // TODO: Open comment drawer or navigate to product detail
+  };
+
+  const handleCallVideo = (sellerId: string) => {
+    console.log('Video call seller:', sellerId);
+    // TODO: Implement video call functionality
+  };
+
+  const handleCallAudio = (sellerId: string) => {
+    console.log('Audio call seller:', sellerId);
+    // TODO: Implement audio call functionality
+  };
+
+  const handleReport = (productId: string) => {
+    console.log('Report product:', productId);
+    // TODO: Implement report functionality
+  };
+
+  const handleCopyLink = (productId: string) => {
+    console.log('Copy product link:', productId);
+    // Link copying is handled in ProductCard component
+  };
+
   if (!isOpen) return null;
 
   return (
