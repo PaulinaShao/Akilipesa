@@ -73,21 +73,21 @@
 @layer components {
   /* Glass morphism effects */
   .glass {
-    background: rgba(20, 16, 32, 0.72);
+    background: var(--glass-bg);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-stroke);
   }
-  
+
   .glass-light {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
-  
+
   .glass-heavy {
-    background: rgba(20, 16, 32, 0.9);
+    background: rgba(19, 17, 37, 0.9);
     backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--glass-stroke);
   }
   
   /* Button styles */
