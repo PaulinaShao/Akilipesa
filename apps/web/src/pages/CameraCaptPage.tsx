@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  X, RotateCcw, Zap, Camera, Video, Circle, Square,
-  Timer, FlashOff, Grid3X3, Download, ArrowRight
+import {
+  X, RotateCcw, Zap, Camera, Circle, Square,
+  ZapOff, Grid3X3, ArrowRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
