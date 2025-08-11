@@ -92,11 +92,10 @@ export default function CodeInput({
             onPaste={handlePaste}
             className={`
               w-12 h-12 text-center text-xl font-semibold
-              bg-zinc-900/60 border border-zinc-700 rounded-xl
-              text-zinc-100 outline-none
-              focus:ring-2 focus:ring-violet-500 focus:border-violet-500
+              tz-input outline-none
+              focus:ring-2 focus:ring-[var(--tz-ice-400)] focus:border-[var(--tz-ice-400)]
               transition-all duration-200
-              ${error ? 'border-rose-500 bg-rose-500/10' : ''}
+              ${error ? 'border-rose-400 bg-rose-500/10' : ''}
             `}
             animate={error ? { x: [-2, 2, -2, 2, 0] } : {}}
             transition={{ duration: 0.3 }}
