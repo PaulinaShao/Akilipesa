@@ -20,7 +20,7 @@ export const TrialCall: React.FC<TrialCallProps> = ({
   onCallEnd,
   defaultVideo = false,
 }) => {
-  const { user } = useAuthStore();
+  const { user } = useAppStore();
   const { canUseFeature, getRemainingQuota } = useTrialStore();
   const [isConnecting, setIsConnecting] = useState(false);
   const [isInCall, setIsInCall] = useState(false);
