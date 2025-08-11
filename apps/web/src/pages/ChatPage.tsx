@@ -440,12 +440,31 @@ export default function ChatPage() {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-1">
         {messages.map((message, index) => (
-          <MessageBubble 
-            key={message.id} 
-            message={message} 
+          <MessageBubble
+            key={message.id}
+            message={message}
             isLast={index === messages.length - 1}
           />
         ))}
+
+        {/* Typing Indicator */}
+        {isTyping && (
+          <div className="flex justify-start mb-4">
+            <img
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face"
+              alt="AkiliPesa"
+              className="w-8 h-8 rounded-full mr-2 mt-1 border-2 border-primary/50"
+            />
+            <div className="bg-white/10 text-white rounded-2xl rounded-bl-md px-4 py-3 max-w-[200px]">
+              <div className="flex space-x-1">
+                <div className="w-2 h-2 bg-white/60 rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-white/60 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                <div className="w-2 h-2 bg-white/60 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div ref={messagesEndRef} />
       </div>
 
