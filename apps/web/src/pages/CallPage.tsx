@@ -120,21 +120,21 @@ export default function CallPage() {
       <div className="h-screen-safe bg-gradient-to-b from-bg-primary to-bg-secondary flex items-center justify-center">
         <div className="text-center">
           <div className="w-32 h-32 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-            {mode === 'video' ? (
+            {callType === 'video' ? (
               <Video className="w-16 h-16 text-white" />
             ) : (
               <Mic className="w-16 h-16 text-white" />
             )}
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">
-            {target === 'akili' ? 'Connecting to AkiliPesa...' : 'Connecting...'}
+            {targetId === 'akili' ? 'Connecting to AkiliPesa...' : 'Connecting...'}
           </h2>
           <p className="text-white/60 mb-8">
-            {mode === 'video' ? 'Starting video call' : 'Starting audio call'}
+            {callType === 'video' ? 'Starting video call' : 'Starting audio call'}
           </p>
-          
-          <button 
-            onClick={endCall}
+
+          <button
+            onClick={handleEndCall}
             className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
           >
             <PhoneOff className="w-8 h-8 text-white" />
