@@ -134,7 +134,7 @@ function App() {
     }
 
     return () => unsubscribe();
-  }, [user, initializeToken, fetchConfig, setUser]);
+  }, [user, initializeToken, fetchConfig, setAppUser]);
 
   const currentUser = user || devModeUser;
 
