@@ -335,15 +335,13 @@ function PricingPanel({ isOpen, onClose, onSubmit }: PricingPanelProps) {
 
 export default function CreatePage() {
   const navigate = useNavigate();
-  const { user } = useAppStore();
   const { startJob } = useJob();
-  
+
   const [showUpload, setShowUpload] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [showAIModal, setShowAIModal] = useState(false);
   const [selectedAIType, setSelectedAIType] = useState<JobType>('image');
   const [showPricing, setShowPricing] = useState(false);
-  const [currentPricing, setCurrentPricing] = useState<any>(null);
 
   const handleOptionSelect = (optionId: string) => {
     setSelectedOption(optionId);
