@@ -35,13 +35,13 @@ export default function CameraCaptPage() {
   }, [facingMode]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: number;
     if (isRecording) {
-      interval = setInterval(() => {
+      interval = window.setInterval(() => {
         setRecordingTime(prev => prev + 1);
       }, 1000);
     }
-    return () => clearInterval(interval);
+    return () => window.clearInterval(interval);
   }, [isRecording]);
 
   const initializeCamera = async () => {
