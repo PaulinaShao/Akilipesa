@@ -288,6 +288,9 @@ export default function ProductDrawer({
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [selectedProductForShare, setSelectedProductForShare] = useState<Product | null>(null);
 
+  const { startCall } = useAppStore();
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (isOpen && products.length === 0) {
       // Close drawer if no products
