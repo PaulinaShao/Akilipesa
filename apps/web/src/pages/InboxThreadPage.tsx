@@ -68,6 +68,9 @@ export default function InboxThreadPage() {
   const [newMessage, setNewMessage] = useState('');
   const [user] = useState<User>(mockUser);
 
+  // Use threadId for future API calls
+  console.log('Thread ID:', threadId);
+
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
