@@ -92,7 +92,7 @@ export default function WalletPage() {
   });
 
   // Add funds mutation
-  const addFundsMutation = useMutation({
+  useMutation({
     mutationFn: (amount: number) => api.addFunds(user?.id || '', amount),
     onSuccess: (data) => {
       updateBalance(data.amount);
