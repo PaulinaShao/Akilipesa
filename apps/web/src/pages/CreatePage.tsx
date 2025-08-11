@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera, Video, Music, Users, Mic, Sparkles, Upload, X, MessageCircle, Image, Phone, PhoneCall, DollarSign, Percent, Share2 } from 'lucide-react';
+import { Camera, Video, Music, Users, Mic, Sparkles, Upload, X, MessageCircle, Image, DollarSign } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useJob, JobTypes, type JobType } from '@/modules/jobs';
 import { useAppStore } from '@/store';
