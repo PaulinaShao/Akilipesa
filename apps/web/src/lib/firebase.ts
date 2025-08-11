@@ -48,15 +48,19 @@ if (import.meta.env.DEV && import.meta.env.VITE_FIREBASE_PROJECT_ID === 'demo-pr
   }
 }
 
+// Export demo mode flag
+export const isFirebaseDemoMode = isDemoMode;
+
 // Global error handler for Firebase connection issues
 const handleFirebaseError = (error: any, operation: string) => {
   const isNetworkError = error?.code === 'unavailable' ||
                          error?.message?.includes('fetch') ||
                          error?.message?.includes('network') ||
-                         error?.message?.includes('offline');
+                         error?.message?.includes('offline') ||
+                         error?.message?.includes('Failed to fetch');
 
-  if (isNetworkError) {
-    console.warn(`Firebase ${operation} failed (network issue), using offline mode:`, error?.message || error);
+  if (isNetworkError || isDemoMode) {
+    console.warn(`Firebase ${operation} failed (${isDemoMode ? 'demo mode' : 'network issue'}), using offline mode:`, error?.message || error);
     return null;
   }
 
@@ -70,6 +74,12 @@ export const safeFirebaseOperation = async <T>(
   operationName: string,
   fallback?: T
 ): Promise<T | null> => {
+  // In demo mode, immediately return fallback without attempting operation
+  if (isDemoMode) {
+    console.log(`Skipping Firebase ${operationName} in demo mode`);
+    return fallback || null;
+  }
+
   try {
     return await operation();
   } catch (error) {
