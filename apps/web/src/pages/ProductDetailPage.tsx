@@ -110,9 +110,8 @@ const mockProduct: Product = {
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { startCall, updateBalance } = useAppStore();
+  const { startCall } = useAppStore();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [quantity, setQuantity] = useState(1);
   const [isLiked, setIsLiked] = useState(false);
 
   // In a real app, this would fetch from the API
