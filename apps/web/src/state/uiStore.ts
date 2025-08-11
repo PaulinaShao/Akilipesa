@@ -7,12 +7,20 @@ interface AuthSheetState {
   pendingActionType?: 'like' | 'comment' | 'follow' | 'share' | 'message' | 'buy' | 'live';
 }
 
+interface TrialPaywallState {
+  isOpen: boolean;
+  feature?: 'reaction' | 'call' | 'chat';
+}
+
 interface UIStore {
   authSheet: AuthSheetState;
+  trialPaywall: TrialPaywallState;
   openAuthSheet: (action?: () => void, actionType?: string) => void;
   closeAuthSheet: () => void;
   setAuthStep: (step: AuthSheetState['step']) => void;
   executePendingAction: () => void;
+  setTrialPaywall: (state: TrialPaywallState) => void;
+  closeTrialPaywall: () => void;
 }
 
 export const useUIStore = create<UIStore>()((set, get) => ({
