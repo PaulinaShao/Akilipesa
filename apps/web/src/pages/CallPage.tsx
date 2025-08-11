@@ -362,20 +362,20 @@ export default function CallPage() {
 
         {/* Additional Controls */}
         <div className="flex justify-center mt-4 space-x-2">
-          <button 
+          <button
             onClick={togglePrivacy}
             className={cn(
               'px-4 py-2 rounded-full text-sm font-medium transition-all',
-              callState.isPrivate
+              isPrivate
                 ? 'bg-white/20 text-white hover:bg-white/30'
                 : 'bg-primary text-white hover:bg-primary/80'
             )}
           >
-            {callState.isPrivate ? 'Make Public' : 'Make Private'}
+            {isPrivate ? 'Make Public' : 'Make Private'}
           </button>
-          
-          {!callState.participants.some(p => p.id === 'akili') && (
-            <button 
+
+          {!activeCall.participants.some(p => p.uid === 'akili') && (
+            <button
               onClick={addAkiliAgent}
               className="px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-primary to-secondary text-white hover:from-primary/80 hover:to-secondary/80 transition-all"
             >
