@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Heart, MessageCircle, Share, MoreHorizontal, Music2, ShoppingBag, Phone, Video } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import WalletChip from '@/components/WalletChip';
-import StoriesRail from '@/components/StoriesRail';
 
 interface ReelData {
   id: string;
