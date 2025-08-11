@@ -319,16 +319,28 @@ export async function getRtcToken(channel: string, uid?: number): Promise<{
   expiryTime: number;
 }> {
   try {
+    const { isFirebaseDemoMode } = await import('../lib/firebase');
+
+    if (isFirebaseDemoMode) {
+      console.log('Demo mode: creating demo RTC token');
+      return {
+        token: 'demo_rtc_token',
+        channel,
+        uid: uid || Math.floor(Math.random() * 100000),
+        expiryTime: Date.now() + (60 * 60 * 1000) // 1 hour
+      };
+    }
+
     const getRtcTokenFn = httpsCallable(functions, 'getRtcToken');
     const result = await getRtcTokenFn({
       channel,
       uid: uid || Math.floor(Math.random() * 100000)
     });
-    
+
     return result.data as any;
   } catch (error) {
     console.warn('Failed to get RTC token from server:', error);
-    
+
     // Offline fallback
     return {
       token: 'offline_rtc_token',
