@@ -43,7 +43,7 @@ function OTPInput({ value, onChange, onComplete }: OTPInputProps) {
   };
 
   return (
-    <div className="flex space-x-3 justify-center">
+    <div className="flex space-x-2 justify-center">
       {Array.from({ length: 6 }).map((_, index) => (
         <input
           key={index}
@@ -54,7 +54,7 @@ function OTPInput({ value, onChange, onComplete }: OTPInputProps) {
           value={value[index] || ''}
           onChange={(e) => handleChange(e, index)}
           onKeyDown={(e) => handleKeyDown(e, index)}
-          className="w-12 h-14 text-center text-xl font-bold input-field"
+          className="w-12 h-12 text-center text-lg font-bold bg-white/5 border border-white/20 rounded-lg text-white focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
           autoComplete="one-time-code"
         />
       ))}
