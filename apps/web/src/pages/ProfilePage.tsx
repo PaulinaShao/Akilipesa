@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { 
-  Settings, 
-  Share, 
-  Grid3x3, 
-  Bookmark, 
-  ShoppingBag, 
-  DollarSign, 
-  Star, 
-  Users, 
+import { useNavigate } from 'react-router-dom';
+import {
+  Settings,
+  Share,
+  Grid3x3,
+  Bookmark,
+  ShoppingBag,
+  DollarSign,
+  Star,
+  Users,
   Sparkles,
   TrendingUp,
   Award,
@@ -99,6 +100,7 @@ function formatCurrency(amount: number): string {
 }
 
 export default function ProfilePage() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('posts');
 
   return (
@@ -108,10 +110,16 @@ export default function ProfilePage() {
         <div className="flex-between mb-4">
           <h1 className="text-xl font-bold text-white">@{profileData.user.username}</h1>
           <div className="flex items-center space-x-2">
-            <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
+            <button
+              onClick={() => navigator.share ? navigator.share({ title: 'Check out my profile', url: window.location.href }) : navigator.clipboard.writeText(window.location.href)}
+              className="p-2 hover:bg-white/10 rounded-full transition-colors"
+            >
               <Share className="w-5 h-5 text-white" />
             </button>
-            <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
+            <button
+              onClick={() => navigate('/settings')}
+              className="p-2 hover:bg-white/10 rounded-full transition-colors"
+            >
               <Settings className="w-5 h-5 text-white" />
             </button>
           </div>
@@ -186,11 +194,17 @@ export default function ProfilePage() {
 
         {/* Action Buttons */}
         <div className="grid grid-cols-2 gap-3">
-          <button className="btn-gem py-3 flex items-center justify-center space-x-2">
+          <button
+            onClick={() => navigate('/analytics')}
+            className="btn-gem py-3 flex items-center justify-center space-x-2"
+          >
             <TrendingUp className="w-5 h-5" />
             <span>Analytics</span>
           </button>
-          <button className="btn-gem-outline py-3 flex items-center justify-center space-x-2">
+          <button
+            onClick={() => navigate('/referrals')}
+            className="btn-gem-outline py-3 flex items-center justify-center space-x-2"
+          >
             <Gift className="w-5 h-5" />
             <span>Referrals</span>
           </button>
@@ -205,7 +219,17 @@ export default function ProfilePage() {
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => {
+                  if (tab.id === 'saved') {
+                    navigate('/saved-posts');
+                  } else if (tab.id === 'purchases') {
+                    navigate('/purchases');
+                  } else if (tab.id === 'earnings') {
+                    navigate('/earnings');
+                  } else {
+                    setActiveTab(tab.id);
+                  }
+                }}
                 className={cn(
                   "flex items-center space-x-2 px-4 py-3 whitespace-nowrap transition-all border-b-2",
                   activeTab === tab.id
@@ -337,26 +361,7 @@ export default function ProfilePage() {
           </div>
         )}
 
-        {(activeTab === 'saved' || activeTab === 'purchases') && (
-          <div className="text-center py-16">
-            <div className="w-20 h-20 bg-white/10 rounded-full flex-center mx-auto mb-4">
-              {activeTab === 'saved' ? (
-                <Bookmark className="w-10 h-10 text-white/40" />
-              ) : (
-                <ShoppingBag className="w-10 h-10 text-white/40" />
-              )}
-            </div>
-            <h3 className="text-white font-semibold mb-2">
-              {activeTab === 'saved' ? 'No saved posts' : 'No purchases yet'}
-            </h3>
-            <p className="text-white/60 text-sm">
-              {activeTab === 'saved' 
-                ? 'Posts you save will appear here'
-                : 'Your purchases will appear here'
-              }
-            </p>
-          </div>
-        )}
+        {/* Saved and Purchases tabs now navigate to dedicated pages */}
       </div>
     </div>
   );
