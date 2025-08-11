@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Download, Share2, Eye, Trash2, RotateCcw, X } from 'lucide-react';
 import { useUserJobs, useJob, JobUtils } from '../modules/jobs';
@@ -277,7 +277,7 @@ export default function JobsPage() {
         ) : jobs.length === 0 ? (
           <div className="text-center py-12">
             <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl">🎨</span>
+              <span className="text-3xl">��</span>
             </div>
             <h3 className="text-xl font-bold text-white mb-2">No Jobs Yet</h3>
             <p className="text-zinc-400 mb-6">Start creating with AI to see your jobs here</p>
