@@ -532,6 +532,9 @@ function App() {
         <TrialBadge />
         <TrialPaywallContainer />
         <TrialDebug />
+
+        {/* Network Status */}
+        <NetworkStatus />
       </ToastProvider>
     </QueryClientProvider>
   );
