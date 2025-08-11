@@ -237,6 +237,12 @@ function App() {
               </MobileLayout>
             </ProtectedRoute>
           } />
+
+          <Route path="/inbox/:threadId" element={
+            <ProtectedRoute user={currentUser}>
+              <InboxThreadPage />
+            </ProtectedRoute>
+          } />
           
           <Route path="/profile" element={
             <ProtectedRoute user={currentUser}>
