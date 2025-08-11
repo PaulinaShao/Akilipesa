@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { callService, type StartCallParams, type CallMetrics, type CallParticipant } from '@/lib/callService';
 
 export interface User {
   id: string;
