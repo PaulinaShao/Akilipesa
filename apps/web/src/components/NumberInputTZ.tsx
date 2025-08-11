@@ -69,8 +69,6 @@ const NumberInputTZ = forwardRef<HTMLInputElement, NumberInputTZProps>(
           aria-label="Tanzania phone number"
           value={getDisplayValue()}
           onInput={handleInput}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
           placeholder={placeholder}
           disabled={disabled}
           className={cn(
