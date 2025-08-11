@@ -265,9 +265,15 @@ export default function SearchPage() {
                             <span>{user.category}</span>
                           </div>
                         </div>
-                        <button className="btn-outline text-sm px-4 py-2">
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            console.log('Follow user:', user.username);
+                          }}
+                          className="btn-outline text-sm px-4 py-2 cursor-pointer"
+                        >
                           Follow
-                        </button>
+                        </div>
                       </div>
                     </button>
                   ))}
