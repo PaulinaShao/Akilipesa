@@ -42,6 +42,7 @@ import ReferralsPage from '@/pages/ReferralsPage';
 import SettingsPage from '@/pages/SettingsPage';
 import ChatPage from '@/pages/ChatPage';
 import PlansPage from '@/pages/PlansPage';
+import JobsPage from '@/pages/JobsPage';
 
 // Admin Guard Component
 function AdminRoute({ children, user }: { children: React.ReactNode; user: User | null }) {
