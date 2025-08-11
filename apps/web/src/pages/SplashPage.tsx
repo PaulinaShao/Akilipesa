@@ -5,7 +5,7 @@ import '@/styles/sparkle.css';
 
 export default function SplashPage() {
   const navigate = useNavigate();
-  const [showSparkles, setShowSparkles] = useState(true);
+  const [showSparkles] = useState(true);
 
   useEffect(() => {
     // Check if user has seen splash before
