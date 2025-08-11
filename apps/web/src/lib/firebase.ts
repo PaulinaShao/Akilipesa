@@ -18,6 +18,7 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firebase services
 export const auth = getAuth(app);
 export const firestore = getFirestore(app);
+export const db = firestore; // Alias for convenience
 export const functions = getFunctions(app);
 
 // Connect to emulators in development
