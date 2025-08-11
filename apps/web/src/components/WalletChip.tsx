@@ -68,20 +68,20 @@ export default function WalletChip({ className, balance, plan }: WalletChipProps
       {/* Balance Info */}
       <div className="flex flex-col items-start">
         <div className="flex items-center space-x-1">
-          <span className="text-white font-bold text-sm">
+          <span className="text-[var(--tz-ink)] font-semibold text-sm">
             {formatBalance(displayBalance)} TSH
           </span>
           {getPlanBadge(displayPlan) && (
             <span className={cn(
               'text-xs font-medium px-1.5 py-0.5 rounded-full',
-              'bg-white/20',
+              'bg-[var(--tz-gem-500)]/20 text-[var(--tz-gem-500)]',
               getPlanColor(displayPlan)
             )}>
               {getPlanBadge(displayPlan)}
             </span>
           )}
         </div>
-        <span className="text-white/60 text-xs">Tap to add funds</span>
+        <span className="text-[var(--tz-muted)] text-xs">Tap to add funds</span>
       </div>
       
       {/* Add Funds Icon */}
