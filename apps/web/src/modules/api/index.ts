@@ -261,6 +261,13 @@ export function subscribeUserJobs(userId: string, callback: (jobs: Job[]) => voi
  */
 export async function finishCall(data: CallFinishData): Promise<void> {
   try {
+    const { isFirebaseDemoMode } = await import('../lib/firebase');
+
+    if (isFirebaseDemoMode) {
+      console.log('Demo mode: call finished locally:', data);
+      return;
+    }
+
     const endCall = httpsCallable(functions, 'endCall');
     await endCall(data);
   } catch (error) {
