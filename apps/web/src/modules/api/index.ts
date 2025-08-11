@@ -3,7 +3,7 @@ import { doc, onSnapshot, collection, query, where, orderBy } from 'firebase/fir
 import { functions, db } from '../../lib/firebase';
 
 export interface JobInput {
-  type: 'image' | 'video' | 'audio' | 'voice' | 'music';
+  type: 'image' | 'video' | 'audio' | 'voice' | 'music' | 'unknown';
   prompt?: string;
   imageUrl?: string;
   audioUrl?: string;
