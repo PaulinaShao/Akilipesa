@@ -412,8 +412,8 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Plan Banner */}
-      <PlanBanner plan={mockUserPlan} />
+      {/* Plan Banner - only show for AkiliPesa chat */}
+      {isAkiliPesaChat && <PlanBanner plan={mockUserPlan} />}
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-1">
