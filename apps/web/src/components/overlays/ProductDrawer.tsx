@@ -55,6 +55,25 @@ function ProductCard({
     onToggleFavorite(product.id);
   };
 
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    onLike(product.id);
+  };
+
+  const handleCopyLink = async () => {
+    const productUrl = `${window.location.origin}/product/${product.id}`;
+    await navigator.clipboard.writeText(productUrl);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
+    onCopyLink(product.id);
+    setShowMoreMenu(false);
+  };
+
+  const handleReport = () => {
+    onReport(product.id);
+    setShowMoreMenu(false);
+  };
+
   return (
     <div className="card-gem p-4 space-y-4">
       {/* Product image */}
