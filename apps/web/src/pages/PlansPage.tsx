@@ -292,7 +292,7 @@ export default function PlansPage() {
 
       {/* Plans Grid */}
       <div className="px-4 space-y-4">
-        {plans?.map((plan) => {
+        {plans?.map((plan: Plan) => {
           const IconComponent = plan.icon;
           const isCurrentPlan = plan.tier === user?.plan;
           const price = selectedBilling === 'yearly' ? getYearlyPrice(plan.price) : plan.price;
