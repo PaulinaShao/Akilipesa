@@ -104,6 +104,8 @@ function formatCurrency(amount: number): string {
 export default function ProfilePage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('posts');
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
 
   return (
     <div className="h-screen-safe bg-gem-dark overflow-y-auto">
