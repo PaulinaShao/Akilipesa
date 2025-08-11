@@ -23,39 +23,43 @@ export default function CallPage() {
   const [showLowCreditsWarning, setShowLowCreditsWarning] = useState(false);
   
   const [localAudioEnabled, setLocalAudioEnabled] = useState(true);
-  const [localVideoEnabled, setLocalVideoEnabled] = useState(mode === 'video');
+  const [localVideoEnabled, setLocalVideoEnabled] = useState(callType === 'video');
   const [cameraFacing, setCameraFacing] = useState<'user' | 'environment'>('user');
 
+  // Redirect if no active call
   useEffect(() => {
-    // Simulate connection
-    const timeout = setTimeout(() => {
-      setCallState(prev => ({ ...prev, isConnected: true }));
-    }, 2000);
-
-    // Start call timer
-    const interval = setInterval(() => {
-      setCallState(prev => ({ 
-        ...prev, 
-        duration: prev.isConnected ? prev.duration + 1 : prev.duration 
-      }));
-    }, 1000);
-
-    // Simulate video stream (in real app, this would be WebRTC)
-    if (mode === 'video' && videoRef.current) {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-        .then(stream => {
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-          }
-        })
-        .catch(console.error);
+    if (!activeCall) {
+      navigate('/reels');
+      return;
     }
+  }, [activeCall, navigate]);
 
+  // Monitor credits and show warning
+  useEffect(() => {
+    if (activeCall?.metrics) {
+      const { remainingCredits, creditsPerSecond } = activeCall.metrics;
+      const warningThreshold = creditsPerSecond * 30; // 30 seconds warning
+
+      if (remainingCredits <= warningThreshold && remainingCredits > 0) {
+        setShowLowCreditsWarning(true);
+      } else {
+        setShowLowCreditsWarning(false);
+      }
+    }
+  }, [activeCall?.metrics]);
+
+  // Clean up when component unmounts
+  useEffect(() => {
     return () => {
-      clearTimeout(timeout);
-      clearInterval(interval);
+      if (activeCall) {
+        endCall();
+      }
     };
-  }, [mode]);
+  }, []);
+
+  if (!activeCall) {
+    return null; // Will redirect due to useEffect above
+  }
 
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
