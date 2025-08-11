@@ -167,7 +167,7 @@ class CallService {
         name: 'You',
         isLocal: true,
         audioTrack: this.localAudioTrack,
-        videoTrack: this.localVideoTrack,
+        videoTrack: this.localVideoTrack || undefined,
         isMuted: false,
         isVideoOff: false,
       });
