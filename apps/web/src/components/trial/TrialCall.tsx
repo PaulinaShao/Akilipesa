@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Phone, PhoneOff, Video, VideoOff, Clock, AlertCircle } from 'lucide-react';
 import { useTrialStore } from '../../state/trialStore';
-import { useAuthStore } from '../../store';
+import { useAppStore } from '../../store';
 import { requestTrialCall, requestAuthenticatedCall, rtcEngine, formatDuration, RTCToken } from '../../lib/rtc';
 import { useGatedCall } from '../../hooks/useAuthGate';
 
