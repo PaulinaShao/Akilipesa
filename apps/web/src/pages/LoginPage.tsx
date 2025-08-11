@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Phone, Mail, ArrowLeft, MessageCircle } from 'lucide-react';
 import TanzaniteLogo from '@/components/TanzaniteLogo';
-import NumberInputTZ from '@/components/NumberInputTZ';
+import PhoneInputTZ from '@/components/PhoneInputTZ';
 import RecaptchaBadge from '@/components/RecaptchaBadge';
 import { useToast } from '@/hooks/useToast';
 import { cn, isValidTanzanianPhone, isValidEmail } from '@/lib/utils';
