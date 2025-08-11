@@ -5,7 +5,6 @@ export default function PhoneInput({ value, onChange, error }: {
   value?: string; onChange: (e164: string, local: string) => void; error?: string;
 }) {
   const [local, setLocal] = useState(value?.replace("+255","") ?? "");
-  const { e164 } = normalizeTZ(local);
 
   return (
     <div className="w-full">
