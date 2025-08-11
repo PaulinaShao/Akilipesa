@@ -5,6 +5,15 @@ import { cn } from '@/lib/utils';
 import WalletChip from '@/components/WalletChip';
 import StoriesRow from '@/components/StoriesRow';
 import { useAppStore } from '@/store';
+import {
+  useGatedLike,
+  useGatedComment,
+  useGatedShare,
+  useGatedFollow,
+  useGatedMessage,
+  useGatedBuy,
+  useGatedLive
+} from '@/hooks/useAuthGate';
 
 interface ReelData {
   id: string;
