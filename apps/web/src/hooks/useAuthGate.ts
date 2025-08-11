@@ -1,41 +1,143 @@
-import { useCallback } from 'react';
-import { useUIStore } from '@/state/uiStore';
-import { useAppStore } from '@/store';
+import { useCallback, useState } from 'react';
+import { useUiStore } from '../state/uiStore';
+import { useAuthStore } from '../store';
+import { useTrialStore } from '../state/trialStore';
+import { TrialPaywall } from '../components/trial/TrialPaywall';
 
-type GatedAction = 'like' | 'comment' | 'follow' | 'share' | 'message' | 'buy' | 'live';
+type GatedAction = 'like' | 'comment' | 'follow' | 'share' | 'message' | 'buy' | 'live' | 'call' | 'chat';
+type TrialAction = 'reaction' | 'call' | 'chat';
 
 interface UseAuthGateReturn {
   requireAuth: (action: () => void, actionType: GatedAction) => void;
+  requireAuthOrTrial: (action: () => Promise<void> | void, actionType: GatedAction) => Promise<void>;
   isAuthenticated: boolean;
 }
 
+interface UseTrialGateReturn {
+  tryWithTrial: (action: () => Promise<void> | void, trialType: TrialAction) => Promise<boolean>;
+  canUseTrial: (trialType: TrialAction) => boolean;
+  showPaywall: (trialType: TrialAction) => void;
+}
+
 export function useAuthGate(): UseAuthGateReturn {
-  const { isAuthenticated } = useAppStore();
-  const { openAuthSheet } = useUIStore();
+  const { user } = useAuthStore();
+  const { openAuthSheet } = useUiStore();
 
   const requireAuth = useCallback((action: () => void, actionType: GatedAction) => {
-    if (isAuthenticated) {
+    if (user) {
       // User is authenticated, execute action immediately
       action();
     } else {
       // User is not authenticated, open auth sheet with pending action
       openAuthSheet(action, actionType);
     }
-  }, [isAuthenticated, openAuthSheet]);
+  }, [user, openAuthSheet]);
+
+  const requireAuthOrTrial = useCallback(async (action: () => Promise<void> | void, actionType: GatedAction) => {
+    if (user) {
+      // User is authenticated, execute action immediately
+      await action();
+    } else {
+      // User is not authenticated, open auth sheet with pending action
+      openAuthSheet(action, actionType);
+    }
+  }, [user, openAuthSheet]);
 
   return {
     requireAuth,
-    isAuthenticated,
+    requireAuthOrTrial,
+    isAuthenticated: !!user,
   };
 }
 
-// Helper hooks for specific actions
+export function useTrialGate(): UseTrialGateReturn {
+  const { canUseFeature, incrementLocalReactions } = useTrialStore();
+  const [paywallState, setPaywallState] = useState<{ isOpen: boolean; feature?: TrialAction }>({ isOpen: false });
+
+  const canUseTrial = useCallback((trialType: TrialAction) => {
+    return canUseFeature(trialType === 'reaction' ? 'reaction' : trialType);
+  }, [canUseFeature]);
+
+  const showPaywall = useCallback((trialType: TrialAction) => {
+    setPaywallState({ isOpen: true, feature: trialType });
+  }, []);
+
+  const tryWithTrial = useCallback(async (action: () => Promise<void> | void, trialType: TrialAction): Promise<boolean> => {
+    if (!canUseTrial(trialType)) {
+      showPaywall(trialType);
+      return false;
+    }
+
+    try {
+      // Execute the action
+      await action();
+
+      // If it's a reaction, increment local counter
+      if (trialType === 'reaction') {
+        incrementLocalReactions();
+      }
+
+      return true;
+    } catch (error) {
+      console.error(`Trial ${trialType} action failed:`, error);
+      
+      // Check if it's a quota exceeded error
+      if (error instanceof Error && error.message.includes('quota')) {
+        showPaywall(trialType);
+      }
+      
+      return false;
+    }
+  }, [canUseTrial, incrementLocalReactions, showPaywall]);
+
+  return {
+    tryWithTrial,
+    canUseTrial,
+    showPaywall,
+  };
+}
+
+// Combined hook for seamless auth + trial experience
+export function useGatedAction() {
+  const { user } = useAuthStore();
+  const { openAuthSheet } = useUiStore();
+  const { tryWithTrial, showPaywall } = useTrialGate();
+
+  const executeGatedAction = useCallback(async (
+    action: () => Promise<void> | void,
+    actionType: GatedAction,
+    allowTrial: boolean = false,
+    trialType?: TrialAction
+  ) => {
+    if (user) {
+      // Authenticated user - execute immediately
+      await action();
+      return;
+    }
+
+    if (allowTrial && trialType) {
+      // Try with trial first
+      const success = await tryWithTrial(action, trialType);
+      if (!success) {
+        // Trial failed/exhausted - this will show paywall
+        return;
+      }
+    } else {
+      // No trial allowed - require auth
+      openAuthSheet(action, actionType);
+    }
+  }, [user, openAuthSheet, tryWithTrial]);
+
+  return executeGatedAction;
+}
+
+// Helper hooks for specific actions with trial support
 export function useGatedLike() {
-  const { requireAuth } = useAuthGate();
+  const executeGatedAction = useGatedAction();
   
   return useCallback((likeAction: () => void) => {
-    requireAuth(likeAction, 'like');
-  }, [requireAuth]);
+    executeGatedAction(likeAction, 'like', true, 'reaction');
+  }, [executeGatedAction]);
 }
 
 export function useGatedComment() {
@@ -84,4 +186,50 @@ export function useGatedLive() {
   return useCallback((liveAction: () => void) => {
     requireAuth(liveAction, 'live');
   }, [requireAuth]);
+}
+
+// Trial-specific hooks
+export function useGatedCall() {
+  const executeGatedAction = useGatedAction();
+  
+  return useCallback(async (callAction: () => Promise<void>) => {
+    await executeGatedAction(callAction, 'call', true, 'call');
+  }, [executeGatedAction]);
+}
+
+export function useGatedChat() {
+  const executeGatedAction = useGatedAction();
+  
+  return useCallback(async (chatAction: () => Promise<void>) => {
+    await executeGatedAction(chatAction, 'chat', true, 'chat');
+  }, [executeGatedAction]);
+}
+
+// React components for trial paywall integration
+export function TrialPaywallProvider({ children }: { children: React.ReactNode }) {
+  const [paywallState, setPaywallState] = useState<{ isOpen: boolean; feature?: TrialAction }>({ isOpen: false });
+  const { openAuthSheet } = useUiStore();
+
+  const handleSignUp = () => {
+    setPaywallState({ isOpen: false });
+    openAuthSheet(() => {}, 'follow'); // Default action for signup
+  };
+
+  const handleClose = () => {
+    setPaywallState({ isOpen: false });
+  };
+
+  return (
+    <>
+      {children}
+      {paywallState.feature && (
+        <TrialPaywall
+          isOpen={paywallState.isOpen}
+          feature={paywallState.feature}
+          onClose={handleClose}
+          onSignUp={handleSignUp}
+        />
+      )}
+    </>
+  );
 }
