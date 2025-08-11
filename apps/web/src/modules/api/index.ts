@@ -63,12 +63,31 @@ export async function startJob(type: string, inputs: any): Promise<string> {
 
     const data = result.data as { jobId: string };
     return data.jobId;
-  } catch (error) {
-    console.error('Failed to start job:', error);
-    
-    // Offline fallback - create mock job ID
-    const mockJobId = `job_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    console.warn('Using offline mock job ID:', mockJobId);
+  } catch (error: any) {
+    console.warn('Failed to start job (using offline mode):', error?.message || error);
+
+    // Enhanced offline fallback - create mock job ID with type info
+    const mockJobId = `offline_${type}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    console.log('Created offline job ID:', mockJobId);
+
+    // Store offline job in localStorage for consistency
+    const offlineJob = {
+      id: mockJobId,
+      type,
+      inputs,
+      status: 'queued',
+      createdAt: new Date().toISOString(),
+      isOffline: true
+    };
+
+    try {
+      const existingJobs = JSON.parse(localStorage.getItem('offlineJobs') || '[]');
+      existingJobs.push(offlineJob);
+      localStorage.setItem('offlineJobs', JSON.stringify(existingJobs));
+    } catch (storageError) {
+      console.warn('Failed to store offline job:', storageError);
+    }
+
     return mockJobId;
   }
 }
