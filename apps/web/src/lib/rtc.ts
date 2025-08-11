@@ -108,7 +108,6 @@ export class RTCEngine {
 
     this.channel = null;
     this.uid = null;
-    this._token = null;
     this.maxDuration = 0;
     this.startTime = 0;
     this.onCallEnd = undefined;
