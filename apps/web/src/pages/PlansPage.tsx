@@ -363,7 +363,7 @@ export default function PlansPage() {
 
                 {/* Features */}
                 <div className="space-y-3 mb-6">
-                  {plan.features.map((feature, index) => (
+                  {plan.features.map((feature: string, index: number) => (
                     <div key={index} className="flex items-center space-x-3">
                       <Check className="w-4 h-4 text-green-400 flex-shrink-0" />
                       <span className="text-white/80 text-sm">{feature}</span>
