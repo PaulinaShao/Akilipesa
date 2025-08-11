@@ -70,7 +70,7 @@ export class RTCEngine {
   private token: string | null = null;
   private maxDuration: number = 0;
   private startTime: number = 0;
-  private durationTimer: NodeJS.Timeout | null = null;
+  private durationTimer: number | null = null;
   private onCallEnd?: () => void;
 
   async join(rtcToken: RTCToken, onCallEnd?: () => void): Promise<void> {
