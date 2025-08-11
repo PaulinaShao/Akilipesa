@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, ShoppingCart, Star, Share, Heart, ExternalLink } from 'lucide-react';
+import { X, ShoppingCart, Star, Share, Heart, ExternalLink, MessageCircle, ThumbsUp, Phone, Video, MoreHorizontal, Flag, Copy, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Product } from '@/features/feed/types';
 import { formatCurrency } from '@/features/feed/mockData';
