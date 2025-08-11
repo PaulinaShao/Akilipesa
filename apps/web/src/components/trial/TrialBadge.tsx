@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTrialStore } from '../../state/trialStore';
-import { useAuthStore } from '../../store';
+import { useAppStore } from '../../store';
 
 export const TrialBadge: React.FC = () => {
-  const { user } = useAuthStore();
-  const { config, canUseFeature, getRemainingQuota, isInHappyHour } = useTrialStore();
+  const { user } = useAppStore();
+  const { config, getRemainingQuota, isInHappyHour } = useTrialStore();
 
   // Don't show for authenticated users
   if (user || !config?.enabled) {
