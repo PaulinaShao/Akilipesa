@@ -155,15 +155,30 @@ export default function ProfilePage() {
         {/* Stats */}
         <div className="grid grid-cols-4 gap-4 mb-4">
           {[
-            { label: 'Followers', value: formatNumber(profileData.stats.followers) },
-            { label: 'Following', value: formatNumber(profileData.stats.following) },
+            {
+              label: 'Followers',
+              value: formatNumber(profileData.stats.followers),
+              clickable: true,
+              route: `/profile/${profileData.user.id}/followers?tab=followers`
+            },
+            {
+              label: 'Following',
+              value: formatNumber(profileData.stats.following),
+              clickable: true,
+              route: `/profile/${profileData.user.id}/followers?tab=following`
+            },
             { label: 'Likes', value: formatNumber(profileData.stats.likes) },
             { label: 'Views', value: formatNumber(profileData.stats.views) },
           ].map((stat) => (
-            <div key={stat.label} className="text-center">
+            <button
+              key={stat.label}
+              className={`text-center ${stat.clickable ? 'hover:bg-white/10 rounded-lg p-2 transition-colors' : 'p-2'}`}
+              onClick={stat.clickable ? () => navigate(stat.route!) : undefined}
+              disabled={!stat.clickable}
+            >
               <div className="text-white font-bold text-lg">{stat.value}</div>
               <div className="text-white/60 text-xs">{stat.label}</div>
-            </div>
+            </button>
           ))}
         </div>
 
