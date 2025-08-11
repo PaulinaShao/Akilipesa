@@ -508,30 +508,41 @@ export default function ReelsPage() {
   };
 
   const handleAudioCall = (userId: string) => {
-    navigate(`/call/new?mode=audio&target=${userId}`);
+    gatedMessage(() => {
+      navigate(`/call/new?mode=audio&target=${userId}`);
+    });
   };
 
   const handleVideoCall = (userId: string) => {
-    navigate(`/call/new?mode=video&target=${userId}`);
+    gatedMessage(() => {
+      navigate(`/call/new?mode=video&target=${userId}`);
+    });
   };
 
   const handleLiveCall = (reelId: string) => {
-    const reel = reels.find(r => r.id === reelId);
-    if (reel?.user.isLive) {
-      navigate(`/live/${reel.user.id}`);
-    }
+    gatedLive(() => {
+      const reel = reels.find(r => r.id === reelId);
+      if (reel?.user.isLive) {
+        navigate(`/live/${reel.user.id}`);
+      }
+    });
   };
 
   const handleJoin = (reelId: string) => {
-    const reel = reels.find(r => r.id === reelId);
-    if (reel) {
-      startCall({ type: 'video', targetId: reel.user.id });
-      navigate(`/call/${reel.user.id}?type=video`);
-    }
+    gatedLive(() => {
+      const reel = reels.find(r => r.id === reelId);
+      if (reel) {
+        startCall({ type: 'video', targetId: reel.user.id });
+        navigate(`/call/${reel.user.id}?type=video`);
+      }
+    });
   };
 
   const handleFollow = (userId: string) => {
-    console.log('Follow user:', userId);
+    gatedFollow(() => {
+      console.log('Follow user:', userId);
+      // TODO: Implement actual follow functionality
+    });
   };
 
   const handleProfileClick = (userId: string) => {
