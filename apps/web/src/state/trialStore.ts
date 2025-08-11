@@ -59,24 +59,33 @@ async function issueTrialToken(): Promise<string> {
 }
 
 async function fetchTrialConfig(): Promise<TrialConfig> {
-  const { doc, getDoc } = await import('firebase/firestore');
-  const { db } = await import('../lib/firebase');
-  
-  const configDoc = await getDoc(doc(db, 'trialConfig', 'global'));
-  
-  if (!configDoc.exists()) {
-    return {
-      enabled: false,
-      chatMessagesPerDay: 3,
-      callsPerDay: 1,
-      callSeconds: 90,
-      reactionLimit: 5,
-      happyHours: [],
-      requireHappyHour: false,
-    };
+  try {
+    const { doc, getDoc } = await import('firebase/firestore');
+    const { db } = await import('../lib/firebase');
+
+    const configDoc = await getDoc(doc(db, 'trialConfig', 'global'));
+
+    if (!configDoc.exists()) {
+      return getDefaultTrialConfig();
+    }
+
+    return configDoc.data() as TrialConfig;
+  } catch (error) {
+    console.warn('Failed to fetch trial config from server, using defaults:', error);
+    return getDefaultTrialConfig();
   }
-  
-  return configDoc.data() as TrialConfig;
+}
+
+function getDefaultTrialConfig(): TrialConfig {
+  return {
+    enabled: true, // Enable trials by default in offline mode
+    chatMessagesPerDay: 3,
+    callsPerDay: 1,
+    callSeconds: 90,
+    reactionLimit: 5,
+    happyHours: [],
+    requireHappyHour: false,
+  };
 }
 
 async function fetchTrialUsage(deviceToken: string): Promise<TrialUsage | null> {
