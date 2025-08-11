@@ -250,18 +250,12 @@ export default function ProfilePage() {
         {activeTab === 'posts' && (
           <div className="profile-grid">
             {mockPosts.map((post) => (
-              <div key={post.id} className="profile-grid-item group cursor-pointer">
+              <div key={post.id} className="profile-grid-item cursor-pointer">
                 <img
                   src={post.thumbnail}
                   alt={`Post ${post.id}`}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex-center">
-                  <div className="text-center text-white">
-                    <div className="text-sm font-semibold">{formatNumber(post.views)}</div>
-                    <div className="text-xs">views</div>
-                  </div>
-                </div>
               </div>
             ))}
           </div>
