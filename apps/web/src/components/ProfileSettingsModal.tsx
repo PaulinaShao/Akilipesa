@@ -1,20 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  X, 
-  Settings, 
-  Edit3, 
-  Bell, 
-  Shield, 
-  Eye, 
-  Users, 
-  Block, 
-  Flag, 
+import {
+  X,
+  Settings,
+  Edit3,
+  Bell,
+  Shield,
+  Eye,
+  UserX,
+  Flag,
   Copy,
   Share,
   Download,
-  Archive,
-  Trash2
+  Archive
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
