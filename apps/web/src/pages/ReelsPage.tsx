@@ -437,9 +437,6 @@ export default function ReelsPage() {
       setCurrentIndex(newIndex);
     }
 
-    // Update scroll position and visibility states
-    setScrollTop(scrollTop);
-
     // Hide stories after scrolling down 120px, show when back at top
     setStoriesVisible(scrollTop < 120);
 
