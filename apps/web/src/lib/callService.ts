@@ -116,7 +116,7 @@ class CallService {
         token: 'mock-agora-token-' + Date.now(),
         channel: `call-${params.targetId || params.agentId || 'agent'}-${Date.now()}`,
         uid: Math.floor(Math.random() * 10000),
-        appId: process.env.VITE_AGORA_APP_ID || 'mock-app-id',
+        appId: import.meta.env.VITE_AGORA_APP_ID || 'mock-app-id',
         expiresAt: Date.now() + (24 * 60 * 60 * 1000), // 24 hours
       };
 
