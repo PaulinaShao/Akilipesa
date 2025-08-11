@@ -433,6 +433,15 @@ export default function ReelsPage() {
   const navigate = useNavigate();
   const { setStoriesVisible, setBalanceBannerVisible, startCall } = useAppStore();
 
+  // Auth gate hooks
+  const gatedLike = useGatedLike();
+  const gatedComment = useGatedComment();
+  const gatedShare = useGatedShare();
+  const gatedFollow = useGatedFollow();
+  const gatedMessage = useGatedMessage();
+  const gatedBuy = useGatedBuy();
+  const gatedLive = useGatedLive();
+
   const handleScroll = useCallback(() => {
     if (!containerRef.current) return;
 
