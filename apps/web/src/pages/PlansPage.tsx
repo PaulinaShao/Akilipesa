@@ -7,13 +7,10 @@ import {
   Star, 
   Zap, 
   Users, 
-  CreditCard,
   Shield,
   Smartphone,
-  Video,
   MessageCircle,
-  TrendingUp,
-  Sparkles
+  TrendingUp
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store';
