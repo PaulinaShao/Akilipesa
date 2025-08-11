@@ -77,7 +77,7 @@ export default function CodeInput({
 
   return (
     <div className="w-full">
-      <label className="block text-sm text-zinc-300 mb-3">Verification code</label>
+      <label className="block text-sm text-[var(--tz-ink)] font-medium mb-3">Verification code</label>
       <div className="flex justify-center gap-3 mb-2">
         {Array.from({ length }).map((_, index) => (
           <motion.input
