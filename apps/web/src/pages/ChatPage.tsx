@@ -382,8 +382,12 @@ export default function ChatPage() {
           />
           
           <div className="flex-1">
-            <h1 className="font-bold text-white">AkiliPesa AI</h1>
-            <p className="text-sm text-white/60">Financial Advisor • Online</p>
+            <h1 className="font-bold text-white">
+              {isAkiliPesaChat ? 'AkiliPesa AI' : 'Chat User'}
+            </h1>
+            <p className="text-sm text-white/60">
+              {isAkiliPesaChat ? 'Financial Advisor • Online' : 'Last seen recently'}
+            </p>
           </div>
           
           <div className="flex items-center space-x-2">
