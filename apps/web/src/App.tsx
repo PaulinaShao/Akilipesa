@@ -271,6 +271,14 @@ function App() {
             </ProtectedRoute>
           } />
 
+          <Route path="/profile/:userId/followers" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <FollowersPage />
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
           <Route path="/product/:id" element={
             <ProtectedRoute user={currentUser}>
               <MobileLayout>
