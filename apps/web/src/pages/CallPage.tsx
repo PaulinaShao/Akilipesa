@@ -68,55 +68,49 @@ export default function CallPage() {
   };
 
   const togglePrivacy = () => {
-    setCallState(prev => ({ ...prev, isPrivate: !prev.isPrivate }));
+    setIsPrivate(!isPrivate);
   };
 
   const addAkiliAgent = () => {
-    const akiliAgent: CallParticipant = {
-      id: 'akili',
-      name: 'AkiliPesa Assistant',
-      avatar: '',
-      isHost: false,
-      audioEnabled: true,
-      videoEnabled: false
-    };
-    
-    setCallState(prev => ({
-      ...prev,
-      participants: [...prev.participants, akiliAgent]
-    }));
+    // TODO: Implement adding AI agent to call
+    console.log('Add AkiliPesa Assistant to call');
   };
 
-  const endCall = () => {
-    navigate('/reels');
+  const handleEndCall = async () => {
+    try {
+      await endCall();
+      navigate('/reels');
+    } catch (error) {
+      console.error('Failed to end call:', error);
+      navigate('/reels');
+    }
   };
 
-  const toggleMute = () => {
-    setLocalAudioEnabled(!localAudioEnabled);
-    setCallState(prev => ({
-      ...prev,
-      participants: prev.participants.map(p => 
-        p.isCurrentUser ? { ...p, audioEnabled: !localAudioEnabled } : p
-      )
-    }));
+  const toggleMute = async () => {
+    try {
+      const isMuted = await callService.toggleMute();
+      setLocalAudioEnabled(!isMuted);
+    } catch (error) {
+      console.error('Failed to toggle mute:', error);
+    }
   };
 
-  const toggleVideo = () => {
-    setLocalVideoEnabled(!localVideoEnabled);
-    setCallState(prev => ({
-      ...prev,
-      participants: prev.participants.map(p => 
-        p.isCurrentUser ? { ...p, videoEnabled: !localVideoEnabled } : p
-      )
-    }));
+  const toggleVideo = async () => {
+    try {
+      const isVideoOff = await callService.toggleVideo();
+      setLocalVideoEnabled(!isVideoOff);
+    } catch (error) {
+      console.error('Failed to toggle video:', error);
+    }
   };
 
   const switchCamera = () => {
     setCameraFacing(cameraFacing === 'user' ? 'environment' : 'user');
+    // TODO: Implement camera switching with Agora
   };
 
   const addGuest = () => {
-    // In real app, this would open a contact selector
+    // TODO: Implement adding guest to call
     console.log('Add guest to call');
   };
 
