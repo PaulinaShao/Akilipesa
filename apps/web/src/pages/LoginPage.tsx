@@ -6,7 +6,8 @@ import { useAppStore } from '@/store';
 import PhoneInput from '@/components/auth/PhoneInput';
 import CodeInput from '@/components/auth/CodeInput';
 import GoogleButton from '@/components/auth/GoogleButton';
-import { isValidTZ } from '@/lib/phone';
+import AkiliLogo from '@/components/AkiliLogo';
+import { isValidTZ, formatTZPhone } from '@/lib/phone';
 
 export default function LoginPage() {
   const [activeTab, setActiveTab] = useState<'phone' | 'email'>('phone');
@@ -138,6 +139,12 @@ export default function LoginPage() {
     }
   };
 
+  const handlePhoneChange = (value: string) => {
+    setPhoneLocal(value);
+    setPhoneE164(formatTZPhone(value));
+    setError('');
+  };
+
   const handleResend = () => {
     if (resendTimer > 0) return;
     handleSendCode();
@@ -154,7 +161,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0b0c14] via-[#1a1235] to-[#2d1b69] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-b from-[var(--tz-night)] via-[#1a1235] to-[#2d1b69] flex items-center justify-center p-6">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="mb-8">
@@ -162,22 +169,22 @@ export default function LoginPage() {
             onClick={handleBack}
             className="p-2 -ml-2 hover:bg-white/10 rounded-full transition-colors mb-6"
           >
-            <ArrowLeft className="w-6 h-6 text-zinc-400" />
+            <ArrowLeft className="w-6 h-6 text-[var(--tz-muted)]" />
           </button>
           
           <div className="text-center">
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="w-16 h-16 bg-gradient-to-br from-violet-400 via-purple-500 to-indigo-600 rounded-lg transform rotate-45 mx-auto mb-6 shadow-xl"
+              className="mb-6"
             >
-              <div className="absolute inset-2 bg-gradient-to-br from-white/30 to-transparent rounded" />
+              <AkiliLogo variant="hero" />
             </motion.div>
             
-            <h1 className="text-3xl font-bold text-white mb-2">
+            <h1 className="text-3xl font-bold text-[var(--tz-ink)] mb-2">
               Sign in to AkiliPesa
             </h1>
-            <p className="text-zinc-400">
+            <p className="text-[var(--tz-muted)]">
               Save your likes, follow creators, buy & earn rewards.
             </p>
           </div>
@@ -189,98 +196,114 @@ export default function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             className="space-y-6"
           >
-            {/* Tabs */}
-            <div className="flex bg-zinc-800 rounded-xl p-1">
-              <button
-                onClick={() => setActiveTab('phone')}
-                className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
-                  activeTab === 'phone'
-                    ? 'bg-violet-600 text-white'
-                    : 'text-zinc-400 hover:text-white'
-                }`}
-              >
-                Phone
-              </button>
-              <button
-                onClick={() => setActiveTab('email')}
-                className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
-                  activeTab === 'email'
-                    ? 'bg-violet-600 text-white'
-                    : 'text-zinc-400 hover:text-white'
-                }`}
-              >
-                Email
-              </button>
-            </div>
-
-            {/* Input */}
-            {activeTab === 'phone' ? (
-              <PhoneInput
-                value={phoneE164}
-                onChange={(e164, local) => {
-                  setPhoneE164(e164);
-                  setPhoneLocal(local);
-                  setError('');
-                }}
-                error={error}
-              />
-            ) : (
-              <div>
-                <label className="block text-sm text-zinc-300 mb-2">Email address</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setError('');
-                  }}
-                  placeholder="hello@example.com"
-                  className="w-full px-4 py-3 bg-zinc-900/60 border border-zinc-700 rounded-xl text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
-                />
-                {error && <p className="mt-2 text-xs text-rose-400">{error}</p>}
+            {/* Glass Card Container */}
+            <div className="tz-glass-card p-6 space-y-6">
+              {/* Tabs */}
+              <div className="flex bg-black/20 rounded-xl p-1">
+                <button
+                  onClick={() => setActiveTab('phone')}
+                  className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
+                    activeTab === 'phone'
+                      ? 'tz-btn-primary'
+                      : 'text-[var(--tz-muted)] hover:text-[var(--tz-ink)]'
+                  }`}
+                >
+                  Phone
+                </button>
+                <button
+                  onClick={() => setActiveTab('email')}
+                  className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
+                    activeTab === 'email'
+                      ? 'tz-btn-primary'
+                      : 'text-[var(--tz-muted)] hover:text-[var(--tz-ink)]'
+                  }`}
+                >
+                  Email
+                </button>
               </div>
-            )}
 
-            {/* Send Code Button */}
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleSendCode}
-              disabled={loading}
-              className="w-full bg-violet-600 hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-xl transition-colors"
-            >
-              {loading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Sending code...
+              {/* Input */}
+              {activeTab === 'phone' ? (
+                <div>
+                  <label className="block text-sm text-[var(--tz-ink)] mb-2 font-medium">
+                    Phone number
+                  </label>
+                  <div className="tz-phone-input-container">
+                    <div className="tz-country-chip">
+                      🇹🇿 +255
+                    </div>
+                    <input
+                      type="tel"
+                      value={phoneLocal}
+                      onChange={(e) => handlePhoneChange(e.target.value)}
+                      placeholder="7XX XXX XXX"
+                      className="tz-input tz-phone-input"
+                      autoComplete="tel"
+                    />
+                  </div>
+                  {error && <p className="mt-2 text-xs text-rose-400">{error}</p>}
                 </div>
               ) : (
-                'Send code'
+                <div>
+                  <label className="block text-sm text-[var(--tz-ink)] mb-2 font-medium">
+                    Email address
+                  </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setError('');
+                    }}
+                    placeholder="hello@example.com"
+                    className="w-full px-4 py-3 tz-input"
+                    autoComplete="email"
+                  />
+                  {error && <p className="mt-2 text-xs text-rose-400">{error}</p>}
+                </div>
               )}
-            </motion.button>
 
-            {/* Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-zinc-700" />
+              {/* Send Code Button */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleSendCode}
+                disabled={loading}
+                className="w-full tz-btn-primary py-3 px-4 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Sending code...
+                  </div>
+                ) : (
+                  'Send code'
+                )}
+              </motion.button>
+
+              {/* Divider */}
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-white/10" />
+                </div>
+                <div className="relative flex justify-center">
+                  <span className="px-4 bg-[var(--glass-bg)] text-[var(--tz-muted)] text-sm">or</span>
+                </div>
               </div>
-              <div className="relative flex justify-center">
-                <span className="px-4 bg-[#1a1235] text-zinc-500 text-sm">or</span>
-              </div>
+
+              {/* Google Button */}
+              <GoogleButton onClick={handleGoogleAuth} loading={loading} />
             </div>
-
-            {/* Google Button */}
-            <GoogleButton onClick={handleGoogleAuth} loading={loading} />
 
             {/* Footer */}
             <div className="text-center">
-              <p className="text-xs text-zinc-500 leading-relaxed">
+              <p className="text-xs text-[var(--tz-muted)] leading-relaxed">
                 By continuing, you agree to our{' '}
-                <a href="/terms" className="text-violet-400 hover:text-violet-300">Terms</a>
+                <a href="/terms" className="text-[var(--tz-ice-400)] hover:text-white transition-colors">Terms</a>
                 {' • '}
-                <a href="/privacy" className="text-violet-400 hover:text-violet-300">Privacy</a>
+                <a href="/privacy" className="text-[var(--tz-ice-400)] hover:text-white transition-colors">Privacy</a>
                 {' • '}
-                <a href="/help" className="text-violet-400 hover:text-violet-300">Help</a>
+                <a href="/help" className="text-[var(--tz-ice-400)] hover:text-white transition-colors">Help</a>
               </p>
             </div>
           </motion.div>
@@ -292,44 +315,55 @@ export default function LoginPage() {
             animate={{ opacity: 1, x: 0 }}
             className="space-y-6"
           >
-            <CodeInput
-              value={code}
-              onChange={setCode}
-              error={error}
-              onComplete={handleVerifyCode}
-            />
+            <div className="tz-glass-card p-6 space-y-6">
+              <div className="text-center mb-4">
+                <h2 className="text-xl font-semibold text-[var(--tz-ink)] mb-2">
+                  Enter verification code
+                </h2>
+                <p className="text-[var(--tz-muted)] text-sm">
+                  We sent a 6-digit code to {activeTab === 'phone' ? formatTZPhone(phoneLocal) : email}
+                </p>
+              </div>
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleVerifyCode}
-              disabled={loading || code.length !== 6}
-              className="w-full bg-violet-600 hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-xl transition-colors"
-            >
-              {loading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Verifying...
-                </div>
-              ) : (
-                'Verify & continue'
-              )}
-            </motion.button>
+              <CodeInput
+                value={code}
+                onChange={setCode}
+                error={error}
+                onComplete={handleVerifyCode}
+              />
 
-            {/* Resend */}
-            <div className="text-center">
-              <p className="text-zinc-500 text-sm mb-2">Didn't receive the code?</p>
-              <button
-                onClick={handleResend}
-                disabled={resendTimer > 0}
-                className={`text-sm font-medium transition-colors ${
-                  resendTimer > 0
-                    ? 'text-zinc-600 cursor-not-allowed'
-                    : 'text-violet-400 hover:text-violet-300'
-                }`}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleVerifyCode}
+                disabled={loading || code.length !== 6}
+                className="w-full tz-btn-primary py-3 px-4 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {resendTimer > 0 ? `Resend in ${resendTimer}s` : 'Resend code'}
-              </button>
+                {loading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Verifying...
+                  </div>
+                ) : (
+                  'Verify & continue'
+                )}
+              </motion.button>
+
+              {/* Resend */}
+              <div className="text-center">
+                <p className="text-[var(--tz-muted)] text-sm mb-2">Didn't receive the code?</p>
+                <button
+                  onClick={handleResend}
+                  disabled={resendTimer > 0}
+                  className={`text-sm font-medium transition-colors ${
+                    resendTimer > 0
+                      ? 'text-[var(--tz-muted)] cursor-not-allowed'
+                      : 'text-[var(--tz-ice-400)] hover:text-white'
+                  }`}
+                >
+                  {resendTimer > 0 ? `Resend in ${resendTimer}s` : 'Resend code'}
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
@@ -340,31 +374,33 @@ export default function LoginPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="text-center space-y-6"
           >
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto"
-            >
-              <motion.svg
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                className="w-10 h-10 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            <div className="tz-glass-card p-8">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6"
               >
-                <motion.path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </motion.svg>
-            </motion.div>
-            <div>
-              <h3 className="text-xl font-semibold text-white mb-2">Welcome to AkiliPesa!</h3>
-              <p className="text-zinc-400 text-sm">You're all set. Redirecting...</p>
+                <motion.svg
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                  className="w-10 h-10 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <motion.path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </motion.svg>
+              </motion.div>
+              <div>
+                <h3 className="text-xl font-semibold text-[var(--tz-ink)] mb-2">Welcome to AkiliPesa!</h3>
+                <p className="text-[var(--tz-muted)] text-sm">You're all set. Redirecting...</p>
+              </div>
             </div>
           </motion.div>
         )}
