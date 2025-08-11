@@ -100,7 +100,26 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
-      setAppUser(firebaseUser); // Update app store
+
+      // Convert Firebase User to App User format
+      if (firebaseUser) {
+        const appUser = {
+          id: firebaseUser.uid,
+          name: firebaseUser.displayName || 'User',
+          username: firebaseUser.email?.split('@')[0] || 'user',
+          email: firebaseUser.email || '',
+          phone: firebaseUser.phoneNumber || '',
+          avatar: firebaseUser.photoURL || '',
+          verified: firebaseUser.emailVerified,
+          plan: 'free' as const,
+          balance: 0,
+          earnings: 0,
+        };
+        setAppUser(appUser);
+      } else {
+        setAppUser(null);
+      }
+
       setLoading(false);
     });
 
