@@ -1,0 +1,278 @@
+/* Tanzanite Brand Design System */
+
+:root {
+  /* Tanzanite Color Tokens */
+  --tz-night: #0B0B1A;
+  --tz-ink: #EDECF7;
+  --tz-muted: #B2ACCF;
+  --tz-gem-500: #6E3CE6;
+  --tz-gem-600: #5A2FD8;
+  --tz-gem-700: #4726C5;
+  --tz-ice-400: #6BB6FF;
+  --tz-royal-500: #2C3CFF;
+  --glass-bg: rgba(19, 17, 37, 0.5);
+  --glass-stroke: rgba(255, 255, 255, 0.08);
+  
+  /* Tanzanite Gradients */
+  --tz-gradient: linear-gradient(135deg, #6E3CE6 0%, #2C3CFF 45%, #6BB6FF 100%);
+  --tz-glow: radial-gradient(closest-side, rgba(108, 63, 240, 0.55), rgba(2, 3, 18, 0));
+  
+  /* Enhanced Radii & Shadows */
+  --radius-xl: 22px;
+  --shadow-soft: 0 8px 32px rgba(18, 8, 66, 0.35);
+  --shadow-glow: 0 0 24px rgba(108, 63, 240, 0.35);
+}
+
+/* Tanzanite Logo Shimmer Effect */
+.akili-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.akili-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.18) 35%, transparent 70%);
+  transform: translateX(-120%);
+  animation: shimmer 2.5s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(120%);
+  }
+}
+
+/* Enhanced Sparkle Effects */
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, rgba(255, 255, 255, 0) 70%);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.45);
+  animation: twinkle 3.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.sparkle-tiny {
+  width: 4px;
+  height: 4px;
+  animation-duration: 4.2s;
+}
+
+.sparkle-large {
+  width: 8px;
+  height: 8px;
+  animation-duration: 3s;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    transform: scale(0.8);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.85;
+  }
+}
+
+/* Sparkle positioning classes */
+.sparkle-1 { top: 10%; right: 15%; animation-delay: 0s; }
+.sparkle-2 { top: 25%; left: 80%; animation-delay: 1.2s; }
+.sparkle-3 { bottom: 30%; right: 20%; animation-delay: 2.4s; }
+.sparkle-4 { bottom: 15%; left: 75%; animation-delay: 0.8s; }
+.sparkle-5 { top: 35%; right: 70%; animation-delay: 1.8s; }
+
+/* Tanzanite glass card style */
+.tz-glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-stroke);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Enhanced input styles for Tanzanite theme */
+.tz-input {
+  border-radius: 12px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-stroke);
+  color: var(--tz-ink);
+  transition: all 0.2s ease;
+  font-size: 16px; /* Prevent zoom on iOS */
+}
+
+.tz-input:focus {
+  border-color: var(--tz-ice-400);
+  box-shadow: 0 0 0 2px rgba(107, 182, 255, 0.2);
+  background: rgba(19, 17, 37, 0.8);
+}
+
+.tz-input::placeholder {
+  color: var(--tz-muted);
+}
+
+/* Enhanced button styles */
+.tz-btn-primary {
+  background: var(--tz-gradient);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tz-btn-primary:focus {
+  box-shadow: 0 0 0 2px var(--tz-ice-400);
+}
+
+.tz-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow);
+}
+
+.tz-btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Accessibility for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .akili-shimmer::after,
+  .sparkle {
+    animation: none;
+  }
+  
+  .tz-btn-primary:hover {
+    transform: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .tz-glass-card {
+    background: var(--tz-night);
+    border: 2px solid var(--tz-ink);
+  }
+  
+  .tz-input {
+    background: var(--tz-night);
+    border: 2px solid var(--tz-ink);
+  }
+}
+
+/* Wallet chip Tanzanite styling */
+.tz-wallet-chip {
+  height: 44px;
+  background: var(--glass-bg);
+  border: 1px solid rgba(110, 60, 230, 0.35);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-soft);
+}
+
+.tz-wallet-chip:hover {
+  background: rgba(19, 17, 37, 0.7);
+  border-color: rgba(110, 60, 230, 0.5);
+}
+
+/* Logo hero variant styles */
+.tz-logo-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tz-logo-hero .gem-container {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--tz-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: gem-pulse 3s ease-in-out infinite;
+}
+
+@keyframes gem-pulse {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(110, 60, 230, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(110, 60, 230, 0.6), 0 0 80px rgba(110, 60, 230, 0.2);
+  }
+}
+
+.tz-logo-hero .wordmark {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 1.75rem;
+  background: var(--tz-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Compact logo styles */
+.tz-logo-compact {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tz-logo-compact .wordmark {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: var(--tz-ink);
+}
+
+/* Navigation tab styling */
+.tz-nav-tab {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-stroke);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.tz-nav-tab:hover {
+  background: rgba(19, 17, 37, 0.7);
+  border-color: var(--tz-gem-500);
+}
+
+.tz-nav-tab.active {
+  background: var(--tz-gem-500);
+  border-color: var(--tz-gem-500);
+  color: white;
+}
+
+/* Override for country prefix chip */
+.tz-country-chip {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-stroke);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  color: var(--tz-ink);
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Phone input specific styling */
+.tz-phone-input-container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.tz-phone-input {
+  flex: 1;
+  padding-left: 1rem;
+}
