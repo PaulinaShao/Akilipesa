@@ -99,7 +99,7 @@ export function useTrialGate(): UseTrialGateReturn {
 // Combined hook for seamless auth + trial experience
 export function useGatedAction() {
   const { user } = useAuthStore();
-  const { openAuthSheet } = useUiStore();
+  const { openAuthSheet } = useUIStore();
   const { tryWithTrial } = useTrialGate();
 
   const executeGatedAction = useCallback(async (
