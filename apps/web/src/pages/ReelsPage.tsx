@@ -381,9 +381,18 @@ function ReelCard({
             >
               <Phone className="w-6 h-6 text-red-400" />
             </button>
-            <span className="text-red-400 text-xs font-medium">Join</span>
+            <span className="text-red-400 text-xs font-medium">Live</span>
           </>
         )}
+
+        {/* Join Button */}
+        <button
+          onClick={onJoin}
+          className="reel-action-btn bg-purple-500/20 border-purple-500/50"
+        >
+          <UserPlus className="w-6 h-6 text-purple-400" />
+        </button>
+        <span className="text-purple-400 text-xs font-medium">Join</span>
 
         {/* More */}
         <button className="reel-action-btn">
