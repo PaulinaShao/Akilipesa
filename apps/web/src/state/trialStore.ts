@@ -89,16 +89,16 @@ function getDefaultTrialConfig(): TrialConfig {
 }
 
 async function fetchTrialUsage(deviceToken: string): Promise<TrialUsage | null> {
-  const { doc, getDoc } = await import('firebase/firestore');
-  const { db } = await import('../lib/firebase');
-  
   try {
+    const { doc, getDoc } = await import('firebase/firestore');
+    const { db } = await import('../lib/firebase');
+
     const usageDoc = await getDoc(doc(db, 'trials', deviceToken));
-    
+
     if (!usageDoc.exists()) {
-      return null;
+      return getLocalTrialUsage();
     }
-    
+
     const data = usageDoc.data();
     return {
       dayKey: data.dayKey,
@@ -110,9 +110,39 @@ async function fetchTrialUsage(deviceToken: string): Promise<TrialUsage | null> 
       updatedAt: data.updatedAt?.toDate() || new Date(),
     };
   } catch (error) {
-    console.warn('Failed to fetch trial usage:', error);
-    return null;
+    console.warn('Failed to fetch trial usage from server, using local fallback:', error);
+    return getLocalTrialUsage();
   }
+}
+
+function getLocalTrialUsage(): TrialUsage {
+  const dayKey = getCurrentDayKey();
+  const stored = localStorage.getItem('ap.trialUsage');
+
+  try {
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (parsed.dayKey === dayKey) {
+        return parsed;
+      }
+    }
+  } catch (error) {
+    console.warn('Failed to parse stored trial usage:', error);
+  }
+
+  // Return fresh usage for today
+  const usage = {
+    dayKey,
+    chatUsed: 0,
+    callsUsed: 0,
+    secondsUsed: 0,
+    reactionsUsed: 0,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  localStorage.setItem('ap.trialUsage', JSON.stringify(usage));
+  return usage;
 }
 
 function checkHappyHour(config: TrialConfig): boolean {
