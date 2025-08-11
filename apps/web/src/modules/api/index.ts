@@ -97,8 +97,47 @@ export async function startJob(type: string, inputs: any): Promise<string> {
  */
 export function subscribeJob(id: string, callback: (job: Job | null) => void): () => void {
   try {
+    // Check if this is an offline job first
+    if (id.startsWith('offline_')) {
+      const offlineJobs = JSON.parse(localStorage.getItem('offlineJobs') || '[]');
+      const offlineJob = offlineJobs.find((job: any) => job.id === id);
+
+      if (offlineJob) {
+        // Simulate job processing for offline jobs
+        setTimeout(() => {
+          callback({
+            id: offlineJob.id,
+            type: offlineJob.type,
+            status: 'processing',
+            inputs: offlineJob.inputs,
+            progress: 25,
+            createdAt: new Date(offlineJob.createdAt),
+            updatedAt: new Date(),
+          });
+        }, 1000);
+
+        setTimeout(() => {
+          callback({
+            id: offlineJob.id,
+            type: offlineJob.type,
+            status: 'completed',
+            inputs: offlineJob.inputs,
+            outputs: {
+              url: `https://placeholder.com/400x400.png?text=Offline+${offlineJob.type}`,
+              metadata: { note: 'Offline simulation - sign up for real AI generation!' }
+            },
+            progress: 100,
+            createdAt: new Date(offlineJob.createdAt),
+            updatedAt: new Date(),
+          });
+        }, 5000);
+
+        return () => {}; // No cleanup needed for offline jobs
+      }
+    }
+
     const jobRef = doc(db, 'jobs', id);
-    
+
     return onSnapshot(jobRef, (snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.data();
@@ -120,12 +159,33 @@ export function subscribeJob(id: string, callback: (job: Job | null) => void): (
         callback(null);
       }
     }, (error) => {
-      console.warn('Job subscription error:', error);
-      callback(null);
+      console.warn('Job subscription error (using offline mode):', error?.message || error);
+
+      // Fallback to offline simulation if network fails
+      callback({
+        id,
+        type: 'unknown',
+        status: 'failed',
+        inputs: { prompt: 'Network unavailable' },
+        error: 'Unable to connect to server. Please check your internet connection.',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
     });
   } catch (error) {
-    console.warn('Failed to subscribe to job:', error);
-    // Return no-op unsubscribe function
+    console.warn('Failed to subscribe to job (offline mode):', error);
+
+    // Immediate callback with error state
+    callback({
+      id,
+      type: 'unknown',
+      status: 'failed',
+      inputs: { prompt: 'Subscription failed' },
+      error: 'Failed to track job progress. Please refresh the page.',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
     return () => {};
   }
 }
