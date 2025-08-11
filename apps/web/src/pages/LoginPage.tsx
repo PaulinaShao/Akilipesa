@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Phone, Mail, ArrowLeft } from 'lucide-react';
-import TanzaniteLogo from '@/components/TanzaniteLogo';
-import PhoneInputTZ from '@/components/PhoneInputTZ';
-import RecaptchaBadge from '@/components/RecaptchaBadge';
-import { useToast } from '@/hooks/useToast';
-import { cn, isValidTanzanianPhone, isValidEmail } from '@/lib/utils';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useAppStore } from '@/store';
+import PhoneInput from '@/components/auth/PhoneInput';
+import CodeInput from '@/components/auth/CodeInput';
+import GoogleButton from '@/components/auth/GoogleButton';
+import { isValidTZ } from '@/lib/phone';
 
 interface OTPInputProps {
   value: string;
