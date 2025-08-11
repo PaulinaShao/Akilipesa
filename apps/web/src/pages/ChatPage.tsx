@@ -277,6 +277,9 @@ export default function ChatPage() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [messages, setMessages] = useState<Message[]>(mockMessages);
+
+  // Use the id parameter to customize chat behavior
+  const isAkiliPesaChat = id === 'akilipesa' || id === 'akili';
   const [newMessage, setNewMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [showAttachments, setShowAttachments] = useState(false);
