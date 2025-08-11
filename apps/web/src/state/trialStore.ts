@@ -62,11 +62,14 @@ async function issueTrialToken(): Promise<string> {
 async function fetchTrialConfig(): Promise<TrialConfig> {
   try {
     const { doc, getDoc } = await import('firebase/firestore');
-    const { db } = await import('../lib/firebase');
+    const { db, safeFirebaseOperation } = await import('../lib/firebase');
 
-    const configDoc = await getDoc(doc(db, 'trialConfig', 'global'));
+    const configDoc = await safeFirebaseOperation(
+      () => getDoc(doc(db, 'trialConfig', 'global')),
+      'fetch trial config'
+    );
 
-    if (!configDoc.exists()) {
+    if (!configDoc || !configDoc.exists()) {
       return getDefaultTrialConfig();
     }
 
