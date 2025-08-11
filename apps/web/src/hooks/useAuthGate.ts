@@ -1,8 +1,7 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useUiStore } from '../state/uiStore';
 import { useAuthStore } from '../store';
 import { useTrialStore } from '../state/trialStore';
-import { TrialPaywall } from '../components/trial/TrialPaywall';
 
 type GatedAction = 'like' | 'comment' | 'follow' | 'share' | 'message' | 'buy' | 'live' | 'call' | 'chat';
 type TrialAction = 'reaction' | 'call' | 'chat';
@@ -16,7 +15,7 @@ interface UseAuthGateReturn {
 interface UseTrialGateReturn {
   tryWithTrial: (action: () => Promise<void> | void, trialType: TrialAction) => Promise<boolean>;
   canUseTrial: (trialType: TrialAction) => boolean;
-  showPaywall: (trialType: TrialAction) => void;
+  showTrialPaywall: (trialType: TrialAction) => void;
 }
 
 export function useAuthGate(): UseAuthGateReturn {
@@ -52,19 +51,19 @@ export function useAuthGate(): UseAuthGateReturn {
 
 export function useTrialGate(): UseTrialGateReturn {
   const { canUseFeature, incrementLocalReactions } = useTrialStore();
-  const [paywallState, setPaywallState] = useState<{ isOpen: boolean; feature?: TrialAction }>({ isOpen: false });
+  const { setTrialPaywall } = useUiStore();
 
   const canUseTrial = useCallback((trialType: TrialAction) => {
     return canUseFeature(trialType === 'reaction' ? 'reaction' : trialType);
   }, [canUseFeature]);
 
-  const showPaywall = useCallback((trialType: TrialAction) => {
-    setPaywallState({ isOpen: true, feature: trialType });
-  }, []);
+  const showTrialPaywall = useCallback((trialType: TrialAction) => {
+    setTrialPaywall({ isOpen: true, feature: trialType });
+  }, [setTrialPaywall]);
 
   const tryWithTrial = useCallback(async (action: () => Promise<void> | void, trialType: TrialAction): Promise<boolean> => {
     if (!canUseTrial(trialType)) {
-      showPaywall(trialType);
+      showTrialPaywall(trialType);
       return false;
     }
 
@@ -83,17 +82,17 @@ export function useTrialGate(): UseTrialGateReturn {
       
       // Check if it's a quota exceeded error
       if (error instanceof Error && error.message.includes('quota')) {
-        showPaywall(trialType);
+        showTrialPaywall(trialType);
       }
       
       return false;
     }
-  }, [canUseTrial, incrementLocalReactions, showPaywall]);
+  }, [canUseTrial, incrementLocalReactions, showTrialPaywall]);
 
   return {
     tryWithTrial,
     canUseTrial,
-    showPaywall,
+    showTrialPaywall,
   };
 }
 
@@ -101,7 +100,7 @@ export function useTrialGate(): UseTrialGateReturn {
 export function useGatedAction() {
   const { user } = useAuthStore();
   const { openAuthSheet } = useUiStore();
-  const { tryWithTrial, showPaywall } = useTrialGate();
+  const { tryWithTrial } = useTrialGate();
 
   const executeGatedAction = useCallback(async (
     action: () => Promise<void> | void,
@@ -203,33 +202,4 @@ export function useGatedChat() {
   return useCallback(async (chatAction: () => Promise<void>) => {
     await executeGatedAction(chatAction, 'chat', true, 'chat');
   }, [executeGatedAction]);
-}
-
-// React components for trial paywall integration
-export function TrialPaywallProvider({ children }: { children: React.ReactNode }) {
-  const [paywallState, setPaywallState] = useState<{ isOpen: boolean; feature?: TrialAction }>({ isOpen: false });
-  const { openAuthSheet } = useUiStore();
-
-  const handleSignUp = () => {
-    setPaywallState({ isOpen: false });
-    openAuthSheet(() => {}, 'follow'); // Default action for signup
-  };
-
-  const handleClose = () => {
-    setPaywallState({ isOpen: false });
-  };
-
-  return (
-    <>
-      {children}
-      {paywallState.feature && (
-        <TrialPaywall
-          isOpen={paywallState.isOpen}
-          feature={paywallState.feature}
-          onClose={handleClose}
-          onSignUp={handleSignUp}
-        />
-      )}
-    </>
-  );
 }
