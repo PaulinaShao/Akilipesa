@@ -294,7 +294,8 @@ export const useTrialStore = create<TrialState>((set, get) => ({
     setLocalReactions(current + 1);
 
     // Also update local usage tracking
-    updateLocalUsage('reactions', 1);
+    const { updateLocalUsage } = get();
+    updateLocalUsage('reaction', 1);
   },
 
   // Helper method to update local usage when offline
