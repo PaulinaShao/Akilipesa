@@ -312,12 +312,7 @@ function App() {
           <Route path="/chat/:id" element={
             <ProtectedRoute user={currentUser}>
               <MobileLayout>
-                <div className="h-screen-safe flex-center">
-                  <div className="text-center">
-                    <h1 className="heading-2 mb-4">Chat</h1>
-                    <p className="text-white/60">Chat conversation</p>
-                  </div>
-                </div>
+                <ChatPage />
               </MobileLayout>
             </ProtectedRoute>
           } />
