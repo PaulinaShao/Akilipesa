@@ -28,6 +28,7 @@ import EarningsPage from '@/pages/EarningsPage';
 import AnalyticsPage from '@/pages/AnalyticsPage';
 import ReferralsPage from '@/pages/ReferralsPage';
 import SettingsPage from '@/pages/SettingsPage';
+import ChatPage from '@/pages/ChatPage';
 
 // Admin Guard Component
 function AdminRoute({ children, user }: { children: React.ReactNode; user: User | null }) {
