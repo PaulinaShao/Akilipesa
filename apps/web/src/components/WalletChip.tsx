@@ -55,10 +55,8 @@ export default function WalletChip({ className, balance, plan }: WalletChipProps
     <button
       onClick={() => navigate('/wallet')}
       className={cn(
-        'absolute top-4 left-4 z-20 flex items-center space-x-2',
-        'h-14 px-4 bg-black/30 backdrop-blur-md border border-white/20',
-        'rounded-2xl hover:bg-black/40 transition-all duration-200',
-        'glass-effect shadow-lg',
+        'absolute top-3 left-3 z-20 flex items-center space-x-2',
+        'tz-wallet-chip px-3 transition-all duration-200',
         className
       )}
     >
