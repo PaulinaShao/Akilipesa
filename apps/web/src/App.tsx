@@ -94,9 +94,10 @@ function App() {
   }
 
   return (
-    <ToastProvider>
-      <Router>
-        <Routes>
+    <QueryClientProvider client={queryClient}>
+      <ToastProvider>
+        <Router>
+          <Routes>
           {/* Public routes */}
           <Route path="/login" element={<LoginPage />} />
           
@@ -389,9 +390,10 @@ function App() {
               </div>
             </div>
           } />
-        </Routes>
-      </Router>
-    </ToastProvider>
+          </Routes>
+        </Router>
+      </ToastProvider>
+    </QueryClientProvider>
   );
 }
 
