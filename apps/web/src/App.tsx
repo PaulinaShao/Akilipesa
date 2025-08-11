@@ -22,6 +22,12 @@ import OrdersPage from '@/pages/OrdersPage';
 import WalletPage from '@/pages/WalletPage';
 import CallPage from '@/pages/CallPage';
 import CameraCaptPage from '@/pages/CameraCaptPage';
+import SavedPostsPage from '@/pages/SavedPostsPage';
+import PurchasesPage from '@/pages/PurchasesPage';
+import EarningsPage from '@/pages/EarningsPage';
+import AnalyticsPage from '@/pages/AnalyticsPage';
+import ReferralsPage from '@/pages/ReferralsPage';
+import SettingsPage from '@/pages/SettingsPage';
 
 // Admin Guard Component
 function AdminRoute({ children, user }: { children: React.ReactNode; user: User | null }) {
@@ -318,12 +324,47 @@ function App() {
           <Route path="/settings" element={
             <ProtectedRoute user={currentUser}>
               <MobileLayout>
-                <div className="h-screen-safe flex-center">
-                  <div className="text-center">
-                    <h1 className="heading-2 mb-4">Settings</h1>
-                    <p className="text-white/60">App settings and preferences</p>
-                  </div>
-                </div>
+                <SettingsPage />
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/saved-posts" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <SavedPostsPage />
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/purchases" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <PurchasesPage />
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/earnings" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <EarningsPage />
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/analytics" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <AnalyticsPage />
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/referrals" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <ReferralsPage />
               </MobileLayout>
             </ProtectedRoute>
           } />
