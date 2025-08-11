@@ -258,7 +258,7 @@ export default function ProfileSettingsModal({
           <div className="text-center">
             <div className="w-16 h-16 bg-red-500/20 rounded-full flex-center mx-auto mb-4">
               {showConfirmDialog === 'block' ? (
-                <Block className="w-8 h-8 text-red-400" />
+                <UserX className="w-8 h-8 text-red-400" />
               ) : (
                 <Flag className="w-8 h-8 text-red-400" />
               )}
