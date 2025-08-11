@@ -179,7 +179,9 @@ function App() {
 
           <Route path="/product/:id" element={
             <ProtectedRoute user={currentUser}>
-              <ProductDetailPage />
+              <MobileLayout>
+                <ProductDetailPage />
+              </MobileLayout>
             </ProtectedRoute>
           } />
 
@@ -210,7 +212,17 @@ function App() {
 
           <Route path="/wallet" element={
             <ProtectedRoute user={currentUser}>
-              <WalletPage />
+              <MobileLayout>
+                <WalletPage />
+              </MobileLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/plans" element={
+            <ProtectedRoute user={currentUser}>
+              <MobileLayout>
+                <PlansPage />
+              </MobileLayout>
             </ProtectedRoute>
           } />
 
