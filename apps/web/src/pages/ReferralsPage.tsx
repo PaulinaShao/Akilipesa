@@ -1,13 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  ArrowLeft, 
-  Users, 
-  Gift, 
-  Share, 
-  Copy, 
-  DollarSign,
-  TrendingUp,
+  ArrowLeft,
+  Users,
+  Share,
+  Copy,
   Calendar,
   Star,
   CheckCircle
