@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useUiStore } from '../state/uiStore';
+import { useUIStore } from '../state/uiStore';
 import { useAuthStore } from '../store';
 import { useTrialStore } from '../state/trialStore';
 
