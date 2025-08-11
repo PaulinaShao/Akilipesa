@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Heart, MessageCircle, Share, MoreHorizontal, Music2, ShoppingBag, Phone, Video } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import WalletChip from '@/components/WalletChip';
+import StoriesRail from '@/components/StoriesRail';
 
 interface ReelData {
   id: string;
@@ -489,6 +490,9 @@ export default function ReelsPage() {
 
   return (
     <div className="reel-container">
+      {/* Stories Rail - shows on first reel only */}
+      <StoriesRail showStories={currentIndex === 0} />
+
       <div
         ref={containerRef}
         className="h-full overflow-y-auto snap-y snap-mandatory hide-scrollbar"
