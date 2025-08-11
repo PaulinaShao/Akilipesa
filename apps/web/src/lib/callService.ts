@@ -155,7 +155,7 @@ class CallService {
       }
 
       // Publish local tracks
-      const tracksToPublish = [this.localAudioTrack];
+      const tracksToPublish: any[] = [this.localAudioTrack];
       if (this.localVideoTrack) {
         tracksToPublish.push(this.localVideoTrack);
       }
