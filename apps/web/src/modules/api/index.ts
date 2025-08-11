@@ -282,13 +282,24 @@ export async function finishCall(data: CallFinishData): Promise<void> {
  */
 export async function createOrder(payload: Partial<Order>): Promise<OrderResponse> {
   try {
+    const { isFirebaseDemoMode } = await import('../lib/firebase');
+
+    if (isFirebaseDemoMode) {
+      console.log('Demo mode: creating demo order:', payload);
+      return {
+        id: `demo_order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        redirectUrl: '/checkout/demo',
+        status: 'pending'
+      };
+    }
+
     const createOrderFn = httpsCallable(functions, 'createOrder');
     const result = await createOrderFn(payload);
-    
+
     return result.data as OrderResponse;
   } catch (error) {
     console.warn('Failed to create order on server:', error);
-    
+
     // Offline fallback
     return {
       id: `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
