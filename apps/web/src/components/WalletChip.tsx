@@ -85,8 +85,8 @@ export default function WalletChip({ className, balance, plan }: WalletChipProps
       </div>
       
       {/* Add Funds Icon */}
-      <div className="w-6 h-6 bg-green-500/20 rounded-full flex-center">
-        <Plus className="w-3 h-3 text-green-400" />
+      <div className="w-6 h-6 bg-[var(--tz-ice-400)]/20 rounded-full flex items-center justify-center">
+        <Plus className="w-3 h-3 text-[var(--tz-ice-400)]" />
       </div>
     </button>
   );
