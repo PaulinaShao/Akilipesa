@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, MessageCircle, Share, MoreHorizontal, Music2, ShoppingBag, Phone, Video } from 'lucide-react';
+import { Heart, MessageCircle, Share, MoreHorizontal, Music2, ShoppingBag, Phone, Video, UserPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import WalletChip from '@/components/WalletChip';
+import StoriesRow from '@/components/StoriesRow';
+import { useAppStore } from '@/store';
 
 interface ReelData {
   id: string;
