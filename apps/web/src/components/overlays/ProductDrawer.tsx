@@ -391,6 +391,12 @@ export default function ProductDrawer({
               onToggleFavorite={handleToggleFavorite}
               onShare={handleShare}
               onViewShop={handleViewShop}
+              onLike={handleLike}
+              onComment={handleComment}
+              onCallVideo={handleCallVideo}
+              onCallAudio={handleCallAudio}
+              onReport={handleReport}
+              onCopyLink={handleCopyLink}
             />
           ))}
         </div>
