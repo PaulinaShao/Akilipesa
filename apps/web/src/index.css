@@ -123,11 +123,12 @@
   }
   
   .btn-fab {
-    @apply w-14 h-14 bg-gradient-to-br from-primary to-secondary rounded-full;
+    @apply w-14 h-14 rounded-full;
     @apply flex items-center justify-center shadow-lg hover:shadow-xl;
     @apply transition-all duration-200 hover:scale-110 active:scale-95;
     @apply focus-outline;
-    box-shadow: 0 4px 20px rgba(138, 92, 246, 0.4);
+    background: var(--tz-gradient);
+    box-shadow: var(--shadow-glow);
   }
   
   /* Input styles */
