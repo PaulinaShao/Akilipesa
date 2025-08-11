@@ -9,6 +9,12 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/lib/queryClient';
 import AuthSheet from '@/components/auth/AuthSheet';
+import { TrialBadge } from '@/components/trial/TrialBadge';
+import { TrialPaywall } from '@/components/trial/TrialPaywall';
+import { TrialPolicyPage } from '@/pages/TrialPolicyPage';
+import { useTrialStore } from '@/state/trialStore';
+import { useUIStore } from '@/state/uiStore';
+import { useAuthStore } from '@/store';
 
 // Import pages
 import SplashPage from '@/pages/SplashPage';
@@ -369,6 +375,8 @@ function App() {
             </ProtectedRoute>
           } />
 
+          <Route path="/trial-policy" element={<TrialPolicyPage />} />
+
           <Route path="/referrals" element={
             <ProtectedRoute user={currentUser}>
               <MobileLayout>
@@ -401,6 +409,10 @@ function App() {
 
         {/* Global AuthSheet */}
         <AuthSheet />
+
+        {/* Trial System Components */}
+        <TrialBadge />
+        <TrialPaywallContainer />
       </ToastProvider>
     </QueryClientProvider>
   );
