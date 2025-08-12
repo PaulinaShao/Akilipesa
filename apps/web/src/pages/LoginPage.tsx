@@ -76,7 +76,7 @@ export default function LoginPage() {
         {
           maxAttempts: 3,
           onRetry: (attempt, error) => {
-            toast({
+            addToast({
               title: `Retrying... (${attempt}/3)`,
               description: error.message,
               variant: 'default'
