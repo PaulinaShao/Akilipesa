@@ -41,9 +41,10 @@
     @apply font-sans text-white antialiased min-h-screen-safe overflow-x-hidden;
     background: radial-gradient(ellipse at center, #0B0B1A 0%, #130D22 100%);
     font-size: 16px;
-    line-height: 1.25;
+    line-height: 1.4;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    color: #EDECF7; /* Improved text contrast */
   }
   
   /* Mobile optimization */
