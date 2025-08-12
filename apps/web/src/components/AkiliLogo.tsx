@@ -10,7 +10,7 @@ interface AkiliLogoProps {
   className?: string;
   showSparkles?: boolean;
   animated?: boolean;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 }
 
 export default function AkiliLogo({ 
@@ -21,33 +21,49 @@ export default function AkiliLogo({
   size = 'md'
 }: AkiliLogoProps) {
   
+  // Enhanced sizing with 25% increase
   const sizeClasses = {
-    xs: { container: 'w-6 h-6', text: 'text-sm' },
-    sm: { container: 'w-8 h-8', text: 'text-base' },
-    md: { container: 'w-12 h-12', text: 'text-lg' },
-    lg: { container: 'w-16 h-16', text: 'text-xl' },
-    xl: { container: 'w-24 h-24', text: 'text-2xl' }
+    xs: { container: 'w-8 h-8', text: 'text-base', logoSize: '32' },
+    sm: { container: 'w-10 h-10', text: 'text-lg', logoSize: '40' },
+    md: { container: 'w-16 h-16', text: 'text-xl', logoSize: '64' },
+    lg: { container: 'w-20 h-20', text: 'text-2xl', logoSize: '80' },
+    xl: { container: 'w-32 h-32', text: 'text-3xl', logoSize: '128' },
+    xxl: { container: 'w-40 h-40', text: 'text-4xl', logoSize: '160' }
   };
 
   const currentSize = sizeClasses[size];
 
-  // New high-quality Tanzanite logo
-  const logoImage = "https://cdn.builder.io/api/v1/image/assets%2Fd3b228cddfa346f0aa1ed35137c6f24e%2F22d55c7f38bd4fecbb8ee5c33096f088?format=webp&width=800";
+  // New high-quality Tanzanite logo with brain neural network design
+  const newLogoImage = "/src/assets/akilipesa-new-logo.png";
 
   // Hero variant for splash, login, and major screens
   if (variant === 'hero') {
     return (
-      <div className={cn('tz-logo-hero flex flex-col items-center gap-4', className)}>
+      <div className={cn('tz-logo-hero flex flex-col items-center gap-6', className)}>
         <div className="relative">
+          {/* Enhanced glow effect */}
+          <div className="absolute inset-0 scale-125 opacity-60">
+            <div className="w-40 h-40 bg-gradient-to-r from-blue-600/40 via-violet-600/40 to-purple-600/40 rounded-full blur-3xl" />
+          </div>
+          
           {animated && showSparkles ? (
             <LottieErrorBoundary
               fallbackComponent={
-                <img
-                  src={logoImage}
-                  alt="AkiliPesa Tanzanite logo"
-                  className="w-32 h-32 object-contain"
-                  loading="eager"
-                />
+                <div className="relative">
+                  <img
+                    src={newLogoImage}
+                    alt="AkiliPesa Tanzanite AI logo"
+                    className="w-40 h-40 object-contain drop-shadow-2xl relative z-10"
+                    loading="eager"
+                  />
+                  {/* CSS sparkle effect fallback */}
+                  <div className="absolute inset-0 opacity-70">
+                    <div className="w-2 h-2 bg-blue-300 rounded-full absolute top-4 right-8 animate-pulse" />
+                    <div className="w-1 h-1 bg-violet-300 rounded-full absolute top-12 right-4 animate-ping" style={{ animationDelay: '0.5s' }} />
+                    <div className="w-2 h-2 bg-purple-300 rounded-full absolute bottom-8 left-6 animate-pulse" style={{ animationDelay: '1s' }} />
+                    <div className="w-1 h-1 bg-blue-300 rounded-full absolute bottom-4 right-12 animate-ping" style={{ animationDelay: '1.5s' }} />
+                  </div>
+                </div>
               }
             >
               <div className="relative">
@@ -56,7 +72,7 @@ export default function AkiliLogo({
                   <Lottie
                     animationData={tanzaniteSparkleAnimation}
                     loop={true}
-                    className="w-32 h-32 lottie-container"
+                    className="w-40 h-40 lottie-container"
                     style={{
                       filter: 'blur(2px)',
                     }}
@@ -66,23 +82,32 @@ export default function AkiliLogo({
                 <Lottie
                   animationData={tanzaniteSparkleAnimation}
                   loop={true}
-                  className="w-32 h-32 relative z-10 lottie-container"
+                  className="w-40 h-40 relative z-10 lottie-container"
                   rendererSettings={{
                     preserveAspectRatio: 'xMidYMid slice'
                   }}
                 />
+                {/* Overlay new logo */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <img
+                    src={newLogoImage}
+                    alt="AkiliPesa Tanzanite AI logo"
+                    className="w-32 h-32 object-contain drop-shadow-xl"
+                    loading="eager"
+                  />
+                </div>
               </div>
             </LottieErrorBoundary>
           ) : (
             <img 
-              src={logoImage}
-              alt="AkiliPesa Tanzanite logo"
-              className="w-32 h-32 object-contain"
+              src={newLogoImage}
+              alt="AkiliPesa Tanzanite AI logo"
+              className="w-40 h-40 object-contain drop-shadow-2xl relative z-10"
               loading="eager"
             />
           )}
         </div>
-        <div className="wordmark text-3xl font-bold bg-gradient-to-r from-[var(--tz-gem-500)] via-[var(--tz-royal-500)] to-[var(--tz-ice-400)] bg-clip-text text-transparent">
+        <div className="wordmark text-4xl font-bold bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 bg-clip-text text-transparent text-center">
           AkiliPesa
         </div>
       </div>
@@ -92,38 +117,46 @@ export default function AkiliLogo({
   // Navigation variant for navbar
   if (variant === 'navigation') {
     return (
-      <div className={cn('flex items-center gap-2', className)}>
+      <div className={cn('flex items-center gap-3', className)}>
         <div className="relative">
           {animated && showSparkles ? (
             <LottieErrorBoundary
               fallbackComponent={
                 <img
-                  src={logoImage}
+                  src={newLogoImage}
                   alt="AkiliPesa"
-                  className={cn(currentSize.container, "object-contain")}
+                  className={cn(currentSize.container, "object-contain drop-shadow-lg")}
                   loading="lazy"
                 />
               }
             >
-              <Lottie
-                animationData={tanzaniteSparkleAnimation}
-                loop={true}
-                className={cn(currentSize.container, "lottie-container")}
-                rendererSettings={{
-                  preserveAspectRatio: 'xMidYMid slice'
-                }}
-              />
+              <div className="relative">
+                <Lottie
+                  animationData={tanzaniteSparkleAnimation}
+                  loop={true}
+                  className={cn(currentSize.container, "lottie-container opacity-70 absolute inset-0")}
+                  rendererSettings={{
+                    preserveAspectRatio: 'xMidYMid slice'
+                  }}
+                />
+                <img
+                  src={newLogoImage}
+                  alt="AkiliPesa"
+                  className={cn(currentSize.container, "object-contain drop-shadow-lg relative z-10")}
+                  loading="lazy"
+                />
+              </div>
             </LottieErrorBoundary>
           ) : (
             <img 
-              src={logoImage}
+              src={newLogoImage}
               alt="AkiliPesa"
-              className={cn(currentSize.container, "object-contain")}
+              className={cn(currentSize.container, "object-contain drop-shadow-lg")}
               loading="lazy"
             />
           )}
         </div>
-        <span className={cn('wordmark font-bold text-[var(--tz-ink)]', currentSize.text)}>
+        <span className={cn('wordmark font-bold bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 bg-clip-text text-transparent', currentSize.text)}>
           AkiliPesa
         </span>
       </div>
@@ -132,60 +165,49 @@ export default function AkiliLogo({
 
   // Compact variant for general use
   return (
-    <div className={cn('flex items-center gap-2', className)}>
+    <div className={cn('flex items-center gap-3', className)}>
       <div className="relative">
         {animated && showSparkles ? (
           <LottieErrorBoundary
             fallbackComponent={
-              <TanzaniteGemSVG className={cn(currentSize.container)} />
+              <img
+                src={newLogoImage}
+                alt="AkiliPesa"
+                className={cn(currentSize.container, "object-contain drop-shadow-md")}
+                loading="lazy"
+              />
             }
           >
-            <Lottie
-              animationData={tanzaniteSparkleAnimation}
-              loop={true}
-              className={cn(currentSize.container, "lottie-container")}
-              rendererSettings={{
-                preserveAspectRatio: 'xMidYMid slice'
-              }}
-            />
+            <div className="relative">
+              <Lottie
+                animationData={tanzaniteSparkleAnimation}
+                loop={true}
+                className={cn(currentSize.container, "lottie-container opacity-60 absolute inset-0")}
+                rendererSettings={{
+                  preserveAspectRatio: 'xMidYMid slice'
+                }}
+              />
+              <img
+                src={newLogoImage}
+                alt="AkiliPesa"
+                className={cn(currentSize.container, "object-contain drop-shadow-md relative z-10")}
+                loading="lazy"
+              />
+            </div>
           </LottieErrorBoundary>
         ) : (
-          <TanzaniteGemSVG className={cn(currentSize.container)} />
+          <img
+            src={newLogoImage}
+            alt="AkiliPesa"
+            className={cn(currentSize.container, "object-contain drop-shadow-md")}
+            loading="lazy"
+          />
         )}
       </div>
-      <span className={cn('wordmark font-bold text-[var(--tz-ink)]', currentSize.text)}>
+      <span className={cn('wordmark font-bold bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 bg-clip-text text-transparent', currentSize.text)}>
         AkiliPesa
       </span>
     </div>
-  );
-}
-
-// Fallback SVG component for when Lottie fails or in static mode
-function TanzaniteGemSVG({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 32 32"
-      fill="none"
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g transform="translate(2, 2)">
-        {/* Main facets with updated Tanzanite colors */}
-        <path d="M14 2 L22 6 L18 14 L10 14 Z" fill="#6E3CE6" />
-        <path d="M14 2 L18 14 L14 26 L6 14 Z" fill="#2C3CFF" />
-        <path d="M22 6 L26 10 L18 14 L14 2 Z" fill="#6BB6FF" />
-        <path d="M6 6 L14 2 L6 14 L2 10 Z" fill="#5A2FD8" />
-        <path d="M6 14 L14 26 L10 22 L2 18 Z" fill="#4726C5" />
-        <path d="M18 14 L26 18 L22 22 L14 26 Z" fill="#6E3CE6" />
-        <path d="M2 10 L6 6 L6 14 L2 18 Z" fill="#4726C5" />
-        <path d="M26 10 L26 18 L22 22 L22 6 Z" fill="#6BB6FF" />
-        {/* Inner reflections */}
-        <path d="M14 8 L18 12 L14 18 L10 12 Z" fill="#B8C2FF" opacity="0.7" />
-        <path d="M12 6 L16 4 L16 12 L12 12 Z" fill="#E6E9FF" opacity="0.5" />
-        {/* Highlight */}
-        <path d="M14 4 L16 6 L14 10 L12 6 Z" fill="#FFFFFF" opacity="0.6" />
-      </g>
-    </svg>
   );
 }
 
@@ -200,46 +222,100 @@ export function AkiliLogoMark({
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }) {
   const sizeClasses = {
-    xs: 'w-4 h-4',
-    sm: 'w-6 h-6', 
-    md: 'w-8 h-8',
-    lg: 'w-12 h-12',
-    xl: 'w-16 h-16'
+    xs: 'w-6 h-6',
+    sm: 'w-8 h-8', 
+    md: 'w-10 h-10',
+    lg: 'w-16 h-16',
+    xl: 'w-20 h-20'
   };
 
-  const logoImage = "https://cdn.builder.io/api/v1/image/assets%2Fd3b228cddfa346f0aa1ed35137c6f24e%2F22d55c7f38bd4fecbb8ee5c33096f088?format=webp&width=800";
+  const newLogoImage = "/src/assets/akilipesa-new-logo.png";
 
   if (animated) {
     return (
       <LottieErrorBoundary
         fallbackComponent={
           <img
-            src={logoImage}
+            src={newLogoImage}
             alt="AkiliPesa"
-            className={cn(sizeClasses[size], "object-contain", className)}
+            className={cn(sizeClasses[size], "object-contain drop-shadow-md", className)}
             loading="lazy"
           />
         }
       >
-        <Lottie
-          animationData={tanzaniteSparkleAnimation}
-          loop={true}
-          className={cn(sizeClasses[size], "lottie-container", className)}
-          rendererSettings={{
-            preserveAspectRatio: 'xMidYMid slice'
-          }}
-        />
+        <div className="relative">
+          <Lottie
+            animationData={tanzaniteSparkleAnimation}
+            loop={true}
+            className={cn(sizeClasses[size], "lottie-container opacity-60 absolute inset-0")}
+            rendererSettings={{
+              preserveAspectRatio: 'xMidYMid slice'
+            }}
+          />
+          <img
+            src={newLogoImage}
+            alt="AkiliPesa"
+            className={cn(sizeClasses[size], "object-contain drop-shadow-md relative z-10", className)}
+            loading="lazy"
+          />
+        </div>
       </LottieErrorBoundary>
     );
   }
 
   return (
     <img 
-      src={logoImage}
+      src={newLogoImage}
       alt="AkiliPesa"
-      className={cn(sizeClasses[size], "object-contain", className)}
+      className={cn(sizeClasses[size], "object-contain drop-shadow-md", className)}
       loading="lazy"
     />
+  );
+}
+
+// Enhanced Tanzanite Gem SVG with brain network pattern (fallback)
+function TanzaniteGemSVG({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 40 40"
+      fill="none"
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <linearGradient id="tanzaniteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#2563eb" />
+          <stop offset="50%" stopColor="#7c3aed" />
+          <stop offset="100%" stopColor="#9333ea" />
+        </linearGradient>
+        <linearGradient id="highlightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#60a5fa" />
+          <stop offset="100%" stopColor="#a78bfa" />
+        </linearGradient>
+      </defs>
+      <g transform="translate(4, 2)">
+        {/* Main Tanzanite gem structure */}
+        <path d="M16 2 L28 8 L22 18 L10 18 Z" fill="url(#tanzaniteGrad)" />
+        <path d="M16 2 L22 18 L16 34 L4 18 Z" fill="url(#tanzaniteGrad)" opacity="0.9" />
+        <path d="M28 8 L32 14 L22 18 L16 2 Z" fill="url(#highlightGrad)" />
+        <path d="M4 8 L16 2 L4 18 L0 14 Z" fill="url(#tanzaniteGrad)" opacity="0.8" />
+        <path d="M4 18 L16 34 L12 28 L0 22 Z" fill="url(#tanzaniteGrad)" opacity="0.7" />
+        <path d="M22 18 L32 22 L28 28 L16 34 Z" fill="url(#highlightGrad)" opacity="0.8" />
+        
+        {/* Neural network pattern overlay */}
+        <g stroke="rgba(255,255,255,0.4)" strokeWidth="0.5" fill="none">
+          <path d="M16 12 Q20 14 22 16 Q18 18 16 20 Q12 18 10 16 Q14 14 16 12 Z" />
+          <circle cx="16" cy="14" r="1" fill="rgba(255,255,255,0.8)" />
+          <circle cx="20" cy="16" r="0.5" fill="rgba(255,255,255,0.6)" />
+          <circle cx="12" cy="16" r="0.5" fill="rgba(255,255,255,0.6)" />
+          <circle cx="16" cy="18" r="0.8" fill="rgba(255,255,255,0.7)" />
+        </g>
+        
+        {/* Highlight effects */}
+        <path d="M16 6 L20 8 L16 14 L12 8 Z" fill="rgba(255,255,255,0.3)" />
+        <ellipse cx="16" cy="10" rx="2" ry="1" fill="rgba(255,255,255,0.4)" />
+      </g>
+    </svg>
   );
 }
 
@@ -247,20 +323,27 @@ export function AkiliLogoMark({
 export function TanzaniteMarkMono({ className }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 32 32"
+      viewBox="0 0 40 40"
       fill="none"
       className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g transform="translate(2, 2)">
-        <path d="M14 2 L22 6 L18 14 L10 14 Z" fill="currentColor" />
-        <path d="M14 2 L18 14 L14 26 L6 14 Z" fill="currentColor" opacity="0.8" />
-        <path d="M22 6 L26 10 L18 14 L14 2 Z" fill="currentColor" opacity="0.6" />
-        <path d="M6 6 L14 2 L6 14 L2 10 Z" fill="currentColor" opacity="0.9" />
-        <path d="M6 14 L14 26 L10 22 L2 18 Z" fill="currentColor" />
-        <path d="M18 14 L26 18 L22 22 L14 26 Z" fill="currentColor" opacity="0.7" />
-        <path d="M2 10 L6 6 L6 14 L2 18 Z" fill="currentColor" />
-        <path d="M26 10 L26 18 L22 22 L22 6 Z" fill="currentColor" opacity="0.5" />
+      <g transform="translate(4, 2)">
+        <path d="M16 2 L28 8 L22 18 L10 18 Z" fill="currentColor" />
+        <path d="M16 2 L22 18 L16 34 L4 18 Z" fill="currentColor" opacity="0.8" />
+        <path d="M28 8 L32 14 L22 18 L16 2 Z" fill="currentColor" opacity="0.6" />
+        <path d="M4 8 L16 2 L4 18 L0 14 Z" fill="currentColor" opacity="0.9" />
+        <path d="M4 18 L16 34 L12 28 L0 22 Z" fill="currentColor" />
+        <path d="M22 18 L32 22 L28 28 L16 34 Z" fill="currentColor" opacity="0.7" />
+        <path d="M0 14 L4 8 L4 18 L0 22 Z" fill="currentColor" />
+        <path d="M32 14 L32 22 L28 28 L28 8 Z" fill="currentColor" opacity="0.5" />
+        
+        {/* Simplified neural network pattern */}
+        <g stroke="currentColor" strokeWidth="0.5" fill="none" opacity="0.4">
+          <path d="M16 12 L20 16 L16 20 L12 16 Z" />
+          <circle cx="16" cy="14" r="0.5" fill="currentColor" />
+          <circle cx="16" cy="18" r="0.5" fill="currentColor" />
+        </g>
       </g>
     </svg>
   );
