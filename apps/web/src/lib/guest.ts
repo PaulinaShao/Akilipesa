@@ -1,4 +1,4 @@
-import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 export async function ensureGuestAuth(): Promise<string> {
   const auth = getAuth();

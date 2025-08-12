@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import AkiliLogo from "./AkiliLogo";
 
 type Props = {

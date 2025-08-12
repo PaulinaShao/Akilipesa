@@ -7,15 +7,6 @@ import StoriesRow from '@/components/StoriesRow';
 import GuestGate from '@/components/GuestGate';
 import { useAppStore } from '@/store';
 import { isGuest, requireAuthOrGate } from '@/lib/guards';
-import {
-  useGatedLike,
-  useGatedComment,
-  useGatedShare,
-  useGatedFollow,
-  useGatedMessage,
-  useGatedBuy,
-  useGatedLive
-} from '@/hooks/useAuthGate';
 
 interface ReelData {
   id: string;
