@@ -7,7 +7,7 @@ import StoriesRow from '@/components/StoriesRow';
 import GuestGate from '@/components/GuestGate';
 import { StickyGuestCTA } from '@/components/CTABanner';
 import { useAppStore } from '@/store';
-import { isGuest, requireAuthOrGate } from '@/lib/guards';
+import { isGuest } from '@/lib/guards';
 import { requireAuth } from '@/lib/authGuard';
 
 interface ReelData {

@@ -1,11 +1,10 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { mockUser } from '@/lib/mock-data';
 import MobileLayout from '@/components/layout/MobileLayout';
 import { ToastProvider } from '@/hooks/useToast';
-import ProtectedRoute from '@/components/ProtectedRoute';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/lib/queryClient';
 import AuthSheet from '@/components/auth/AuthSheet';
@@ -33,24 +32,11 @@ import SearchPage from '@/pages/SearchPage';
 import CreatePage from '@/pages/CreatePage';
 import InboxPage from '@/pages/InboxPage';
 import ProfilePage from '@/pages/ProfilePage';
-import MarketPage from '@/pages/MarketPage';
 import AdminPage from '@/pages/AdminPage';
 import ProductDetailPage from '@/pages/ProductDetailPage';
-import CheckoutPage from '@/pages/CheckoutPage';
-import OrdersPage from '@/pages/OrdersPage';
 import WalletPage from '@/pages/WalletPage';
 import CallPage from '@/pages/CallPage';
-import CameraCaptPage from '@/pages/CameraCaptPage';
-import SavedPostsPage from '@/pages/SavedPostsPage';
-import PurchasesPage from '@/pages/PurchasesPage';
-import EarningsPage from '@/pages/EarningsPage';
-import AnalyticsPage from '@/pages/AnalyticsPage';
-import ReferralsPage from '@/pages/ReferralsPage';
 import SettingsPage from '@/pages/SettingsPage';
-import ChatPage from '@/pages/ChatPage';
-import PlansPage from '@/pages/PlansPage';
-import JobsPage from '@/pages/JobsPage';
-import FollowersPage from '@/pages/FollowersPage';
 import InboxThreadPage from '@/pages/InboxThreadPage';
 
 // Admin Guard Component
