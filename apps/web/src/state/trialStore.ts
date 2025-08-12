@@ -140,17 +140,15 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
       const { deviceToken } = get();
       if (!deviceToken) return;
 
-      const { getFirebaseSafeCall } = await import('../lib/firebase');
-      
-      const usage = await getFirebaseSafeCall(
-        'fetchTrialUsage',
+      const { safeFirebaseOperation, firestore } = await import('../lib/firebase');
+      const { doc, getDoc } = await import('firebase/firestore');
+
+      const usage = await safeFirebaseOperation(
         async () => {
-          const { firestore } = await import('../lib/firebase');
-          const { doc, getDoc } = await import('firebase/firestore');
-          
           const usageDoc = await getDoc(doc(firestore, 'trials', deviceToken));
           return usageDoc.exists() ? usageDoc.data() : null;
         },
+        'fetchTrialUsage',
         null
       );
 
