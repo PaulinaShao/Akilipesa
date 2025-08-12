@@ -418,3 +418,96 @@ export async function cancelJob(jobId: string): Promise<void> {
     console.warn('Failed to cancel job:', error);
   }
 }
+
+// ============================================================================
+// TRIAL SYSTEM CLOUD FUNCTIONS
+// ============================================================================
+
+/**
+ * Issue a new device token for trial tracking
+ */
+export async function issueTrialToken(data: TrialTokenRequest): Promise<TrialTokenResponse> {
+  try {
+    const { isFirebaseDemoMode } = await import('../../lib/firebase');
+
+    if (isFirebaseDemoMode) {
+      console.log('Demo mode: issuing demo trial token');
+      const demoToken = `demo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      return { deviceToken: demoToken };
+    }
+
+    const issueToken = httpsCallable(functions, 'issueTrialToken');
+    const result = await issueToken(data);
+
+    return result.data as TrialTokenResponse;
+  } catch (error) {
+    console.warn('Failed to issue trial token:', error);
+
+    // Fallback to local token
+    const fallbackToken = `local_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return { deviceToken: fallbackToken };
+  }
+}
+
+/**
+ * Request a guest call with quota enforcement
+ */
+export async function requestGuestCall(data: GuestCallRequest): Promise<GuestCallResponse> {
+  try {
+    const { isFirebaseDemoMode } = await import('../../lib/firebase');
+
+    if (isFirebaseDemoMode) {
+      console.log('Demo mode: creating demo guest call');
+      return {
+        rtcToken: 'demo_guest_rtc_token',
+        channel: `demo_trial_${data.targetId}_${Date.now()}`,
+        ttl: Date.now() + (90 * 1000) // 90 seconds
+      };
+    }
+
+    const requestCall = httpsCallable(functions, 'requestGuestCall');
+    const result = await requestCall(data);
+
+    return result.data as GuestCallResponse;
+  } catch (error) {
+    console.warn('Failed to request guest call:', error);
+
+    // Re-throw to trigger quota exhaustion handling
+    throw error;
+  }
+}
+
+/**
+ * Send a chat message as guest with quota enforcement
+ */
+export async function guestChat(data: GuestChatRequest): Promise<GuestChatResponse> {
+  try {
+    const { isFirebaseDemoMode } = await import('../../lib/firebase');
+
+    if (isFirebaseDemoMode) {
+      console.log('Demo mode: guest chat message');
+
+      // Simulate AI response
+      const responses = [
+        "Hello! I'm AkiliPesa AI. How can I help you today?",
+        "Great question! I can assist with financial advice and services.",
+        "Thanks for trying AkiliPesa! Sign up for unlimited AI conversations.",
+        "I'd love to help more! Create an account for extended conversations.",
+        "This is your trial limit. Register to continue our conversation!"
+      ];
+
+      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+      return { reply: randomResponse };
+    }
+
+    const chat = httpsCallable(functions, 'guestChat');
+    const result = await chat(data);
+
+    return result.data as GuestChatResponse;
+  } catch (error) {
+    console.warn('Failed to send guest chat:', error);
+
+    // Re-throw to trigger quota exhaustion handling
+    throw error;
+  }
+}
