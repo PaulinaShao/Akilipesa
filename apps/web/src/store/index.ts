@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 import { callService, type StartCallParams, type CallMetrics, type CallParticipant } from '@/lib/callService';
 
 export interface User {
@@ -51,7 +51,8 @@ export interface AppState {
 
 export const useAppStore = create<AppState>()(
   devtools(
-    (set, get) => ({
+    persist(
+      (set, get) => ({
       // Initial state
       user: null,
       isAuthenticated: false,
@@ -62,7 +63,15 @@ export const useAppStore = create<AppState>()(
       activeCall: null,
       
       // Actions
-      setUser: (user) => set({ user, isAuthenticated: !!user }),
+      setUser: (user) => {
+        // Persist user to localStorage for auth guard compatibility
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
+        } else {
+          localStorage.removeItem('user');
+        }
+        set({ user, isAuthenticated: !!user });
+      },
       setLoading: (isLoading) => set({ isLoading }),
       setStoriesVisible: (storiesVisible) => set({ storiesVisible }),
       setBalanceBannerVisible: (balanceBannerVisible) => set({ balanceBannerVisible }),
@@ -169,6 +178,16 @@ export const useAppStore = create<AppState>()(
         }
       },
     }),
+      {
+        name: 'akilipesa-store',
+        partialize: (state) => ({
+          user: state.user,
+          isAuthenticated: state.isAuthenticated,
+          storiesVisible: state.storiesVisible,
+          balanceBannerVisible: state.balanceBannerVisible,
+        }),
+      }
+    ),
     { name: 'akilipesa-store' }
   )
 );
