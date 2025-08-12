@@ -7,6 +7,7 @@ import { createReferralLink } from '@/lib/referral';
 import { useAppStore } from '@/store';
 import { useNavigate } from 'react-router-dom';
 import ShareModal from './ShareModal';
+import { requireAuth } from '@/lib/authGuard';
 
 interface ProductDrawerProps {
   isOpen: boolean;
@@ -333,25 +334,29 @@ export default function ProductDrawer({
   };
 
   const handleCallVideo = async (sellerId: string) => {
-    try {
-      await startCall({ type: 'video', targetId: sellerId });
-      navigate(`/call/${sellerId}?type=video`);
-      onClose(); // Close the product drawer
-    } catch (error) {
-      console.error('Failed to start video call:', error);
-      // TODO: Show error toast
-    }
+    requireAuth('start video call with seller', async () => {
+      try {
+        await startCall({ type: 'video', targetId: sellerId });
+        navigate(`/call/${sellerId}?type=video`);
+        onClose(); // Close the product drawer
+      } catch (error) {
+        console.error('Failed to start video call:', error);
+        // TODO: Show error toast
+      }
+    });
   };
 
   const handleCallAudio = async (sellerId: string) => {
-    try {
-      await startCall({ type: 'audio', targetId: sellerId });
-      navigate(`/call/${sellerId}?type=audio`);
-      onClose(); // Close the product drawer
-    } catch (error) {
-      console.error('Failed to start audio call:', error);
-      // TODO: Show error toast
-    }
+    requireAuth('start audio call with seller', async () => {
+      try {
+        await startCall({ type: 'audio', targetId: sellerId });
+        navigate(`/call/${sellerId}?type=audio`);
+        onClose(); // Close the product drawer
+      } catch (error) {
+        console.error('Failed to start audio call:', error);
+        // TODO: Show error toast
+      }
+    });
   };
 
   const handleReport = (productId: string) => {
