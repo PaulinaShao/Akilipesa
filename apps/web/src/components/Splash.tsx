@@ -23,7 +23,7 @@ export default function Splash({
              style={{ background: "radial-gradient(closest-side, rgba(105,77,255,.45), rgba(0,0,0,0))" }} />
         {/* Tanzanite logo with sparkles */}
         <div className="relative z-10 w-full h-full">
-          <AkiliLogo variant="hero" size="xl" showSparkles={true} animated={true} />
+          <AkiliLogo variant="hero" size="xxl" showSparkles={true} animated={true} />
         </div>
       </div>
       <p className="mt-6 text-sm tracking-wide text-white/70">AkiliPesa</p>
