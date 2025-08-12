@@ -43,10 +43,10 @@ export default function LoginPage() {
 
   const handleSendCode = async () => {
     setError('');
-    
+
     if (activeTab === 'phone') {
-      if (!phoneLocal || !isValidTZ(phoneLocal)) {
-        setError('Please enter a valid Tanzania phone number');
+      if (!phoneValidation.isValid) {
+        setError(phoneValidation.message || 'Please enter a valid Tanzania phone number');
         return;
       }
     } else {
@@ -57,16 +57,50 @@ export default function LoginPage() {
     }
 
     setLoading(true);
-    
+
     try {
-      // Simulate sending code (replace with actual Firebase Auth)
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      // Use retry with exponential backoff for Firebase operations
+      await retryWithBackoff(
+        async () => {
+          // TODO: Replace with actual Firebase Auth signInWithPhoneNumber
+          // const confirmationResult = await signInWithPhoneNumber(auth, phoneValidation.e164, recaptchaVerifier);
+
+          // Simulate network delay and potential failure
+          await new Promise(resolve => setTimeout(resolve, 1500));
+
+          // Simulate random failures for testing
+          if (Math.random() < 0.1) {
+            throw new Error('Network error: Please check your connection');
+          }
+        },
+        {
+          maxAttempts: 3,
+          onRetry: (attempt, error) => {
+            toast({
+              title: `Retrying... (${attempt}/3)`,
+              description: error.message,
+              variant: 'default'
+            });
+          }
+        }
+      );
+
       setStep('code');
       setResendTimer(30);
-      setLoading(false);
-    } catch (error) {
-      setError('Failed to send code. Please try again.');
+      toast({
+        title: 'Code sent!',
+        description: `Verification code sent to ${activeTab === 'phone' ? phoneValidation.formatted : email}`,
+        variant: 'default'
+      });
+    } catch (error: any) {
+      const message = error?.message || 'Failed to send code. Please try again.';
+      setError(message);
+      toast({
+        title: 'Failed to send code',
+        description: message,
+        variant: 'destructive'
+      });
+    } finally {
       setLoading(false);
     }
   };
