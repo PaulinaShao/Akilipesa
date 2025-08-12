@@ -125,7 +125,7 @@
 
 /* Enhanced button styles */
 .tz-btn-primary {
-  background: var(--tz-gradient);
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 45%, #9333ea 100%);
   border: none;
   border-radius: 12px;
   color: white;
@@ -133,19 +133,39 @@
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
+  min-height: 48px; /* Better touch target */
+  padding: 12px 24px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .tz-btn-primary:focus {
-  box-shadow: 0 0 0 2px var(--tz-ice-400);
+  box-shadow: 0 0 0 3px rgba(107, 182, 255, 0.4);
+  outline: none;
+}
+
+.tz-btn-primary:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
 }
 
 .tz-btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: var(--shadow-glow);
+  box-shadow: 0 8px 30px rgba(37, 99, 235, 0.4);
+  background: linear-gradient(135deg, #1d4ed8 0%, #6d28d9 45%, #7c2d12 100%);
 }
 
 .tz-btn-primary:active {
   transform: translateY(0);
+}
+
+.tz-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* Accessibility for reduced motion */
