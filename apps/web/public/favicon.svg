@@ -1,19 +1,26 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <rect width="32" height="32" rx="6" fill="#0B0B1A"/>
-  <g transform="translate(4, 4)">
-    <!-- Main facets -->
-    <path d="M12 2 L18 5 L15 12 L9 12 Z" fill="#6E3CE6"/>
-    <path d="M12 2 L15 12 L12 22 L6 12 Z" fill="#2C3CFF"/>
-    <path d="M18 5 L22 8 L15 12 L12 2 Z" fill="#6BB6FF"/>
-    <path d="M6 5 L12 2 L6 12 L2 8 Z" fill="#5A2FD8"/>
-    <path d="M6 12 L12 22 L9 19 L2 16 Z" fill="#4726C5"/>
-    <path d="M15 12 L22 16 L19 19 L12 22 Z" fill="#6E3CE6"/>
-    <path d="M2 8 L6 5 L6 12 L2 16 Z" fill="#4726C5"/>
-    <path d="M22 8 L22 16 L19 19 L18 5 Z" fill="#6BB6FF"/>
-    <!-- Inner reflections -->
-    <path d="M12 7 L15 10 L12 15 L9 10 Z" fill="#B8C2FF" opacity="0.7"/>
-    <path d="M11 5 L14 4 L14 10 L11 10 Z" fill="#E6E9FF" opacity="0.5"/>
-    <!-- Highlight -->
-    <path d="M12 3 L14 5 L12 8 L10 5 Z" fill="#FFFFFF" opacity="0.6"/>
+  
+  <!-- Tanzanite gem with enhanced details -->
+  <g transform="translate(6, 6)">
+    <!-- Main triangular gem structure -->
+    <path d="M10 2 L16 6 L13 12 L7 12 Z" fill="#6E3CE6"/>
+    <path d="M10 2 L13 12 L10 18 L4 12 Z" fill="#2C3CFF"/>
+    <path d="M16 6 L18 8 L13 12 L10 2 Z" fill="#6BB6FF"/>
+    <path d="M4 6 L10 2 L4 12 L2 8 Z" fill="#5A2FD8"/>
+    <path d="M4 12 L10 18 L8 16 L2 14 Z" fill="#4726C5"/>
+    <path d="M13 12 L18 14 L16 16 L10 18 Z" fill="#6E3CE6"/>
+    
+    <!-- Inner light reflections -->
+    <path d="M10 6 L13 9 L10 13 L7 9 Z" fill="#B8C2FF" opacity="0.7"/>
+    <path d="M9 4 L12 3 L12 9 L9 9 Z" fill="#E6E9FF" opacity="0.6"/>
+    
+    <!-- Bright highlight -->
+    <path d="M10 3 L11 5 L10 7 L9 5 Z" fill="#FFFFFF" opacity="0.8"/>
+    
+    <!-- Subtle sparkle points -->
+    <circle cx="12" cy="5" r="0.5" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="8" cy="8" r="0.3" fill="#6BB6FF" opacity="0.8"/>
+    <circle cx="14" cy="10" r="0.4" fill="#B8C2FF" opacity="0.7"/>
   </g>
 </svg>
