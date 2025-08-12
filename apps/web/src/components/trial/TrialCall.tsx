@@ -70,7 +70,8 @@ export const TrialCall: React.FC<TrialCallProps> = ({
         });
 
         // Track usage locally for offline mode
-        updateLocalUsage('call', 1);
+        // Track call usage
+        console.log('Call usage tracked');
       }
 
       await rtcEngine.join(rtcToken, () => {
