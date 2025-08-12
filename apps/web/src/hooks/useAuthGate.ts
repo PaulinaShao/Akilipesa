@@ -50,7 +50,7 @@ export function useAuthGate(): UseAuthGateReturn {
 }
 
 export function useTrialGate(): UseTrialGateReturn {
-  const { canUseFeature, incrementLocalReactions } = useTrialStore();
+  const { canUseFeature, useReaction } = useTrialStore();
   const { setTrialPaywall } = useUIStore();
 
   const canUseTrial = useCallback((trialType: TrialAction) => {
