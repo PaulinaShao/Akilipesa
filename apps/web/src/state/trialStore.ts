@@ -217,7 +217,7 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
   // Use chat feature
   useChat: async () => {
     const { deviceToken, canUseFeature } = get();
-    
+
     if (!canUseFeature('chat')) {
       debugLog.warn('Chat quota exhausted');
       return false;
@@ -226,7 +226,7 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
     try {
       // Call Cloud Function
       const { guestChat } = await import('../modules/api');
-      await guestChat({ deviceToken, text: 'ping' }); // Will increment server counter
+      await guestChat({ deviceToken: deviceToken!, text: 'ping' }); // Will increment server counter
       
       // Update local state
       set(state => ({
