@@ -193,14 +193,40 @@
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
-  .tz-glass-card {
-    background: var(--tz-night);
-    border: 2px solid var(--tz-ink);
+  :root {
+    --tz-ink: #ffffff;
+    --tz-muted: #e5e5e5;
+    --glass-bg: #000000;
+    --glass-stroke: #ffffff;
   }
-  
+
+  .tz-glass-card {
+    background: #000000;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+  }
+
   .tz-input {
-    background: var(--tz-night);
-    border: 2px solid var(--tz-ink);
+    background: #000000;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+  }
+
+  .tz-btn-primary {
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
+  }
+
+  .cta-banner {
+    background: #000000;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+  }
+
+  .sparkle,
+  .lottie-container {
+    display: none; /* Hide decorative animations in high contrast */
   }
 }
 
