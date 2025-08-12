@@ -392,7 +392,7 @@ export default function LoginPage() {
                   Enter verification code
                 </h2>
                 <p className="text-[var(--tz-muted)] text-sm">
-                  We sent a 6-digit code to {activeTab === 'phone' ? formatTZPhone(phoneLocal) : email}
+                  We sent a 6-digit code to {activeTab === 'phone' ? phoneValidation.e164 : email}
                 </p>
               </div>
 
