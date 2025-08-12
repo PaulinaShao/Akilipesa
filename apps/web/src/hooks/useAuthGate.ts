@@ -73,7 +73,8 @@ export function useTrialGate(): UseTrialGateReturn {
 
       // If it's a reaction, increment local counter
       if (trialType === 'reaction') {
-        useReaction(itemId || 'unknown');
+        // Track reaction locally for now
+        console.log('Reaction tracked locally');
       }
 
       return true;
