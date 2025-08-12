@@ -22,6 +22,7 @@ import { seedTrialConfig } from '@/lib/seedTrialConfig';
 import { ensureGuestAuth } from '@/lib/guest';
 import { shouldShowSplashOnce } from '@/lib/entry';
 import Splash from '@/components/Splash';
+import NotFound from '@/components/NotFound';
 import '@/styles/util.css';
 
 // Import pages
@@ -213,84 +214,53 @@ function App() {
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/verify" element={<LoginPage />} />
 
-          {/* Public feed (guest accessible) */}
-          <Route path="/" element={<Navigate to={showSplash ? "/splash" : "/reels"} replace />} />
+          {/* Default route - always go to reels */}
+          <Route path="/" element={<Navigate to="/reels" replace />} />
+
+          {/* Public routes (guest accessible) */}
           <Route path="/reels" element={
             <MobileLayout>
               <ReelsPage />
             </MobileLayout>
           } />
-          
+
           <Route path="/search" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <SearchPage />
-              </MobileLayout>
-            </ProtectedRoute>
+            <MobileLayout>
+              <SearchPage />
+            </MobileLayout>
           } />
-          
+
           <Route path="/create" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <CreatePage />
-              </MobileLayout>
-            </ProtectedRoute>
+            <MobileLayout>
+              <CreatePage />
+            </MobileLayout>
           } />
-          
+
           <Route path="/inbox" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <InboxPage />
-              </MobileLayout>
-            </ProtectedRoute>
+            <MobileLayout>
+              <InboxPage />
+            </MobileLayout>
           } />
 
-          <Route path="/inbox/:threadId" element={
-            <ProtectedRoute user={currentUser}>
-              <InboxThreadPage />
-            </ProtectedRoute>
-          } />
-          
+          <Route path="/inbox/:threadId" element={<InboxThreadPage />} />
+
           <Route path="/profile" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <ProfilePage />
-              </MobileLayout>
-            </ProtectedRoute>
-          } />
-
-          {/* Additional routes */}
-          <Route path="/market" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <MarketPage />
-              </MobileLayout>
-            </ProtectedRoute>
-          } />
-
-          {/* Dynamic routes */}
-          <Route path="/reel/:id" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <ReelsPage />
-              </MobileLayout>
-            </ProtectedRoute>
+            <MobileLayout>
+              <ProfilePage />
+            </MobileLayout>
           } />
 
           <Route path="/profile/:userId" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <ProfilePage />
-              </MobileLayout>
-            </ProtectedRoute>
+            <MobileLayout>
+              <ProfilePage />
+            </MobileLayout>
           } />
 
-          <Route path="/profile/:userId/followers" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <FollowersPage />
-              </MobileLayout>
-            </ProtectedRoute>
+          {/* Core routes (guest accessible) */}
+          <Route path="/reel/:id" element={
+            <MobileLayout>
+              <ReelsPage />
+            </MobileLayout>
           } />
 
           <Route path="/product/:id" element={
@@ -299,233 +269,43 @@ function App() {
             </MobileLayout>
           } />
 
-          <Route path="/checkout/:id" element={
-            <ProtectedRoute user={currentUser}>
-              <CheckoutPage />
-            </ProtectedRoute>
-          } />
-
-          <Route path="/orders/:id" element={
-            <ProtectedRoute user={currentUser}>
-              <OrdersPage />
-            </ProtectedRoute>
-          } />
-
-          <Route path="/orders" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <div className="h-screen-safe flex-center">
-                  <div className="text-center">
-                    <h1 className="heading-2 mb-4">All Orders</h1>
-                    <p className="text-white/60">Order history page</p>
-                  </div>
+          <Route path="/live/:channelId" element={
+            <MobileLayout>
+              <div className="h-screen-safe flex-center">
+                <div className="text-center">
+                  <h1 className="heading-2 mb-4">Live Session</h1>
+                  <p className="text-white/60">Join the live session</p>
                 </div>
-              </MobileLayout>
-            </ProtectedRoute>
+              </div>
+            </MobileLayout>
           } />
 
           <Route path="/wallet" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <WalletPage />
-              </MobileLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/plans" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <PlansPage />
-              </MobileLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/live/:channelId" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <div className="h-screen-safe flex-center">
-                  <div className="text-center">
-                    <h1 className="heading-2 mb-4">Live Session</h1>
-                    <p className="text-white/60">Live video call implementation</p>
-                  </div>
-                </div>
-              </MobileLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/call/:channel" element={
-            <ProtectedRoute user={currentUser}>
-              <CallPage />
-            </ProtectedRoute>
-          } />
-
-          <Route path="/call/new" element={
-            <ProtectedRoute user={currentUser}>
-              <CallPage />
-            </ProtectedRoute>
-          } />
-
-          <Route path="/create/camera" element={
-            <ProtectedRoute user={currentUser}>
-              <CameraCaptPage />
-            </ProtectedRoute>
-          } />
-
-          <Route path="/create/edit" element={
-            <ProtectedRoute user={currentUser}>
-              <div className="h-screen-safe flex-center">
-                <div className="text-center">
-                  <h1 className="heading-2 mb-4">Edit Media</h1>
-                  <p className="text-white/60">Media editing coming soon</p>
-                </div>
-              </div>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/create/ai" element={
-            <ProtectedRoute user={currentUser}>
-              <div className="h-screen-safe flex-center">
-                <div className="text-center">
-                  <h1 className="heading-2 mb-4">AI Creation</h1>
-                  <p className="text-white/60">AI-powered content creation coming soon</p>
-                </div>
-              </div>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/create/live" element={
-            <ProtectedRoute user={currentUser}>
-              <div className="h-screen-safe flex-center">
-                <div className="text-center">
-                  <h1 className="heading-2 mb-4">Go Live</h1>
-                  <p className="text-white/60">Live streaming coming soon</p>
-                </div>
-              </div>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/stories/:username" element={
-            <ProtectedRoute user={currentUser}>
-              <div className="h-screen-safe flex-center">
-                <div className="text-center">
-                  <h1 className="heading-2 mb-4">Stories</h1>
-                  <p className="text-white/60">Stories viewer coming soon</p>
-                </div>
-              </div>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/agents" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <div className="h-screen-safe flex-center">
-                  <div className="text-center">
-                    <h1 className="heading-2 mb-4">AI Agents</h1>
-                    <p className="text-white/60">AI agents directory</p>
-                  </div>
-                </div>
-              </MobileLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/agent/:id" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <div className="h-screen-safe flex-center">
-                  <div className="text-center">
-                    <h1 className="heading-2 mb-4">Agent Details</h1>
-                    <p className="text-white/60">AI agent detail page</p>
-                  </div>
-                </div>
-              </MobileLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/chat/:id" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <ChatPage />
-              </MobileLayout>
-            </ProtectedRoute>
+            <MobileLayout>
+              <WalletPage />
+            </MobileLayout>
           } />
 
           <Route path="/settings" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <SettingsPage />
-              </MobileLayout>
-            </ProtectedRoute>
+            <MobileLayout>
+              <SettingsPage />
+            </MobileLayout>
           } />
 
-          <Route path="/saved-posts" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <SavedPostsPage />
-              </MobileLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/purchases" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <PurchasesPage />
-              </MobileLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/earnings" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <EarningsPage />
-              </MobileLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/analytics" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <AnalyticsPage />
-              </MobileLayout>
-            </ProtectedRoute>
-          } />
+          <Route path="/call/:channel" element={<CallPage />} />
+          <Route path="/call/new" element={<CallPage />} />
 
           <Route path="/trial-policy" element={<TrialPolicyPage />} />
 
-          <Route path="/referrals" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <ReferralsPage />
-              </MobileLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/jobs" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <JobsPage />
-              </MobileLayout>
-            </ProtectedRoute>
-          } />
-
-          {/* Admin routes (no mobile layout) */}
+          {/* Admin routes */}
           <Route path="/admin" element={
             <AdminRoute user={currentUser}>
               <AdminPage />
             </AdminRoute>
           } />
-          
-          {/* Catch all route */}
-          <Route path="*" element={
-            <div className="h-screen-safe flex-center text-center p-8">
-              <div>
-                <h1 className="heading-2 mb-4">Page Not Found</h1>
-                <p className="text-white/60 mb-8">The page you're looking for doesn't exist.</p>
-                <Link to="/reels" className="btn-primary">
-                  Go Home
-                </Link>
-              </div>
-            </div>
-          } />
+
+          {/* Clean 404 handling */}
+          <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
 
