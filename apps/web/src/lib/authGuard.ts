@@ -1,14 +1,14 @@
-import { useAppStore } from '@/store';
-
 interface PostLoginIntent {
   action: string;
   href: string;
 }
 
 export function requireAuth(action: string, onOk: () => void) {
-  const { user } = useAppStore.getState();
-  
-  if (user && !user.id.includes('guest')) {
+  // Get user from localStorage or current state
+  const userStr = localStorage.getItem('user');
+  const user = userStr ? JSON.parse(userStr) : null;
+
+  if (user && !user.id.includes('guest') && !user.id.includes('demo')) {
     return onOk();
   }
   
