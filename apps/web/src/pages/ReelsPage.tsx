@@ -439,6 +439,8 @@ export default function ReelsPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
   const [showGuestGate, setShowGuestGate] = useState(false);
+  const [showGuestCTA, setShowGuestCTA] = useState(false);
+  const [reelViewCount, setReelViewCount] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { setStoriesVisible, setBalanceBannerVisible, startCall } = useAppStore();
