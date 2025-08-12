@@ -28,6 +28,9 @@ export default function LoginPage() {
 
   const from = location.state?.from?.pathname || '/reels';
 
+  // Create phone debouncer
+  const phoneDebouncer = createPhoneDebouncer(300);
+
   // Resend timer
   useEffect(() => {
     if (resendTimer > 0) {
