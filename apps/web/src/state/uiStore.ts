@@ -15,12 +15,18 @@ interface TrialPaywallState {
 interface UIStore {
   authSheet: AuthSheetState;
   trialPaywall: TrialPaywallState;
+
+  // Auth sheet actions
   openAuthSheet: (action?: () => void, actionType?: string) => void;
   closeAuthSheet: () => void;
   setAuthStep: (step: AuthSheetState['step']) => void;
   executePendingAction: () => void;
-  setTrialPaywall: (state: TrialPaywallState) => void;
+
+  // Trial paywall actions
+  isTrialPaywallOpen: boolean;
+  openTrialPaywall: (feature?: 'reaction' | 'call' | 'chat') => void;
   closeTrialPaywall: () => void;
+  setTrialPaywall: (state: TrialPaywallState) => void;
 }
 
 export const useUIStore = create<UIStore>()((set, get) => ({
