@@ -504,50 +504,59 @@ export default function ReelsPage() {
   };
 
   const handleShop = (reelId: string) => {
-    gatedBuy(() => {
-      const reel = reels.find(r => r.id === reelId);
-      if (reel?.products?.[0]) {
-        navigate(`/product/${reel.products[0].id}`);
-      }
-    });
+    const reel = reels.find(r => r.id === reelId);
+    if (reel?.products?.[0]) {
+      navigate(`/product/${reel.products[0].id}`);
+    }
   };
 
   const handleAudioCall = (userId: string) => {
-    gatedMessage(() => {
-      navigate(`/call/new?mode=audio&target=${userId}`);
-    });
+    requireAuthOrGate(
+      () => setShowGuestGate(true),
+      () => navigate(`/call/new?mode=audio&target=${userId}`)
+    );
   };
 
   const handleVideoCall = (userId: string) => {
-    gatedMessage(() => {
-      navigate(`/call/new?mode=video&target=${userId}`);
-    });
+    requireAuthOrGate(
+      () => setShowGuestGate(true),
+      () => navigate(`/call/new?mode=video&target=${userId}`)
+    );
   };
 
   const handleLiveCall = (reelId: string) => {
-    gatedLive(() => {
-      const reel = reels.find(r => r.id === reelId);
-      if (reel?.user.isLive) {
-        navigate(`/live/${reel.user.id}`);
+    requireAuthOrGate(
+      () => setShowGuestGate(true),
+      () => {
+        const reel = reels.find(r => r.id === reelId);
+        if (reel?.user.isLive) {
+          navigate(`/live/${reel.user.id}`);
+        }
       }
-    });
+    );
   };
 
   const handleJoin = (reelId: string) => {
-    gatedLive(() => {
-      const reel = reels.find(r => r.id === reelId);
-      if (reel) {
-        startCall({ type: 'video', targetId: reel.user.id });
-        navigate(`/call/${reel.user.id}?type=video`);
+    requireAuthOrGate(
+      () => setShowGuestGate(true),
+      () => {
+        const reel = reels.find(r => r.id === reelId);
+        if (reel) {
+          startCall({ type: 'video', targetId: reel.user.id });
+          navigate(`/call/${reel.user.id}?type=video`);
+        }
       }
-    });
+    );
   };
 
   const handleFollow = (userId: string) => {
-    gatedFollow(() => {
-      console.log('Follow user:', userId);
-      // TODO: Implement actual follow functionality
-    });
+    requireAuthOrGate(
+      () => setShowGuestGate(true),
+      () => {
+        console.log('Follow user:', userId);
+        // TODO: Implement actual follow functionality
+      }
+    );
   };
 
   const handleProfileClick = (userId: string) => {
