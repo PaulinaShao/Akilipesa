@@ -1,63 +1,138 @@
+import React from 'react';
+import Lottie from 'lottie-react';
 import { cn } from '@/lib/utils';
 
+// Import the Lottie animation data
+import tanzaniteSparkleAnimation from '/akilipesa_tanzanite_sparkle_v1.json';
+
 interface AkiliLogoProps {
-  variant?: 'hero' | 'compact';
+  variant?: 'hero' | 'compact' | 'navigation';
   className?: string;
   showSparkles?: boolean;
   animated?: boolean;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }
 
 export default function AkiliLogo({ 
   variant = 'compact', 
   className,
   showSparkles = true,
-  animated = true
+  animated = true,
+  size = 'md'
 }: AkiliLogoProps) {
   
+  const sizeClasses = {
+    xs: { container: 'w-6 h-6', text: 'text-sm' },
+    sm: { container: 'w-8 h-8', text: 'text-base' },
+    md: { container: 'w-12 h-12', text: 'text-lg' },
+    lg: { container: 'w-16 h-16', text: 'text-xl' },
+    xl: { container: 'w-24 h-24', text: 'text-2xl' }
+  };
+
+  const currentSize = sizeClasses[size];
+
+  // New high-quality Tanzanite logo
+  const logoImage = "https://cdn.builder.io/api/v1/image/assets%2Fd3b228cddfa346f0aa1ed35137c6f24e%2F22d55c7f38bd4fecbb8ee5c33096f088?format=webp&width=800";
+
+  // Hero variant for splash, login, and major screens
   if (variant === 'hero') {
     return (
-      <div className={cn('tz-logo-hero', className)}>
-        <div className="gem-container">
-          <div className={cn('relative', animated && 'akili-shimmer')}>
+      <div className={cn('tz-logo-hero flex flex-col items-center gap-4', className)}>
+        <div className="relative">
+          {animated && showSparkles ? (
+            <div className="relative">
+              {/* Background glow effect */}
+              <div className="absolute inset-0 scale-110 opacity-70">
+                <Lottie
+                  animationData={tanzaniteSparkleAnimation}
+                  loop={true}
+                  className="w-32 h-32"
+                  style={{
+                    filter: 'blur(2px)',
+                  }}
+                />
+              </div>
+              {/* Main animated logo */}
+              <Lottie
+                animationData={tanzaniteSparkleAnimation}
+                loop={true}
+                className="w-32 h-32 relative z-10"
+                rendererSettings={{
+                  preserveAspectRatio: 'xMidYMid slice'
+                }}
+              />
+            </div>
+          ) : (
             <img 
-              src="https://cdn.builder.io/api/v1/image/assets%2Fd3b228cddfa346f0aa1ed35137c6f24e%2Ffd67d4de68ee4ceeb0c28b038f4887ef?format=webp&width=200"
+              src={logoImage}
               alt="AkiliPesa Tanzanite logo"
-              className="w-16 h-16 object-contain"
+              className="w-32 h-32 object-contain"
               loading="eager"
             />
-            {showSparkles && animated && (
-              <>
-                <div className="sparkle sparkle-tiny sparkle-1" />
-                <div className="sparkle sparkle-2" />
-                <div className="sparkle sparkle-tiny sparkle-3" />
-                <div className="sparkle sparkle-large sparkle-4" />
-                <div className="sparkle sparkle-5" />
-              </>
-            )}
-          </div>
+          )}
         </div>
-        <div className="wordmark">AkiliPesa</div>
+        <div className="wordmark text-3xl font-bold bg-gradient-to-r from-[var(--tz-gem-500)] via-[var(--tz-royal-500)] to-[var(--tz-ice-400)] bg-clip-text text-transparent">
+          AkiliPesa
+        </div>
       </div>
     );
   }
 
+  // Navigation variant for navbar
+  if (variant === 'navigation') {
+    return (
+      <div className={cn('flex items-center gap-2', className)}>
+        <div className="relative">
+          {animated && showSparkles ? (
+            <Lottie
+              animationData={tanzaniteSparkleAnimation}
+              loop={true}
+              className={cn(currentSize.container)}
+              rendererSettings={{
+                preserveAspectRatio: 'xMidYMid slice'
+              }}
+            />
+          ) : (
+            <img 
+              src={logoImage}
+              alt="AkiliPesa"
+              className={cn(currentSize.container, "object-contain")}
+              loading="lazy"
+            />
+          )}
+        </div>
+        <span className={cn('wordmark font-bold text-[var(--tz-ink)]', currentSize.text)}>
+          AkiliPesa
+        </span>
+      </div>
+    );
+  }
+
+  // Compact variant for general use
   return (
-    <div className={cn('tz-logo-compact', className)}>
-      <div className={cn('relative w-8 h-8', animated && 'akili-shimmer')}>
-        <TanzaniteGemSVG className="w-full h-full" />
-        {showSparkles && animated && (
-          <>
-            <div className="sparkle sparkle-tiny sparkle-1" />
-            <div className="sparkle sparkle-2" />
-          </>
+    <div className={cn('flex items-center gap-2', className)}>
+      <div className="relative">
+        {animated && showSparkles ? (
+          <Lottie
+            animationData={tanzaniteSparkleAnimation}
+            loop={true}
+            className={cn(currentSize.container)}
+            rendererSettings={{
+              preserveAspectRatio: 'xMidYMid slice'
+            }}
+          />
+        ) : (
+          <TanzaniteGemSVG className={cn(currentSize.container)} />
         )}
       </div>
-      <span className="wordmark text-lg font-bold">AkiliPesa</span>
+      <span className={cn('wordmark font-bold text-[var(--tz-ink)]', currentSize.text)}>
+        AkiliPesa
+      </span>
     </div>
   );
 }
 
-// Optimized SVG component for the compact logo
+// Fallback SVG component for when Lottie fails or in static mode
 function TanzaniteGemSVG({ className }: { className?: string }) {
   return (
     <svg
@@ -67,7 +142,7 @@ function TanzaniteGemSVG({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
     >
       <g transform="translate(2, 2)">
-        {/* Main facets */}
+        {/* Main facets with updated Tanzanite colors */}
         <path d="M14 2 L22 6 L18 14 L10 14 Z" fill="#6E3CE6" />
         <path d="M14 2 L18 14 L14 26 L6 14 Z" fill="#2C3CFF" />
         <path d="M22 6 L26 10 L18 14 L14 2 Z" fill="#6BB6FF" />
@@ -83,6 +158,49 @@ function TanzaniteGemSVG({ className }: { className?: string }) {
         <path d="M14 4 L16 6 L14 10 L12 6 Z" fill="#FFFFFF" opacity="0.6" />
       </g>
     </svg>
+  );
+}
+
+// Logo-only component for favicons and minimal usage
+export function AkiliLogoMark({ 
+  className, 
+  animated = false,
+  size = 'md' 
+}: { 
+  className?: string; 
+  animated?: boolean;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+}) {
+  const sizeClasses = {
+    xs: 'w-4 h-4',
+    sm: 'w-6 h-6', 
+    md: 'w-8 h-8',
+    lg: 'w-12 h-12',
+    xl: 'w-16 h-16'
+  };
+
+  const logoImage = "https://cdn.builder.io/api/v1/image/assets%2Fd3b228cddfa346f0aa1ed35137c6f24e%2F22d55c7f38bd4fecbb8ee5c33096f088?format=webp&width=800";
+
+  if (animated) {
+    return (
+      <Lottie
+        animationData={tanzaniteSparkleAnimation}
+        loop={true}
+        className={cn(sizeClasses[size], className)}
+        rendererSettings={{
+          preserveAspectRatio: 'xMidYMid slice'
+        }}
+      />
+    );
+  }
+
+  return (
+    <img 
+      src={logoImage}
+      alt="AkiliPesa"
+      className={cn(sizeClasses[size], "object-contain", className)}
+      loading="lazy"
+    />
   );
 }
 
