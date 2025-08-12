@@ -175,7 +175,16 @@ export default function LoginPage() {
       };
 
       setUser(mockUser);
-      navigate(from, { replace: true });
+
+      // Handle post-login intent or navigate to default location
+      setTimeout(() => {
+        const intent = getPostLoginIntent();
+        if (intent?.href) {
+          handlePostLogin();
+        } else {
+          navigate(from, { replace: true });
+        }
+      }, 100);
       
     } catch (error) {
       setError('Google sign-in failed. Please try again.');
