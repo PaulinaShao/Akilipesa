@@ -288,13 +288,22 @@ export default function LoginPage() {
                     </div>
                     <input
                       type="tel"
-                      value={phoneLocal}
+                      value={phoneInput}
                       onChange={(e) => handlePhoneChange(e.target.value)}
+                      onBlur={handlePhoneBlur}
                       placeholder="7XX XXX XXX"
-                      className="tz-input tz-phone-input"
+                      className={`tz-input tz-phone-input ${
+                        phoneInput && !phoneValidation.isValid ? 'border-rose-400' : ''
+                      }`}
                       autoComplete="tel"
                     />
                   </div>
+                  {phoneInput && !phoneValidation.isValid && phoneValidation.message && (
+                    <p className="mt-1 text-xs text-rose-400">{phoneValidation.message}</p>
+                  )}
+                  {phoneValidation.isValid && (
+                    <p className="mt-1 text-xs text-emerald-400">✓ Valid Tanzania mobile number</p>
+                  )}
                   {error && <p className="mt-2 text-xs text-rose-400">{error}</p>}
                 </div>
               ) : (
