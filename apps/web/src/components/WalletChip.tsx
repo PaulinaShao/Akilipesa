@@ -1,93 +1,48 @@
-import { useNavigate } from 'react-router-dom';
-import { Wallet, Plus } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useAppStore } from '@/store';
+import React, { useEffect, useState } from "react";
 
-interface WalletChipProps {
-  className?: string;
-  balance?: number;
-  plan?: string;
-}
+type Props = {
+  variant?: "guest" | "user";
+  onClick?: () => void;
+  labelGuest?: string;
+  labelUser?: string;
+};
 
-export default function WalletChip({ className, balance, plan }: WalletChipProps) {
-  const navigate = useNavigate();
-  const { user } = useAppStore();
-  
-  const displayBalance = balance ?? user?.balance ?? 0;
-  const displayPlan = plan ?? user?.plan ?? 'free';
-  
-  const formatBalance = (amount: number) => {
-    if (amount >= 1000000) {
-      return `${(amount / 1000000).toFixed(1)}M`;
-    }
-    if (amount >= 1000) {
-      return `${(amount / 1000).toFixed(1)}K`;
-    }
-    return amount.toLocaleString();
-  };
+export default function WalletChip({
+  variant = "guest",
+  onClick,
+  labelGuest = "Tap to start earning",
+  labelUser = "—",
+}: Props) {
+  // hide after first scroll > 60px
+  const [visible, setVisible] = useState(true);
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY > 60) setVisible(false);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  const getPlanColor = (planType: string) => {
-    switch (planType) {
-      case 'premium':
-      case 'business':
-        return 'text-yellow-400';
-      case 'starter':
-        return 'text-blue-400';
-      default:
-        return 'text-white';
-    }
-  };
+  if (!visible) return null;
 
-  const getPlanBadge = (planType: string) => {
-    switch (planType) {
-      case 'business':
-        return 'Business';
-      case 'premium':
-        return 'Premium';
-      case 'starter':
-        return 'Starter';
-      default:
-        return null;
-    }
-  };
+  const label = variant === "guest" ? labelGuest : labelUser;
 
   return (
     <button
-      onClick={() => navigate('/wallet')}
-      className={cn(
-        'absolute top-3 left-3 z-20 flex items-center space-x-2',
-        'tz-wallet-chip px-3 transition-all duration-200',
-        className
-      )}
+      onClick={onClick}
+      className="fixed top-4 left-4 z-[60] px-3 h-9 rounded-full text-sm font-medium
+                 backdrop-blur-md shadow-lg transition hover:scale-[1.02]
+                 border border-white/10"
+      style={{
+        background:
+          "linear-gradient(135deg, rgba(31,21,74,.70), rgba(74,35,150,.60))",
+        color: "white",
+      }}
     >
-      {/* Wallet Icon */}
-      <div className="w-7 h-7 bg-[var(--tz-gem-500)]/20 rounded-lg flex items-center justify-center">
-        <Wallet className="w-3.5 h-3.5 text-[var(--tz-gem-500)]" />
-      </div>
-      
-      {/* Balance Info */}
-      <div className="flex flex-col items-start">
-        <div className="flex items-center space-x-1">
-          <span className="text-[var(--tz-ink)] font-semibold text-sm">
-            {formatBalance(displayBalance)} TSH
-          </span>
-          {getPlanBadge(displayPlan) && (
-            <span className={cn(
-              'text-xs font-medium px-1.5 py-0.5 rounded-full',
-              'bg-[var(--tz-gem-500)]/20 text-[var(--tz-gem-500)]',
-              getPlanColor(displayPlan)
-            )}>
-              {getPlanBadge(displayPlan)}
-            </span>
-          )}
-        </div>
-        <span className="text-[var(--tz-muted)] text-xs">Tap to add funds</span>
-      </div>
-      
-      {/* Add Funds Icon */}
-      <div className="w-6 h-6 bg-[var(--tz-ice-400)]/20 rounded-full flex items-center justify-center">
-        <Plus className="w-3 h-3 text-[var(--tz-ice-400)]" />
-      </div>
+      <span className="inline-flex items-center gap-2">
+        <span className="w-5 h-5 rounded-full bg-white/15 grid place-items-center">💎</span>
+        {label}
+      </span>
     </button>
   );
 }
