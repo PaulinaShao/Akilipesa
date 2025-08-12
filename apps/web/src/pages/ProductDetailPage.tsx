@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { requireAuth } from '@/lib/authGuard';
 import { 
   ArrowLeft, 
   Heart, 
@@ -143,15 +144,19 @@ export default function ProductDetailPage() {
 
   const handleCallVideo = () => {
     if (product) {
-      startCall({ type: 'video', targetId: product.seller.id });
-      navigate(`/call/${product.seller.id}?type=video`);
+      requireAuth('start video call with seller', () => {
+        startCall({ type: 'video', targetId: product.seller.id });
+        navigate(`/call/${product.seller.id}?type=video`);
+      });
     }
   };
 
   const handleCallAudio = () => {
     if (product) {
-      startCall({ type: 'audio', targetId: product.seller.id });
-      navigate(`/call/${product.seller.id}?type=audio`);
+      requireAuth('start audio call with seller', () => {
+        startCall({ type: 'audio', targetId: product.seller.id });
+        navigate(`/call/${product.seller.id}?type=audio`);
+      });
     }
   };
 
