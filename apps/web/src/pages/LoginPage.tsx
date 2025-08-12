@@ -199,6 +199,14 @@ export default function LoginPage() {
     }
   };
 
+  const isFormValid = () => {
+    if (activeTab === 'phone') {
+      return phoneValidation.isValid;
+    } else {
+      return email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+  };
+
   const handleResend = () => {
     if (resendTimer > 0) return;
     handleSendCode();
