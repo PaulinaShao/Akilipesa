@@ -623,6 +623,11 @@ export default function ReelsPage() {
       {showGuestGate && (
         <GuestGate onClose={() => setShowGuestGate(false)} />
       )}
+
+      {/* Sticky Guest CTA */}
+      {showGuestCTA && isGuest() && (
+        <StickyGuestCTA onDismiss={() => setShowGuestCTA(false)} />
+      )}
     </div>
   );
 }
