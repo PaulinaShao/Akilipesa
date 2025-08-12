@@ -33,6 +33,17 @@ if (isDemoMode) {
   disableNetwork(firestore).catch(error => {
     console.warn('Failed to disable Firebase network:', error);
   });
+} else {
+  // Enable offline persistence for production
+  enableIndexedDbPersistence(firestore).catch(error => {
+    if (error.code === 'failed-precondition') {
+      console.warn('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+    } else if (error.code === 'unimplemented') {
+      console.warn('The current browser does not support persistence.');
+    } else {
+      console.warn('Failed to enable Firestore persistence:', error);
+    }
+  });
 }
 
 // Connect to emulators in development (optional)
