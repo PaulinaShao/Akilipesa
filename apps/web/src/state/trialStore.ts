@@ -163,7 +163,7 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
           };
           set({ usage: resetUsage });
         } else {
-          set({ usage });
+          set({ usage: usage as TrialUsage });
         }
       } else {
         // Create new usage record
