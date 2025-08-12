@@ -9,6 +9,7 @@ import Brand from '@/components/Brand';
 import { validateTZPhone, formatAsUserTypes, createPhoneDebouncer, type PhoneValidationResult } from '@/lib/phoneValidation';
 import { retryWithBackoff } from '@/lib/retry';
 import { useToast } from '@/hooks/useToast';
+import { handlePostLogin, getPostLoginIntent } from '@/lib/authGuard';
 
 export default function LoginPage() {
   const [activeTab, setActiveTab] = useState<'phone' | 'email'>('phone');
@@ -368,7 +369,7 @@ export default function LoginPage() {
               <p className="text-xs text-[var(--tz-muted)] leading-relaxed">
                 By continuing, you agree to our{' '}
                 <a href="/terms" className="text-[var(--tz-ice-400)] hover:text-white transition-colors">Terms</a>
-                {' • '}
+                {' �� '}
                 <a href="/privacy" className="text-[var(--tz-ice-400)] hover:text-white transition-colors">Privacy</a>
                 {' • '}
                 <a href="/help" className="text-[var(--tz-ice-400)] hover:text-white transition-colors">Help</a>
