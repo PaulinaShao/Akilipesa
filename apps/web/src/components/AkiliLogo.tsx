@@ -96,14 +96,25 @@ export default function AkiliLogo({
       <div className={cn('flex items-center gap-2', className)}>
         <div className="relative">
           {animated && showSparkles ? (
-            <Lottie
-              animationData={tanzaniteSparkleAnimation}
-              loop={true}
-              className={cn(currentSize.container)}
-              rendererSettings={{
-                preserveAspectRatio: 'xMidYMid slice'
-              }}
-            />
+            <LottieErrorBoundary
+              fallbackComponent={
+                <img
+                  src={logoImage}
+                  alt="AkiliPesa"
+                  className={cn(currentSize.container, "object-contain")}
+                  loading="lazy"
+                />
+              }
+            >
+              <Lottie
+                animationData={tanzaniteSparkleAnimation}
+                loop={true}
+                className={cn(currentSize.container, "lottie-container")}
+                rendererSettings={{
+                  preserveAspectRatio: 'xMidYMid slice'
+                }}
+              />
+            </LottieErrorBoundary>
           ) : (
             <img 
               src={logoImage}
@@ -125,14 +136,20 @@ export default function AkiliLogo({
     <div className={cn('flex items-center gap-2', className)}>
       <div className="relative">
         {animated && showSparkles ? (
-          <Lottie
-            animationData={tanzaniteSparkleAnimation}
-            loop={true}
-            className={cn(currentSize.container)}
-            rendererSettings={{
-              preserveAspectRatio: 'xMidYMid slice'
-            }}
-          />
+          <LottieErrorBoundary
+            fallbackComponent={
+              <TanzaniteGemSVG className={cn(currentSize.container)} />
+            }
+          >
+            <Lottie
+              animationData={tanzaniteSparkleAnimation}
+              loop={true}
+              className={cn(currentSize.container, "lottie-container")}
+              rendererSettings={{
+                preserveAspectRatio: 'xMidYMid slice'
+              }}
+            />
+          </LottieErrorBoundary>
         ) : (
           <TanzaniteGemSVG className={cn(currentSize.container)} />
         )}
