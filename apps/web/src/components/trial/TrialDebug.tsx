@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useTrialStore } from '../../state/trialStore';
 import { useAppStore } from '../../store';
 
@@ -6,6 +7,7 @@ export const TrialDebug: React.FC = () => {
   const { user } = useAppStore();
   const { deviceToken, config, usage, isLoading, canUseFeature, getRemainingQuota } = useTrialStore();
   const [isDemoMode, setIsDemoMode] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     // Check demo mode
@@ -23,11 +25,34 @@ export const TrialDebug: React.FC = () => {
   // Only show in development
   if (!import.meta.env.DEV) return null;
 
+  if (!isExpanded) {
+    return (
+      <button
+        onClick={() => setIsExpanded(true)}
+        className="fixed bottom-4 right-4 bg-black/80 border border-violet-500/30 rounded-lg px-3 py-2 text-xs text-white z-50 hover:bg-black/90 transition-colors flex items-center gap-2"
+      >
+        <span className="text-violet-400">🧪</span>
+        <span>Debug</span>
+        <ChevronUp className="w-3 h-3" />
+      </button>
+    );
+  }
+
   return (
-    <div className="fixed bottom-4 right-4 bg-black/90 border border-violet-500/30 rounded-lg p-4 text-xs text-white max-w-xs z-50">
-      <h3 className="text-violet-400 font-semibold mb-2">🧪 Trial Debug</h3>
+    <div className="fixed bottom-4 right-4 bg-black/90 border border-violet-500/30 rounded-lg text-xs text-white max-w-xs z-50">
+      {/* Header with collapse button */}
+      <div className="flex items-center justify-between p-3 border-b border-violet-500/20">
+        <h3 className="text-violet-400 font-semibold">🧪 Trial Debug</h3>
+        <button
+          onClick={() => setIsExpanded(false)}
+          className="text-zinc-400 hover:text-white transition-colors"
+        >
+          <ChevronDown className="w-4 h-4" />
+        </button>
+      </div>
       
-      <div className="space-y-1">
+      {/* Content */}
+      <div className="p-3 space-y-1 max-h-64 overflow-y-auto">
         <div>
           <span className="text-zinc-400">Mode:</span> {isDemoMode ? '🎭 Demo' : '🌐 Production'}
         </div>
