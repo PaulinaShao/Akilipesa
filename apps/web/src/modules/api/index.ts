@@ -47,6 +47,35 @@ export interface OrderResponse {
   status: 'pending' | 'processing' | 'paid' | 'failed';
 }
 
+// Trial system interfaces
+export interface TrialTokenRequest {
+  deviceHint: string;
+}
+
+export interface TrialTokenResponse {
+  deviceToken: string;
+}
+
+export interface GuestCallRequest {
+  deviceToken: string;
+  targetId: string;
+}
+
+export interface GuestCallResponse {
+  rtcToken: string;
+  channel: string;
+  ttl: number;
+}
+
+export interface GuestChatRequest {
+  deviceToken: string;
+  text: string;
+}
+
+export interface GuestChatResponse {
+  reply: string;
+}
+
 /**
  * Start a new AI job (image, video, audio, etc.)
  */
