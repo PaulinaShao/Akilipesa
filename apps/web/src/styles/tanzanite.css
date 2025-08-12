@@ -146,9 +146,20 @@
   .sparkle {
     animation: none;
   }
-  
+
   .tz-btn-primary:hover {
     transform: none;
+  }
+
+  /* Disable Lottie animations for reduced motion */
+  .lottie-container {
+    display: none;
+  }
+
+  /* Show fallback images instead */
+  .lottie-container + img,
+  .lottie-fallback {
+    display: block !important;
   }
 }
 
