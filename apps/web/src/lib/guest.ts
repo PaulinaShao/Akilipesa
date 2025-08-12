@@ -1,7 +1,19 @@
 import { getAuth, signInAnonymously } from "firebase/auth";
 
+// Check if we're in demo mode
+const isDemoMode = import.meta.env.VITE_FIREBASE_PROJECT_ID === 'demo-project' ||
+                   import.meta.env.VITE_FIREBASE_API_KEY === 'demo-api-key' ||
+                   !import.meta.env.VITE_FIREBASE_PROJECT_ID ||
+                   !import.meta.env.VITE_FIREBASE_API_KEY;
+
 export async function ensureGuestAuth(): Promise<string> {
   try {
+    // In demo mode, skip Firebase authentication entirely
+    if (isDemoMode) {
+      console.log('Demo mode - skipping Firebase authentication');
+      return "demo-guest";
+    }
+
     const auth = getAuth();
 
     // If someone is already signed in (phone/google), keep it.
