@@ -231,6 +231,120 @@
   contain: layout style paint;
 }
 
+/* Enhanced sparkle effects for new logo */
+.tz-logo-hero::before {
+  content: '';
+  position: absolute;
+  inset: -30px;
+  background: radial-gradient(
+    circle at 30% 20%,
+    rgba(37, 99, 235, 0.3) 0%,
+    transparent 50%
+  ),
+  radial-gradient(
+    circle at 70% 80%,
+    rgba(124, 58, 237, 0.3) 0%,
+    transparent 50%
+  ),
+  radial-gradient(
+    circle at 50% 50%,
+    rgba(147, 51, 234, 0.2) 0%,
+    transparent 60%
+  );
+  animation: gemGlow 4s ease-in-out infinite alternate;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+@keyframes gemGlow {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+/* Enhanced sparkle particles */
+.sparkle-enhanced {
+  position: absolute;
+  pointer-events: none;
+  inset: 0;
+}
+
+.sparkle-enhanced::before,
+.sparkle-enhanced::after {
+  content: '';
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: radial-gradient(circle, #60a5fa 0%, transparent 70%);
+  border-radius: 50%;
+  animation: sparkleFloat 3s ease-in-out infinite;
+}
+
+.sparkle-enhanced::before {
+  top: 15%;
+  right: 25%;
+  animation-delay: 0s;
+}
+
+.sparkle-enhanced::after {
+  bottom: 20%;
+  left: 30%;
+  animation-delay: 1.5s;
+}
+
+@keyframes sparkleFloat {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0px) scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-15px) scale(1.2);
+  }
+}
+
+/* Neural network style effects */
+.neural-pattern {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 40% 30%, rgba(96, 165, 250, 0.08) 1px, transparent 1px),
+    radial-gradient(circle at 60% 70%, rgba(167, 139, 250, 0.08) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.06) 1px, transparent 1px);
+  background-size: 25px 25px, 30px 30px, 35px 35px;
+  animation: neuralPulse 6s ease-in-out infinite;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+@keyframes neuralPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.5;
+  }
+}
+
+/* Performance optimization for animations */
+.tz-logo-hero .lottie-container {
+  animation-duration: 4s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 3;
+  animation-fill-mode: forwards;
+}
+
+.tz-logo-hero .lottie-container:hover {
+  animation-iteration-count: infinite;
+}
+
 /* High DPI screen optimizations */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .tz-logo-hero img,
