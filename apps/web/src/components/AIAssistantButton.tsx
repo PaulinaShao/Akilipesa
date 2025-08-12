@@ -1,15 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { MessageCircle, X, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAppStore } from '@/store';
 
 export default function AIAssistantButton() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, isAuthenticated } = useAppStore();
   const [isMinimized, setIsMinimized] = useState(false);
+  const [shouldShow, setShouldShow] = useState(false);
 
-  // Don't show on chat pages or login
-  const shouldHide = location.pathname.includes('/chat') || 
+  useEffect(() => {
+    if (!isAuthenticated || !user) {
+      setShouldShow(false);
+      return;
+    }
+
+    // Check if this is the first login
+    const hasSeenAIAssistant = localStorage.getItem(`ai-assistant-seen-${user.id}`);
+
+    if (!hasSeenAIAssistant) {
+      setShouldShow(true);
+    } else {
+      setShouldShow(false);
+    }
+  }, [isAuthenticated, user]);
+
+  // Don't show on chat pages, login, or if user not authenticated
+  const shouldHide = !shouldShow ||
+                    location.pathname.includes('/chat') ||
                     location.pathname.includes('/login') ||
                     location.pathname.includes('/admin');
 
