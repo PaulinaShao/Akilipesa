@@ -564,6 +564,47 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+
+    .lottie-container,
+    .sparkle,
+    .sparkle-enhanced {
+      animation: none !important;
+      display: none;
+    }
+  }
+
+  /* Font size preferences */
+  @media (prefers-contrast: high) or (prefers-reduced-motion: reduce) {
+    body {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .btn-primary,
+    .tz-btn-primary {
+      font-size: 16px;
+      padding: 16px 24px;
+      min-height: 52px;
+    }
+
+    .tz-input {
+      font-size: 18px;
+      padding: 16px;
+      min-height: 52px;
+    }
+  }
+
+  /* Respect user's font size preferences */
+  @media (max-width: 480px) {
+    html {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    html {
+      font-size: 18px;
+    }
   }
   
   /* High contrast mode support */
