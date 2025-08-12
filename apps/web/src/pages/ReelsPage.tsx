@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import WalletChip from '@/components/WalletChip';
 import StoriesRow from '@/components/StoriesRow';
 import GuestGate from '@/components/GuestGate';
+import { StickyGuestCTA } from '@/components/CTABanner';
 import { useAppStore } from '@/store';
 import { isGuest, requireAuthOrGate } from '@/lib/guards';
 
