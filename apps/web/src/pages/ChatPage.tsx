@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { requireAuth } from '@/lib/authGuard';
 import { 
   ArrowLeft, 
   Phone, 
