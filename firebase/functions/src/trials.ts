@@ -121,6 +121,13 @@ export const requestGuestCall = functions.https.onCall(async (data, context) => 
   if (captchaScore < config.minCaptchaScore) {
     throw new functions.https.HttpsError('permission-denied', 'Security verification failed');
   }
+
+  // Check server-side device quota
+  const deviceId = data.deviceId || deviceToken.slice(0, 16);
+  const quotaOk = await checkDeviceQuota(deviceId, 'call');
+  if (!quotaOk) {
+    throw new functions.https.HttpsError('resource-exhausted', 'Daily call quota exceeded');
+  }
   
   // Check happy hour if required
   if (config.requireHappyHour && config.happyHours?.length > 0) {
