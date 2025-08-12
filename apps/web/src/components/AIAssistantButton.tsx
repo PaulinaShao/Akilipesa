@@ -35,8 +35,20 @@ export default function AIAssistantButton() {
 
   if (shouldHide) return null;
 
+  const markAsSeen = () => {
+    if (user) {
+      localStorage.setItem(`ai-assistant-seen-${user.id}`, 'true');
+      setShouldShow(false);
+    }
+  };
+
   const handleChatOpen = () => {
+    markAsSeen();
     navigate('/chat/akilipesa?role=system');
+  };
+
+  const handleDismiss = () => {
+    markAsSeen();
   };
 
   return (
