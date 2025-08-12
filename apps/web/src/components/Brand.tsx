@@ -35,12 +35,7 @@ export default function Brand({
         loading="eager"
       />
       
-      {/* Wordmark */}
-      {showWordmark && (
-        <div className="brand-wordmark">
-          AkiliPesa
-        </div>
-      )}
+      {/* Wordmark - already included in the logo image */}
     </div>
   );
 }
