@@ -200,6 +200,13 @@ export const guestChat = functions.https.onCall(async (data, context) => {
   if (!message || typeof message !== 'string' || message.length > 500) {
     throw new functions.https.HttpsError('invalid-argument', 'Invalid message');
   }
+
+  // Check server-side device quota
+  const deviceId = data.deviceId || deviceToken.slice(0, 16);
+  const quotaOk = await checkDeviceQuota(deviceId, 'ai');
+  if (!quotaOk) {
+    throw new functions.https.HttpsError('resource-exhausted', 'Daily AI quota exceeded');
+  }
   
   // Update trial usage atomically
   const trialRef = db.doc(`trials/${deviceToken}`);
