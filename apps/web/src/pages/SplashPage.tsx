@@ -22,7 +22,7 @@ export default function SplashPage() {
     const timer = setTimeout(() => {
       localStorage.setItem('ap.splashSeen', '1');
       navigate('/reels', { replace: true });
-    }, 1200); // 1.2s animation as specified
+    }, 1500); // 1.5s animation
 
     return () => clearTimeout(timer);
   }, [navigate]);
