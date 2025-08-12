@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Search, TrendingUp, Hash, Music, User, ShoppingBag, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { isGuest } from '@/lib/guards';
+import CTABanner from '@/components/CTABanner';
 
 const categories = [
   { id: 'all', name: 'All', icon: Search },
