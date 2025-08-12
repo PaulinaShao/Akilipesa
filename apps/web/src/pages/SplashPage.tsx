@@ -107,11 +107,11 @@ export default function SplashPage() {
           )}
         </AnimatePresence>
 
-        {/* Tanzanite gem logo */}
+        {/* Tanzanite Lottie logo */}
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ 
+          transition={{
             type: 'spring',
             stiffness: 200,
             damping: 20,
@@ -119,47 +119,33 @@ export default function SplashPage() {
           }}
           className="relative"
         >
-          {/* Glow effect */}
+          {/* Enhanced glow effect for Lottie */}
           <motion.div
-            className="absolute -inset-8 bg-violet-500/20 rounded-full blur-2xl gem-glow"
+            className="absolute -inset-12 opacity-60"
             initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1.2, opacity: 1 }}
+            animate={{ scale: 1.2, opacity: 0.6 }}
             transition={{ delay: 0.5, duration: 1 }}
-          />
-          
-          {/* Main gem */}
+          >
+            <div className="w-full h-full bg-gradient-to-r from-[var(--tz-gem-500)]/30 via-[var(--tz-royal-500)]/20 to-[var(--tz-ice-400)]/30 rounded-full blur-3xl" />
+          </motion.div>
+
+          {/* Main Lottie Logo */}
           <motion.div
-            className="relative w-24 h-24 bg-gradient-to-br from-violet-400 via-purple-500 to-indigo-600 rounded-lg transform rotate-45 shadow-2xl"
-            initial={{ rotate: 45, scale: 0 }}
-            animate={{ rotate: 45, scale: 1 }}
-            transition={{ 
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{
               type: 'spring',
               stiffness: 200,
               damping: 15,
               delay: 0.3
             }}
+            className="relative z-10"
           >
-            {/* Inner facets */}
-            <div className="absolute inset-2 bg-gradient-to-br from-white/30 to-transparent rounded" />
-            <div className="absolute top-2 left-2 w-4 h-4 bg-white/40 rounded-sm" />
-            <div className="absolute bottom-2 right-2 w-6 h-6 bg-purple-600/50 rounded" />
-          </motion.div>
-
-          {/* Brand name */}
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-            className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 whitespace-nowrap"
-          >
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-400 to-purple-300 bg-clip-text text-transparent tracking-wide">
-              AkiliPesa
-            </h1>
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 1.2, duration: 0.4 }}
-              className="h-0.5 bg-gradient-to-r from-violet-500 to-purple-400 mt-1 origin-left"
+            <AkiliLogo
+              variant="hero"
+              animated={true}
+              showSparkles={true}
+              className="scale-125"
             />
           </motion.div>
         </motion.div>
