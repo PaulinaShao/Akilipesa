@@ -328,10 +328,10 @@ export default function LoginPage() {
 
               {/* Send Code Button */}
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: (loading || !isFormValid()) ? 1 : 1.02 }}
+                whileTap={{ scale: (loading || !isFormValid()) ? 1 : 0.98 }}
                 onClick={handleSendCode}
-                disabled={loading}
+                disabled={loading || !isFormValid()}
                 className="w-full tz-btn-primary py-3 px-4 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
