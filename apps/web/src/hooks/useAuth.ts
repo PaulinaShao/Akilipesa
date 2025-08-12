@@ -7,7 +7,12 @@ export function useAuth() {
   const isGuest = !user || user.id.includes('guest') || user.id.includes('demo');
   
   const signOut = () => {
+    // Clear all authentication state
     setUser(null);
+    localStorage.removeItem('user');
+    sessionStorage.removeItem('postLoginIntent');
+
+    // Redirect to home
     window.location.href = '/reels';
   };
   
