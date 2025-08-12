@@ -13,8 +13,8 @@ import { useToast } from '@/hooks/useToast';
 export default function LoginPage() {
   const [activeTab, setActiveTab] = useState<'phone' | 'email'>('phone');
   const [step, setStep] = useState<'input' | 'code' | 'success'>('input');
-  const [phoneE164, setPhoneE164] = useState('');
-  const [phoneLocal, setPhoneLocal] = useState('');
+  const [phoneInput, setPhoneInput] = useState('');
+  const [phoneValidation, setPhoneValidation] = useState<PhoneValidationResult>({ isValid: false, formatted: '', e164: '' });
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [resendTimer, setResendTimer] = useState(0);
