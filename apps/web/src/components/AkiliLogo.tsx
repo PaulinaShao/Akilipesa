@@ -212,14 +212,25 @@ export function AkiliLogoMark({
 
   if (animated) {
     return (
-      <Lottie
-        animationData={tanzaniteSparkleAnimation}
-        loop={true}
-        className={cn(sizeClasses[size], className)}
-        rendererSettings={{
-          preserveAspectRatio: 'xMidYMid slice'
-        }}
-      />
+      <LottieErrorBoundary
+        fallbackComponent={
+          <img
+            src={logoImage}
+            alt="AkiliPesa"
+            className={cn(sizeClasses[size], "object-contain", className)}
+            loading="lazy"
+          />
+        }
+      >
+        <Lottie
+          animationData={tanzaniteSparkleAnimation}
+          loop={true}
+          className={cn(sizeClasses[size], "lottie-container", className)}
+          rendererSettings={{
+            preserveAspectRatio: 'xMidYMid slice'
+          }}
+        />
+      </LottieErrorBoundary>
     );
   }
 
