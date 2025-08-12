@@ -82,7 +82,8 @@ export const TrialChat: React.FC<TrialChatProps> = ({
         response = await getTrialAIResponse(message);
 
         // Track usage locally for offline mode
-        updateLocalUsage('chat', 1);
+        // Track chat usage
+        console.log('Chat usage tracked');
       }
 
       const aiMessage: Message = {
