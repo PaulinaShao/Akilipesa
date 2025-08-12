@@ -273,51 +273,6 @@ export function AkiliLogoMark({
   );
 }
 
-// Enhanced Tanzanite Gem SVG with brain network pattern (fallback)
-function TanzaniteGemSVG({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 40 40"
-      fill="none"
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <defs>
-        <linearGradient id="tanzaniteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#2563eb" />
-          <stop offset="50%" stopColor="#7c3aed" />
-          <stop offset="100%" stopColor="#9333ea" />
-        </linearGradient>
-        <linearGradient id="highlightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#60a5fa" />
-          <stop offset="100%" stopColor="#a78bfa" />
-        </linearGradient>
-      </defs>
-      <g transform="translate(4, 2)">
-        {/* Main Tanzanite gem structure */}
-        <path d="M16 2 L28 8 L22 18 L10 18 Z" fill="url(#tanzaniteGrad)" />
-        <path d="M16 2 L22 18 L16 34 L4 18 Z" fill="url(#tanzaniteGrad)" opacity="0.9" />
-        <path d="M28 8 L32 14 L22 18 L16 2 Z" fill="url(#highlightGrad)" />
-        <path d="M4 8 L16 2 L4 18 L0 14 Z" fill="url(#tanzaniteGrad)" opacity="0.8" />
-        <path d="M4 18 L16 34 L12 28 L0 22 Z" fill="url(#tanzaniteGrad)" opacity="0.7" />
-        <path d="M22 18 L32 22 L28 28 L16 34 Z" fill="url(#highlightGrad)" opacity="0.8" />
-        
-        {/* Neural network pattern overlay */}
-        <g stroke="rgba(255,255,255,0.4)" strokeWidth="0.5" fill="none">
-          <path d="M16 12 Q20 14 22 16 Q18 18 16 20 Q12 18 10 16 Q14 14 16 12 Z" />
-          <circle cx="16" cy="14" r="1" fill="rgba(255,255,255,0.8)" />
-          <circle cx="20" cy="16" r="0.5" fill="rgba(255,255,255,0.6)" />
-          <circle cx="12" cy="16" r="0.5" fill="rgba(255,255,255,0.6)" />
-          <circle cx="16" cy="18" r="0.8" fill="rgba(255,255,255,0.7)" />
-        </g>
-        
-        {/* Highlight effects */}
-        <path d="M16 6 L20 8 L16 14 L12 8 Z" fill="rgba(255,255,255,0.3)" />
-        <ellipse cx="16" cy="10" rx="2" ry="1" fill="rgba(255,255,255,0.4)" />
-      </g>
-    </svg>
-  );
-}
 
 // Monochrome version for favicons
 export function TanzaniteMarkMono({ className }: { className?: string }) {
