@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import AkiliLogo from "./AkiliLogo";
+import Brand from "./Brand";
 
 type Props = {
   durationMs?: number;
