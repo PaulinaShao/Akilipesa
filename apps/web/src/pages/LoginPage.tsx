@@ -95,7 +95,7 @@ export default function LoginPage() {
     } catch (error: any) {
       const message = error?.message || 'Failed to send code. Please try again.';
       setError(message);
-      toast({
+      addToast({
         title: 'Failed to send code',
         description: message,
         variant: 'destructive'
