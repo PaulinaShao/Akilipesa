@@ -79,7 +79,7 @@ export default function LoginPage() {
             addToast({
               title: `Retrying... (${attempt}/3)`,
               description: error.message,
-              variant: 'default'
+              type: 'info'
             });
           }
         }
@@ -90,7 +90,7 @@ export default function LoginPage() {
       addToast({
         title: 'Code sent!',
         description: `Verification code sent to ${activeTab === 'phone' ? phoneValidation.formatted : email}`,
-        variant: 'default'
+        type: 'success'
       });
     } catch (error: any) {
       const message = error?.message || 'Failed to send code. Please try again.';
@@ -98,7 +98,7 @@ export default function LoginPage() {
       addToast({
         title: 'Failed to send code',
         description: message,
-        variant: 'destructive'
+        type: 'error'
       });
     } finally {
       setLoading(false);
