@@ -10,7 +10,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/lib/queryClient';
 import AuthSheet from '@/components/auth/AuthSheet';
 import { TrialBadge } from '@/components/trial/TrialBadge';
-import { TrialPaywall } from '@/components/trial/TrialPaywall';
+import { TrialPaywallContainer } from '@/components/trial/TrialPaywall';
 import { TrialPolicyPage } from '@/pages/TrialPolicyPage';
 import { TrialDebug } from '@/components/trial/TrialDebug';
 import NetworkStatus from '@/components/NetworkStatus';
