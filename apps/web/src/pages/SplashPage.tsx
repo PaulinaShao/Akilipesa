@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import AkiliLogo from '@/components/AkiliLogo';
 import '@/styles/sparkle.css';
 
 export default function SplashPage() {
