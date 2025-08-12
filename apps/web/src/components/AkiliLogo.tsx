@@ -1,6 +1,7 @@
 import React from 'react';
 import Lottie from 'lottie-react';
 import { cn } from '@/lib/utils';
+import { LottieErrorBoundary } from './LottieErrorBoundary';
 
 // Import the Lottie animation data
 import tanzaniteSparkleAnimation from '/akilipesa_tanzanite_sparkle_v1.json';
