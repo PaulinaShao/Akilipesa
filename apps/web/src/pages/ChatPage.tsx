@@ -383,7 +383,10 @@ export default function ChatPage() {
 
   const makeCall = (type: 'audio' | 'video') => {
     const callTarget = isAkiliPesaChat ? 'akilipesa' : id;
-    navigate(`/call/${callTarget}?type=${type}`);
+    const targetName = isAkiliPesaChat ? 'AkiliPesa AI' : 'contact';
+    requireAuth(`start ${type} call with ${targetName}`, () => {
+      navigate(`/call/${callTarget}?type=${type}`);
+    });
   };
 
   return (
