@@ -88,7 +88,7 @@ export function useTrialGate(): UseTrialGateReturn {
       
       return false;
     }
-  }, [canUseTrial, incrementLocalReactions, showTrialPaywall]);
+  }, [canUseTrial, useReaction, showTrialPaywall]);
 
   return {
     tryWithTrial,
