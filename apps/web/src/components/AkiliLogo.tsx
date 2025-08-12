@@ -41,28 +41,39 @@ export default function AkiliLogo({
       <div className={cn('tz-logo-hero flex flex-col items-center gap-4', className)}>
         <div className="relative">
           {animated && showSparkles ? (
-            <div className="relative">
-              {/* Background glow effect */}
-              <div className="absolute inset-0 scale-110 opacity-70">
+            <LottieErrorBoundary
+              fallbackComponent={
+                <img
+                  src={logoImage}
+                  alt="AkiliPesa Tanzanite logo"
+                  className="w-32 h-32 object-contain"
+                  loading="eager"
+                />
+              }
+            >
+              <div className="relative">
+                {/* Background glow effect */}
+                <div className="absolute inset-0 scale-110 opacity-70">
+                  <Lottie
+                    animationData={tanzaniteSparkleAnimation}
+                    loop={true}
+                    className="w-32 h-32 lottie-container"
+                    style={{
+                      filter: 'blur(2px)',
+                    }}
+                  />
+                </div>
+                {/* Main animated logo */}
                 <Lottie
                   animationData={tanzaniteSparkleAnimation}
                   loop={true}
-                  className="w-32 h-32"
-                  style={{
-                    filter: 'blur(2px)',
+                  className="w-32 h-32 relative z-10 lottie-container"
+                  rendererSettings={{
+                    preserveAspectRatio: 'xMidYMid slice'
                   }}
                 />
               </div>
-              {/* Main animated logo */}
-              <Lottie
-                animationData={tanzaniteSparkleAnimation}
-                loop={true}
-                className="w-32 h-32 relative z-10"
-                rendererSettings={{
-                  preserveAspectRatio: 'xMidYMid slice'
-                }}
-              />
-            </div>
+            </LottieErrorBoundary>
           ) : (
             <img 
               src={logoImage}
