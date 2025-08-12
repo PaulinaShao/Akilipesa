@@ -1,0 +1,12 @@
+.btn-primary {
+  @apply rounded-xl h-11 px-4 font-medium text-white;
+  background: linear-gradient(135deg, #6e4bff, #7f33ff);
+}
+
+.btn-secondary {
+  @apply rounded-xl h-11 px-4 font-medium text-white/90 bg-white/10 border border-white/15;
+}
+
+.btn-ghost {
+  @apply rounded-xl h-10 px-3 font-medium text-white/70 hover:text-white;
+}
