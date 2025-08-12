@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useAppStore } from '@/store';
 import CodeInput from '@/components/auth/CodeInput';
 import GoogleButton from '@/components/auth/GoogleButton';
-import AkiliLogo from '@/components/AkiliLogo';
+import Brand from '@/components/Brand';
 import { validateTZPhone, formatAsUserTypes, createPhoneDebouncer, type PhoneValidationResult } from '@/lib/phoneValidation';
 import { retryWithBackoff } from '@/lib/retry';
 import { useToast } from '@/hooks/useToast';
