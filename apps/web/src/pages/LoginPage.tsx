@@ -179,9 +179,24 @@ export default function LoginPage() {
   };
 
   const handlePhoneChange = (value: string) => {
-    setPhoneLocal(value);
-    setPhoneE164(formatTZPhone(value));
+    // Format as user types
+    const formatted = formatAsUserTypes(value);
+    setPhoneInput(formatted);
     setError('');
+
+    // Debounced validation
+    phoneDebouncer(value, (result) => {
+      setPhoneValidation(result);
+    });
+  };
+
+  const handlePhoneBlur = () => {
+    // Immediate validation on blur
+    const result = validateTZPhone(phoneInput);
+    setPhoneValidation(result);
+    if (result.isValid) {
+      setPhoneInput(result.formatted);
+    }
   };
 
   const handleResend = () => {
