@@ -1,6 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import * as crypto from 'crypto';
+import { checkDeviceQuota } from './rateLimiter';
 
 const db = admin.firestore();
 
