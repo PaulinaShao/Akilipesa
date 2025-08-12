@@ -141,11 +141,10 @@ export default function SplashPage() {
             }}
             className="relative z-10"
           >
-            <AkiliLogo
-              variant="hero"
+            <Brand
+              size="lg"
+              showWordmark={true}
               animated={true}
-              showSparkles={true}
-              className="scale-125"
             />
           </motion.div>
         </motion.div>
