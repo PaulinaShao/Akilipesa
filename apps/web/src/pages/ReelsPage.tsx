@@ -190,6 +190,7 @@ function ReelCard({
 }: ReelCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const video = videoRef.current;
@@ -219,10 +220,24 @@ function ReelCard({
     }
   };
 
+  const handleWalletClick = () => {
+    if (isGuest()) {
+      navigate('/wallet?upsell=1');
+    } else {
+      navigate('/wallet');
+    }
+  };
+
   return (
     <div className="reel-card">
       {/* WalletChip - only show on first reel */}
-      {isFirst && <WalletChip />}
+      {isFirst && (
+        <WalletChip
+          variant={isGuest() ? 'guest' : 'user'}
+          labelUser="284,500 TSH"
+          onClick={handleWalletClick}
+        />
+      )}
       {/* Video */}
       <video
         ref={videoRef}
@@ -601,16 +616,21 @@ export default function ReelsPage() {
       <div className="absolute top-4 right-4 z-10">
         <div className="flex flex-col space-y-1">
           {reels.map((_, index) => (
-            <div 
+            <div
               key={index}
               className={cn(
                 "w-1 h-8 rounded-full transition-all duration-300",
                 index === currentIndex ? 'bg-primary' : 'bg-white/20'
-              )} 
+              )}
             />
           ))}
         </div>
       </div>
+
+      {/* Guest Gate Modal */}
+      {showGuestGate && (
+        <GuestGate onClose={() => setShowGuestGate(false)} />
+      )}
     </div>
   );
 }
