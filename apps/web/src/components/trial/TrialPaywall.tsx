@@ -10,10 +10,11 @@ interface TrialPaywallProps {
   onClose?: () => void;
 }
 
-export const TrialPaywall: React.FC<TrialPaywallProps> = ({ 
-  trigger = 'manual', 
-  onClose 
+export const TrialPaywall: React.FC<TrialPaywallProps> = ({
+  trigger = 'manual',
+  onClose
 }) => {
+  // All hooks must be called before any early returns
   const { user } = useAppStore();
   const { isTrialPaywallOpen, closeTrialPaywall } = useUIStore();
   const { config, usage } = useTrialStore();
