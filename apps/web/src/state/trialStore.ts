@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { getDeviceToken, setDeviceToken, getDeviceInfo } from '../lib/device';
+import { debugLog } from '../lib/debug';
+import { getDeviceToken, isHappyHour, timeUntilHappyHour } from '../lib/device';
 
 export interface TrialConfig {
   enabled: boolean;
@@ -9,6 +10,7 @@ export interface TrialConfig {
   reactionLimit: number;
   happyHours: Array<{ startMin: number; endMin: number }>;
   requireHappyHour: boolean;
+  version: number;
 }
 
 export interface TrialUsage {
@@ -17,351 +19,359 @@ export interface TrialUsage {
   callsUsed: number;
   secondsUsed: number;
   reactionsUsed: number;
-  createdAt: Date;
-  updatedAt: Date;
+  localReactions: string[]; // Stored locally until signup
+  lastUpdated: number;
 }
 
-export interface TrialState {
+export interface TrialStore {
+  // Core state
   deviceToken: string | null;
   config: TrialConfig | null;
   usage: TrialUsage | null;
   isLoading: boolean;
-  isInHappyHour: boolean;
-
+  error: string | null;
+  
+  // Happy hour state
+  isHappyHour: boolean;
+  nextHappyHour: number;
+  
   // Actions
   initializeToken: () => Promise<void>;
   fetchConfig: () => Promise<void>;
   fetchUsage: () => Promise<void>;
+  
+  // Feature checks
   canUseFeature: (feature: 'chat' | 'call' | 'reaction') => boolean;
   getRemainingQuota: (feature: 'chat' | 'call' | 'reaction') => number;
-  incrementLocalReactions: () => void;
-  updateLocalUsage: (type: 'chat' | 'call' | 'reaction', increment?: number) => void;
-  clearToken: () => void;
-}
-
-// Firebase functions
-async function issueTrialToken(): Promise<string> {
-  try {
-    const { isFirebaseDemoMode } = await import('../lib/firebase');
-
-    // In demo mode, always use local token
-    if (isFirebaseDemoMode) {
-      console.log('Demo mode: using local trial token');
-      return `demo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    }
-
-    const { httpsCallable } = await import('firebase/functions');
-    const { functions } = await import('../lib/firebase');
-
-    const issueToken = httpsCallable(functions, 'issueTrialToken');
-    const result = await issueToken({
-      deviceInfo: getDeviceInfo(),
-      timestamp: Date.now()
-    });
-
-    return (result.data as any).deviceToken;
-  } catch (error) {
-    console.warn('Failed to get server token, using local fallback:', error);
-    // Generate a local fallback token for offline mode
-    return `local_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-  }
-}
-
-async function fetchTrialConfig(): Promise<TrialConfig> {
-  try {
-    const { doc, getDoc } = await import('firebase/firestore');
-    const { db, safeFirebaseOperation } = await import('../lib/firebase');
-
-    const configDoc = await safeFirebaseOperation(
-      () => getDoc(doc(db, 'trialConfig', 'global')),
-      'fetch trial config'
-    );
-
-    if (!configDoc || !configDoc.exists()) {
-      return getDefaultTrialConfig();
-    }
-
-    return configDoc.data() as TrialConfig;
-  } catch (error) {
-    console.warn('Failed to fetch trial config from server, using defaults:', error);
-    return getDefaultTrialConfig();
-  }
-}
-
-function getDefaultTrialConfig(): TrialConfig {
-  return {
-    enabled: true, // Enable trials by default in offline mode
-    chatMessagesPerDay: 3,
-    callsPerDay: 1,
-    callSeconds: 90,
-    reactionLimit: 5,
-    happyHours: [],
-    requireHappyHour: false,
-  };
-}
-
-async function fetchTrialUsage(deviceToken: string): Promise<TrialUsage | null> {
-  try {
-    const { doc, getDoc } = await import('firebase/firestore');
-    const { db, safeFirebaseOperation } = await import('../lib/firebase');
-
-    const usageDoc = await safeFirebaseOperation(
-      () => getDoc(doc(db, 'trials', deviceToken)),
-      'fetch trial usage'
-    );
-
-    if (!usageDoc || !usageDoc.exists()) {
-      return getLocalTrialUsage();
-    }
-
-    const data = usageDoc.data();
-    return {
-      dayKey: data.dayKey,
-      chatUsed: data.chatUsed || 0,
-      callsUsed: data.callsUsed || 0,
-      secondsUsed: data.secondsUsed || 0,
-      reactionsUsed: data.reactionsUsed || 0,
-      createdAt: data.createdAt?.toDate() || new Date(),
-      updatedAt: data.updatedAt?.toDate() || new Date(),
-    };
-  } catch (error) {
-    console.warn('Failed to fetch trial usage from server, using local fallback:', error);
-    return getLocalTrialUsage();
-  }
-}
-
-function getLocalTrialUsage(): TrialUsage {
-  const dayKey = getCurrentDayKey();
-  const stored = localStorage.getItem('ap.trialUsage');
-
-  try {
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      if (parsed.dayKey === dayKey) {
-        return parsed;
-      }
-    }
-  } catch (error) {
-    console.warn('Failed to parse stored trial usage:', error);
-  }
-
-  // Return fresh usage for today
-  const usage = {
-    dayKey,
-    chatUsed: 0,
-    callsUsed: 0,
-    secondsUsed: 0,
-    reactionsUsed: 0,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-
-  localStorage.setItem('ap.trialUsage', JSON.stringify(usage));
-  return usage;
-}
-
-function checkHappyHour(config: TrialConfig): boolean {
-  if (!config.happyHours.length) return true;
   
-  const now = new Date();
-  const currentMin = now.getHours() * 60 + now.getMinutes();
+  // Usage tracking
+  useChat: () => Promise<boolean>;
+  useCall: (targetId: string) => Promise<{ success: boolean; rtcToken?: string; channel?: string; ttl?: number }>;
+  useReaction: (itemId: string) => boolean;
   
-  return config.happyHours.some(
-    window => currentMin >= window.startMin && currentMin <= window.endMin
-  );
+  // Utilities
+  reset: () => void;
+  isQuotaExhausted: () => boolean;
+  getTrialProgress: () => { chat: number; calls: number; reactions: number };
 }
 
-function getCurrentDayKey(): string {
-  return new Date().toISOString().slice(0, 10).replace(/-/g, '');
-}
+const DEFAULT_CONFIG: TrialConfig = {
+  enabled: true,
+  chatMessagesPerDay: 5,
+  callsPerDay: 2,
+  callSeconds: 90,
+  reactionLimit: 10,
+  happyHours: [
+    { startMin: 18 * 60, endMin: 20 * 60 } // 6-8 PM
+  ],
+  requireHappyHour: false,
+  version: 1
+};
 
-// Local storage for reactions (until user signs up)
-const LOCAL_REACTIONS_KEY = 'ap.localReactions';
+const createEmptyUsage = (): TrialUsage => ({
+  dayKey: new Date().toISOString().slice(0, 10).replace(/-/g, ''),
+  chatUsed: 0,
+  callsUsed: 0,
+  secondsUsed: 0,
+  reactionsUsed: 0,
+  localReactions: [],
+  lastUpdated: Date.now()
+});
 
-function getLocalReactions(): number {
-  try {
-    const data = localStorage.getItem(LOCAL_REACTIONS_KEY);
-    if (!data) return 0;
-    
-    const parsed = JSON.parse(data);
-    if (parsed.dayKey !== getCurrentDayKey()) {
-      localStorage.removeItem(LOCAL_REACTIONS_KEY);
-      return 0;
-    }
-    
-    return parsed.count || 0;
-  } catch {
-    return 0;
-  }
-}
-
-function setLocalReactions(count: number): void {
-  localStorage.setItem(LOCAL_REACTIONS_KEY, JSON.stringify({
-    dayKey: getCurrentDayKey(),
-    count
-  }));
-}
-
-export const useTrialStore = create<TrialState>((set, get) => ({
-  deviceToken: getDeviceToken(),
+export const useTrialStore = create<TrialStore>((set, get) => ({
+  // Initial state
+  deviceToken: null,
   config: null,
   usage: null,
   isLoading: false,
-  isInHappyHour: true,
+  error: null,
+  isHappyHour: true,
+  nextHappyHour: 0,
 
+  // Initialize device token
   initializeToken: async () => {
-    const existing = getDeviceToken();
-    if (existing) {
-      set({ deviceToken: existing });
-      return;
-    }
-
-    set({ isLoading: true });
     try {
-      const token = await issueTrialToken();
-      setDeviceToken(token);
+      set({ isLoading: true, error: null });
+      const token = await getDeviceToken();
       set({ deviceToken: token });
-    } catch (error) {
-      console.error('Failed to initialize trial token:', error);
-      // In offline mode, still set a local token
-      const fallbackToken = `offline_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      setDeviceToken(fallbackToken);
-      set({ deviceToken: fallbackToken });
+      debugLog.log('Trial token initialized:', token.slice(0, 20) + '...');
+    } catch (error: any) {
+      debugLog.error('Failed to initialize trial token:', error);
+      set({ error: error.message });
     } finally {
       set({ isLoading: false });
     }
   },
 
+  // Fetch trial configuration
   fetchConfig: async () => {
     try {
-      const config = await fetchTrialConfig();
-      const isInHappyHour = checkHappyHour(config);
-      set({ config, isInHappyHour });
-    } catch (error) {
-      console.warn('Failed to fetch trial config, using defaults:', error);
-      // Always provide a working config, even if fetch fails
-      const defaultConfig = getDefaultTrialConfig();
-      const isInHappyHour = checkHappyHour(defaultConfig);
-      set({ config: defaultConfig, isInHappyHour });
+      const { getFirebaseSafeCall } = await import('../lib/firebase');
+      
+      const config = await getFirebaseSafeCall(
+        'fetchTrialConfig',
+        async () => {
+          const { firestore } = await import('../lib/firebase');
+          const { doc, getDoc } = await import('firebase/firestore');
+          
+          const configDoc = await getDoc(doc(firestore, 'trialConfig', 'global'));
+          return configDoc.exists() ? configDoc.data() as TrialConfig : null;
+        },
+        DEFAULT_CONFIG
+      );
+
+      if (config) {
+        set({ config });
+        
+        // Update happy hour status
+        const happyHour = isHappyHour(config.happyHours);
+        const nextHappy = timeUntilHappyHour(config.happyHours);
+        set({ isHappyHour: happyHour, nextHappyHour: nextHappy });
+        
+        debugLog.log('Trial config loaded:', config);
+      }
+    } catch (error: any) {
+      debugLog.warn('Failed to fetch trial config:', error);
+      set({ config: DEFAULT_CONFIG, error: null }); // Always provide a working config
     }
   },
 
+  // Fetch usage data
   fetchUsage: async () => {
-    const { deviceToken } = get();
-    if (!deviceToken) return;
-
     try {
-      const usage = await fetchTrialUsage(deviceToken);
-      set({ usage });
-    } catch (error) {
-      console.warn('Failed to fetch trial usage, using local data:', error);
+      const { deviceToken } = get();
+      if (!deviceToken) return;
+
+      const { getFirebaseSafeCall } = await import('../lib/firebase');
+      
+      const usage = await getFirebaseSafeCall(
+        'fetchTrialUsage',
+        async () => {
+          const { firestore } = await import('../lib/firebase');
+          const { doc, getDoc } = await import('firebase/firestore');
+          
+          const usageDoc = await getDoc(doc(firestore, 'trials', deviceToken));
+          return usageDoc.exists() ? usageDoc.data() : null;
+        },
+        null
+      );
+
+      if (usage) {
+        // Check if day has changed
+        const currentDay = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+        if (usage.dayKey !== currentDay) {
+          // Reset daily counters but keep local reactions
+          const resetUsage: TrialUsage = {
+            ...createEmptyUsage(),
+            localReactions: usage.localReactions || []
+          };
+          set({ usage: resetUsage });
+        } else {
+          set({ usage });
+        }
+      } else {
+        // Create new usage record
+        set({ usage: createEmptyUsage() });
+      }
+    } catch (error: any) {
+      debugLog.warn('Failed to fetch trial usage:', error);
       // Always provide usage data, even if fetch fails
-      const localUsage = getLocalTrialUsage();
-      set({ usage: localUsage });
+      set({ usage: createEmptyUsage() });
     }
   },
 
-  canUseFeature: (feature) => {
-    const { config, usage, isInHappyHour } = get();
+  // Check if feature can be used
+  canUseFeature: (feature: 'chat' | 'call' | 'reaction') => {
+    const { config, usage, isHappyHour: happyHour } = get();
     
-    if (!config?.enabled) return false;
-    if (config.requireHappyHour && !isInHappyHour) return false;
-    if (!usage) return true; // First time use
-    
-    // Check if usage is from today
-    if (usage.dayKey !== getCurrentDayKey()) return true;
-    
+    if (!config || !usage) return false;
+    if (!config.enabled) return false;
+    if (config.requireHappyHour && !happyHour) return false;
+
     switch (feature) {
       case 'chat':
         return usage.chatUsed < config.chatMessagesPerDay;
       case 'call':
         return usage.callsUsed < config.callsPerDay;
       case 'reaction':
-        const localReactions = getLocalReactions();
-        return (usage.reactionsUsed + localReactions) < config.reactionLimit;
+        return usage.reactionsUsed < config.reactionLimit;
       default:
         return false;
     }
   },
 
-  getRemainingQuota: (feature) => {
+  // Get remaining quota for feature
+  getRemainingQuota: (feature: 'chat' | 'call' | 'reaction') => {
     const { config, usage } = get();
     
-    if (!config) return 0;
-    if (!usage || usage.dayKey !== getCurrentDayKey()) {
-      switch (feature) {
-        case 'chat': return config.chatMessagesPerDay;
-        case 'call': return config.callsPerDay;
-        case 'reaction': return config.reactionLimit - getLocalReactions();
-        default: return 0;
-      }
-    }
-    
+    if (!config || !usage) return 0;
+
     switch (feature) {
       case 'chat':
         return Math.max(0, config.chatMessagesPerDay - usage.chatUsed);
       case 'call':
         return Math.max(0, config.callsPerDay - usage.callsUsed);
       case 'reaction':
-        const localReactions = getLocalReactions();
-        return Math.max(0, config.reactionLimit - usage.reactionsUsed - localReactions);
+        return Math.max(0, config.reactionLimit - usage.reactionsUsed);
       default:
         return 0;
     }
   },
 
-  incrementLocalReactions: () => {
-    const current = getLocalReactions();
-    setLocalReactions(current + 1);
-
-    // Also update local usage tracking
-    const { updateLocalUsage } = get();
-    updateLocalUsage('reaction', 1);
-  },
-
-  // Helper method to update local usage when offline
-  updateLocalUsage: (type: 'chat' | 'call' | 'reaction', increment: number = 1) => {
-    const { usage } = get();
-    if (!usage) return;
-
-    const dayKey = getCurrentDayKey();
-    let newUsage = { ...usage };
-
-    // Reset if new day
-    if (usage.dayKey !== dayKey) {
-      newUsage = {
-        dayKey,
-        chatUsed: 0,
-        callsUsed: 0,
-        secondsUsed: 0,
-        reactionsUsed: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+  // Use chat feature
+  useChat: async () => {
+    const { deviceToken, canUseFeature } = get();
+    
+    if (!canUseFeature('chat')) {
+      debugLog.warn('Chat quota exhausted');
+      return false;
     }
 
-    // Update usage
-    switch (type) {
-      case 'chat':
-        newUsage.chatUsed += increment;
-        break;
-      case 'call':
-        newUsage.callsUsed += increment;
-        break;
-      case 'reaction':
-        newUsage.reactionsUsed += increment;
-        break;
+    try {
+      // Call Cloud Function
+      const { guestChat } = await import('../modules/api');
+      await guestChat({ deviceToken, text: 'ping' }); // Will increment server counter
+      
+      // Update local state
+      set(state => ({
+        usage: state.usage ? {
+          ...state.usage,
+          chatUsed: state.usage.chatUsed + 1,
+          lastUpdated: Date.now()
+        } : null
+      }));
+      
+      return true;
+    } catch (error: any) {
+      debugLog.error('Chat usage failed:', error);
+      
+      // If quota exhausted on server, update local state
+      if (error.code === 'resource-exhausted') {
+        set(state => ({
+          usage: state.usage ? {
+            ...state.usage,
+            chatUsed: state.config?.chatMessagesPerDay || 999
+          } : null
+        }));
+      }
+      
+      return false;
+    }
+  },
+
+  // Use call feature
+  useCall: async (targetId: string) => {
+    const { deviceToken, canUseFeature } = get();
+    
+    if (!canUseFeature('call')) {
+      debugLog.warn('Call quota exhausted');
+      return { success: false };
     }
 
-    newUsage.updatedAt = new Date();
-
-    // Save to localStorage and state
-    localStorage.setItem('ap.trialUsage', JSON.stringify(newUsage));
-    set({ usage: newUsage });
+    try {
+      // Call Cloud Function
+      const { requestGuestCall } = await import('../modules/api');
+      const result = await requestGuestCall({ deviceToken, targetId });
+      
+      // Update local state
+      set(state => ({
+        usage: state.usage ? {
+          ...state.usage,
+          callsUsed: state.usage.callsUsed + 1,
+          lastUpdated: Date.now()
+        } : null
+      }));
+      
+      return { success: true, ...result };
+    } catch (error: any) {
+      debugLog.error('Call usage failed:', error);
+      
+      // If quota exhausted on server, update local state
+      if (error.code === 'resource-exhausted') {
+        set(state => ({
+          usage: state.usage ? {
+            ...state.usage,
+            callsUsed: state.config?.callsPerDay || 999
+          } : null
+        }));
+      }
+      
+      return { success: false };
+    }
   },
 
-  clearToken: () => {
-    localStorage.removeItem(LOCAL_REACTIONS_KEY);
-    set({ deviceToken: null, usage: null });
+  // Use reaction feature (local only until signup)
+  useReaction: (itemId: string) => {
+    const { canUseFeature } = get();
+    
+    if (!canUseFeature('reaction')) {
+      debugLog.warn('Reaction quota exhausted');
+      return false;
+    }
+
+    set(state => ({
+      usage: state.usage ? {
+        ...state.usage,
+        reactionsUsed: state.usage.reactionsUsed + 1,
+        localReactions: [...state.usage.localReactions, itemId],
+        lastUpdated: Date.now()
+      } : null
+    }));
+
+    // Store locally
+    const reactions = JSON.parse(localStorage.getItem('ap.localReactions') || '[]');
+    reactions.push({ itemId, timestamp: Date.now() });
+    localStorage.setItem('ap.localReactions', JSON.stringify(reactions));
+
+    debugLog.log('Reaction added locally:', itemId);
+    return true;
   },
+
+  // Check if any quota is exhausted
+  isQuotaExhausted: () => {
+    const { canUseFeature } = get();
+    return !canUseFeature('chat') && !canUseFeature('call') && !canUseFeature('reaction');
+  },
+
+  // Get trial progress (0-1)
+  getTrialProgress: () => {
+    const { config, usage } = get();
+    
+    if (!config || !usage) return { chat: 0, calls: 0, reactions: 0 };
+
+    return {
+      chat: usage.chatUsed / config.chatMessagesPerDay,
+      calls: usage.callsUsed / config.callsPerDay,
+      reactions: usage.reactionsUsed / config.reactionLimit
+    };
+  },
+
+  // Reset trial state
+  reset: () => {
+    localStorage.removeItem('ap.dt');
+    localStorage.removeItem('ap.dt.meta');
+    localStorage.removeItem('ap.localReactions');
+    set({
+      deviceToken: null,
+      config: null,
+      usage: null,
+      isLoading: false,
+      error: null
+    });
+  }
 }));
+
+// Initialize trial system on module load
+if (typeof window !== 'undefined') {
+  const store = useTrialStore.getState();
+  
+  // Auto-initialize
+  Promise.all([
+    store.initializeToken(),
+    store.fetchConfig()
+  ]).then(() => {
+    store.fetchUsage();
+  }).catch(error => {
+    debugLog.warn('Trial system initialization failed:', error);
+  });
+}
