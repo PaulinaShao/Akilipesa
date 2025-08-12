@@ -89,7 +89,10 @@ export default function AIAssistantButton() {
         </div>
       ) : (
         <button
-          onClick={() => setIsMinimized(false)}
+          onClick={() => {
+            setIsMinimized(false);
+            // Don't mark as seen yet when just expanding, only when they interact or dismiss
+          }}
           className={cn(
             "w-14 h-14 bg-gradient-to-br from-primary to-secondary rounded-full shadow-2xl",
             "flex-center transition-all duration-300 hover:scale-105 active:scale-95",
