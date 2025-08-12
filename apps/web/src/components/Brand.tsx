@@ -10,7 +10,7 @@ type BrandProps = {
 
 export default function Brand({
   size = 'lg',
-  showWordmark = true, // Kept for API compatibility, wordmark is included in logo
+  showWordmark: _showWordmark = true, // Kept for API compatibility, wordmark is included in logo
   animated = true,
   className
 }: BrandProps) {
