@@ -1,0 +1,56 @@
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tanzaniteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="50%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#9333ea" />
+    </linearGradient>
+    <linearGradient id="highlightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60a5fa" />
+      <stop offset="50%" stop-color="#a78bfa" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Main Tanzanite gem structure -->
+  <g transform="translate(10, 5)" filter="url(#glow)">
+    <!-- Gem facets -->
+    <path d="M50 10 L80 25 L65 60 L35 60 Z" fill="url(#tanzaniteGrad)" opacity="0.9"/>
+    <path d="M50 10 L65 60 L50 100 L20 60 Z" fill="url(#tanzaniteGrad)"/>
+    <path d="M80 25 L90 45 L65 60 L50 10 Z" fill="url(#highlightGrad)" opacity="0.8"/>
+    <path d="M20 25 L50 10 L20 60 L10 45 Z" fill="url(#tanzaniteGrad)" opacity="0.85"/>
+    <path d="M20 60 L50 100 L40 85 L10 70 Z" fill="url(#tanzaniteGrad)" opacity="0.7"/>
+    <path d="M65 60 L90 70 L80 85 L50 100 Z" fill="url(#highlightGrad)" opacity="0.75"/>
+    
+    <!-- Neural network pattern overlay -->
+    <g stroke="rgba(255,255,255,0.4)" stroke-width="1" fill="none">
+      <!-- Brain outline -->
+      <path d="M45 35 Q55 32 60 40 Q62 48 55 52 Q50 55 45 52 Q40 48 42 40 Q43 32 45 35 Z"/>
+      <path d="M42 40 Q38 45 35 48 Q40 52 45 50"/>
+      <path d="M58 40 Q62 45 65 48 Q60 52 55 50"/>
+      
+      <!-- Neural nodes -->
+      <circle cx="50" cy="42" r="1.5" fill="rgba(255,255,255,0.8)"/>
+      <circle cx="45" cy="48" r="1" fill="rgba(255,255,255,0.6)"/>
+      <circle cx="55" cy="48" r="1" fill="rgba(255,255,255,0.6)"/>
+      <circle cx="50" cy="52" r="1.2" fill="rgba(255,255,255,0.7)"/>
+      
+      <!-- Connections -->
+      <line x1="50" y1="42" x2="45" y2="48" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+      <line x1="50" y1="42" x2="55" y2="48" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+      <line x1="45" y1="48" x2="50" y2="52" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+      <line x1="55" y1="48" x2="50" y2="52" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+    </g>
+    
+    <!-- Highlight effects -->
+    <path d="M50 20 L60 25 L50 40 L40 25 Z" fill="rgba(255,255,255,0.25)"/>
+    <ellipse cx="50" cy="32" rx="6" ry="3" fill="rgba(255,255,255,0.3)"/>
+  </g>
+</svg>
