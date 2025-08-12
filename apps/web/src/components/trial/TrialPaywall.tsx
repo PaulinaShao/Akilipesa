@@ -16,7 +16,7 @@ export const TrialPaywall: React.FC<TrialPaywallProps> = ({
 }) => {
   const { user } = useAppStore();
   const { isTrialPaywallOpen, closeTrialPaywall } = useUIStore();
-  const { config, usage, getTrialProgress } = useTrialStore();
+  const { config, usage } = useTrialStore();
   const [showSuccess, setShowSuccess] = useState(false);
 
   // Don't show if user is authenticated
