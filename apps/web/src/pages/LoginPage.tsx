@@ -24,6 +24,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { setUser } = useAppStore();
+  const { toast } = useToast();
 
   const from = location.state?.from?.pathname || '/reels';
 
