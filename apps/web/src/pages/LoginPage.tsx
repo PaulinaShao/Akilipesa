@@ -135,10 +135,15 @@ export default function LoginPage() {
 
       setUser(mockUser);
       setStep('success');
-      
-      // Navigate after short delay
+
+      // Navigate after short delay with post-login intent handling
       setTimeout(() => {
-        navigate(from, { replace: true });
+        const intent = getPostLoginIntent();
+        if (intent?.href) {
+          handlePostLogin();
+        } else {
+          navigate('/reels', { replace: true });
+        }
       }, 1000);
       
     } catch (error) {
