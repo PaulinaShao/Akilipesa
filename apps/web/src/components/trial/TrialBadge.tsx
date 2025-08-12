@@ -41,6 +41,12 @@ export const TrialBadge: React.FC = () => {
   const progress = getTrialProgress();
   const hasQuotaLeft = canUseFeature('chat') || canUseFeature('call') || canUseFeature('reaction');
 
+  // Hide badge if user is authenticated
+  if (user) return null;
+
+  // Hide if no config or trial disabled
+  if (!config || !config.enabled || !usage) return null;
+
   // Compact badge when collapsed
   if (!isExpanded) {
     return (
