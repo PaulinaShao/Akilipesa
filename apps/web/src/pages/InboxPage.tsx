@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, MoreVertical, Phone, Video, Heart, Sparkles, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { requireAuth } from '@/lib/authGuard';
 
 interface Message {
   id: string;
@@ -214,7 +215,9 @@ export default function InboxPage() {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate('/call/new?mode=audio&target=akili');
+                      requireAuth('start audio call with AkiliPesa AI', () => {
+                        navigate('/call/new?mode=audio&target=akili');
+                      });
                     }}
                     className="p-1.5 hover:bg-white/10 rounded-full transition-colors"
                   >
@@ -223,7 +226,9 @@ export default function InboxPage() {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate('/call/new?mode=video&target=akili');
+                      requireAuth('start video call with AkiliPesa AI', () => {
+                        navigate('/call/new?mode=video&target=akili');
+                      });
                     }}
                     className="p-1.5 hover:bg-white/10 rounded-full transition-colors"
                   >
