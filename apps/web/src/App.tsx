@@ -19,6 +19,10 @@ import EmulatorWarning from '@/components/EmulatorWarning';
 import { useTrialStore } from '@/state/trialStore';
 import { useAppStore, type User as AppUser } from '@/store';
 import { seedTrialConfig } from '@/lib/seedTrialConfig';
+import { ensureGuestAuth } from '@/lib/guest';
+import { shouldShowSplashOnce } from '@/lib/entry';
+import Splash from '@/components/Splash';
+import '@/styles/util.css';
 
 // Import pages
 import SplashPage from '@/pages/SplashPage';
@@ -74,17 +78,21 @@ function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [devModeUser, setDevModeUser] = useState<User | null>(null);
+  const [showSplash, setShowSplash] = useState(() => shouldShowSplashOnce());
 
   // Initialize trial system
   const { initializeToken, fetchConfig } = useTrialStore();
   const { setUser: setAppUser } = useAppStore();
 
   useEffect(() => {
+    // Initialize guest auth for read-only browsing
+    ensureGuestAuth();
+
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
 
       // Convert Firebase User to App User format
-      if (firebaseUser) {
+      if (firebaseUser && !firebaseUser.isAnonymous) {
         const appUser = {
           id: firebaseUser.uid,
           name: firebaseUser.displayName || 'User',
@@ -175,6 +183,21 @@ function App() {
     );
   }
 
+  // Show splash on first load
+  if (showSplash) {
+    return (
+      <ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
+          <ToastProvider>
+            <Router>
+              <Splash onDone={() => setShowSplash(false)} />
+            </Router>
+          </ToastProvider>
+        </QueryClientProvider>
+      </ErrorBoundary>
+    );
+  }
+
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
@@ -185,9 +208,11 @@ function App() {
           {/* Public routes */}
           <Route path="/splash" element={<SplashPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/auth/login" element={<LoginPage />} />
+          <Route path="/auth/verify" element={<LoginPage />} />
 
           {/* Public feed (guest accessible) */}
-          <Route path="/" element={<Navigate to="/splash" replace />} />
+          <Route path="/" element={<Navigate to={showSplash ? "/splash" : "/reels"} replace />} />
           <Route path="/reels" element={
             <MobileLayout>
               <ReelsPage />
@@ -267,11 +292,9 @@ function App() {
           } />
 
           <Route path="/product/:id" element={
-            <ProtectedRoute user={currentUser}>
-              <MobileLayout>
-                <ProductDetailPage />
-              </MobileLayout>
-            </ProtectedRoute>
+            <MobileLayout>
+              <ProductDetailPage />
+            </MobileLayout>
           } />
 
           <Route path="/checkout/:id" element={
