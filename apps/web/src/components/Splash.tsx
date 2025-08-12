@@ -7,11 +7,15 @@ type Props = {
 };
 
 export default function Splash({
-  durationMs = 2800,
+  durationMs = 1500,
   onDone,
 }: Props) {
   useEffect(() => {
-    const t = setTimeout(onDone, durationMs);
+    const t = setTimeout(() => {
+      onDone();
+      // Navigate to /reels after splash
+      window.location.href = '/reels';
+    }, durationMs);
     return () => clearTimeout(t);
   }, [durationMs, onDone]);
 
