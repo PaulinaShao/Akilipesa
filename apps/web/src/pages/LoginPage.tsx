@@ -238,15 +238,12 @@ export default function LoginPage() {
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="mb-6"
+              className="mb-8"
             >
-              <AkiliLogo variant="hero" size="xl" animated={true} showSparkles={true} />
+              <Brand size="lg" showWordmark={true} animated={true} />
             </motion.div>
-            
-            <h1 className="text-3xl font-bold text-[var(--tz-ink)] mb-2">
-              Sign in to AkiliPesa
-            </h1>
-            <p className="text-[var(--tz-muted)]">
+
+            <p className="text-[var(--tz-muted)] text-center mb-6">
               Save your likes, follow creators, buy & earn rewards.
             </p>
           </div>
