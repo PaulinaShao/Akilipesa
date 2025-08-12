@@ -200,8 +200,10 @@ function App() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ToastProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <ToastProvider>
+          <OfflineIndicator />
         <Router>
           <Routes>
           {/* Public routes */}
@@ -534,10 +536,11 @@ function App() {
         <TrialPaywallContainer />
         {import.meta.env.MODE === 'development' && <TrialDebug />}
 
-        {/* Network Status */}
-        <NetworkStatus />
-      </ToastProvider>
-    </QueryClientProvider>
+          {/* Network Status */}
+          <NetworkStatus />
+        </ToastProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 
