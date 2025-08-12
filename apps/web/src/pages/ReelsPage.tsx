@@ -4,7 +4,9 @@ import { Heart, MessageCircle, Share, MoreHorizontal, Music2, ShoppingBag, Phone
 import { cn } from '@/lib/utils';
 import WalletChip from '@/components/WalletChip';
 import StoriesRow from '@/components/StoriesRow';
+import GuestGate from '@/components/GuestGate';
 import { useAppStore } from '@/store';
+import { isGuest, requireAuthOrGate } from '@/lib/guards';
 import {
   useGatedLike,
   useGatedComment,
@@ -429,6 +431,7 @@ export default function ReelsPage() {
   const [reels] = useState<ReelData[]>(mockReels);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [showGuestGate, setShowGuestGate] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { setStoriesVisible, setBalanceBannerVisible, startCall } = useAppStore();
@@ -475,27 +478,29 @@ export default function ReelsPage() {
   }, [handleScroll]);
 
   const handleLike = (reelId: string) => {
-    gatedLike(() => {
-      console.log('Like reel:', reelId);
-      // TODO: Implement actual like functionality
-    });
+    requireAuthOrGate(
+      () => setShowGuestGate(true),
+      () => {
+        console.log('Like reel:', reelId);
+        // TODO: Implement actual like functionality
+      }
+    );
   };
 
   const handleComment = (reelId: string) => {
-    gatedComment(() => {
-      navigate(`/reel/${reelId}`);
-    });
+    requireAuthOrGate(
+      () => setShowGuestGate(true),
+      () => navigate(`/reel/${reelId}`)
+    );
   };
 
   const handleShare = (reelId: string) => {
-    gatedShare(() => {
-      if (navigator.share) {
-        navigator.share({
-          title: 'Check out this reel on AkiliPesa',
-          url: `${window.location.origin}/reel/${reelId}`,
-        });
-      }
-    });
+    if (navigator.share) {
+      navigator.share({
+        title: 'Check out this reel on AkiliPesa',
+        url: `${window.location.origin}/reel/${reelId}`,
+      });
+    }
   };
 
   const handleShop = (reelId: string) => {
