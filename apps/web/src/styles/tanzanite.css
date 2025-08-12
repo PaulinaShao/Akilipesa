@@ -180,34 +180,13 @@
   border-color: rgba(110, 60, 230, 0.5);
 }
 
-/* Logo hero variant styles */
+/* Logo hero variant styles with Lottie support */
 .tz-logo-hero {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-}
-
-.tz-logo-hero .gem-container {
-  position: relative;
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  background: var(--tz-glow);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: gem-pulse 3s ease-in-out infinite;
-}
-
-@keyframes gem-pulse {
-  0%, 100% {
-    box-shadow: 0 0 30px rgba(110, 60, 230, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 50px rgba(110, 60, 230, 0.6), 0 0 80px rgba(110, 60, 230, 0.2);
-  }
 }
 
 .tz-logo-hero .wordmark {
@@ -219,6 +198,35 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+  text-align: center;
+}
+
+/* Responsive Lottie sizing */
+@media (max-width: 640px) {
+  .tz-logo-hero .wordmark {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tz-logo-hero .wordmark {
+    font-size: 1.25rem;
+  }
+}
+
+/* Lottie performance optimizations */
+.lottie-container {
+  will-change: transform;
+  contain: layout style paint;
+}
+
+/* High DPI screen optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .tz-logo-hero img,
+  .lottie-container {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
 }
 
 /* Compact logo styles */
