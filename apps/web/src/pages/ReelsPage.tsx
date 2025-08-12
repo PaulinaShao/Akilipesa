@@ -458,6 +458,11 @@ export default function ReelsPage() {
     // Update current reel index
     if (newIndex !== currentIndex && newIndex >= 0 && newIndex < reels.length) {
       setCurrentIndex(newIndex);
+
+      // Show guest CTA after viewing multiple reels
+      if (isGuest() && newIndex >= 2 && !showGuestCTA) {
+        setShowGuestCTA(true);
+      }
     }
 
     // Hide stories after scrolling down 120px, show when back at top
