@@ -5,25 +5,20 @@ import { useAppStore } from '../../store';
 import { cn } from '../../lib/utils';
 
 export const TrialBadge: React.FC = () => {
+  // All hooks must be called before any early returns
   const { user } = useAppStore();
-  const { 
-    config, 
-    usage, 
-    canUseFeature, 
-    getRemainingQuota, 
-    isHappyHour, 
+  const {
+    config,
+    usage,
+    canUseFeature,
+    getRemainingQuota,
+    isHappyHour,
     nextHappyHour,
-    getTrialProgress 
+    getTrialProgress
   } = useTrialStore();
-  
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [nextHappyTime, setNextHappyTime] = useState('');
-
-  // Hide badge if user is authenticated
-  if (user) return null;
-
-  // Hide if no config or trial disabled
-  if (!config || !config.enabled || !usage) return null;
 
   // Update happy hour countdown
   useEffect(() => {
