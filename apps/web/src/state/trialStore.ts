@@ -258,7 +258,7 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
   // Use call feature
   useCall: async (targetId: string) => {
     const { deviceToken, canUseFeature } = get();
-    
+
     if (!canUseFeature('call')) {
       debugLog.warn('Call quota exhausted');
       return { success: false };
@@ -267,7 +267,7 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
     try {
       // Call Cloud Function
       const { requestGuestCall } = await import('../modules/api');
-      const result = await requestGuestCall({ deviceToken, targetId });
+      const result = await requestGuestCall({ deviceToken: deviceToken!, targetId });
       
       // Update local state
       set(state => ({
