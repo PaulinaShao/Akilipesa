@@ -70,30 +70,6 @@ function AdminRoute({ children, user }: { children: React.ReactNode; user: User 
   return <>{children}</>;
 }
 
-// Trial Paywall Container Component
-function TrialPaywallContainer() {
-  const { trialPaywall, closeTrialPaywall, openAuthSheet } = useUIStore();
-
-  const handleSignUp = () => {
-    closeTrialPaywall();
-    openAuthSheet(() => {}, 'follow'); // Default action for signup
-  };
-
-  const handleClose = () => {
-    closeTrialPaywall();
-  };
-
-  if (!trialPaywall.feature) return null;
-
-  return (
-    <TrialPaywall
-      isOpen={trialPaywall.isOpen}
-      feature={trialPaywall.feature}
-      onClose={handleClose}
-      onSignUp={handleSignUp}
-    />
-  );
-}
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
