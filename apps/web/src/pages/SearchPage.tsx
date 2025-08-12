@@ -149,6 +149,16 @@ export default function SearchPage() {
         )}
       </div>
 
+      {/* Guest CTA Banner */}
+      {isGuest() && !showRecents && (
+        <div className="px-4 py-2">
+          <CTABanner
+            variant="features"
+            compact={true}
+          />
+        </div>
+      )}
+
       {/* Content */}
       <div className="flex-1 overflow-y-auto">
         {showRecents && searchQuery === '' ? (
