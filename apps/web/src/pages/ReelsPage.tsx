@@ -8,6 +8,7 @@ import GuestGate from '@/components/GuestGate';
 import { StickyGuestCTA } from '@/components/CTABanner';
 import { useAppStore } from '@/store';
 import { isGuest, requireAuthOrGate } from '@/lib/guards';
+import { requireAuth } from '@/lib/authGuard';
 
 interface ReelData {
   id: string;
@@ -484,20 +485,16 @@ export default function ReelsPage() {
   }, [handleScroll]);
 
   const handleLike = (reelId: string) => {
-    requireAuthOrGate(
-      () => setShowGuestGate(true),
-      () => {
-        console.log('Like reel:', reelId);
-        // TODO: Implement actual like functionality
-      }
-    );
+    requireAuth('like reel', () => {
+      console.log('Like reel:', reelId);
+      // TODO: Implement actual like functionality
+    });
   };
 
   const handleComment = (reelId: string) => {
-    requireAuthOrGate(
-      () => setShowGuestGate(true),
-      () => navigate(`/reel/${reelId}`)
-    );
+    requireAuth('comment on reel', () => {
+      navigate(`/reel/${reelId}`);
+    });
   };
 
   const handleShare = (reelId: string) => {
@@ -517,52 +514,41 @@ export default function ReelsPage() {
   };
 
   const handleAudioCall = (userId: string) => {
-    requireAuthOrGate(
-      () => setShowGuestGate(true),
-      () => navigate(`/call/new?mode=audio&target=${userId}`)
-    );
+    requireAuth('start audio call', () => {
+      navigate(`/call/new?mode=audio&target=${userId}`);
+    });
   };
 
   const handleVideoCall = (userId: string) => {
-    requireAuthOrGate(
-      () => setShowGuestGate(true),
-      () => navigate(`/call/new?mode=video&target=${userId}`)
-    );
+    requireAuth('start video call', () => {
+      navigate(`/call/new?mode=video&target=${userId}`);
+    });
   };
 
   const handleLiveCall = (reelId: string) => {
-    requireAuthOrGate(
-      () => setShowGuestGate(true),
-      () => {
-        const reel = reels.find(r => r.id === reelId);
-        if (reel?.user.isLive) {
-          navigate(`/live/${reel.user.id}`);
-        }
+    requireAuth('join live session', () => {
+      const reel = reels.find(r => r.id === reelId);
+      if (reel?.user.isLive) {
+        navigate(`/live/${reel.user.id}`);
       }
-    );
+    });
   };
 
   const handleJoin = (reelId: string) => {
-    requireAuthOrGate(
-      () => setShowGuestGate(true),
-      () => {
-        const reel = reels.find(r => r.id === reelId);
-        if (reel) {
-          startCall({ type: 'video', targetId: reel.user.id });
-          navigate(`/call/${reel.user.id}?type=video`);
-        }
+    requireAuth('join call', () => {
+      const reel = reels.find(r => r.id === reelId);
+      if (reel) {
+        startCall({ type: 'video', targetId: reel.user.id });
+        navigate(`/call/${reel.user.id}?type=video`);
       }
-    );
+    });
   };
 
   const handleFollow = (userId: string) => {
-    requireAuthOrGate(
-      () => setShowGuestGate(true),
-      () => {
-        console.log('Follow user:', userId);
-        // TODO: Implement actual follow functionality
-      }
-    );
+    requireAuth('follow user', () => {
+      console.log('Follow user:', userId);
+      // TODO: Implement actual follow functionality
+    });
   };
 
   const handleProfileClick = (userId: string) => {
