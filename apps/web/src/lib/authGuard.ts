@@ -3,12 +3,27 @@ interface PostLoginIntent {
   href: string;
 }
 
-export function requireAuth(action: string, onOk: () => void) {
-  // Get user from localStorage or current state
-  const userStr = localStorage.getItem('user');
-  const user = userStr ? JSON.parse(userStr) : null;
+function getUserFromStorage(): any | null {
+  try {
+    const userStr = localStorage.getItem('user');
+    return userStr ? JSON.parse(userStr) : null;
+  } catch {
+    return null;
+  }
+}
 
-  if (user && !user.id.includes('guest') && !user.id.includes('demo')) {
+function isValidAuthenticatedUser(user: any): boolean {
+  return user &&
+         typeof user.id === 'string' &&
+         !user.id.includes('guest') &&
+         !user.id.includes('demo') &&
+         !user.id.includes('offline');
+}
+
+export function requireAuth(action: string, onOk: () => void) {
+  const user = getUserFromStorage();
+
+  if (isValidAuthenticatedUser(user)) {
     return onOk();
   }
   
@@ -40,10 +55,15 @@ export function clearPostLoginIntent() {
 export function handlePostLogin() {
   const intent = getPostLoginIntent();
   clearPostLoginIntent();
-  
-  if (intent?.href) {
-    window.location.href = intent.href;
+
+  if (intent?.href && intent.href !== '/login') {
+    // Small delay to ensure authentication state is fully updated
+    setTimeout(() => {
+      window.location.href = intent.href;
+    }, 100);
   } else {
-    window.location.href = '/reels';
+    setTimeout(() => {
+      window.location.href = '/reels';
+    }, 100);
   }
 }
