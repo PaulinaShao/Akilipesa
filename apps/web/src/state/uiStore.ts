@@ -82,16 +82,30 @@ export const useUIStore = create<UIStore>()((set, get) => ({
     }
   },
 
-  setTrialPaywall: (state) => {
-    set({ trialPaywall: state });
+  openTrialPaywall: (feature) => {
+    set({
+      isTrialPaywallOpen: true,
+      trialPaywall: {
+        isOpen: true,
+        feature,
+      },
+    });
   },
 
   closeTrialPaywall: () => {
     set({
+      isTrialPaywallOpen: false,
       trialPaywall: {
         isOpen: false,
         feature: undefined,
       },
+    });
+  },
+
+  setTrialPaywall: (state) => {
+    set({
+      trialPaywall: state,
+      isTrialPaywallOpen: state.isOpen
     });
   },
 }));
