@@ -82,7 +82,7 @@ export default function InboxThreadPage() {
   };
 
   const handleCall = (type: 'audio' | 'video') => {
-    requireAuth(`start ${type} call with ${user.name}`, () => {
+    requireAuth(`start ${type} call with ${user.displayName}`, () => {
       navigate(`/call/new?mode=${type}&target=${user.id}`);
     });
   };
