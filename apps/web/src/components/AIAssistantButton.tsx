@@ -67,7 +67,7 @@ export default function AIAssistantButton() {
               </div>
             </div>
             <button
-              onClick={() => setIsMinimized(true)}
+              onClick={handleDismiss}
               className="p-1 hover:bg-white/20 rounded-full transition-colors"
             >
               <X className="w-4 h-4 text-white" />
