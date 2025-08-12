@@ -27,21 +27,13 @@ export default function Brand({
       {/* Glow background effect */}
       {animated && <div className="brand-glow" />}
       
-      {/* Main logo with fallback */}
-      <picture className="brand-logo-container">
-        <source
-          srcSet="/src/assets/brand/akilipesa-logo.svg"
-          type="image/svg+xml"
-        />
-        <img
-          src="/src/assets/brand/akilipesa-logo@2x.webp"
-          alt="AkiliPesa tanzanite logo"
-          className="brand-logo"
-          width="0"
-          height="0" // Let CSS control size
-          loading="eager"
-        />
-      </picture>
+      {/* Main logo */}
+      <img
+        src="/src/assets/brand/akilipesa-logo-new.webp"
+        alt="AkiliPesa tanzanite AI logo"
+        className="brand-logo"
+        loading="eager"
+      />
       
       {/* Wordmark */}
       {showWordmark && (
