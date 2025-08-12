@@ -87,7 +87,7 @@ export default function LoginPage() {
 
       setStep('code');
       setResendTimer(30);
-      toast({
+      addToast({
         title: 'Code sent!',
         description: `Verification code sent to ${activeTab === 'phone' ? phoneValidation.formatted : email}`,
         variant: 'default'
