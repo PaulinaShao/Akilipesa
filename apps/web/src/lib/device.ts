@@ -19,7 +19,7 @@ export function generateDeviceFingerprint(): string {
     Intl.DateTimeFormat().resolvedOptions().timeZone,
     canvas.toDataURL().slice(-50), // Last 50 chars of canvas fingerprint
     navigator.hardwareConcurrency || 0,
-    navigator.deviceMemory || 0,
+    (navigator as any).deviceMemory || 0,
   ].join('|');
   
   // Simple hash function
