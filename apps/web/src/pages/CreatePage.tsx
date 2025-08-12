@@ -414,6 +414,16 @@ export default function CreatePage() {
         </div>
       </div>
 
+      {/* Guest CTA Banner */}
+      {isGuest() && (
+        <div className="p-4">
+          <CTABanner
+            variant="create"
+            compact={true}
+          />
+        </div>
+      )}
+
       {/* Message Top Bar */}
       <div className="p-4 border-b border-white/10">
         <div className="bg-gradient-to-r from-violet-500/20 to-blue-500/20 border border-violet-500/30 rounded-xl p-4">
