@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Phone, Video, MoreVertical, Send, Mic, Image, Smile } from 'lucide-react';
+import { requireAuth } from '@/lib/authGuard';
 
 interface Message {
   id: string;
@@ -81,7 +82,9 @@ export default function InboxThreadPage() {
   };
 
   const handleCall = (type: 'audio' | 'video') => {
-    navigate(`/call/new?mode=${type}&target=${user.id}`);
+    requireAuth(`start ${type} call with ${user.name}`, () => {
+      navigate(`/call/new?mode=${type}&target=${user.id}`);
+    });
   };
 
   const formatTime = (date: Date) => {
