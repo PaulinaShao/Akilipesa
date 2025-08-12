@@ -122,9 +122,9 @@ export default function LoginPage() {
       const mockUser = {
         id: 'user-123',
         name: 'Tanzania User',
-        username: activeTab === 'phone' ? phoneLocal : email.split('@')[0],
-        email: activeTab === 'email' ? email : `${phoneLocal}@phone.akilipesa.com`,
-        phone: phoneE164,
+        username: activeTab === 'phone' ? phoneValidation.formatted.replace(/\s/g, '') : email.split('@')[0],
+        email: activeTab === 'email' ? email : `${phoneValidation.formatted.replace(/\s/g, '')}@phone.akilipesa.com`,
+        phone: phoneValidation.e164,
         avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
         verified: false,
         plan: 'free' as const,
