@@ -91,7 +91,7 @@ export function formatAsUserTypes(value: string): string {
  * Debounced phone validation hook
  */
 export function createPhoneDebouncer(delay: number = 300) {
-  let timeoutId: NodeJS.Timeout;
+  let timeoutId: number;
   
   return (value: string, callback: (result: PhoneValidationResult) => void) => {
     clearTimeout(timeoutId);
