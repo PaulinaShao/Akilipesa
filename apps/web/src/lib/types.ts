@@ -749,6 +749,7 @@ export type { JobProgress, JobResult, JobType } from '../modules/jobs';
 export type DocumentReference<T = any> = {
   id: string;
   path: string;
+  data?: T;
 };
 
 export type Timestamp = {
