@@ -25,7 +25,6 @@ export const TrialPaywall: React.FC<TrialPaywallProps> = ({
   // Don't show if paywall is not open
   if (!isTrialPaywallOpen) return null;
 
-  const progress = getTrialProgress();
   
   // Get appropriate messaging based on trigger
   const getContent = () => {
