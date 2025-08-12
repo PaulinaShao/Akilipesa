@@ -539,6 +539,9 @@ function App() {
 
           {/* Network Status */}
           <NetworkStatus />
+
+          {/* Emulator Warning */}
+          <EmulatorWarning />
         </ToastProvider>
       </QueryClientProvider>
     </ErrorBoundary>
