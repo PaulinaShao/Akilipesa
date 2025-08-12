@@ -531,7 +531,7 @@ function App() {
         {/* Trial System Components */}
         <TrialBadge />
         <TrialPaywallContainer />
-        <TrialDebug />
+        {import.meta.env.MODE === 'development' && <TrialDebug />}
 
         {/* Network Status */}
         <NetworkStatus />
