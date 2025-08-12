@@ -6,7 +6,9 @@ import { useAppStore } from '@/store';
 import CodeInput from '@/components/auth/CodeInput';
 import GoogleButton from '@/components/auth/GoogleButton';
 import AkiliLogo from '@/components/AkiliLogo';
-import { isValidTZ, formatTZPhone } from '@/lib/phone';
+import { validateTZPhone, formatAsUserTypes, createPhoneDebouncer, type PhoneValidationResult } from '@/lib/phoneValidation';
+import { retryWithBackoff } from '@/lib/retry';
+import { useToast } from '@/hooks/useToast';
 
 export default function LoginPage() {
   const [activeTab, setActiveTab] = useState<'phone' | 'email'>('phone');
