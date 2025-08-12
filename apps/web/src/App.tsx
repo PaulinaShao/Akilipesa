@@ -85,8 +85,10 @@ function App() {
   const { setUser: setAppUser } = useAppStore();
 
   useEffect(() => {
-    // Initialize guest auth for read-only browsing
-    ensureGuestAuth();
+    // Initialize guest auth for read-only browsing (non-blocking)
+    ensureGuestAuth().catch(error => {
+      console.warn('Guest auth initialization failed, app will continue:', error);
+    });
 
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
