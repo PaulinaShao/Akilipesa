@@ -17,7 +17,6 @@ import NetworkStatus from '@/components/NetworkStatus';
 import { ErrorBoundary, OfflineIndicator } from '@/components/ErrorBoundary';
 import EmulatorWarning from '@/components/EmulatorWarning';
 import { useTrialStore } from '@/state/trialStore';
-import { useUIStore } from '@/state/uiStore';
 import { useAppStore, type User as AppUser } from '@/store';
 import { seedTrialConfig } from '@/lib/seedTrialConfig';
 
