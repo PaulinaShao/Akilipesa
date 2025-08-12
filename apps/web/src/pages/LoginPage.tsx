@@ -240,7 +240,7 @@ export default function LoginPage() {
               animate={{ scale: 1, opacity: 1 }}
               className="mb-6"
             >
-              <AkiliLogo variant="hero" animated={true} showSparkles={true} />
+              <AkiliLogo variant="hero" size="xl" animated={true} showSparkles={true} />
             </motion.div>
             
             <h1 className="text-3xl font-bold text-[var(--tz-ink)] mb-2">
