@@ -1,96 +1,158 @@
-/* Sparkle animations for Tanzanite branding */
-
-@keyframes sparkle {
-  0%, 100% {
-    opacity: 0;
-    transform: scale(0) rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1) rotate(180deg);
-  }
-}
-
-@keyframes sparkle-float {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px);
-  }
-  25% {
-    transform: translateY(-4px) translateX(2px);
-  }
-  75% {
-    transform: translateY(2px) translateX(-1px);
-  }
-}
-
-@keyframes gem-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(139, 92, 246, 0.6), 0 0 60px rgba(139, 92, 246, 0.3);
-  }
-}
-
-.sparkle {
-  animation: sparkle 2s ease-in-out infinite;
-}
-
-.sparkle-float {
-  animation: sparkle-float 3s ease-in-out infinite;
-}
-
-.sparkle-1 {
-  animation-delay: 0s;
-}
-
-.sparkle-2 {
-  animation-delay: 0.7s;
-}
-
-.sparkle-3 {
-  animation-delay: 1.4s;
-}
-
-.gem-glow {
-  animation: gem-glow 3s ease-in-out infinite;
-}
-
-/* Sparkle positions for logo */
-.sparkle-container {
+/* Sparkle effect for AkiliPesa logo */
+.akili-sparkle {
   position: relative;
 }
 
-.sparkle-particle {
+.akili-sparkle::after {
+  content: "";
   position: absolute;
-  width: 8px;
-  height: 8px;
-  background: linear-gradient(45deg, #8b5cf6, #a855f7);
-  border-radius: 50%;
+  inset: -6px;
+  background:
+    radial-gradient(100px 100px at 30% 30%, rgba(138, 92, 246, 0.28), transparent 60%),
+    radial-gradient(90px 90px at 70% 50%, rgba(51, 255, 193, 0.22), transparent 60%),
+    radial-gradient(80px 80px at 20% 70%, rgba(110, 75, 217, 0.18), transparent 60%);
+  filter: blur(12px);
+  opacity: 0;
+  animation: sparkle 3.6s ease-out forwards;
   pointer-events: none;
+  z-index: -1;
 }
 
-.sparkle-star {
+@keyframes sparkle {
+  0% { 
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  18% { 
+    opacity: 0.85;
+    transform: scale(1.1);
+  }
+  45% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+  100% { 
+    opacity: 0.12;
+    transform: scale(1);
+  }
+}
+
+/* Enhanced version for hero sections */
+.akili-sparkle-hero {
+  position: relative;
+}
+
+.akili-sparkle-hero::before {
+  content: "";
   position: absolute;
-  width: 6px;
-  height: 6px;
-  background: #f1f5f9;
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  inset: -12px;
+  background:
+    radial-gradient(150px 150px at 25% 25%, rgba(138, 92, 246, 0.35), transparent 65%),
+    radial-gradient(120px 120px at 75% 45%, rgba(51, 255, 193, 0.28), transparent 65%),
+    radial-gradient(100px 100px at 15% 75%, rgba(110, 75, 217, 0.25), transparent 65%),
+    radial-gradient(80px 80px at 85% 20%, rgba(138, 92, 246, 0.20), transparent 65%);
+  filter: blur(16px);
+  opacity: 0;
+  animation: sparkleHero 4.2s ease-out forwards;
   pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes sparkleHero {
+  0% { 
+    opacity: 0;
+    transform: scale(0.7) rotate(-2deg);
+  }
+  20% { 
+    opacity: 0.9;
+    transform: scale(1.15) rotate(1deg);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08) rotate(-0.5deg);
+  }
+  100% { 
+    opacity: 0.15;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Subtle continuous glow for navigation */
+.akili-glow {
+  position: relative;
+}
+
+.akili-glow::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  background:
+    radial-gradient(60px 60px at 50% 50%, rgba(138, 92, 246, 0.15), transparent 70%);
+  filter: blur(8px);
+  opacity: 0.6;
+  animation: pulse 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Micro animations for interactive elements */
+.sparkle-on-hover {
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.sparkle-on-hover:hover {
+  transform: scale(1.02);
+}
+
+.sparkle-on-hover:hover::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background:
+    radial-gradient(40px 40px at 50% 50%, rgba(138, 92, 246, 0.2), transparent 60%);
+  filter: blur(6px);
+  opacity: 1;
+  animation: quickSparkle 0.6s ease-out forwards;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes quickSparkle {
+  0% { 
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  50% { 
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+  100% { 
+    opacity: 0;
+    transform: scale(1);
+  }
 }
 
 /* Performance optimizations */
-.sparkle-container * {
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
+@media (prefers-reduced-motion: reduce) {
+  .akili-sparkle::after,
+  .akili-sparkle-hero::before,
+  .akili-glow::after {
+    animation: none;
+    opacity: 0.1;
+  }
+  
+  .sparkle-on-hover:hover::after {
+    animation: none;
+    opacity: 0.3;
+  }
 }
 
-/* Disable sparkles on low-performance devices */
-@media (prefers-reduced-motion: reduce) {
-  .sparkle,
-  .sparkle-float,
-  .gem-glow {
-    animation: none;
-  }
+/* GPU acceleration hints */
+.akili-sparkle::after,
+.akili-sparkle-hero::before,
+.akili-glow::after,
+.sparkle-on-hover:hover::after {
+  transform: translateZ(0);
+  will-change: opacity, transform;
 }
