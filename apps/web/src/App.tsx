@@ -39,6 +39,11 @@ import WalletPage from '@/pages/WalletPage';
 import CallPage from '@/pages/CallPage';
 import SettingsPage from '@/pages/SettingsPage';
 import InboxThreadPage from '@/pages/InboxThreadPage';
+import CameraCaptPage from '@/pages/CameraCaptPage';
+import LiveSetupPage from '@/pages/LiveSetupPage';
+import JobsPage from '@/pages/JobsPage';
+import ChatAIPage from '@/pages/ChatAIPage';
+import EditorPage from '@/pages/EditorPage';
 
 // Admin Guard Component
 function AdminRoute({ children, user }: { children: React.ReactNode; user: User | null }) {
