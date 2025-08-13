@@ -20,6 +20,7 @@ import { useAppStore, type User as AppUser } from '@/store';
 import { seedTrialConfig } from '@/lib/seedTrialConfig';
 import { ensureGuestAuth } from '@/lib/guest';
 import { shouldShowSplashOnce } from '@/lib/entry';
+import { ensureRecaptchaContainer } from '@/lib/ensureRecaptchaContainer';
 import Splash from '@/components/Splash';
 import NotFound from '@/components/NotFound';
 import '@/styles/util.css';
