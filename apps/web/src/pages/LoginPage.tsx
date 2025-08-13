@@ -15,7 +15,8 @@ export default function LoginPage() {
   const [activeTab, setActiveTab] = useState<'phone' | 'email'>('phone');
   const [step, setStep] = useState<'input' | 'code' | 'success'>('input');
   const [phoneInput, setPhoneInput] = useState('');
-  const [phoneValidation, setPhoneValidation] = useState<PhoneValidationResult>({ isValid: false, formatted: '', e164: '' });
+  const [phoneE164, setPhoneE164] = useState('');
+  const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [resendTimer, setResendTimer] = useState(0);
