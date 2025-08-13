@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ConfirmationResult } from 'firebase/auth';
 import { useAppStore } from '@/store';
 import CodeInput from '@/components/auth/CodeInput';
 import GoogleButton from '@/components/auth/GoogleButton';
 import Brand from '@/components/Brand';
 import { normalizeMsisdn, formatAsUserTypes, formatAsDisplay, isValidTanzaniaNumber } from '@/lib/phoneFormat';
-import { retryWithBackoff } from '@/lib/retry';
+import { startPhoneSignIn, resetRecaptcha } from '@/auth/phone';
 import { useToast } from '@/hooks/useToast';
 import { handlePostLogin, getPostLoginIntent } from '@/lib/authGuard';
 
