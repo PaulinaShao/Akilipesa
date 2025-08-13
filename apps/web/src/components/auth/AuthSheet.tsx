@@ -184,6 +184,7 @@ export default function AuthSheet() {
 
   const handleResend = () => {
     if (resendTimer > 0) return;
+    setConfirmation(null);
     handleSendCode();
   };
 
