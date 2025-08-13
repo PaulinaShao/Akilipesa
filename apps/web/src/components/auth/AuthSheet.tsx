@@ -19,6 +19,7 @@ export default function AuthSheet() {
   const [phoneLocal, setPhoneLocal] = useState('');
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
+  const [confirmation, setConfirmation] = useState<ConfirmationResult | null>(null);
   const [resendTimer, setResendTimer] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
