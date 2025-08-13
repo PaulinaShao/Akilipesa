@@ -314,15 +314,15 @@ export default function LoginPage() {
                       onBlur={handlePhoneBlur}
                       placeholder="7XX XXX XXX"
                       className={`tz-input tz-phone-input ${
-                        phoneInput && !phoneValidation.isValid ? 'border-rose-400' : ''
+                        phoneInput && !isPhoneValid ? 'border-rose-400' : ''
                       }`}
                       autoComplete="tel"
                     />
                   </div>
-                  {phoneInput && !phoneValidation.isValid && phoneValidation.message && (
-                    <p className="mt-1 text-xs text-rose-400">{phoneValidation.message}</p>
+                  {phoneInput && !isPhoneValid && (
+                    <p className="mt-1 text-xs text-rose-400">Please enter a valid Tanzania mobile number</p>
                   )}
-                  {phoneValidation.isValid && (
+                  {isPhoneValid && (
                     <p className="mt-1 text-xs text-emerald-400">✓ Valid Tanzania mobile number</p>
                   )}
                   {error && <p className="mt-2 text-xs text-rose-400">{error}</p>}
