@@ -61,39 +61,29 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // Use retry with exponential backoff for Firebase operations
-      await retryWithBackoff(
-        async () => {
-          // TODO: Replace with actual Firebase Auth signInWithPhoneNumber
-          // const confirmationResult = await signInWithPhoneNumber(auth, phoneValidation.e164, recaptchaVerifier);
-
-          // Simulate network delay and potential failure
-          await new Promise(resolve => setTimeout(resolve, 1500));
-
-          // Simulate random failures for testing
-          if (Math.random() < 0.1) {
-            throw new Error('Network error: Please check your connection');
-          }
-        },
-        {
-          maxAttempts: 3,
-          onRetry: (attempt, error) => {
-            addToast({
-              title: `Retrying... (${attempt}/3)`,
-              description: error.message,
-              type: 'info'
-            });
-          }
-        }
-      );
-
-      setStep('code');
-      setResendTimer(30);
-      addToast({
-        title: 'Code sent!',
-        description: `Verification code sent to ${activeTab === 'phone' ? formatAsDisplay(phoneE164) : email}`,
-        type: 'success'
-      });
+      if (activeTab === 'phone') {
+        // Use Firebase phone authentication
+        const confirmationResult = await startPhoneSignIn(phoneE164);
+        setConfirmation(confirmationResult);
+        setStep('code');
+        setResendTimer(30);
+        addToast({
+          title: 'Code sent!',
+          description: `Verification code sent to ${formatAsDisplay(phoneE164)}`,
+          type: 'success'
+        });
+      } else {
+        // Email auth would go here
+        // For now, simulate email sending
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setStep('code');
+        setResendTimer(30);
+        addToast({
+          title: 'Code sent!',
+          description: `Verification code sent to ${email}`,
+          type: 'success'
+        });
+      }
     } catch (error: any) {
       const message = error?.message || 'Failed to send code. Please try again.';
       setError(message);
