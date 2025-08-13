@@ -290,6 +290,19 @@ function App() {
           <Route path="/call/:channel" element={<CallPage />} />
           <Route path="/call/new" element={<CallPage />} />
 
+          {/* Creation workflow routes */}
+          <Route path="/create/camera" element={<CameraCaptPage />} />
+          <Route path="/create/live" element={<LiveSetupPage />} />
+          <Route path="/create/editor" element={<EditorPage />} />
+
+          {/* AI and Jobs routes */}
+          <Route path="/jobs" element={
+            <MobileLayout>
+              <JobsPage />
+            </MobileLayout>
+          } />
+          <Route path="/chat/ai" element={<ChatAIPage />} />
+
           <Route path="/trial-policy" element={<TrialPolicyPage />} />
 
           {/* Admin routes */}
