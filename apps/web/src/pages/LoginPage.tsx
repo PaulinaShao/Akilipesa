@@ -20,6 +20,7 @@ export default function LoginPage() {
   const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
+  const [confirmation, setConfirmation] = useState<ConfirmationResult | null>(null);
   const [resendTimer, setResendTimer] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
