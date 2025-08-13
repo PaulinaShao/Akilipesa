@@ -73,6 +73,9 @@ function App() {
   const { setUser: setAppUser } = useAppStore();
 
   useEffect(() => {
+    // Initialize reCAPTCHA container for phone auth
+    ensureRecaptchaContainer();
+
     // Initialize guest auth for read-only browsing (non-blocking)
     ensureGuestAuth().catch(error => {
       console.warn('Guest auth initialization failed, app will continue:', error);
