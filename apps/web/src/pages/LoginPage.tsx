@@ -198,18 +198,20 @@ export default function LoginPage() {
     setPhoneInput(formatted);
     setError('');
 
-    // Debounced validation
-    phoneDebouncer(value, (result) => {
-      setPhoneValidation(result);
-    });
+    // Immediate validation
+    const e164 = normalizeMsisdn(value);
+    const isValid = isValidTanzaniaNumber(value);
+    setPhoneE164(e164);
+    setIsPhoneValid(isValid);
   };
 
   const handlePhoneBlur = () => {
-    // Immediate validation on blur
-    const result = validateTZPhone(phoneInput);
-    setPhoneValidation(result);
-    if (result.isValid) {
-      setPhoneInput(result.formatted);
+    // Final validation on blur
+    const isValid = isValidTanzaniaNumber(phoneInput);
+    setIsPhoneValid(isValid);
+    if (isValid) {
+      const e164 = normalizeMsisdn(phoneInput);
+      setPhoneE164(e164);
     }
   };
 
