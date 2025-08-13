@@ -45,8 +45,8 @@ export default function LoginPage() {
     setError('');
 
     if (activeTab === 'phone') {
-      if (!phoneValidation.isValid) {
-        setError(phoneValidation.message || 'Please enter a valid Tanzania phone number');
+      if (!isPhoneValid) {
+        setError('Please enter a valid Tanzania phone number');
         return;
       }
     } else {
