@@ -292,6 +292,33 @@ function App() {
             </MobileLayout>
           } />
 
+          {/* Profile sub-pages */}
+          <Route path="/analytics" element={
+            <MobileLayout>
+              <AnalyticsPage />
+            </MobileLayout>
+          } />
+          <Route path="/referrals" element={
+            <MobileLayout>
+              <ReferralsPage />
+            </MobileLayout>
+          } />
+          <Route path="/saved-posts" element={
+            <MobileLayout>
+              <SavedPostsPage />
+            </MobileLayout>
+          } />
+          <Route path="/purchases" element={
+            <MobileLayout>
+              <PurchasesPage />
+            </MobileLayout>
+          } />
+          <Route path="/earnings" element={
+            <MobileLayout>
+              <EarningsPage />
+            </MobileLayout>
+          } />
+
           <Route path="/call/:channel" element={<CallPage />} />
           <Route path="/call/new" element={<CallPage />} />
 
