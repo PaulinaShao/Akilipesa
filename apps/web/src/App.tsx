@@ -200,10 +200,10 @@ function App() {
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/verify" element={<LoginPage />} />
 
-          {/* Default route - always go to reels */}
+          {/* Default route - always go to reels (TikTok-style) */}
           <Route path="/" element={<Navigate to="/reels" replace />} />
 
-          {/* Public routes (guest accessible) */}
+          {/* Public routes (guest accessible) - Show immediately, no auth required */}
           <Route path="/reels" element={
             <MobileLayout>
               <ReelsPage />
