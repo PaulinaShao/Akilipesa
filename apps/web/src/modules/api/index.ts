@@ -114,7 +114,7 @@ export async function startJob(type: string, inputs: any): Promise<string> {
       type,
       inputs: {
         ...inputs,
-        timestamp: Date.now()
+        timestamp: serverTimestamp()
       }
     });
 
