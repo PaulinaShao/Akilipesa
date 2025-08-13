@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowLeft } from 'lucide-react';
+import { ConfirmationResult } from 'firebase/auth';
 import { useUIStore } from '@/state/uiStore';
 import { useAppStore } from '@/store';
 import PhoneInput from './PhoneInput';
 import CodeInput from './CodeInput';
 import GoogleButton from './GoogleButton';
+import { startPhoneSignIn } from '@/auth/phone';
 import { isValidTZ } from '@/lib/phone';
 
 export default function AuthSheet() {
