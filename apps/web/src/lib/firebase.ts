@@ -2,6 +2,7 @@ import { initializeApp, getApps } from "firebase/app";
 import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
 import { getFirestore, enableIndexedDbPersistence } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getFunctions } from "firebase/functions";
 
 // Your Firebase config from the console
 const firebaseConfig = {
