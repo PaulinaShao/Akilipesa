@@ -98,9 +98,16 @@ export default function SettingsPage() {
   const [selectedTab, setSelectedTab] = useState<'profile' | 'notifications' | 'privacy' | 'account'>('profile');
   const [darkMode, setDarkMode] = useState(true);
 
-  const handleLogout = () => {
-    // Handle logout logic
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      const { logout } = await import('@/auth/signOut');
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Still navigate to login even if logout fails
+      navigate('/login');
+    }
   };
 
   const handleDeleteAccount = () => {
