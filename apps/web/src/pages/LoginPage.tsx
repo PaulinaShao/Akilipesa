@@ -89,7 +89,7 @@ export default function LoginPage() {
       setResendTimer(30);
       addToast({
         title: 'Code sent!',
-        description: `Verification code sent to ${activeTab === 'phone' ? phoneValidation.formatted : email}`,
+        description: `Verification code sent to ${activeTab === 'phone' ? formatAsDisplay(phoneE164) : email}`,
         type: 'success'
       });
     } catch (error: any) {
