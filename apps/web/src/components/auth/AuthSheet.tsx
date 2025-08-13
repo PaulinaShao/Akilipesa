@@ -93,33 +93,55 @@ export default function AuthSheet() {
     setError('');
 
     try {
-      // Simulate code verification (replace with actual Firebase Auth)
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock successful authentication
-      const mockUser = {
-        id: 'user-123',
-        name: 'Tanzania User',
-        username: activeTab === 'phone' ? phoneLocal : email.split('@')[0],
-        email: activeTab === 'email' ? email : `${phoneLocal}@phone.akilipesa.com`,
-        phone: phoneE164,
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
-        verified: false,
-        plan: 'free' as const,
-        balance: 1000,
-        earnings: 0,
-      };
+      if (activeTab === 'phone' && confirmation) {
+        // Use Firebase phone auth confirmation
+        const credential = await confirmation.confirm(code);
+        const firebaseUser = credential.user;
 
-      setUser(mockUser);
+        // Convert Firebase user to app user format
+        const appUser = {
+          id: firebaseUser.uid,
+          name: firebaseUser.displayName || 'Tanzania User',
+          username: firebaseUser.phoneNumber || phoneLocal,
+          email: firebaseUser.email || `${phoneLocal}@phone.akilipesa.com`,
+          phone: firebaseUser.phoneNumber || phoneE164,
+          avatar: firebaseUser.photoURL || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+          verified: firebaseUser.emailVerified,
+          plan: 'free' as const,
+          balance: 1000,
+          earnings: 0,
+        };
+
+        setUser(appUser);
+      } else {
+        // Email auth simulation
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        const mockUser = {
+          id: 'user-email-123',
+          name: 'Email User',
+          username: email.split('@')[0],
+          email: email,
+          phone: '',
+          avatar: 'https://images.unsplash.com/photo-1494790108755-2616b9d38aad?w=150&h=150&fit=crop&crop=face',
+          verified: true,
+          plan: 'free' as const,
+          balance: 1000,
+          earnings: 0,
+        };
+
+        setUser(mockUser);
+      }
+
       setAuthStep('success');
-      
+
       // Execute pending action after short delay
       setTimeout(() => {
         executePendingAction();
         closeAuthSheet();
       }, 1000);
-      
-    } catch (error) {
+
+    } catch (error: any) {
       setError('Invalid verification code. Please try again.');
     } finally {
       setLoading(false);
