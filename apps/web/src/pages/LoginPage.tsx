@@ -6,7 +6,7 @@ import { useAppStore } from '@/store';
 import CodeInput from '@/components/auth/CodeInput';
 import GoogleButton from '@/components/auth/GoogleButton';
 import Brand from '@/components/Brand';
-import { validateTZPhone, formatAsUserTypes, createPhoneDebouncer, type PhoneValidationResult } from '@/lib/phoneValidation';
+import { normalizeMsisdn, formatAsUserTypes, formatAsDisplay, isValidTanzaniaNumber } from '@/lib/phoneFormat';
 import { retryWithBackoff } from '@/lib/retry';
 import { useToast } from '@/hooks/useToast';
 import { handlePostLogin, getPostLoginIntent } from '@/lib/authGuard';
