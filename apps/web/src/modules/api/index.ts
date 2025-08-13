@@ -135,6 +135,7 @@ export async function startJob(type: string, inputs: any): Promise<string> {
       inputs,
       status: 'queued',
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
       isOffline: true
     };
 
