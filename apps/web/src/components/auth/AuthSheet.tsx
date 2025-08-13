@@ -49,7 +49,7 @@ export default function AuthSheet() {
 
   const handleSendCode = async () => {
     setError('');
-    
+
     if (activeTab === 'phone') {
       if (!phoneLocal || !isValidTZ(phoneLocal)) {
         setError('Please enter a valid Tanzania phone number');
@@ -63,16 +63,22 @@ export default function AuthSheet() {
     }
 
     setLoading(true);
-    
+
     try {
-      // Simulate sending code (replace with actual Firebase Auth)
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      if (activeTab === 'phone') {
+        // Use Firebase phone authentication
+        const confirmationResult = await startPhoneSignIn(phoneE164);
+        setConfirmation(confirmationResult);
+      } else {
+        // Email auth simulation
+        await new Promise(resolve => setTimeout(resolve, 1500));
+      }
+
       setAuthStep('code');
       setResendTimer(30);
       setLoading(false);
-    } catch (error) {
-      setError('Failed to send code. Please try again.');
+    } catch (error: any) {
+      setError(error?.message || 'Failed to send code. Please try again.');
       setLoading(false);
     }
   };
