@@ -254,6 +254,8 @@ export default function LoginPage() {
 
   const handleResend = () => {
     if (resendTimer > 0) return;
+    // Reset confirmation state and send new code
+    setConfirmation(null);
     handleSendCode();
   };
 
