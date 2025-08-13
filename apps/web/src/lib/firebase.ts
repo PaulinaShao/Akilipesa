@@ -26,4 +26,14 @@ export const functions = getFunctions(app);
 
 // Recommended defaults
 setPersistence(auth, browserLocalPersistence);
-enableIndexedDbPersistence(db).catch(() => {});
+enableIndexedDbPersistence(db).catch((error) => {
+  if (error.code === 'failed-precondition') {
+    // Multiple tabs open, persistence can only be enabled in one tab at a time.
+    console.warn('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+  } else if (error.code === 'unimplemented') {
+    // The current browser does not support offline persistence
+    console.warn('The current browser does not support offline persistence.');
+  } else {
+    console.warn('Failed to enable offline persistence:', error);
+  }
+});
