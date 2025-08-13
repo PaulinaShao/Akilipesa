@@ -217,7 +217,7 @@ export default function LoginPage() {
 
   const isFormValid = () => {
     if (activeTab === 'phone') {
-      return phoneValidation.isValid;
+      return isPhoneValid;
     } else {
       return email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
