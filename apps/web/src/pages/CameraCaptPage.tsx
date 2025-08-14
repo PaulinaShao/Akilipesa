@@ -336,7 +336,11 @@ export default function CameraCaptPage() {
               )}
               
               <div className="flex items-center gap-8">
-                <button className="p-4 border-2 border-white/30 rounded-full">
+                <button
+                  onClick={handleFileUpload}
+                  className="p-4 border-2 border-white/30 hover:border-white/50 rounded-full transition-colors"
+                  title="Upload file"
+                >
                   <Upload className="w-6 h-6 text-white" />
                 </button>
                 
