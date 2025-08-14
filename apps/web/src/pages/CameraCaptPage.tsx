@@ -32,6 +32,52 @@ const checkCameraPermissions = async (): Promise<boolean> => {
   }
 };
 
+// Debug function to get detailed device information
+const debugCameraDevices = async (): Promise<string> => {
+  const debugInfo: string[] = [];
+
+  try {
+    // Basic browser support
+    debugInfo.push(`Navigator.mediaDevices available: ${!!navigator.mediaDevices}`);
+    debugInfo.push(`getUserMedia supported: ${!!(navigator.mediaDevices?.getUserMedia)}`);
+    debugInfo.push(`Secure context: ${window.isSecureContext}`);
+    debugInfo.push(`Location: ${location.protocol}//${location.hostname}`);
+
+    // Device enumeration
+    if (navigator.mediaDevices?.enumerateDevices) {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter(d => d.kind === 'videoinput');
+      const audioDevices = devices.filter(d => d.kind === 'audioinput');
+
+      debugInfo.push(`Total devices: ${devices.length}`);
+      debugInfo.push(`Video devices: ${videoDevices.length}`);
+      debugInfo.push(`Audio devices: ${audioDevices.length}`);
+
+      videoDevices.forEach((device, index) => {
+        debugInfo.push(`  Video ${index + 1}: ${device.label || 'Unnamed'} (${device.deviceId.substring(0, 8)}...)`);
+      });
+    }
+
+    // Permission status
+    if (navigator.permissions) {
+      try {
+        const cameraPermission = await navigator.permissions.query({ name: 'camera' as PermissionName });
+        debugInfo.push(`Camera permission: ${cameraPermission.state}`);
+
+        const micPermission = await navigator.permissions.query({ name: 'microphone' as PermissionName });
+        debugInfo.push(`Microphone permission: ${micPermission.state}`);
+      } catch {
+        debugInfo.push(`Permission API not fully supported`);
+      }
+    }
+
+  } catch (error) {
+    debugInfo.push(`Debug error: ${error.message}`);
+  }
+
+  return debugInfo.join('\n');
+};
+
 export default function CameraCaptPage() {
   const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
