@@ -24,6 +24,9 @@ export const db = getFirestore(app);
 export const storage = getStorage(app);
 export const functions = getFunctions(app);
 
+// Demo mode detection - true if functions are not available or in development
+export const isFirebaseDemoMode = import.meta.env.DEV || import.meta.env.VITE_APP_ENV === 'demo';
+
 // Recommended defaults
 setPersistence(auth, browserLocalPersistence);
 enableIndexedDbPersistence(db).catch((error) => {
