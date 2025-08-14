@@ -270,6 +270,15 @@ export default function CameraCaptPage() {
     } catch (error: any) {
       console.error('Error accessing camera:', error);
 
+      // Gather debug information for troubleshooting
+      try {
+        const debug = await debugCameraDevices();
+        setDebugInfo(debug);
+        console.log('Camera debug info:', debug);
+      } catch (debugError) {
+        console.warn('Failed to gather debug info:', debugError);
+      }
+
       // Set user-friendly error message based on error type
       let errorMessage = 'Camera access failed. ';
 
