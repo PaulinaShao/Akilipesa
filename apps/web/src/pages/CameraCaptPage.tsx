@@ -544,12 +544,22 @@ export default function CameraCaptPage() {
                             Allow Camera Access
                           </button>
                         ) : (
-                          <button
-                            onClick={startCamera}
-                            className="w-full bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl transition-colors"
-                          >
-                            Try Camera Again
-                          </button>
+                          <>
+                            <button
+                              onClick={startCamera}
+                              className="w-full bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl transition-colors"
+                            >
+                              Try Camera Again
+                            </button>
+                            {cameraRetries > 0 && (
+                              <button
+                                onClick={clearCacheAndRetry}
+                                className="w-full bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-xl transition-colors"
+                              >
+                                Reset Camera
+                              </button>
+                            )}
+                          </>
                         )}
                         <button
                           onClick={handleFileUpload}
