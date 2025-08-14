@@ -489,6 +489,9 @@ export async function guestChat(data: GuestChatRequest): Promise<GuestChatRespon
     if (isFirebaseDemoMode) {
       console.log('Demo mode: guest chat message');
 
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 800));
+
       // Simulate AI response
       const responses = [
         "Hello! I'm AkiliPesa AI. How can I help you today?",
@@ -506,10 +509,21 @@ export async function guestChat(data: GuestChatRequest): Promise<GuestChatRespon
     const result = await chat(data);
 
     return result.data as GuestChatResponse;
-  } catch (error) {
+  } catch (error: any) {
     console.warn('Failed to send guest chat:', error);
 
-    // Re-throw to trigger quota exhaustion handling
-    throw error;
+    // Always provide a fallback response instead of throwing
+    const fallbackResponses = [
+      "I'm having trouble connecting right now. Please try again in a moment!",
+      "Sorry, I'm experiencing some technical difficulties. Sign up for a more reliable experience!",
+      "Network connection issue detected. Consider upgrading for better service reliability.",
+      "I'm temporarily offline. Create an account to access premium AI features!"
+    ];
+
+    const fallbackResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+
+    return {
+      reply: fallbackResponse + " (Demo Mode - Sign up for full AI capabilities)"
+    };
   }
 }
