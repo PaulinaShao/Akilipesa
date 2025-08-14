@@ -38,6 +38,9 @@ export default function CameraCaptPage() {
         throw new Error('Camera not supported on this device');
       }
 
+      // Clear any previous errors
+      setCameraError(null);
+
       let mediaStream: MediaStream;
 
       // Try different camera configurations with progressive fallback
