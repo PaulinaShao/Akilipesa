@@ -7,7 +7,7 @@ import { Builder } from '@builder.io/sdk-react'
 
 // Example: Register a custom button component
 // import { Button } from '@/components/ui/Button'
-// register(Button, {
+// Builder.registerComponent(Button, {
 //   name: 'Button',
 //   inputs: [
 //     { name: 'text', type: 'string', defaultValue: 'Click me' },
@@ -18,7 +18,7 @@ import { Builder } from '@builder.io/sdk-react'
 
 // Register card components for content
 // import { Card } from '@/components/Card'
-// register(Card, {
+// Builder.registerComponent(Card, {
 //   name: 'Card',
 //   inputs: [
 //     { name: 'title', type: 'string' },
