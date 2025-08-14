@@ -166,6 +166,7 @@ export default function CameraCaptPage() {
 
       setStream(mediaStream);
       setIsStreaming(true);
+      setCameraRetries(0); // Reset retry counter on success
 
     } catch (error: any) {
       console.error('Error accessing camera:', error);
