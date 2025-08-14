@@ -787,6 +787,19 @@ export default function ReelsPage() {
           }}
         />
       )}
+
+      {/* More Options Modal */}
+      <MoreOptions
+        isOpen={showMoreOptions}
+        onClose={() => setShowMoreOptions(false)}
+        contentId={moreOptionsContentId}
+        contentCreator={moreOptionsCreator}
+        contentType="reel"
+        onReport={() => console.log('Reported content')}
+        onBlock={() => console.log('Blocked user')}
+        onSave={() => console.log('Saved content')}
+        onDownload={() => console.log('Downloaded content')}
+      />
     </div>
   );
 }
