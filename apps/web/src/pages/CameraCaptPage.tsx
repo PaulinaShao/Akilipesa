@@ -528,7 +528,7 @@ export default function CameraCaptPage() {
                           Upload {mode === 'video' ? 'Video' : 'Photo'} Instead
                         </button>
                         {/* Browser settings help */}
-                        <div className="pt-2">
+                        <div className="pt-2 space-y-2">
                           <details className="text-xs text-white/60">
                             <summary className="cursor-pointer hover:text-white/80">
                               Need help with camera permissions?
@@ -538,8 +538,21 @@ export default function CameraCaptPage() {
                               <p>• Click "Allow" when browser asks for permission</p>
                               <p>• Check browser settings → Privacy → Camera</p>
                               <p>• Make sure no other app is using the camera</p>
+                              <p>• Try refreshing the page</p>
+                              <p>• Check if camera is connected (for external cameras)</p>
                             </div>
                           </details>
+
+                          {debugInfo && (
+                            <details className="text-xs text-white/60">
+                              <summary className="cursor-pointer hover:text-white/80">
+                                Technical Details (for debugging)
+                              </summary>
+                              <div className="mt-2 p-2 bg-black/40 rounded text-left font-mono text-xs max-h-32 overflow-y-auto">
+                                <pre className="whitespace-pre-wrap">{debugInfo}</pre>
+                              </div>
+                            </details>
+                          )}
                         </div>
                       </div>
                     </>
