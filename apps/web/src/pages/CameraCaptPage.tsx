@@ -614,12 +614,20 @@ export default function CameraCaptPage() {
                               Try Camera Again
                             </button>
                             {cameraRetries > 0 && (
-                              <button
-                                onClick={clearCacheAndRetry}
-                                className="w-full bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-xl transition-colors"
-                              >
-                                Reset Camera
-                              </button>
+                              <>
+                                <button
+                                  onClick={clearCacheAndRetry}
+                                  className="w-full bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-xl transition-colors"
+                                >
+                                  Reset Camera
+                                </button>
+                                <button
+                                  onClick={forceRefreshDevices}
+                                  className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl transition-colors"
+                                >
+                                  Force Refresh Devices
+                                </button>
+                              </>
                             )}
                           </>
                         )}
