@@ -724,6 +724,7 @@ export default function ReelsPage() {
               onJoin={() => handleJoin(reel.id)}
               onFollow={() => handleFollow(reel.user.id)}
               onProfileClick={() => handleProfileClick(reel.user.id)}
+              onMore={() => handleMore(reel.id)}
             />
           </div>
         ))}
