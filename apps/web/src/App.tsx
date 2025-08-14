@@ -270,16 +270,7 @@ function App() {
             </MobileLayout>
           } />
 
-          <Route path="/live/:channelId" element={
-            <MobileLayout>
-              <div className="h-screen-safe flex-center">
-                <div className="text-center">
-                  <h1 className="heading-2 mb-4">Live Session</h1>
-                  <p className="text-white/60">Join the live session</p>
-                </div>
-              </div>
-            </MobileLayout>
-          } />
+          <Route path="/live/:channelId" element={<LivePage />} />
 
           <Route path="/wallet" element={
             <MobileLayout>
