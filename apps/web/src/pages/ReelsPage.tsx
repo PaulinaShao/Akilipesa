@@ -437,14 +437,21 @@ function ReelCard({
 }
 
 export default function ReelsPage() {
-  const [reels] = useState<ReelData[]>(mockReels);
+  const [reels, setReels] = useState<ReelData[]>(mockReels);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
-  const [showGuestGate, setShowGuestGate] = useState(false);
-  const [showGuestCTA, setShowGuestCTA] = useState(false);
+
+  // Modal states
+  const [showAuthUpsell, setShowAuthUpsell] = useState(false);
+  const [authUpsellTrigger, setAuthUpsellTrigger] = useState<'like' | 'comment' | 'follow' | 'call' | 'shop' | 'create' | 'general'>('general');
+  const [showShareSheet, setShowShareSheet] = useState(false);
+  const [shareContent, setShareContent] = useState<any>(null);
+  const [showCommentDrawer, setShowCommentDrawer] = useState(false);
+  const [commentContentId, setCommentContentId] = useState('');
+
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const { setStoriesVisible, setBalanceBannerVisible, startCall } = useAppStore();
+  const { setStoriesVisible, setBalanceBannerVisible } = useAppStore();
 
   // Auth gate hooks removed - using requireAuthOrGate pattern
 
