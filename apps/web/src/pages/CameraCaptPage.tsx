@@ -75,26 +75,78 @@ export default function CameraCaptPage() {
       // Clear any previous errors
       setCameraError(null);
 
-      // First, enumerate available devices to check if cameras exist
+      // Enhanced device enumeration with better error handling
       let devices: MediaDeviceInfo[] = [];
+      let videoDevices: MediaDeviceInfo[] = [];
+      let hasDeviceAccess = false;
+
       try {
+        // First attempt - get devices without requesting permission
         devices = await navigator.mediaDevices.enumerateDevices();
-        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+        videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+        // Check if we have device labels (means we have permission)
+        hasDeviceAccess = videoDevices.some(device => device.label !== '');
+
+        console.log(`Initial enumeration found ${videoDevices.length} video devices`);
+        console.log('Device access granted:', hasDeviceAccess);
+        console.log('Video devices:', videoDevices.map(d => ({ id: d.deviceId, label: d.label || 'Unknown' })));
+
+        if (videoDevices.length === 0) {
+          // Try requesting permission first, then enumerate again
+          console.log('No devices found in initial enumeration, requesting permission...');
+          try {
+            const tempStream = await navigator.mediaDevices.getUserMedia({ video: true });
+            tempStream.getTracks().forEach(track => track.stop());
+
+            // Re-enumerate after getting permission
+            devices = await navigator.mediaDevices.enumerateDevices();
+            videoDevices = devices.filter(device => device.kind === 'videoinput');
+            hasDeviceAccess = true;
+
+            console.log(`After permission, found ${videoDevices.length} video devices`);
+          } catch (permError) {
+            console.warn('Permission request failed:', permError);
+            throw new Error('No camera devices found and permission denied');
+          }
+        }
 
         if (videoDevices.length === 0) {
           throw new Error('No camera devices found on this device');
         }
-
-        console.log(`Found ${videoDevices.length} camera device(s):`, videoDevices);
       } catch (enumError) {
-        console.warn('Could not enumerate devices:', enumError);
+        console.warn('Device enumeration failed:', enumError);
         // Continue anyway, sometimes enumeration fails but camera still works
+        hasDeviceAccess = false;
       }
 
       let mediaStream: MediaStream;
 
-      // Try different camera configurations with progressive fallback
-      const attempts = [
+      // Enhanced camera access attempts with device-specific handling
+      const attempts = [];
+
+      // If we have specific device IDs, try them first
+      if (hasDeviceAccess && videoDevices.length > 0) {
+        // Try each available device by ID (most reliable)
+        for (const device of videoDevices) {
+          if (device.deviceId && device.deviceId !== 'default') {
+            attempts.push({
+              name: `Specific device: ${device.label || device.deviceId.substring(0, 8)}`,
+              constraints: {
+                video: {
+                  deviceId: { exact: device.deviceId },
+                  width: { ideal: 1280 },
+                  height: { ideal: 720 }
+                },
+                audio: mode === 'video'
+              }
+            });
+          }
+        }
+      }
+
+      // Standard fallback attempts
+      attempts.push(
         {
           name: 'Front camera with audio',
           constraints: {
@@ -114,26 +166,26 @@ export default function CameraCaptPage() {
           }
         },
         {
-          name: 'Any camera without audio',
+          name: 'Rear camera',
+          constraints: {
+            video: { facingMode: 'environment' },
+            audio: false
+          }
+        },
+        {
+          name: 'Any available camera',
           constraints: {
             video: true,
             audio: false
           }
         },
         {
-          name: 'Basic video constraints',
+          name: 'Basic video only',
           constraints: {
             video: {}
           }
-        },
-        {
-          name: 'Rear camera fallback',
-          constraints: {
-            video: { facingMode: 'environment' },
-            audio: false
-          }
         }
-      ];
+      );
 
       let lastError: any = null;
 
@@ -196,12 +248,14 @@ export default function CameraCaptPage() {
           errorMessage = 'Camera access blocked by security policy. Please check your browser settings.';
           break;
         default:
-          if (error.message?.includes('device not found')) {
-            errorMessage = 'Camera device not found. This might be a temporary issue - please try again or use file upload.';
+          if (error.message?.includes('device not found') || error.message?.includes('Requested device not found')) {
+            errorMessage = 'Camera device not found. This usually happens when the camera is disconnected or being used by another app. Please check your camera connection and try again.';
           } else if (error.message?.includes('not supported')) {
             errorMessage = 'Camera not supported on this device. You can upload media files instead.';
+          } else if (error.message?.includes('Could not start')) {
+            errorMessage = 'Failed to start camera. Please check if your camera is working and not being used by another application.';
           } else {
-            errorMessage = 'Unable to access camera. Please try uploading a file instead.';
+            errorMessage = `Camera error: ${error.message || 'Unknown error'}. Please try uploading a file instead.`;
           }
       }
 
