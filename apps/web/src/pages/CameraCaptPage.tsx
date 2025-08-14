@@ -63,6 +63,15 @@ export default function CameraCaptPage() {
         throw new Error(reason || 'Camera not supported on this device');
       }
 
+      // Increment retry counter
+      setCameraRetries(prev => prev + 1);
+
+      // If too many retries, suggest file upload
+      if (cameraRetries >= 3) {
+        setCameraError('Camera access failed multiple times. Please try uploading a file instead.');
+        return;
+      }
+
       // Clear any previous errors
       setCameraError(null);
 
