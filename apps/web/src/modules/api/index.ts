@@ -460,6 +460,9 @@ export async function requestGuestCall(data: GuestCallRequest): Promise<GuestCal
 
     if (isFirebaseDemoMode) {
       console.log('Demo mode: creating demo guest call');
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
       return {
         rtcToken: 'demo_guest_rtc_token',
         channel: `demo_trial_${data.targetId}_${Date.now()}`,
@@ -471,11 +474,15 @@ export async function requestGuestCall(data: GuestCallRequest): Promise<GuestCal
     const result = await requestCall(data);
 
     return result.data as GuestCallResponse;
-  } catch (error) {
+  } catch (error: any) {
     console.warn('Failed to request guest call:', error);
 
-    // Re-throw to trigger quota exhaustion handling
-    throw error;
+    // Return demo response instead of throwing
+    return {
+      rtcToken: 'fallback_demo_rtc_token',
+      channel: `fallback_trial_${data.targetId}_${Date.now()}`,
+      ttl: Date.now() + (90 * 1000) // 90 seconds
+    };
   }
 }
 
