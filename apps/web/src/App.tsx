@@ -55,6 +55,7 @@ import UserNotAvailableScreen from '@/pages/UserNotAvailableScreen';
 import ProductDetailPage from '@/pages/ProductDetailPage';
 import CheckoutPage from '@/pages/CheckoutPage';
 import ShopPage from '@/pages/ShopPage';
+import JoinPage from '@/pages/JoinPage';
 
 // Admin Guard Component
 function AdminRoute({ children, user }: { children: React.ReactNode; user: User | null }) {
