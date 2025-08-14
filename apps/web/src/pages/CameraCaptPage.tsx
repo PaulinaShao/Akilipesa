@@ -166,8 +166,24 @@ export default function CameraCaptPage() {
     }
   }, [isRecording]);
 
+  const handleFileUpload = useCallback(() => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = mode === 'video' ? 'video/*' : 'image/*';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const url = URL.createObjectURL(file);
+        setCapturedMedia(url);
+        setCameraError(null); // Clear error when file is uploaded
+      }
+    };
+    input.click();
+  }, [mode]);
+
   const retake = useCallback(() => {
     setCapturedMedia(null);
+    setCameraError(null);
     startCamera();
   }, [startCamera]);
 
