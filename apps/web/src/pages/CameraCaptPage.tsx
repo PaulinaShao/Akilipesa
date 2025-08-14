@@ -253,7 +253,11 @@ export default function CameraCaptPage() {
           }
 
           // If specific device not found, continue to try other devices/methods
-          if (err.message?.includes('Requested device not found') || err.message?.includes('device not found')) {
+          if (err.message?.includes('Requested device not found') ||
+              err.message?.includes('device not found') ||
+              err.message?.includes('Could not start') ||
+              err.name === 'NotFoundError' ||
+              err.name === 'DevicesNotFoundError') {
             console.log(`Device not found for ${attempt.name}, trying next approach...`);
             continue;
           }
