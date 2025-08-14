@@ -172,16 +172,17 @@ export default function CameraCaptPage() {
       // Enhanced camera access attempts with device-specific handling
       const attempts = [];
 
-      // If we have specific device IDs, try them first
+      // If we have specific device IDs, try them first (but with ideal instead of exact)
       if (hasDeviceAccess && videoDevices.length > 0) {
-        // Try each available device by ID (most reliable)
+        // Try each available device by ID, but use 'ideal' instead of 'exact' to allow fallback
         for (const device of videoDevices) {
           if (device.deviceId && device.deviceId !== 'default') {
+            // Try with ideal deviceId first (allows fallback if device not available)
             attempts.push({
-              name: `Specific device: ${device.label || device.deviceId.substring(0, 8)}`,
+              name: `Preferred device: ${device.label || device.deviceId.substring(0, 8)}`,
               constraints: {
                 video: {
-                  deviceId: { exact: device.deviceId },
+                  deviceId: { ideal: device.deviceId },
                   width: { ideal: 1280 },
                   height: { ideal: 720 }
                 },
