@@ -102,6 +102,33 @@ export default function CameraCaptPage() {
     }
   }, []);
 
+  // Periodic device status check
+  useEffect(() => {
+    if (!isStreaming && !cameraError) return;
+
+    const checkDeviceStatus = async () => {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(d => d.kind === 'videoinput');
+
+        if (videoDevices.length === 0 && isStreaming) {
+          console.warn('Camera device disconnected during streaming');
+          setCameraError('Camera device was disconnected. Please reconnect your camera and try again.');
+          setIsStreaming(false);
+          if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            setStream(null);
+          }
+        }
+      } catch (error) {
+        console.warn('Device status check failed:', error);
+      }
+    };
+
+    const interval = setInterval(checkDeviceStatus, 5000); // Check every 5 seconds
+    return () => clearInterval(interval);
+  }, [isStreaming, cameraError, stream]);
+
   const startCamera = useCallback(async () => {
     try {
       // Check browser compatibility first
