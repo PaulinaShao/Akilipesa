@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Camera, Video, RotateCcw, X, Check, Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
