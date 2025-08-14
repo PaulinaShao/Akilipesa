@@ -11,27 +11,61 @@ import { callService } from '@/lib/callService';
 export default function CallPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const { activeCall, endCall, user } = useAppStore();
+  const { activeCall, endCall, user, startCall } = useAppStore();
 
   const callType = searchParams.get('type') as 'audio' | 'video' || 'audio';
   const targetId = searchParams.get('target');
+  const channel = useParams().channel;
 
   const [isPrivate, setIsPrivate] = useState(true);
   const [showLowCreditsWarning, setShowLowCreditsWarning] = useState(false);
-  
+  const [isInitializing, setIsInitializing] = useState(false);
+
   const [localAudioEnabled, setLocalAudioEnabled] = useState(true);
   const [localVideoEnabled, setLocalVideoEnabled] = useState(callType === 'video');
   const [cameraFacing, setCameraFacing] = useState<'user' | 'environment'>('user');
 
-  // Redirect if no active call
+  // Initialize call if no active call but we have channel info
   useEffect(() => {
-    if (!activeCall) {
-      navigate('/reels');
-      return;
-    }
-  }, [activeCall, navigate]);
+    const initializeCall = async () => {
+      if (!activeCall && channel) {
+        setIsInitializing(true);
+
+        try {
+          // Get call data from location state (passed from CallOptions)
+          const callData = location.state as any;
+
+          if (callData?.targetUser) {
+            // Initialize call state using the store
+            await startCall(callData.targetUser.id, callData.type || callType, callData.privacy || 'private');
+            setIsPrivate(callData.privacy === 'private');
+          } else if (targetId) {
+            // Fallback: create minimal call state from URL params
+            await startCall(targetId, callType, 'private');
+          } else {
+            // No call data available, redirect
+            console.warn('No call data available, redirecting to reels');
+            navigate('/reels');
+            return;
+          }
+        } catch (error) {
+          console.error('Failed to initialize call:', error);
+          navigate('/reels');
+          return;
+        } finally {
+          setIsInitializing(false);
+        }
+      } else if (!activeCall && !channel) {
+        // No active call and no channel, redirect
+        navigate('/reels');
+      }
+    };
+
+    initializeCall();
+  }, [activeCall, channel, targetId, callType, location.state, navigate, startCall]);
 
   // Monitor credits and show warning
   useEffect(() => {
