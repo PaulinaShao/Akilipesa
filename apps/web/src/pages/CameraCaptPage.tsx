@@ -329,9 +329,6 @@ export default function CameraCaptPage() {
         case 'NotAllowedError':
           errorMessage = 'Camera permission denied. Please allow camera access in your browser settings and try again.';
           break;
-        case 'NotFoundError':
-          errorMessage = 'No camera found on this device. You can still upload photos or videos from your gallery.';
-          break;
         case 'NotReadableError':
           errorMessage = 'Camera is currently being used by another application. Please close other apps using the camera and try again.';
           break;
@@ -348,7 +345,7 @@ export default function CameraCaptPage() {
           break;
         case 'DevicesNotFoundError':
         case 'NotFoundError':
-          errorMessage = 'No camera devices found. Please check if your camera is connected properly.';
+          errorMessage = 'Camera device not found. Please check if your camera is connected properly and not being used by another application.';
           break;
         default:
           if (error.message?.includes('device not found') || error.message?.includes('Requested device not found')) {
