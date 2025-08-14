@@ -10,6 +10,7 @@ import AuthUpsell from '@/components/Modals/AuthUpsell';
 import ShareSheet from '@/components/Modals/ShareSheet';
 import CommentDrawer from '@/components/Modals/CommentDrawer';
 import CallOptions from '@/components/Modals/CallOptions';
+import MoreOptions from '@/components/Modals/MoreOptions';
 import { toggleLike, toggleFollow, getContentForSharing, startCallFlow, canPerformAction } from '@/lib/api';
 
 interface ReelData {
