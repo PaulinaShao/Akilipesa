@@ -684,6 +684,15 @@ export default function ReelsPage() {
     navigate(`/profile/${userId}`);
   };
 
+  const handleMore = (reelId: string) => {
+    const reel = reels.find(r => r.id === reelId);
+    if (!reel) return;
+
+    setMoreOptionsContentId(reelId);
+    setMoreOptionsCreator(reel.user.username);
+    setShowMoreOptions(true);
+  };
+
   return (
     <div className="reel-container">
       {/* Stories Row */}
