@@ -467,9 +467,12 @@ export default function ReelsPage() {
     if (newIndex !== currentIndex && newIndex >= 0 && newIndex < reels.length) {
       setCurrentIndex(newIndex);
 
-      // Show guest CTA after viewing multiple reels
-      if (isGuest() && newIndex >= 2 && !showGuestCTA) {
-        setShowGuestCTA(true);
+      // Show auth upsell after viewing multiple reels (TikTok-style)
+      if (isGuest() && newIndex >= 3 && !showAuthUpsell) {
+        setTimeout(() => {
+          setAuthUpsellTrigger('general');
+          setShowAuthUpsell(true);
+        }, 1000); // Delay for smooth UX
       }
     }
 
