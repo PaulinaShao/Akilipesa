@@ -250,6 +250,7 @@ export default function CameraCaptPage() {
       );
 
       let lastError: any = null;
+      let deviceNotFoundCount = 0;
 
       for (const attempt of attempts) {
         try {
@@ -266,13 +267,30 @@ export default function CameraCaptPage() {
             throw err;
           }
 
-          // If specific device not found, continue to try other devices/methods
+          // Track device not found errors
           if (err.message?.includes('Requested device not found') ||
               err.message?.includes('device not found') ||
               err.message?.includes('Could not start') ||
               err.name === 'NotFoundError' ||
               err.name === 'DevicesNotFoundError') {
-            console.log(`Device not found for ${attempt.name}, trying next approach...`);
+            deviceNotFoundCount++;
+            console.log(`Device not found for ${attempt.name} (count: ${deviceNotFoundCount}), trying next approach...`);
+
+            // If we've had multiple device not found errors, try immediate generic fallback
+            if (deviceNotFoundCount >= 2) {
+              console.log('Multiple device not found errors, trying immediate generic fallback...');
+              try {
+                const fallbackStream = await navigator.mediaDevices.getUserMedia({
+                  video: true,
+                  audio: false
+                });
+                console.log('Generic fallback succeeded');
+                mediaStream = fallbackStream;
+                break;
+              } catch (fallbackErr) {
+                console.warn('Generic fallback also failed:', fallbackErr);
+              }
+            }
             continue;
           }
         }
