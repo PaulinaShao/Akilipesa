@@ -167,6 +167,7 @@ interface ReelCardProps {
   onJoin: () => void;
   onFollow: () => void;
   onProfileClick: () => void;
+  onMore: () => void;
 }
 
 function ReelCard({
