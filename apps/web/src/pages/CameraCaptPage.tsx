@@ -33,7 +33,7 @@ export default function CameraCaptPage() {
 
   const startCamera = useCallback(async () => {
     try {
-      // Check if camera is available
+      // Check if MediaDevices API is available
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         throw new Error('Camera not supported on this device');
       }
@@ -41,43 +41,88 @@ export default function CameraCaptPage() {
       // Clear any previous errors
       setCameraError(null);
 
+      // First, enumerate available devices to check if cameras exist
+      let devices: MediaDeviceInfo[] = [];
+      try {
+        devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+        if (videoDevices.length === 0) {
+          throw new Error('No camera devices found on this device');
+        }
+
+        console.log(`Found ${videoDevices.length} camera device(s):`, videoDevices);
+      } catch (enumError) {
+        console.warn('Could not enumerate devices:', enumError);
+        // Continue anyway, sometimes enumeration fails but camera still works
+      }
+
       let mediaStream: MediaStream;
 
       // Try different camera configurations with progressive fallback
-      try {
-        // First try: preferred front camera with audio if video mode
-        mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: 'user',
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
-          },
-          audio: mode === 'video'
-        });
-      } catch (err) {
-        console.warn('Front camera with audio failed, trying without audio:', err);
-        try {
-          // Second try: front camera without audio
-          mediaStream = await navigator.mediaDevices.getUserMedia({
+      const attempts = [
+        {
+          name: 'Front camera with audio',
+          constraints: {
+            video: {
+              facingMode: 'user',
+              width: { ideal: 1280 },
+              height: { ideal: 720 }
+            },
+            audio: mode === 'video'
+          }
+        },
+        {
+          name: 'Front camera without audio',
+          constraints: {
             video: { facingMode: 'user' },
             audio: false
-          });
-        } catch (err2) {
-          console.warn('Front camera failed, trying any camera:', err2);
-          try {
-            // Third try: any available camera
-            mediaStream = await navigator.mediaDevices.getUserMedia({
-              video: true,
-              audio: false
-            });
-          } catch (err3) {
-            console.warn('All camera attempts failed, trying basic video:', err3);
-            // Fourth try: most basic video constraint
-            mediaStream = await navigator.mediaDevices.getUserMedia({
-              video: {}
-            });
+          }
+        },
+        {
+          name: 'Any camera without audio',
+          constraints: {
+            video: true,
+            audio: false
+          }
+        },
+        {
+          name: 'Basic video constraints',
+          constraints: {
+            video: {}
+          }
+        },
+        {
+          name: 'Rear camera fallback',
+          constraints: {
+            video: { facingMode: 'environment' },
+            audio: false
           }
         }
+      ];
+
+      let lastError: any = null;
+
+      for (const attempt of attempts) {
+        try {
+          console.log(`Trying: ${attempt.name}`);
+          mediaStream = await navigator.mediaDevices.getUserMedia(attempt.constraints);
+          console.log(`Success with: ${attempt.name}`);
+          break;
+        } catch (err: any) {
+          console.warn(`${attempt.name} failed:`, err);
+          lastError = err;
+
+          // If permission was denied, don't try other methods
+          if (err.name === 'NotAllowedError') {
+            throw err;
+          }
+        }
+      }
+
+      // If we get here without a stream, all attempts failed
+      if (!mediaStream!) {
+        throw lastError || new Error('All camera access attempts failed');
       }
 
       if (videoRef.current) {
