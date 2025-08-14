@@ -40,11 +40,17 @@ export default function CallPage() {
 
           if (callData?.targetUser) {
             // Initialize call state using the store
-            await startCall(callData.targetUser.id, callData.type || callType, callData.privacy || 'private');
+            await startCall({
+              type: callData.type || callType,
+              targetId: callData.targetUser.id
+            });
             setIsPrivate(callData.privacy === 'private');
           } else if (targetId) {
             // Fallback: create minimal call state from URL params
-            await startCall(targetId, callType, 'private');
+            await startCall({
+              type: callType,
+              targetId: targetId
+            });
           } else {
             // No call data available, redirect
             console.warn('No call data available, redirecting to reels');
