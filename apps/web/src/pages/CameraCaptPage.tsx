@@ -314,15 +314,21 @@ export default function CameraCaptPage() {
         case 'SecurityError':
           errorMessage = 'Camera access blocked by security policy. Please check your browser settings.';
           break;
+        case 'DevicesNotFoundError':
+        case 'NotFoundError':
+          errorMessage = 'No camera devices found. Please check if your camera is connected properly.';
+          break;
         default:
           if (error.message?.includes('device not found') || error.message?.includes('Requested device not found')) {
-            errorMessage = 'Camera device not found. This usually happens when the camera is disconnected or being used by another app. Please check your camera connection and try again.';
+            errorMessage = 'Camera device not found. This usually happens when:\n• Camera is disconnected\n• Camera is being used by another app\n• Device drivers need updating\n\nTry using "Force Refresh Devices" or reconnect your camera.';
           } else if (error.message?.includes('not supported')) {
             errorMessage = 'Camera not supported on this device. You can upload media files instead.';
           } else if (error.message?.includes('Could not start')) {
             errorMessage = 'Failed to start camera. Please check if your camera is working and not being used by another application.';
+          } else if (error.message?.includes('Permission denied')) {
+            errorMessage = 'Camera access was denied. Please allow camera access in your browser settings.';
           } else {
-            errorMessage = `Camera error: ${error.message || 'Unknown error'}. Please try uploading a file instead.`;
+            errorMessage = `Camera error: ${error.message || 'Unknown error'}. Please try the "Force Refresh Devices" button or upload a file instead.`;
           }
       }
 
