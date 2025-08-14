@@ -37,7 +37,7 @@ export default function CameraCaptPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  
+
   const [mode, setMode] = useState<CaptureMode>('photo');
   const [isStreaming, setIsStreaming] = useState(false);
   const [capturedMedia, setCapturedMedia] = useState<string | null>(null);
@@ -45,6 +45,15 @@ export default function CameraCaptPage() {
   const [recordingTime, setRecordingTime] = useState(0);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [cameraError, setCameraError] = useState<string | null>(null);
+  const [cameraRetries, setCameraRetries] = useState(0);
+
+  // Check if camera is supported on mount
+  useEffect(() => {
+    const { supported, reason } = checkCameraSupport();
+    if (!supported) {
+      setCameraError(reason || 'Camera not available on this device');
+    }
+  }, []);
 
   const startCamera = useCallback(async () => {
     try {
