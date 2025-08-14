@@ -48,9 +48,10 @@ export default function CameraCaptPage() {
 
   const startCamera = useCallback(async () => {
     try {
-      // Check if MediaDevices API is available
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        throw new Error('Camera not supported on this device');
+      // Check browser compatibility first
+      const { supported, reason } = checkCameraSupport();
+      if (!supported) {
+        throw new Error(reason || 'Camera not supported on this device');
       }
 
       // Clear any previous errors
