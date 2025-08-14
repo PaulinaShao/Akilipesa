@@ -92,6 +92,7 @@ export default function CameraCaptPage() {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [cameraRetries, setCameraRetries] = useState(0);
+  const [debugInfo, setDebugInfo] = useState<string>('');
 
   // Check if camera is supported on mount
   useEffect(() => {
