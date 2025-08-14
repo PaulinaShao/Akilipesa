@@ -283,6 +283,10 @@ function App() {
             </MobileLayout>
           } />
 
+          <Route path="/add-funds" element={<AddFundsPage />} />
+          <Route path="/withdraw" element={<WithdrawPage />} />
+          <Route path="/upgrade-plan" element={<UpgradePlanPage />} />
+
           <Route path="/settings" element={
             <MobileLayout>
               <SettingsPage />
