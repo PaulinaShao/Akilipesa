@@ -90,6 +90,29 @@ export default function CallPage() {
     };
   }, []);
 
+  // Show loading state while initializing
+  if (isInitializing || (!activeCall && channel)) {
+    return (
+      <div className="h-screen-safe bg-gradient-to-b from-bg-primary to-bg-secondary flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-32 h-32 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+            {callType === 'video' ? (
+              <Video className="w-16 h-16 text-white" />
+            ) : (
+              <Mic className="w-16 h-16 text-white" />
+            )}
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-2">
+            Initializing Call...
+          </h2>
+          <p className="text-white/60 mb-8">
+            Setting up your {callType} call
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   if (!activeCall) {
     return null; // Will redirect due to useEffect above
   }
