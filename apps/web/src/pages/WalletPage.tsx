@@ -75,6 +75,76 @@ const mockTransactions: Transaction[] = [
     status: 'pending',
     reference: 'WIT-009876',
   },
+  {
+    id: '4',
+    type: 'purchase',
+    amount: -15000,
+    description: 'Standard Plan Upgrade',
+    date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+    status: 'completed',
+    reference: 'PUR-123456',
+  },
+  {
+    id: '5',
+    type: 'commission',
+    amount: 8750,
+    description: 'Referral bonus - User registration',
+    date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+    status: 'completed',
+    reference: 'REF-654321',
+  },
+];
+
+interface Receipt {
+  id: string;
+  transactionId: string;
+  amount: number;
+  tax: number;
+  total: number;
+  description: string;
+  date: Date;
+  paymentMethod: string;
+  reference: string;
+  status: 'completed' | 'pending' | 'failed';
+}
+
+const mockReceipts: Receipt[] = [
+  {
+    id: 'REC-001',
+    transactionId: 'DEP-005678',
+    amount: 50000,
+    tax: 9000,
+    total: 59000,
+    description: 'Wallet Top-up via M-Pesa',
+    date: new Date(Date.now() - 24 * 60 * 60 * 1000),
+    paymentMethod: 'M-Pesa (+255 123 456 789)',
+    reference: 'DEP-005678',
+    status: 'completed',
+  },
+  {
+    id: 'REC-002',
+    transactionId: 'PUR-123456',
+    amount: 15000,
+    tax: 2700,
+    total: 17700,
+    description: 'Standard Plan Purchase - Monthly',
+    date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+    paymentMethod: 'Wallet Balance',
+    reference: 'PUR-123456',
+    status: 'completed',
+  },
+  {
+    id: 'REC-003',
+    transactionId: 'WIT-009876',
+    amount: 25000,
+    tax: 0,
+    total: 25000,
+    description: 'Withdrawal to CRDB Bank',
+    date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+    paymentMethod: 'Bank Transfer',
+    reference: 'WIT-009876',
+    status: 'pending',
+  },
 ];
 
 export default function WalletPage() {
@@ -147,13 +217,12 @@ export default function WalletPage() {
     }
   };
 
-  const handleAddFunds = (amount: number) => {
-    // Navigate to payment method selection
-    navigate(`/wallet/add-funds?amount=${amount}`);
+  const handleAddFunds = (amount?: number) => {
+    navigate('/add-funds');
   };
 
   const handleWithdraw = () => {
-    navigate('/wallet/withdraw');
+    navigate('/withdraw');
   };
 
   const tabs = [
