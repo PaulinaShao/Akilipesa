@@ -5,6 +5,21 @@ import { cn } from '@/lib/utils';
 
 type CaptureMode = 'photo' | 'video';
 
+// Check browser compatibility and camera availability
+const checkCameraSupport = (): { supported: boolean; reason?: string } => {
+  // Check if running in secure context (HTTPS or localhost)
+  if (!window.isSecureContext && location.hostname !== 'localhost') {
+    return { supported: false, reason: 'Camera requires HTTPS or localhost' };
+  }
+
+  // Check MediaDevices API support
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    return { supported: false, reason: 'Browser does not support camera access' };
+  }
+
+  return { supported: true };
+};
+
 // Check camera permissions
 const checkCameraPermissions = async (): Promise<boolean> => {
   try {
