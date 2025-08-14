@@ -463,6 +463,57 @@ export default function CameraCaptPage() {
     }
   }, [stream, startCamera]);
 
+  const forceRefreshDevices = useCallback(async () => {
+    try {
+      setCameraError(null);
+      setDebugInfo('');
+      setCameraRetries(0);
+
+      // Stop any existing streams
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        setStream(null);
+        setIsStreaming(false);
+      }
+
+      // Clear video source
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+
+      console.log('Force refreshing camera devices...');
+
+      // Request permission to refresh device list
+      try {
+        const tempStream = await navigator.mediaDevices.getUserMedia({
+          video: { width: 1, height: 1 } // Minimal request to refresh devices
+        });
+        tempStream.getTracks().forEach(track => track.stop());
+
+        // Wait for device list to refresh
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Re-enumerate devices
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(d => d.kind === 'videoinput');
+
+        console.log('Refreshed device list:', videoDevices.map(d => ({
+          id: d.deviceId,
+          label: d.label || 'Unknown'
+        })));
+
+        // Now try to start camera with fresh device list
+        startCamera();
+      } catch (refreshError) {
+        console.error('Failed to refresh devices:', refreshError);
+        setCameraError('Failed to refresh camera devices. Please check if your camera is connected and not being used by another application.');
+      }
+    } catch (error) {
+      console.error('Force refresh failed:', error);
+      setCameraError('Failed to refresh devices. Please refresh the page and try again.');
+    }
+  }, [stream, startCamera]);
+
   const retake = useCallback(() => {
     setCapturedMedia(null);
     setCameraError(null);
