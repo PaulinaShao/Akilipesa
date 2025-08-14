@@ -735,15 +735,34 @@ export default function ReelsPage() {
         </div>
       </div>
 
-      {/* Guest Gate Modal */}
-      {showGuestGate && (
-        <GuestGate onClose={() => setShowGuestGate(false)} />
+      {/* Auth Upsell Modal */}
+      <AuthUpsell
+        isOpen={showAuthUpsell}
+        onClose={() => setShowAuthUpsell(false)}
+        trigger={authUpsellTrigger}
+      />
+
+      {/* Share Sheet */}
+      {shareContent && (
+        <ShareSheet
+          isOpen={showShareSheet}
+          onClose={() => setShowShareSheet(false)}
+          content={shareContent}
+        />
       )}
 
-      {/* Sticky Guest CTA */}
-      {showGuestCTA && isGuest() && (
-        <StickyGuestCTA onDismiss={() => setShowGuestCTA(false)} />
-      )}
+      {/* Comment Drawer */}
+      <CommentDrawer
+        isOpen={showCommentDrawer}
+        onClose={() => setShowCommentDrawer(false)}
+        contentId={commentContentId}
+        contentCreator={reels.find(r => r.id === commentContentId)?.user.displayName || ''}
+        onAuthRequired={() => {
+          setShowCommentDrawer(false);
+          setAuthUpsellTrigger('comment');
+          setShowAuthUpsell(true);
+        }}
+      />
     </div>
   );
 }
