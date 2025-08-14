@@ -161,6 +161,20 @@ export default function CameraCaptPage() {
         if (videoDevices.length === 0) {
           throw new Error('No camera devices found on this device');
         }
+
+        // Validate that devices actually have device IDs
+        const validDevices = videoDevices.filter(device =>
+          device.deviceId &&
+          device.deviceId !== '' &&
+          device.deviceId !== 'default'
+        );
+
+        console.log(`Found ${validDevices.length} valid devices out of ${videoDevices.length} total`);
+
+        // If no valid device IDs, we'll rely on generic constraints
+        if (validDevices.length === 0 && hasDeviceAccess) {
+          console.warn('No devices with valid IDs found, will use generic constraints');
+        }
       } catch (enumError) {
         console.warn('Device enumeration failed:', enumError);
         // Continue anyway, sometimes enumeration fails but camera still works
