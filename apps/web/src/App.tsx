@@ -52,7 +52,6 @@ import EditorPage from '@/pages/EditorPage';
 import LivePage from '@/pages/LivePage';
 import CallEndScreen from '@/pages/CallEndScreen';
 import UserNotAvailableScreen from '@/pages/UserNotAvailableScreen';
-import ProductDetailPage from '@/pages/ProductDetailPage';
 import CheckoutPage from '@/pages/CheckoutPage';
 import ShopPage from '@/pages/ShopPage';
 import JoinPage from '@/pages/JoinPage';
