@@ -361,18 +361,41 @@ export default function CameraCaptPage() {
                       <p className="text-red-400 mb-2 text-sm font-medium">Camera Error</p>
                       <p className="text-white/80 mb-6 text-sm leading-relaxed">{cameraError}</p>
                       <div className="space-y-3">
-                        <button
-                          onClick={startCamera}
-                          className="w-full bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl transition-colors"
-                        >
-                          Try Camera Again
-                        </button>
+                        {cameraError.includes('permission') || cameraError.includes('denied') ? (
+                          <button
+                            onClick={requestCameraPermission}
+                            className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl transition-colors"
+                          >
+                            Allow Camera Access
+                          </button>
+                        ) : (
+                          <button
+                            onClick={startCamera}
+                            className="w-full bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl transition-colors"
+                          >
+                            Try Camera Again
+                          </button>
+                        )}
                         <button
                           onClick={handleFileUpload}
                           className="w-full bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-xl transition-colors"
                         >
-                          Upload {mode === 'video' ? 'Video' : 'Photo'}
+                          Upload {mode === 'video' ? 'Video' : 'Photo'} Instead
                         </button>
+                        {/* Browser settings help */}
+                        <div className="pt-2">
+                          <details className="text-xs text-white/60">
+                            <summary className="cursor-pointer hover:text-white/80">
+                              Need help with camera permissions?
+                            </summary>
+                            <div className="mt-2 space-y-1 text-left">
+                              <p>• Look for camera icon in address bar</p>
+                              <p>• Click "Allow" when browser asks for permission</p>
+                              <p>• Check browser settings → Privacy → Camera</p>
+                              <p>• Make sure no other app is using the camera</p>
+                            </div>
+                          </details>
+                        </div>
                       </div>
                     </>
                   ) : (
