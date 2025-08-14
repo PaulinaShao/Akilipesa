@@ -7,8 +7,9 @@ import { builder } from '@builder.io/react'
 
 // Example: Register a custom button component
 // import { Button } from '@/components/ui/Button'
-// Builder.registerComponent(Button, {
+// builder.register('component', {
 //   name: 'Button',
+//   component: Button,
 //   inputs: [
 //     { name: 'text', type: 'string', defaultValue: 'Click me' },
 //     { name: 'variant', type: 'string', enum: ['primary', 'secondary', 'outline'] },
@@ -18,8 +19,9 @@ import { builder } from '@builder.io/react'
 
 // Register card components for content
 // import { Card } from '@/components/Card'
-// Builder.registerComponent(Card, {
+// builder.register('component', {
 //   name: 'Card',
+//   component: Card,
 //   inputs: [
 //     { name: 'title', type: 'string' },
 //     { name: 'content', type: 'string' },
