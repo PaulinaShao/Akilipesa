@@ -318,6 +318,12 @@ function App() {
 
           <Route path="/call/:channel" element={<CallPage />} />
           <Route path="/call/new" element={<CallPage />} />
+          <Route path="/call/end" element={<CallEndScreen />} />
+          <Route path="/call/unavailable" element={<UserNotAvailableScreen />} />
+
+          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/product/:id" element={<ProductDetailPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
 
           {/* Creation workflow routes */}
           <Route path="/create/camera" element={<CameraCaptPage />} />
