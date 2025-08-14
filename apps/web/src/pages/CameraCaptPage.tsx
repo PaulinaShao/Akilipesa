@@ -676,15 +676,38 @@ export default function CameraCaptPage() {
                         <div className="pt-2 space-y-2">
                           <details className="text-xs text-white/60">
                             <summary className="cursor-pointer hover:text-white/80">
-                              Need help with camera permissions?
+                              Camera Troubleshooting Guide
                             </summary>
-                            <div className="mt-2 space-y-1 text-left">
-                              <p>• Look for camera icon in address bar</p>
-                              <p>• Click "Allow" when browser asks for permission</p>
-                              <p>• Check browser settings → Privacy → Camera</p>
-                              <p>• Make sure no other app is using the camera</p>
-                              <p>• Try refreshing the page</p>
-                              <p>• Check if camera is connected (for external cameras)</p>
+                            <div className="mt-2 space-y-2 text-left">
+                              <div>
+                                <p className="font-semibold text-white/80 mb-1">Browser Permissions:</p>
+                                <p>• Look for camera icon in address bar</p>
+                                <p>• Click "Allow" when browser asks for permission</p>
+                                <p>• Check browser settings → Privacy → Camera</p>
+                              </div>
+
+                              <div>
+                                <p className="font-semibold text-white/80 mb-1">Device Issues:</p>
+                                <p>• Make sure no other app is using the camera</p>
+                                <p>• Check if camera is connected (for external cameras)</p>
+                                <p>• Try unplugging and reconnecting external cameras</p>
+                                <p>• Update camera drivers (Windows) or restart (Mac)</p>
+                              </div>
+
+                              <div>
+                                <p className="font-semibold text-white/80 mb-1">Browser Issues:</p>
+                                <p>• Try refreshing the page</p>
+                                <p>• Clear browser cache and cookies</p>
+                                <p>• Try a different browser (Chrome, Firefox, Safari)</p>
+                                <p>• Make sure you're on HTTPS (secure connection)</p>
+                              </div>
+
+                              <div>
+                                <p className="font-semibold text-white/80 mb-1">If nothing works:</p>
+                                <p>• Use "Force Refresh Devices" button</p>
+                                <p>• Restart your computer</p>
+                                <p>• Upload a photo/video file instead</p>
+                              </div>
                             </div>
                           </details>
 
