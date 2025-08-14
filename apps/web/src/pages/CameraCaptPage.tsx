@@ -136,16 +136,38 @@ export default function CameraCaptPage() {
     } catch (error: any) {
       console.error('Error accessing camera:', error);
 
-      // Set user-friendly error message
+      // Set user-friendly error message based on error type
       let errorMessage = 'Camera access failed. ';
-      if (error.name === 'NotAllowedError') {
-        errorMessage += 'Please allow camera permissions and try again.';
-      } else if (error.name === 'NotFoundError') {
-        errorMessage += 'No camera found on this device.';
-      } else if (error.name === 'NotReadableError') {
-        errorMessage += 'Camera is being used by another application.';
-      } else {
-        errorMessage += 'Please use file upload instead.';
+
+      switch (error.name) {
+        case 'NotAllowedError':
+          errorMessage = 'Camera permission denied. Please allow camera access in your browser settings and try again.';
+          break;
+        case 'NotFoundError':
+          errorMessage = 'No camera found on this device. You can still upload photos or videos from your gallery.';
+          break;
+        case 'NotReadableError':
+          errorMessage = 'Camera is currently being used by another application. Please close other apps using the camera and try again.';
+          break;
+        case 'OverconstrainedError':
+          errorMessage = 'Camera configuration not supported. Trying basic mode...';
+          // Try one more time with most basic constraints
+          setTimeout(() => startCamera(), 1000);
+          return;
+        case 'AbortError':
+          errorMessage = 'Camera access was interrupted. Please try again.';
+          break;
+        case 'SecurityError':
+          errorMessage = 'Camera access blocked by security policy. Please check your browser settings.';
+          break;
+        default:
+          if (error.message?.includes('device not found')) {
+            errorMessage = 'Camera device not found. This might be a temporary issue - please try again or use file upload.';
+          } else if (error.message?.includes('not supported')) {
+            errorMessage = 'Camera not supported on this device. You can upload media files instead.';
+          } else {
+            errorMessage = 'Unable to access camera. Please try uploading a file instead.';
+          }
       }
 
       setCameraError(errorMessage);
