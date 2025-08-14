@@ -258,15 +258,47 @@ export default function CameraCaptPage() {
             
             {!isStreaming && (
               <div className="absolute inset-0 flex items-center justify-center bg-black">
-                <div className="text-center">
-                  <Camera className="w-16 h-16 text-white/60 mx-auto mb-4" />
-                  <p className="text-white/80 mb-6">Tap to start camera</p>
-                  <button
-                    onClick={startCamera}
-                    className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl"
-                  >
-                    Start Camera
-                  </button>
+                <div className="text-center max-w-sm mx-auto px-4">
+                  {cameraError ? (
+                    <>
+                      <Camera className="w-16 h-16 text-red-400/60 mx-auto mb-4" />
+                      <p className="text-red-400 mb-2 text-sm font-medium">Camera Error</p>
+                      <p className="text-white/80 mb-6 text-sm leading-relaxed">{cameraError}</p>
+                      <div className="space-y-3">
+                        <button
+                          onClick={startCamera}
+                          className="w-full bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl transition-colors"
+                        >
+                          Try Camera Again
+                        </button>
+                        <button
+                          onClick={handleFileUpload}
+                          className="w-full bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-xl transition-colors"
+                        >
+                          Upload {mode === 'video' ? 'Video' : 'Photo'}
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <Camera className="w-16 h-16 text-white/60 mx-auto mb-4" />
+                      <p className="text-white/80 mb-6">Tap to start camera</p>
+                      <div className="space-y-3">
+                        <button
+                          onClick={startCamera}
+                          className="w-full bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl transition-colors"
+                        >
+                          Start Camera
+                        </button>
+                        <button
+                          onClick={handleFileUpload}
+                          className="w-full bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-xl transition-colors"
+                        >
+                          Upload File Instead
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             )}
