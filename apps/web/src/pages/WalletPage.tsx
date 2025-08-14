@@ -259,8 +259,8 @@ export default function WalletPage() {
                 <EyeOff className="w-5 h-5 text-white" />
               )}
             </button>
-            <button 
-              onClick={() => navigate('/plans')}
+            <button
+              onClick={() => navigate('/upgrade-plan')}
               className="btn-gem text-sm px-4 py-2"
             >
               Upgrade Plan
@@ -451,12 +451,71 @@ export default function WalletPage() {
         )}
 
         {selectedTab === 'receipts' && (
-          <div className="text-center py-16">
-            <Receipt className="w-16 h-16 text-white/40 mx-auto mb-4" />
-            <h3 className="text-white font-semibold mb-2">No Receipts Yet</h3>
-            <p className="text-white/60 text-sm">
-              Your transaction receipts will appear here
-            </p>
+          <div className="space-y-3">
+            {mockReceipts.length > 0 ? (
+              mockReceipts.map((receipt) => (
+                <div key={receipt.id} className="card-gem p-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-blue-500/20 rounded-full flex-center">
+                        <Receipt className="w-5 h-5 text-blue-400" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-white">{receipt.description}</p>
+                        <p className="text-sm text-white/60">{formatDate(receipt.date)}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-white">
+                        {formatCurrency(receipt.total)}
+                      </p>
+                      <p className={cn('text-xs', getStatusColor(receipt.status))}>
+                        {receipt.status}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between text-white/60">
+                      <span>Amount:</span>
+                      <span>{formatCurrency(receipt.amount)}</span>
+                    </div>
+                    {receipt.tax > 0 && (
+                      <div className="flex justify-between text-white/60">
+                        <span>Tax (18%):</span>
+                        <span>{formatCurrency(receipt.tax)}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-white font-medium">
+                      <span>Total:</span>
+                      <span>{formatCurrency(receipt.total)}</span>
+                    </div>
+                    <div className="pt-2 border-t border-white/10">
+                      <div className="flex justify-between text-white/60">
+                        <span>Payment Method:</span>
+                        <span className="text-right">{receipt.paymentMethod}</span>
+                      </div>
+                      <div className="flex justify-between text-white/40 text-xs mt-1">
+                        <span>Reference:</span>
+                        <span>{receipt.reference}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button className="w-full mt-3 py-2 bg-blue-500/20 text-blue-400 rounded-lg text-sm hover:bg-blue-500/30 transition-colors">
+                    Download Receipt
+                  </button>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-16">
+                <Receipt className="w-16 h-16 text-white/40 mx-auto mb-4" />
+                <h3 className="text-white font-semibold mb-2">No Receipts Yet</h3>
+                <p className="text-white/60 text-sm">
+                  Your transaction receipts will appear here
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>
