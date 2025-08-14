@@ -263,6 +263,20 @@ export default function CameraCaptPage() {
     input.click();
   }, [mode]);
 
+  const requestCameraPermission = useCallback(async () => {
+    try {
+      // Request permission by trying to access camera briefly
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      // Immediately stop the stream since we just wanted permission
+      stream.getTracks().forEach(track => track.stop());
+      // Now try to start camera normally
+      startCamera();
+    } catch (error) {
+      console.error('Permission request failed:', error);
+      setCameraError('Camera permission was denied. Please enable camera access in your browser settings.');
+    }
+  }, [startCamera]);
+
   const retake = useCallback(() => {
     setCapturedMedia(null);
     setCameraError(null);
