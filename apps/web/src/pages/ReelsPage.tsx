@@ -572,42 +572,114 @@ export default function ReelsPage() {
     }
   };
 
-  const handleAudioCall = (userId: string) => {
-    requireAuth('start audio call', () => {
-      navigate(`/call/new?mode=audio&target=${userId}`);
-    });
+  const handleAudioCall = async (userId: string) => {
+    if (!canPerformAction('call')) {
+      setAuthUpsellTrigger('call');
+      setShowAuthUpsell(true);
+      return;
+    }
+
+    try {
+      const { channel } = await startCallFlow(userId, 'audio');
+      navigate(`/call/${channel}?mode=audio&target=${userId}`);
+    } catch (error) {
+      console.error('Failed to start audio call:', error);
+      // Show error or upsell based on error type
+      if (error.message.includes('limit')) {
+        setAuthUpsellTrigger('call');
+        setShowAuthUpsell(true);
+      }
+    }
   };
 
-  const handleVideoCall = (userId: string) => {
-    requireAuth('start video call', () => {
-      navigate(`/call/new?mode=video&target=${userId}`);
-    });
+  const handleVideoCall = async (userId: string) => {
+    if (!canPerformAction('call')) {
+      setAuthUpsellTrigger('call');
+      setShowAuthUpsell(true);
+      return;
+    }
+
+    try {
+      const { channel } = await startCallFlow(userId, 'video');
+      navigate(`/call/${channel}?mode=video&target=${userId}`);
+    } catch (error) {
+      console.error('Failed to start video call:', error);
+      // Show error or upsell based on error type
+      if (error.message.includes('limit')) {
+        setAuthUpsellTrigger('call');
+        setShowAuthUpsell(true);
+      }
+    }
   };
 
   const handleLiveCall = (reelId: string) => {
-    requireAuth('join live session', () => {
-      const reel = reels.find(r => r.id === reelId);
-      if (reel?.user.isLive) {
-        navigate(`/live/${reel.user.id}`);
-      }
-    });
+    const reel = reels.find(r => r.id === reelId);
+    if (reel?.user.isLive) {
+      navigate(`/live/${reel.user.id}`);
+    }
   };
 
-  const handleJoin = (reelId: string) => {
-    requireAuth('join call', () => {
-      const reel = reels.find(r => r.id === reelId);
-      if (reel) {
-        startCall({ type: 'video', targetId: reel.user.id });
-        navigate(`/call/${reel.user.id}?type=video`);
+  const handleJoin = async (reelId: string) => {
+    const reel = reels.find(r => r.id === reelId);
+    if (!reel) return;
+
+    if (!canPerformAction('call')) {
+      setAuthUpsellTrigger('call');
+      setShowAuthUpsell(true);
+      return;
+    }
+
+    try {
+      const { channel } = await startCallFlow(reel.user.id, 'video');
+      navigate(`/call/${channel}?type=video&target=${reel.user.id}`);
+    } catch (error) {
+      console.error('Failed to join call:', error);
+      if (error.message.includes('limit')) {
+        setAuthUpsellTrigger('call');
+        setShowAuthUpsell(true);
       }
-    });
+    }
   };
 
-  const handleFollow = (userId: string) => {
-    requireAuth('follow user', () => {
-      console.log('Follow user:', userId);
-      // TODO: Implement actual follow functionality
-    });
+  const handleFollow = async (userId: string) => {
+    if (!canPerformAction('like')) { // Using like check as proxy for follow
+      setAuthUpsellTrigger('follow');
+      setShowAuthUpsell(true);
+      return;
+    }
+
+    // Optimistic UI update
+    setReels(prev => prev.map(reel => {
+      if (reel.user.id === userId) {
+        return {
+          ...reel,
+          interactions: {
+            ...reel.interactions,
+            followed: !reel.interactions.followed
+          }
+        };
+      }
+      return reel;
+    }));
+
+    try {
+      await toggleFollow(userId);
+    } catch (error) {
+      // Rollback optimistic update
+      setReels(prev => prev.map(reel => {
+        if (reel.user.id === userId) {
+          return {
+            ...reel,
+            interactions: {
+              ...reel.interactions,
+              followed: !reel.interactions.followed
+            }
+          };
+        }
+        return reel;
+      }));
+      console.error('Failed to toggle follow:', error);
+    }
   };
 
   const handleProfileClick = (userId: string) => {
