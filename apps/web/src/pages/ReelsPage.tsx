@@ -4,11 +4,12 @@ import { Heart, MessageCircle, Share, MoreHorizontal, Music2, ShoppingBag, Phone
 import { cn } from '@/lib/utils';
 import WalletChip from '@/components/WalletChip';
 import StoriesRow from '@/components/StoriesRow';
-import GuestGate from '@/components/GuestGate';
-import { StickyGuestCTA } from '@/components/CTABanner';
 import { useAppStore } from '@/store';
 import { isGuest } from '@/lib/guards';
-import { requireAuth } from '@/lib/authGuard';
+import AuthUpsell from '@/components/Modals/AuthUpsell';
+import ShareSheet from '@/components/Modals/ShareSheet';
+import CommentDrawer from '@/components/Modals/CommentDrawer';
+import { toggleLike, toggleFollow, getContentForSharing, startCallFlow, canPerformAction } from '@/lib/api';
 
 interface ReelData {
   id: string;
