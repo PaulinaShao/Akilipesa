@@ -49,6 +49,7 @@ import LiveSetupPage from '@/pages/LiveSetupPage';
 import JobsPage from '@/pages/JobsPage';
 import ChatAIPage from '@/pages/ChatAIPage';
 import EditorPage from '@/pages/EditorPage';
+import LivePage from '@/pages/LivePage';
 
 // Admin Guard Component
 function AdminRoute({ children, user }: { children: React.ReactNode; user: User | null }) {
