@@ -183,7 +183,8 @@ function ReelCard({
   onLiveCall,
   onJoin,
   onFollow,
-  onProfileClick
+  onProfileClick,
+  onMore
 }: ReelCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
