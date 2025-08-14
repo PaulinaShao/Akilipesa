@@ -5,6 +5,7 @@ import './index.css'
 
 // Enable Builder.io Visual Editing
 import { enableVisualEditing } from '@builder.io/sdk-react'
+import './builder-registry' // Register components for visual editing
 
 // Only enable visual editing if we have a valid public key
 if (import.meta.env.VITE_BUILDER_PUBLIC_KEY && import.meta.env.VITE_BUILDER_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY_HERE') {
