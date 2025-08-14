@@ -250,6 +250,12 @@ export default function CameraCaptPage() {
           if (err.name === 'NotAllowedError') {
             throw err;
           }
+
+          // If specific device not found, continue to try other devices/methods
+          if (err.message?.includes('Requested device not found') || err.message?.includes('device not found')) {
+            console.log(`Device not found for ${attempt.name}, trying next approach...`);
+            continue;
+          }
         }
       }
 
