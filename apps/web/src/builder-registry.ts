@@ -1,6 +1,6 @@
 // Builder.io Component Registration
 // This file registers components for visual editing in Builder.io
-import { Builder } from '@builder.io/sdk-react'
+import { builder } from '@builder.io/react'
 
 // Register key components that should be visually editable
 // You can add more components here as needed
