@@ -422,6 +422,36 @@ export default function CameraCaptPage() {
     }
   }, [startCamera]);
 
+  const clearCacheAndRetry = useCallback(async () => {
+    try {
+      // Clear any cached device information
+      setCameraError(null);
+      setDebugInfo('');
+      setCameraRetries(0);
+
+      // Stop any existing streams
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        setStream(null);
+        setIsStreaming(false);
+      }
+
+      // Clear video source
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+
+      // Wait a moment for cleanup
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Try starting camera again
+      startCamera();
+    } catch (error) {
+      console.error('Cache clear failed:', error);
+      setCameraError('Failed to reset camera. Please refresh the page and try again.');
+    }
+  }, [stream, startCamera]);
+
   const retake = useCallback(() => {
     setCapturedMedia(null);
     setCameraError(null);
