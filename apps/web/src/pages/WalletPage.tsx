@@ -382,8 +382,8 @@ export default function WalletPage() {
             <div>
               <h3 className="text-white font-semibold mb-3">Payment Methods</h3>
               <div className="space-y-3">
-                <button 
-                  onClick={() => navigate('/wallet/payment-methods')}
+                <button
+                  onClick={() => navigate('/payment-methods')}
                   className="w-full p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-colors flex items-center space-x-3"
                 >
                   <Smartphone className="w-6 h-6 text-green-400" />
@@ -392,9 +392,9 @@ export default function WalletPage() {
                     <p className="text-white/60 text-sm">Instant funding via mobile money</p>
                   </div>
                 </button>
-                
-                <button 
-                  onClick={() => navigate('/wallet/payment-methods')}
+
+                <button
+                  onClick={() => navigate('/payment-methods')}
                   className="w-full p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-colors flex items-center space-x-3"
                 >
                   <CreditCard className="w-6 h-6 text-blue-400" />
