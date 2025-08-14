@@ -2,197 +2,183 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, 
-  DollarSign, 
-  TrendingUp, 
-  TrendingDown, 
-  Users, 
-  Eye, 
-  Heart, 
-  Gift,
-  Download,
+  DollarSign,
+  TrendingUp,
+  TrendingDown,
+  Eye,
+  Share,
+  Heart,
+  Phone,
+  Video,
+  ShoppingBag,
   Calendar,
-  CreditCard
+  Download,
+  RefreshCw,
+  Filter,
+  CreditCard,
+  Wallet,
+  BarChart3,
+  PieChart,
+  Target,
+  Award,
+  Clock,
+  Users
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-interface EarningsData {
-  total: number;
-  thisMonth: number;
-  lastMonth: number;
-  thisWeek: number;
-  yesterday: number;
-  pendingPayouts: number;
-  currency: string;
-}
-
-interface EarningsSource {
-  type: 'views' | 'likes' | 'gifts' | 'calls' | 'products' | 'referrals';
+interface EarningSource {
+  id: string;
+  type: 'content' | 'calls' | 'tips' | 'affiliate' | 'subscriptions' | 'shop';
+  title: string;
   amount: number;
-  percentage: number;
+  currency: string;
   change: number;
-  isPositive: boolean;
+  changeType: 'increase' | 'decrease';
+  icon: React.ComponentType<any>;
+  color: string;
 }
 
 interface Transaction {
   id: string;
-  type: 'earning' | 'withdrawal' | 'bonus';
-  amount: number;
+  type: 'earning' | 'payout' | 'tip';
   source: string;
-  date: Date;
+  amount: number;
+  currency: string;
+  date: string;
   status: 'completed' | 'pending' | 'failed';
-}
-
-const mockEarningsData: EarningsData = {
-  total: 2450000,
-  thisMonth: 380000,
-  lastMonth: 420000,
-  thisWeek: 85000,
-  yesterday: 12000,
-  pendingPayouts: 45000,
-  currency: 'TSH',
-};
-
-const mockEarningsSources: EarningsSource[] = [
-  {
-    type: 'views',
-    amount: 180000,
-    percentage: 47.4,
-    change: 12.5,
-    isPositive: true,
-  },
-  {
-    type: 'gifts',
-    amount: 95000,
-    percentage: 25.0,
-    change: -3.2,
-    isPositive: false,
-  },
-  {
-    type: 'calls',
-    amount: 68000,
-    percentage: 17.9,
-    change: 8.7,
-    isPositive: true,
-  },
-  {
-    type: 'products',
-    amount: 25000,
-    percentage: 6.6,
-    change: 15.3,
-    isPositive: true,
-  },
-  {
-    type: 'referrals',
-    amount: 12000,
-    percentage: 3.1,
-    change: 2.1,
-    isPositive: true,
-  },
-];
-
-const mockTransactions: Transaction[] = [
-  {
-    id: 'txn-001',
-    type: 'earning',
-    amount: 12000,
-    source: 'Video views',
-    date: new Date('2024-01-19'),
-    status: 'completed',
-  },
-  {
-    id: 'txn-002',
-    type: 'withdrawal',
-    amount: -50000,
-    source: 'Bank transfer',
-    date: new Date('2024-01-18'),
-    status: 'completed',
-  },
-  {
-    id: 'txn-003',
-    type: 'earning',
-    amount: 8500,
-    source: 'Audio call',
-    date: new Date('2024-01-17'),
-    status: 'completed',
-  },
-  {
-    id: 'txn-004',
-    type: 'bonus',
-    amount: 25000,
-    source: 'Referral bonus',
-    date: new Date('2024-01-15'),
-    status: 'completed',
-  },
-  {
-    id: 'txn-005',
-    type: 'earning',
-    amount: 15000,
-    source: 'Product sale',
-    date: new Date('2024-01-14'),
-    status: 'pending',
-  },
-];
-
-function formatCurrency(amount: number, currency: string = 'TSH'): string {
-  return new Intl.NumberFormat('sw-TZ', {
-    style: 'currency',
-    currency: currency,
-    minimumFractionDigits: 0,
-  }).format(Math.abs(amount));
-}
-
-function formatDate(date: Date): string {
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-}
-
-function getSourceIcon(type: EarningsSource['type']) {
-  switch (type) {
-    case 'views':
-      return <Eye className="w-5 h-5" />;
-    case 'likes':
-      return <Heart className="w-5 h-5" />;
-    case 'gifts':
-      return <Gift className="w-5 h-5" />;
-    case 'calls':
-      return <DollarSign className="w-5 h-5" />;
-    case 'products':
-      return <CreditCard className="w-5 h-5" />;
-    case 'referrals':
-      return <Users className="w-5 h-5" />;
-    default:
-      return <DollarSign className="w-5 h-5" />;
-  }
-}
-
-function getTransactionIcon(type: Transaction['type']) {
-  switch (type) {
-    case 'earning':
-      return <TrendingUp className="w-4 h-4 text-green-400" />;
-    case 'withdrawal':
-      return <Download className="w-4 h-4 text-blue-400" />;
-    case 'bonus':
-      return <Gift className="w-4 h-4 text-purple-400" />;
-    default:
-      return <DollarSign className="w-4 h-4 text-gray-400" />;
-  }
+  description: string;
 }
 
 export default function EarningsPage() {
   const navigate = useNavigate();
-  const [earningsData] = useState<EarningsData>(mockEarningsData);
-  const [earningsSources] = useState<EarningsSource[]>(mockEarningsSources);
-  const [transactions] = useState<Transaction[]>(mockTransactions);
-  const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'year'>('month');
+  const [selectedPeriod, setSelectedPeriod] = useState<'day' | 'week' | 'month' | 'year'>('month');
+  const [selectedTab, setSelectedTab] = useState<'overview' | 'breakdown' | 'transactions'>('overview');
 
-  const monthlyGrowth = ((earningsData.thisMonth - earningsData.lastMonth) / earningsData.lastMonth) * 100;
+  const totalEarnings = 284500;
+  const availableBalance = 142250;
+  const pendingPayouts = 42000;
 
-  const handleWithdraw = () => {
-    navigate('/earnings/withdraw');
+  const earningsSources: EarningSource[] = [
+    {
+      id: 'content',
+      type: 'content',
+      title: 'Content Views',
+      amount: 95000,
+      currency: 'TSH',
+      change: 12.5,
+      changeType: 'increase',
+      icon: Eye,
+      color: 'text-blue-600'
+    },
+    {
+      id: 'calls',
+      type: 'calls',
+      title: 'Video/Audio Calls',
+      amount: 78500,
+      currency: 'TSH',
+      change: 8.3,
+      changeType: 'increase',
+      icon: Phone,
+      color: 'text-green-600'
+    },
+    {
+      id: 'tips',
+      type: 'tips',
+      title: 'Tips & Gifts',
+      amount: 56000,
+      currency: 'TSH',
+      change: -2.1,
+      changeType: 'decrease',
+      icon: Heart,
+      color: 'text-red-600'
+    },
+    {
+      id: 'affiliate',
+      type: 'affiliate',
+      title: 'Affiliate Sales',
+      amount: 34000,
+      currency: 'TSH',
+      change: 15.7,
+      changeType: 'increase',
+      icon: Share,
+      color: 'text-purple-600'
+    },
+    {
+      id: 'shop',
+      type: 'shop',
+      title: 'Shop Sales',
+      amount: 21000,
+      currency: 'TSH',
+      change: 5.2,
+      changeType: 'increase',
+      icon: ShoppingBag,
+      color: 'text-orange-600'
+    }
+  ];
+
+  const recentTransactions: Transaction[] = [
+    {
+      id: '1',
+      type: 'earning',
+      source: 'Video Call with James M.',
+      amount: 15000,
+      currency: 'TSH',
+      date: '2 hours ago',
+      status: 'completed',
+      description: '30-min business consultation call'
+    },
+    {
+      id: '2',
+      type: 'tip',
+      source: 'Tip from Sarah K.',
+      amount: 5000,
+      currency: 'TSH',
+      date: '5 hours ago',
+      status: 'completed',
+      description: 'Mathematics tutorial appreciation'
+    },
+    {
+      id: '3',
+      type: 'earning',
+      source: 'Content Views',
+      amount: 2500,
+      currency: 'TSH',
+      date: 'Yesterday',
+      status: 'completed',
+      description: 'Daily content monetization'
+    },
+    {
+      id: '4',
+      type: 'payout',
+      source: 'Bank Transfer',
+      amount: -50000,
+      currency: 'TSH',
+      date: '2 days ago',
+      status: 'completed',
+      description: 'Weekly payout to CRDB Bank'
+    }
+  ];
+
+  const formatCurrency = (amount: number, currency: string = 'TSH') => {
+    return `${amount.toLocaleString()} ${currency}`;
+  };
+
+  const getStatusColor = (status: Transaction['status']) => {
+    switch (status) {
+      case 'completed':
+        return 'text-green-600 bg-green-100';
+      case 'pending':
+        return 'text-yellow-600 bg-yellow-100';
+      case 'failed':
+        return 'text-red-600 bg-red-100';
+      default:
+        return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const handleRequestPayout = () => {
+    navigate('/payout');
   };
 
   const handleViewAnalytics = () => {
@@ -200,212 +186,282 @@ export default function EarningsPage() {
   };
 
   return (
-    <div className="h-screen-safe bg-gem-dark overflow-y-auto">
+    <div className="h-screen-safe bg-white">
       {/* Header */}
-      <div className="safe-top p-4 border-b border-white/10 sticky top-0 bg-gem-dark/95 backdrop-blur-sm z-10">
-        <div className="flex items-center space-x-4">
-          <button 
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-100 safe-top">
+        <div className="flex items-center justify-between p-4">
+          <button
             onClick={() => navigate(-1)}
-            className="p-2 hover:bg-white/10 rounded-full transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
-            <ArrowLeft className="w-5 h-5 text-white" />
+            <ArrowLeft className="w-6 h-6" />
           </button>
-          <div className="flex-1">
-            <h1 className="text-xl font-bold text-white">Earnings</h1>
-            <p className="text-sm text-white/60">Track your income and performance</p>
-          </div>
-          <button 
-            onClick={handleViewAnalytics}
-            className="p-2 hover:bg-white/10 rounded-full transition-colors"
-          >
-            <TrendingUp className="w-5 h-5 text-white" />
-          </button>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-4 space-y-6">
-        {/* Total Earnings Card */}
-        <div className="card-gem p-6 text-center">
-          <div className="text-3xl font-bold text-white mb-2">
-            {formatCurrency(earningsData.total, earningsData.currency)}
-          </div>
-          <div className="text-white/60 text-sm mb-4">Total Earned</div>
           
-          <div className="grid grid-cols-2 gap-4">
-            <div className="text-center">
-              <div className="text-xl font-bold text-green-400">
-                {formatCurrency(earningsData.thisMonth, earningsData.currency)}
-              </div>
-              <div className="text-white/60 text-xs">This Month</div>
-              <div className={cn(
-                'text-xs flex items-center justify-center space-x-1 mt-1',
-                monthlyGrowth >= 0 ? 'text-green-400' : 'text-red-400'
-              )}>
-                {monthlyGrowth >= 0 ? (
-                  <TrendingUp className="w-3 h-3" />
-                ) : (
-                  <TrendingDown className="w-3 h-3" />
-                )}
-                <span>{Math.abs(monthlyGrowth).toFixed(1)}%</span>
-              </div>
-            </div>
-            
-            <div className="text-center">
-              <div className="text-xl font-bold text-yellow-400">
-                {formatCurrency(earningsData.pendingPayouts, earningsData.currency)}
-              </div>
-              <div className="text-white/60 text-xs">Pending</div>
-              <button 
-                onClick={handleWithdraw}
-                className="text-xs text-accent-400 hover:text-accent-300 mt-1"
-              >
-                Withdraw
-              </button>
-            </div>
+          <div className="text-center">
+            <h1 className="text-xl font-bold">Earnings</h1>
+            <p className="text-sm text-gray-600">Track your income</p>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+              <Filter className="w-6 h-6" />
+            </button>
+            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+              <Download className="w-6 h-6" />
+            </button>
           </div>
         </div>
 
         {/* Period Selector */}
-        <div className="flex space-x-2">
-          {(['week', 'month', 'year'] as const).map((period) => (
-            <button
-              key={period}
-              onClick={() => setSelectedPeriod(period)}
-              className={cn(
-                'flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all',
-                selectedPeriod === period
-                  ? 'bg-accent-500 text-white'
-                  : 'bg-white/10 text-white/60 hover:bg-white/20'
-              )}
-            >
-              {period.charAt(0).toUpperCase() + period.slice(1)}
-            </button>
-          ))}
-        </div>
-
-        {/* Earnings Sources */}
-        <div className="card-gem p-4">
-          <h3 className="text-white font-semibold mb-4 flex items-center space-x-2">
-            <DollarSign className="w-5 h-5 text-accent-400" />
-            <span>Earnings Sources</span>
-          </h3>
-          
-          <div className="space-y-3">
-            {earningsSources.map((source) => (
-              <div key={source.type} className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-accent-500/20 rounded-full flex-center">
-                  {getSourceIcon(source.type)}
-                </div>
-                
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-white font-medium text-sm capitalize">
-                      {source.type}
-                    </span>
-                    <span className="text-white font-bold">
-                      {formatCurrency(source.amount, earningsData.currency)}
-                    </span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="w-full bg-white/20 rounded-full h-1.5 mr-3">
-                      <div
-                        className="bg-gradient-to-r from-accent-400 to-accent-600 h-1.5 rounded-full"
-                        style={{ width: `${source.percentage}%` }}
-                      />
-                    </div>
-                    <div className={cn(
-                      'text-xs flex items-center space-x-1',
-                      source.isPositive ? 'text-green-400' : 'text-red-400'
-                    )}>
-                      {source.isPositive ? (
-                        <TrendingUp className="w-3 h-3" />
-                      ) : (
-                        <TrendingDown className="w-3 h-3" />
-                      )}
-                      <span>{source.change}%</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <div className="px-4 pb-4">
+          <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+            {[
+              { id: 'day', label: 'Today' },
+              { id: 'week', label: 'Week' },
+              { id: 'month', label: 'Month' },
+              { id: 'year', label: 'Year' }
+            ].map((period) => (
+              <button
+                key={period.id}
+                onClick={() => setSelectedPeriod(period.id as any)}
+                className={cn(
+                  'flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors',
+                  selectedPeriod === period.id
+                    ? 'bg-white text-primary shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800'
+                )}
+              >
+                {period.label}
+              </button>
             ))}
           </div>
         </div>
+      </div>
 
-        {/* Recent Transactions */}
-        <div className="card-gem p-4">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-white font-semibold flex items-center space-x-2">
-              <Calendar className="w-5 h-5 text-accent-400" />
-              <span>Recent Activity</span>
-            </h3>
-            <button 
-              onClick={() => navigate('/earnings/history')}
-              className="text-accent-400 text-sm hover:text-accent-300"
-            >
-              View All
-            </button>
-          </div>
-          
-          <div className="space-y-3">
-            {transactions.slice(0, 5).map((transaction) => (
-              <div key={transaction.id} className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg">
-                <div className="flex-shrink-0">
-                  {getTransactionIcon(transaction.type)}
+      <div className="flex-1 overflow-y-auto">
+        {/* Summary Cards */}
+        <div className="p-4">
+          <div className="grid grid-cols-1 gap-4 mb-6">
+            {/* Total Earnings */}
+            <div className="bg-gradient-to-br from-primary to-secondary rounded-2xl p-6 text-white">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <p className="text-white/80 text-sm">Total Earnings</p>
+                  <h2 className="text-3xl font-bold">{formatCurrency(totalEarnings)}</h2>
                 </div>
-                
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <span className="text-white font-medium text-sm">
-                      {transaction.source}
-                    </span>
-                    <span className={cn(
-                      'font-bold text-sm',
-                      transaction.amount >= 0 ? 'text-green-400' : 'text-white'
-                    )}>
-                      {transaction.amount >= 0 ? '+' : ''}
-                      {formatCurrency(transaction.amount, earningsData.currency)}
-                    </span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-white/60 text-xs">
-                      {formatDate(transaction.date)}
-                    </span>
-                    <span className={cn(
-                      'text-xs px-2 py-0.5 rounded-full',
-                      transaction.status === 'completed'
-                        ? 'bg-green-500/20 text-green-400'
-                        : transaction.status === 'pending'
-                        ? 'bg-yellow-500/20 text-yellow-400'
-                        : 'bg-red-500/20 text-red-400'
-                    )}>
-                      {transaction.status}
-                    </span>
-                  </div>
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                  <DollarSign className="w-6 h-6" />
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
+              
+              <div className="flex items-center space-x-2">
+                <TrendingUp className="w-4 h-4" />
+                <span className="text-sm">+18.2% from last month</span>
+              </div>
+            </div>
 
-        {/* Action Buttons */}
-        <div className="grid grid-cols-2 gap-4">
-          <button 
-            onClick={handleWithdraw}
-            className="btn-gem py-3 flex items-center justify-center space-x-2"
-          >
-            <Download className="w-5 h-5" />
-            <span>Withdraw</span>
-          </button>
-          <button 
-            onClick={handleViewAnalytics}
-            className="btn-gem-outline py-3 flex items-center justify-center space-x-2"
-          >
-            <TrendingUp className="w-5 h-5" />
-            <span>Analytics</span>
-          </button>
+            {/* Balance Cards */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-green-50 border border-green-200 rounded-2xl p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <Wallet className="w-5 h-5 text-green-600" />
+                  <span className="text-xs text-green-600 font-medium">AVAILABLE</span>
+                </div>
+                <h3 className="text-xl font-bold text-green-800">
+                  {formatCurrency(availableBalance)}
+                </h3>
+                <button
+                  onClick={handleRequestPayout}
+                  className="mt-3 w-full py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-colors"
+                >
+                  Request Payout
+                </button>
+              </div>
+
+              <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <Clock className="w-5 h-5 text-yellow-600" />
+                  <span className="text-xs text-yellow-600 font-medium">PENDING</span>
+                </div>
+                <h3 className="text-xl font-bold text-yellow-800">
+                  {formatCurrency(pendingPayouts)}
+                </h3>
+                <p className="text-xs text-yellow-700 mt-1">Processing 1-3 days</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Tabs */}
+          <div className="border-b border-gray-200 mb-6">
+            <div className="flex space-x-6">
+              {[
+                { id: 'overview', label: 'Overview', icon: BarChart3 },
+                { id: 'breakdown', label: 'Breakdown', icon: PieChart },
+                { id: 'transactions', label: 'Transactions', icon: CreditCard }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setSelectedTab(tab.id as any)}
+                  className={cn(
+                    'flex items-center space-x-2 py-3 px-1 border-b-2 font-medium text-sm transition-colors',
+                    selectedTab === tab.id
+                      ? 'border-primary text-primary'
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  )}
+                >
+                  <tab.icon className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Tab Content */}
+          <AnimatePresence mode="wait">
+            {selectedTab === 'overview' && (
+              <motion.div
+                key="overview"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-6"
+              >
+                {/* Quick Stats */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-blue-50 rounded-xl p-4">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Users className="w-5 h-5 text-blue-600" />
+                      <span className="text-sm font-medium text-blue-800">Active Clients</span>
+                    </div>
+                    <p className="text-2xl font-bold text-blue-800">47</p>
+                    <p className="text-xs text-blue-600">+5 this month</p>
+                  </div>
+
+                  <div className="bg-purple-50 rounded-xl p-4">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Target className="w-5 h-5 text-purple-600" />
+                      <span className="text-sm font-medium text-purple-800">Conversion Rate</span>
+                    </div>
+                    <p className="text-2xl font-bold text-purple-800">12.5%</p>
+                    <p className="text-xs text-purple-600">+2.1% from last month</p>
+                  </div>
+                </div>
+
+                {/* Achievements */}
+                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                      <Award className="w-6 h-6 text-yellow-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-yellow-800">Top Performer!</h3>
+                      <p className="text-sm text-yellow-700">You're in the top 10% of creators this month</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Performance Tips */}
+                <div className="bg-gray-50 rounded-xl p-4">
+                  <h3 className="font-semibold mb-3">💡 Tips to Increase Earnings</h3>
+                  <ul className="space-y-2 text-sm text-gray-700">
+                    <li>• Host more live sessions during peak hours (6-9 PM)</li>
+                    <li>• Create educational content for higher engagement</li>
+                    <li>• Respond to calls within 2 hours for better ratings</li>
+                    <li>• Share your content on social media for more views</li>
+                  </ul>
+                </div>
+              </motion.div>
+            )}
+
+            {selectedTab === 'breakdown' && (
+              <motion.div
+                key="breakdown"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-4"
+              >
+                {earningsSources.map((source) => (
+                  <div key={source.id} className="bg-gray-50 rounded-xl p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                          <source.icon className={cn('w-5 h-5', source.color)} />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">{source.title}</h4>
+                          <p className="text-sm text-gray-600">
+                            {formatCurrency(source.amount, source.currency)}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="text-right">
+                        <div className={cn(
+                          'flex items-center space-x-1 text-sm font-medium',
+                          source.changeType === 'increase' ? 'text-green-600' : 'text-red-600'
+                        )}>
+                          {source.changeType === 'increase' ? (
+                            <TrendingUp className="w-4 h-4" />
+                          ) : (
+                            <TrendingDown className="w-4 h-4" />
+                          )}
+                          <span>{Math.abs(source.change)}%</span>
+                        </div>
+                        <p className="text-xs text-gray-500">vs last month</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            )}
+
+            {selectedTab === 'transactions' && (
+              <motion.div
+                key="transactions"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-3"
+              >
+                {recentTransactions.map((transaction) => (
+                  <div key={transaction.id} className="bg-gray-50 rounded-xl p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <h4 className="font-medium">{transaction.source}</h4>
+                          <span className={cn(
+                            'px-2 py-0.5 text-xs rounded-full font-medium',
+                            getStatusColor(transaction.status)
+                          )}>
+                            {transaction.status}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600">{transaction.description}</p>
+                        <p className="text-xs text-gray-500 mt-1">{transaction.date}</p>
+                      </div>
+                      
+                      <div className="text-right">
+                        <p className={cn(
+                          'font-bold text-lg',
+                          transaction.amount > 0 ? 'text-green-600' : 'text-red-600'
+                        )}>
+                          {transaction.amount > 0 ? '+' : ''}{formatCurrency(transaction.amount, transaction.currency)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                <button
+                  onClick={() => navigate('/transactions')}
+                  className="w-full py-3 mt-4 border border-gray-200 hover:bg-gray-50 rounded-xl font-medium transition-colors"
+                >
+                  View All Transactions
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
