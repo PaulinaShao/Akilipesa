@@ -58,6 +58,7 @@ import JoinPage from '@/pages/JoinPage';
 import AddFundsPage from '@/pages/AddFundsPage';
 import WithdrawPage from '@/pages/WithdrawPage';
 import UpgradePlanPage from '@/pages/UpgradePlanPage';
+import PaymentMethodsPage from '@/pages/PaymentMethodsPage';
 
 // Admin Guard Component
 function AdminRoute({ children, user }: { children: React.ReactNode; user: User | null }) {
@@ -289,6 +290,7 @@ function App() {
           <Route path="/add-funds" element={<AddFundsPage />} />
           <Route path="/withdraw" element={<WithdrawPage />} />
           <Route path="/upgrade-plan" element={<UpgradePlanPage />} />
+          <Route path="/payment-methods" element={<PaymentMethodsPage />} />
 
           <Route path="/settings" element={
             <MobileLayout>
