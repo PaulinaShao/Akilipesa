@@ -12,6 +12,7 @@
     "lint:fix": "eslint src --ext ts,tsx --fix"
   },
   "dependencies": {
+    "@builder.io/sdk-react": "^4.2.3",
     "@tanstack/react-query": "^5.84.2",
     "agora-rtc-sdk-ng": "^4.20.0",
     "clsx": "^2.0.0",
