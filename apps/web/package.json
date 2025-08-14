@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:builder": "concurrently \"vite\" \"builder-dev-tools\"",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "start": "vite",
