@@ -325,6 +325,7 @@ function App() {
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/join" element={<JoinPage />} />
 
           {/* Creation workflow routes */}
           <Route path="/create/camera" element={<CameraCaptPage />} />
