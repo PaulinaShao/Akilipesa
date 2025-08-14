@@ -5,6 +5,18 @@ import { cn } from '@/lib/utils';
 
 type CaptureMode = 'photo' | 'video';
 
+// Check camera permissions
+const checkCameraPermissions = async (): Promise<boolean> => {
+  try {
+    if (!navigator.permissions) return true; // Assume allowed if API not available
+
+    const permission = await navigator.permissions.query({ name: 'camera' as PermissionName });
+    return permission.state === 'granted';
+  } catch {
+    return true; // Assume allowed if check fails
+  }
+};
+
 export default function CameraCaptPage() {
   const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
