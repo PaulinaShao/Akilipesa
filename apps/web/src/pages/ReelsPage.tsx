@@ -492,25 +492,76 @@ export default function ReelsPage() {
     return () => container.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  const handleLike = (reelId: string) => {
-    requireAuth('like reel', () => {
-      console.log('Like reel:', reelId);
-      // TODO: Implement actual like functionality
-    });
+  const handleLike = async (reelId: string) => {
+    if (!canPerformAction('like')) {
+      setAuthUpsellTrigger('like');
+      setShowAuthUpsell(true);
+      return;
+    }
+
+    // Optimistic UI update
+    setReels(prev => prev.map(reel => {
+      if (reel.id === reelId) {
+        const newLiked = !reel.interactions.liked;
+        return {
+          ...reel,
+          interactions: { ...reel.interactions, liked: newLiked },
+          stats: {
+            ...reel.stats,
+            likes: newLiked ? reel.stats.likes + 1 : reel.stats.likes - 1
+          }
+        };
+      }
+      return reel;
+    }));
+
+    try {
+      await toggleLike(reelId);
+    } catch (error) {
+      // Rollback optimistic update
+      setReels(prev => prev.map(reel => {
+        if (reel.id === reelId) {
+          const newLiked = !reel.interactions.liked;
+          return {
+            ...reel,
+            interactions: { ...reel.interactions, liked: newLiked },
+            stats: {
+              ...reel.stats,
+              likes: newLiked ? reel.stats.likes + 1 : reel.stats.likes - 1
+            }
+          };
+        }
+        return reel;
+      }));
+      console.error('Failed to like reel:', error);
+    }
   };
 
-  const handleComment = (reelId: string) => {
-    requireAuth('comment on reel', () => {
-      navigate(`/reel/${reelId}`);
-    });
+  const handleComment = async (reelId: string) => {
+    if (!canPerformAction('comment')) {
+      setAuthUpsellTrigger('comment');
+      setShowAuthUpsell(true);
+      return;
+    }
+
+    setCommentContentId(reelId);
+    setShowCommentDrawer(true);
   };
 
-  const handleShare = (reelId: string) => {
-    if (navigator.share) {
-      navigator.share({
-        title: 'Check out this reel on AkiliPesa',
-        url: `${window.location.origin}/reel/${reelId}`,
-      });
+  const handleShare = async (reelId: string) => {
+    try {
+      const content = await getContentForSharing(reelId);
+      setShareContent(content);
+      setShowShareSheet(true);
+    } catch (error) {
+      console.error('Failed to get content for sharing:', error);
+      // Fallback to browser share
+      if (navigator.share) {
+        navigator.share({
+          title: 'Check out this reel on AkiliPesa',
+          url: `${window.location.origin}/reel/${reelId}`,
+        });
+      }
     }
   };
 
