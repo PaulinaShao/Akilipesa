@@ -20,32 +20,88 @@ export default function CameraCaptPage() {
 
   const startCamera = useCallback(async () => {
     try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user' },
-        audio: mode === 'video'
-      });
-      
+      // Check if camera is available
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Camera not supported on this device');
+      }
+
+      let mediaStream: MediaStream;
+
+      // Try different camera configurations with progressive fallback
+      try {
+        // First try: preferred front camera with audio if video mode
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: 'user',
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          audio: mode === 'video'
+        });
+      } catch (err) {
+        console.warn('Front camera with audio failed, trying without audio:', err);
+        try {
+          // Second try: front camera without audio
+          mediaStream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'user' },
+            audio: false
+          });
+        } catch (err2) {
+          console.warn('Front camera failed, trying any camera:', err2);
+          try {
+            // Third try: any available camera
+            mediaStream = await navigator.mediaDevices.getUserMedia({
+              video: true,
+              audio: false
+            });
+          } catch (err3) {
+            console.warn('All camera attempts failed, trying basic video:', err3);
+            // Fourth try: most basic video constraint
+            mediaStream = await navigator.mediaDevices.getUserMedia({
+              video: {}
+            });
+          }
+        }
+      }
+
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
         videoRef.current.play();
       }
-      
+
       setStream(mediaStream);
       setIsStreaming(true);
-    } catch (error) {
+
+    } catch (error: any) {
       console.error('Error accessing camera:', error);
-      // Fallback to file upload
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = mode === 'video' ? 'video/*' : 'image/*';
-      input.onchange = (e) => {
-        const file = (e.target as HTMLInputElement).files?.[0];
-        if (file) {
-          const url = URL.createObjectURL(file);
-          setCapturedMedia(url);
-        }
-      };
-      input.click();
+
+      // Show user-friendly error message
+      let errorMessage = 'Camera access failed. ';
+      if (error.name === 'NotAllowedError') {
+        errorMessage += 'Please allow camera permissions and try again.';
+      } else if (error.name === 'NotFoundError') {
+        errorMessage += 'No camera found on this device.';
+      } else if (error.name === 'NotReadableError') {
+        errorMessage += 'Camera is being used by another application.';
+      } else {
+        errorMessage += 'Please use file upload instead.';
+      }
+
+      // Show error toast (if available) or alert
+      if (window.confirm(`${errorMessage}\n\nWould you like to upload a file instead?`)) {
+        // Fallback to file upload
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = mode === 'video' ? 'video/*' : 'image/*';
+        input.onchange = (e) => {
+          const file = (e.target as HTMLInputElement).files?.[0];
+          if (file) {
+            const url = URL.createObjectURL(file);
+            setCapturedMedia(url);
+          }
+        };
+        input.click();
+      }
     }
   }, [mode]);
 
