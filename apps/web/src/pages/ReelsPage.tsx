@@ -578,44 +578,32 @@ export default function ReelsPage() {
     }
   };
 
-  const handleAudioCall = async (userId: string) => {
-    if (!canPerformAction('call')) {
-      setAuthUpsellTrigger('call');
-      setShowAuthUpsell(true);
-      return;
-    }
+  const handleAudioCall = (userId: string) => {
+    const reel = reels.find(r => r.user.id === userId);
+    if (!reel) return;
 
-    try {
-      const { channel } = await startCallFlow(userId, 'audio');
-      navigate(`/call/${channel}?mode=audio&target=${userId}`);
-    } catch (error) {
-      console.error('Failed to start audio call:', error);
-      // Show error or upsell based on error type
-      if (error.message.includes('limit')) {
-        setAuthUpsellTrigger('call');
-        setShowAuthUpsell(true);
-      }
-    }
+    setCallTargetUser({
+      id: reel.user.id,
+      username: reel.user.username,
+      displayName: reel.user.displayName,
+      avatar: reel.user.avatar,
+      isLive: reel.user.isLive
+    });
+    setShowCallOptions(true);
   };
 
-  const handleVideoCall = async (userId: string) => {
-    if (!canPerformAction('call')) {
-      setAuthUpsellTrigger('call');
-      setShowAuthUpsell(true);
-      return;
-    }
+  const handleVideoCall = (userId: string) => {
+    const reel = reels.find(r => r.user.id === userId);
+    if (!reel) return;
 
-    try {
-      const { channel } = await startCallFlow(userId, 'video');
-      navigate(`/call/${channel}?mode=video&target=${userId}`);
-    } catch (error) {
-      console.error('Failed to start video call:', error);
-      // Show error or upsell based on error type
-      if (error.message.includes('limit')) {
-        setAuthUpsellTrigger('call');
-        setShowAuthUpsell(true);
-      }
-    }
+    setCallTargetUser({
+      id: reel.user.id,
+      username: reel.user.username,
+      displayName: reel.user.displayName,
+      avatar: reel.user.avatar,
+      isLive: reel.user.isLive
+    });
+    setShowCallOptions(true);
   };
 
   const handleLiveCall = (reelId: string) => {
