@@ -417,7 +417,7 @@ function ReelCard({
         <span className="text-purple-400 text-xs font-medium">Join</span>
 
         {/* More */}
-        <button className="reel-action-btn">
+        <button onClick={onMore} className="reel-action-btn">
           <MoreHorizontal className="w-6 h-6" />
         </button>
 
