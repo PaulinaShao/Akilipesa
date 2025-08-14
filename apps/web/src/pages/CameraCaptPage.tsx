@@ -76,7 +76,7 @@ export default function CameraCaptPage() {
     } catch (error: any) {
       console.error('Error accessing camera:', error);
 
-      // Show user-friendly error message
+      // Set user-friendly error message
       let errorMessage = 'Camera access failed. ';
       if (error.name === 'NotAllowedError') {
         errorMessage += 'Please allow camera permissions and try again.';
@@ -88,21 +88,7 @@ export default function CameraCaptPage() {
         errorMessage += 'Please use file upload instead.';
       }
 
-      // Show error toast (if available) or alert
-      if (window.confirm(`${errorMessage}\n\nWould you like to upload a file instead?`)) {
-        // Fallback to file upload
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = mode === 'video' ? 'video/*' : 'image/*';
-        input.onchange = (e) => {
-          const file = (e.target as HTMLInputElement).files?.[0];
-          if (file) {
-            const url = URL.createObjectURL(file);
-            setCapturedMedia(url);
-          }
-        };
-        input.click();
-      }
+      setCameraError(errorMessage);
     }
   }, [mode]);
 
