@@ -149,64 +149,10 @@ export default function CameraCaptPage() {
       // Clear any previous errors
       setCameraError(null);
 
-      // Enhanced device enumeration with better error handling
-      let devices: MediaDeviceInfo[] = [];
-      let videoDevices: MediaDeviceInfo[] = [];
-      let hasDeviceAccess = false;
-
-      try {
-        // First attempt - get devices without requesting permission
-        devices = await navigator.mediaDevices.enumerateDevices();
-        videoDevices = devices.filter(device => device.kind === 'videoinput');
-
-        // Check if we have device labels (means we have permission)
-        hasDeviceAccess = videoDevices.some(device => device.label !== '');
-
-        console.log(`Initial enumeration found ${videoDevices.length} video devices`);
-        console.log('Device access granted:', hasDeviceAccess);
-        console.log('Video devices:', videoDevices.map(d => ({ id: d.deviceId, label: d.label || 'Unknown' })));
-
-        if (videoDevices.length === 0) {
-          // Try requesting permission first, then enumerate again
-          console.log('No devices found in initial enumeration, requesting permission...');
-          try {
-            const tempStream = await navigator.mediaDevices.getUserMedia({ video: true });
-            tempStream.getTracks().forEach(track => track.stop());
-
-            // Re-enumerate after getting permission
-            devices = await navigator.mediaDevices.enumerateDevices();
-            videoDevices = devices.filter(device => device.kind === 'videoinput');
-            hasDeviceAccess = true;
-
-            console.log(`After permission, found ${videoDevices.length} video devices`);
-          } catch (permError) {
-            console.warn('Permission request failed:', permError);
-            throw new Error('No camera devices found and permission denied');
-          }
-        }
-
-        if (videoDevices.length === 0) {
-          throw new Error('No camera devices found on this device');
-        }
-
-        // Validate that devices actually have device IDs
-        const validDevices = videoDevices.filter(device =>
-          device.deviceId &&
-          device.deviceId !== '' &&
-          device.deviceId !== 'default'
-        );
-
-        console.log(`Found ${validDevices.length} valid devices out of ${videoDevices.length} total`);
-
-        // If no valid device IDs, we'll rely on generic constraints
-        if (validDevices.length === 0 && hasDeviceAccess) {
-          console.warn('No devices with valid IDs found, will use generic constraints');
-        }
-      } catch (enumError) {
-        console.warn('Device enumeration failed:', enumError);
-        // Continue anyway, sometimes enumeration fails but camera still works
-        hasDeviceAccess = false;
-      }
+      // Skip complex device enumeration to avoid "Requested device not found" errors
+      // Use generic camera constraints which are more reliable across different browsers/devices
+      console.log('Using simplified camera access to avoid device enumeration issues');
+      let hasDeviceAccess = false; // Always use generic constraints
 
       let mediaStream: MediaStream;
 
