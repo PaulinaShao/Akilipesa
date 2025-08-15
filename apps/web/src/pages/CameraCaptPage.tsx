@@ -226,18 +226,22 @@ export default function CameraCaptPage() {
         );
 
         // Try each valid device with fallback-friendly constraints
-        for (const device of validDevices.slice(0, 2)) { // Limit to first 2 to avoid too many attempts
-          attempts.push({
-            name: `Device: ${device.label || 'Camera'}`,
-            constraints: {
-              video: {
-                deviceId: { ideal: device.deviceId }, // Use ideal, not exact
-                width: { ideal: 1280, max: 1920 },
-                height: { ideal: 720, max: 1080 }
-              },
-              audio: mode === 'video'
-            }
-          });
+        if (validDevices.length > 0) {
+          for (const device of validDevices.slice(0, 2)) { // Limit to first 2 to avoid too many attempts
+            attempts.push({
+              name: `Device: ${device.label || 'Camera'}`,
+              constraints: {
+                video: {
+                  deviceId: { ideal: device.deviceId }, // Use ideal, not exact
+                  width: { ideal: 1280, max: 1920 },
+                  height: { ideal: 720, max: 1080 }
+                },
+                audio: mode === 'video'
+              }
+            });
+          }
+        } else {
+          console.warn('No valid device IDs found, will rely on generic constraints');
         }
       }
 
