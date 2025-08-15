@@ -462,6 +462,15 @@ export default function ReelsPage() {
   const navigate = useNavigate();
   const { setStoriesVisible, setBalanceBannerVisible } = useAppStore();
 
+  // Pull to refresh handler
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    // Simulate refresh delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setCurrentIndex(0); // Reset to top
+    setIsRefreshing(false);
+  };
+
   // Auth gate hooks removed - using requireAuthOrGate pattern
 
   const handleScroll = useCallback(() => {
