@@ -532,30 +532,20 @@ export default function CameraCaptPage() {
 
       console.log('Force refreshing camera devices...');
 
-      // Request permission to refresh device list
+      // Request permission to refresh device list - use simplest possible constraints
       try {
         const tempStream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            width: { ideal: 320 },
-            height: { ideal: 240 }
-          }
+          video: true // Use most basic constraint to avoid device-specific issues
         });
         tempStream.getTracks().forEach(track => track.stop());
 
-        // Wait for device list to refresh
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Wait for browser to refresh internal device list
+        await new Promise(resolve => setTimeout(resolve, 1500));
 
-        // Re-enumerate devices
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoDevices = devices.filter(d => d.kind === 'videoinput');
+        console.log('Device refresh complete, attempting camera restart...');
 
-        console.log('Refreshed device list:', videoDevices.map(d => ({
-          id: d.deviceId,
-          label: d.label || 'Unknown'
-        })));
-
-        // Now try to start camera with fresh device list
-        startCamera();
+        // Now try to start camera with fresh approach - avoid re-enumeration
+        await startCamera();
       } catch (refreshError: any) {
         console.error('Failed to refresh devices:', refreshError);
 
