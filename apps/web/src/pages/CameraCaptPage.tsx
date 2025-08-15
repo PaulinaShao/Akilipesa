@@ -210,45 +210,27 @@ export default function CameraCaptPage() {
 
       let mediaStream: MediaStream;
 
-      // Enhanced camera access attempts with device-specific handling
+      // Enhanced camera access with safer approach - avoid device-specific constraints that cause "not found" errors
       const attempts = [];
 
-      // If we have specific device IDs, try them first (but only if they seem valid)
-      if (hasDeviceAccess && videoDevices.length > 0) {
-        // Filter for devices that are more likely to be valid and accessible
-        const validDevices = videoDevices.filter(device =>
-          device.deviceId &&
-          device.deviceId !== 'default' &&
-          device.deviceId !== '' &&
-          device.deviceId.length > 10 && // Avoid short/invalid IDs
-          !device.deviceId.includes('null') && // Avoid null-like IDs
-          device.label !== '' // Has proper label (better chance of being accessible)
-        );
+      // SKIP device-specific constraints entirely to avoid "Requested device not found" errors
+      // Modern browsers work better with generic constraints and let the system choose the best camera
+      console.log('Using generic camera constraints to avoid device access issues');
 
-        // Try each valid device with fallback-friendly constraints
-        if (validDevices.length > 0) {
-          for (const device of validDevices.slice(0, 2)) { // Limit to first 2 to avoid too many attempts
-            attempts.push({
-              name: `Device: ${device.label || 'Camera'}`,
-              constraints: {
-                video: {
-                  deviceId: { ideal: device.deviceId }, // Use ideal, not exact
-                  width: { ideal: 1280, max: 1920 },
-                  height: { ideal: 720, max: 1080 }
-                },
-                audio: mode === 'video'
-              }
-            });
-          }
-        } else {
-          console.warn('No valid device IDs found, will rely on generic constraints');
-        }
-      }
-
-      // Standard fallback attempts
+      // Safe camera access attempts - prioritize generic constraints to avoid device issues
       attempts.push(
         {
-          name: 'Front camera with audio',
+          name: 'Default camera (recommended)',
+          constraints: {
+            video: {
+              width: { ideal: 1280, max: 1920 },
+              height: { ideal: 720, max: 1080 }
+            },
+            audio: mode === 'video'
+          }
+        },
+        {
+          name: 'Front camera',
           constraints: {
             video: {
               facingMode: 'user',
@@ -259,28 +241,21 @@ export default function CameraCaptPage() {
           }
         },
         {
-          name: 'Front camera without audio',
+          name: 'Any camera with audio',
           constraints: {
-            video: { facingMode: 'user' },
-            audio: false
+            video: true,
+            audio: mode === 'video'
           }
         },
         {
-          name: 'Rear camera',
-          constraints: {
-            video: { facingMode: 'environment' },
-            audio: false
-          }
-        },
-        {
-          name: 'Any available camera',
+          name: 'Any camera without audio',
           constraints: {
             video: true,
             audio: false
           }
         },
         {
-          name: 'Basic video only',
+          name: 'Basic camera access',
           constraints: {
             video: {}
           }
