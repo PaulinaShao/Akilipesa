@@ -222,25 +222,23 @@ export default function LoginPage() {
   };
 
   const handlePhoneChange = (value: string) => {
-    // Format as user types
-    const formatted = formatAsUserTypes(value);
-    setPhoneInput(formatted);
+    setPhoneInput(value);
     setError('');
 
-    // Immediate validation
-    const e164 = normalizeMsisdn(value);
-    const isValid = isValidTanzaniaNumber(value);
-    setPhoneE164(e164);
+    // Immediate validation with new normalizer
+    const normalized = normalizeTanzanianPhone(value);
+    const isValid = normalized.startsWith('+255') && normalized.length === 13;
+    setPhoneE164(normalized);
     setIsPhoneValid(isValid);
   };
 
   const handlePhoneBlur = () => {
     // Final validation on blur
-    const isValid = isValidTanzaniaNumber(phoneInput);
+    const normalized = normalizeTanzanianPhone(phoneInput);
+    const isValid = normalized.startsWith('+255') && normalized.length === 13;
     setIsPhoneValid(isValid);
     if (isValid) {
-      const e164 = normalizeMsisdn(phoneInput);
-      setPhoneE164(e164);
+      setPhoneE164(normalized);
     }
   };
 
