@@ -18,6 +18,9 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const fns = getFunctions(app, import.meta.env.VITE_FUNCTIONS_REGION);
 
+// Alias for backward compatibility
+export const functions = fns;
+
 setPersistence(auth, browserLocalPersistence);
 
 export const call = <T=unknown, R=unknown>(name: string) =>
