@@ -443,6 +443,7 @@ export default function ReelsPage() {
   const [reels, setReels] = useState<ReelData[]>(mockReels);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Modal states
   const [showAuthUpsell, setShowAuthUpsell] = useState(false);
