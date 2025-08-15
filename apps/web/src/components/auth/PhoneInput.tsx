@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { normalizeTZ } from "@/lib/phone";
+import { normalizeTanzanianPhone } from "@/lib/phoneAuth";
 
 export default function PhoneInput({ value, onChange, error }: {
   value?: string; onChange: (e164: string, local: string) => void; error?: string;
@@ -15,7 +15,8 @@ export default function PhoneInput({ value, onChange, error }: {
           inputMode="numeric"
           value={local}
           onChange={(e) => {
-            const { e164: out, local: loc } = normalizeTZ(e.target.value);
+            const out = normalizeTanzanianPhone(e.target.value);
+            const loc = e.target.value;
             setLocal(loc);
             onChange(out, loc);
           }}
