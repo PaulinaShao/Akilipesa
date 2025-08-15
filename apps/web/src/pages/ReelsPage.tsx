@@ -327,95 +327,74 @@ function ReelCard({
         </div>
       </div>
 
-      {/* Right actions rail */}
+      {/* Right actions rail - TikTok style */}
       <div className="reel-actions">
         {/* Like */}
-        <button 
-          onClick={onLike}
-          className={cn(
-            "reel-action-btn",
-            reel.interactions.liked && "liked"
-          )}
-        >
-          <Heart 
+        <div className="flex flex-col items-center space-y-1">
+          <button
+            onClick={onLike}
             className={cn(
-              "w-6 h-6 transition-all duration-200",
-              reel.interactions.liked && "fill-white scale-110"
-            )} 
-          />
-        </button>
-        <span className="text-white text-xs font-medium">
-          {formatNumber(reel.stats.likes)}
-        </span>
+              "w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center transition-all",
+              reel.interactions.liked && "bg-red-500/30"
+            )}
+          >
+            <Heart
+              className={cn(
+                "w-7 h-7 transition-all duration-200",
+                reel.interactions.liked && "fill-red-500 text-red-500 scale-110"
+              )}
+            />
+          </button>
+          <span className="text-white text-xs font-medium">
+            {formatNumber(reel.stats.likes)}
+          </span>
+        </div>
 
         {/* Comment */}
-        <button onClick={onComment} className="reel-action-btn">
-          <MessageCircle className="w-6 h-6" />
-        </button>
-        <span className="text-white text-xs font-medium">
-          {formatNumber(reel.stats.comments)}
-        </span>
+        <div className="flex flex-col items-center space-y-1">
+          <button
+            onClick={onComment}
+            className="w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-black/50"
+          >
+            <MessageCircle className="w-7 h-7" />
+          </button>
+          <span className="text-white text-xs font-medium">
+            {formatNumber(reel.stats.comments)}
+          </span>
+        </div>
 
         {/* Share */}
-        <button onClick={onShare} className="reel-action-btn">
-          <Share className="w-6 h-6" />
-        </button>
-        <span className="text-white text-xs font-medium">
-          {formatNumber(reel.stats.shares)}
-        </span>
+        <div className="flex flex-col items-center space-y-1">
+          <button
+            onClick={onShare}
+            className="w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-black/50"
+          >
+            <Share className="w-7 h-7" />
+          </button>
+          <span className="text-white text-xs font-medium">
+            {formatNumber(reel.stats.shares)}
+          </span>
+        </div>
 
         {/* Audio Call */}
-        <button
-          onClick={onAudioCall}
-          className="reel-action-btn bg-green-500/20 border-green-500/50"
-        >
-          <Phone className="w-6 h-6 text-green-400" />
-        </button>
-        <span className="text-green-400 text-xs font-medium">Call</span>
+        <div className="flex flex-col items-center space-y-1">
+          <button
+            onClick={onAudioCall}
+            className="w-12 h-12 rounded-full bg-green-500/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-green-500/50"
+          >
+            <Phone className="w-7 h-7 text-green-400" />
+          </button>
+        </div>
 
         {/* Video Call */}
-        <button
-          onClick={onVideoCall}
-          className="reel-action-btn bg-blue-500/20 border-blue-500/50"
-        >
-          <Video className="w-6 h-6 text-blue-400" />
-        </button>
-        <span className="text-blue-400 text-xs font-medium">Video</span>
-
-        {/* Shop */}
-        {reel.products && reel.products.length > 0 && (
-          <>
-            <button
-              onClick={onShop}
-              className="reel-action-btn bg-yellow-500/20 border-yellow-500/50"
-            >
-              <ShoppingBag className="w-6 h-6 text-yellow-400" />
-            </button>
-            <span className="text-yellow-400 text-xs font-medium">Shop</span>
-          </>
-        )}
-
-        {/* Live Call - only show for live users */}
-        {reel.user.isLive && (
-          <>
-            <button
-              onClick={onLiveCall}
-              className="reel-action-btn bg-red-500/20 border-red-500/50 animate-pulse"
-            >
-              <Phone className="w-6 h-6 text-red-400" />
-            </button>
-            <span className="text-red-400 text-xs font-medium">Live</span>
-          </>
-        )}
-
-        {/* Join Button */}
-        <button
-          onClick={onJoin}
-          className="reel-action-btn bg-purple-500/20 border-purple-500/50"
-        >
-          <UserPlus className="w-6 h-6 text-purple-400" />
-        </button>
-        <span className="text-purple-400 text-xs font-medium">Join</span>
+        <div className="flex flex-col items-center space-y-1">
+          <button
+            onClick={onVideoCall}
+            className="w-12 h-12 rounded-full bg-blue-500/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-blue-500/50"
+          >
+            <Video className="w-7 h-7 text-blue-400" />
+          </button>
+        </div>
 
         {/* More */}
         <button onClick={onMore} className="reel-action-btn">
