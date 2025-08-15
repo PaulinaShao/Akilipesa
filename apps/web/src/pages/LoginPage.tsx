@@ -523,6 +523,9 @@ export default function LoginPage() {
           </motion.div>
         )}
       </div>
+
+      {/* Hidden reCAPTCHA container */}
+      <div id="recaptcha-container" style={{ display: 'none' }}></div>
     </div>
   );
 }
