@@ -7,8 +7,7 @@ import { useAppStore } from '@/store';
 import CodeInput from '@/components/auth/CodeInput';
 import GoogleButton from '@/components/auth/GoogleButton';
 import Brand from '@/components/Brand';
-import { normalizeMsisdn, formatAsUserTypes, formatAsDisplay, isValidTanzaniaNumber } from '@/lib/phoneFormat';
-import { startPhoneSignIn, resetRecaptcha } from '@/auth/phone';
+import { normalizeTanzanianPhone, sendCode, ensureInvisibleRecaptcha } from '@/lib/phoneAuth';
 import { useToast } from '@/hooks/useToast';
 import { handlePostLogin, getPostLoginIntent } from '@/lib/authGuard';
 
@@ -47,7 +46,8 @@ export default function LoginPage() {
     setError('');
 
     if (activeTab === 'phone') {
-      if (!isPhoneValid) {
+      const normalizedPhone = normalizeTanzanianPhone(phoneInput);
+      if (!normalizedPhone.startsWith('+255') || normalizedPhone.length !== 13) {
         setError('Please enter a valid Tanzania phone number');
         return;
       }
