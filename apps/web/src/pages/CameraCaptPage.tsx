@@ -213,24 +213,29 @@ export default function CameraCaptPage() {
       // Enhanced camera access attempts with device-specific handling
       const attempts = [];
 
-      // If we have specific device IDs, try them first (but with ideal instead of exact)
+      // If we have specific device IDs, try them first (but only if they seem valid)
       if (hasDeviceAccess && videoDevices.length > 0) {
-        // Try each available device by ID, but use 'ideal' instead of 'exact' to allow fallback
-        for (const device of videoDevices) {
-          if (device.deviceId && device.deviceId !== 'default') {
-            // Try with ideal deviceId first (allows fallback if device not available)
-            attempts.push({
-              name: `Preferred device: ${device.label || device.deviceId.substring(0, 8)}`,
-              constraints: {
-                video: {
-                  deviceId: { ideal: device.deviceId },
-                  width: { ideal: 1280 },
-                  height: { ideal: 720 }
-                },
-                audio: mode === 'video'
-              }
-            });
-          }
+        // Filter for devices that are more likely to be valid
+        const validDevices = videoDevices.filter(device =>
+          device.deviceId &&
+          device.deviceId !== 'default' &&
+          device.deviceId !== '' &&
+          device.deviceId.length > 10 // Avoid short/invalid IDs
+        );
+
+        // Try each valid device with fallback-friendly constraints
+        for (const device of validDevices.slice(0, 2)) { // Limit to first 2 to avoid too many attempts
+          attempts.push({
+            name: `Device: ${device.label || 'Camera'}`,
+            constraints: {
+              video: {
+                deviceId: { ideal: device.deviceId }, // Use ideal, not exact
+                width: { ideal: 1280, max: 1920 },
+                height: { ideal: 720, max: 1080 }
+              },
+              audio: mode === 'video'
+            }
+          });
         }
       }
 
