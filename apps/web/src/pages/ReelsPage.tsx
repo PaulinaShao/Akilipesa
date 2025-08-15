@@ -509,9 +509,43 @@ export default function ReelsPage() {
     const container = containerRef.current;
     if (!container) return;
 
+    let startY = 0;
+    let isDragging = false;
+
+    // Touch handlers for pull-to-refresh
+    const handleTouchStart = (e: TouchEvent) => {
+      startY = e.touches[0].clientY;
+      isDragging = true;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isDragging || currentIndex !== 0 || container.scrollTop > 0) return;
+
+      const currentY = e.touches[0].clientY;
+      const deltaY = currentY - startY;
+
+      if (deltaY > 80 && !isRefreshing) {
+        handleRefresh();
+        isDragging = false;
+      }
+    };
+
+    const handleTouchEnd = () => {
+      isDragging = false;
+    };
+
     container.addEventListener('scroll', handleScroll, { passive: true });
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    container.addEventListener('touchmove', handleTouchMove, { passive: true });
+    container.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchmove', handleTouchMove);
+      container.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [handleScroll, currentIndex, isRefreshing, handleRefresh]);
 
   const handleLike = async (reelId: string) => {
     if (!canPerformAction('like')) {
