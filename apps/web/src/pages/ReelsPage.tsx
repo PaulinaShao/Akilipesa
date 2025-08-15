@@ -696,8 +696,15 @@ export default function ReelsPage() {
 
   return (
     <div className="reel-container">
-      {/* Stories Row */}
-      <StoriesRow />
+      {/* Pull to refresh indicator */}
+      {isRefreshing && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-black/80 backdrop-blur-md rounded-full px-4 py-2">
+          <div className="flex items-center space-x-2 text-white text-sm">
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            <span>Refreshing...</span>
+          </div>
+        </div>
+      )}
 
       <div
         ref={containerRef}
