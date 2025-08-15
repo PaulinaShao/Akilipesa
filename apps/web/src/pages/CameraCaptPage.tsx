@@ -215,12 +215,14 @@ export default function CameraCaptPage() {
 
       // If we have specific device IDs, try them first (but only if they seem valid)
       if (hasDeviceAccess && videoDevices.length > 0) {
-        // Filter for devices that are more likely to be valid
+        // Filter for devices that are more likely to be valid and accessible
         const validDevices = videoDevices.filter(device =>
           device.deviceId &&
           device.deviceId !== 'default' &&
           device.deviceId !== '' &&
-          device.deviceId.length > 10 // Avoid short/invalid IDs
+          device.deviceId.length > 10 && // Avoid short/invalid IDs
+          !device.deviceId.includes('null') && // Avoid null-like IDs
+          device.label !== '' // Has proper label (better chance of being accessible)
         );
 
         // Try each valid device with fallback-friendly constraints
@@ -299,10 +301,11 @@ export default function CameraCaptPage() {
             throw err;
           }
 
-          // Track device not found errors
+          // Track device not found errors and skip specific device attempts
           if (err.message?.includes('Requested device not found') ||
               err.message?.includes('device not found') ||
               err.message?.includes('Could not start') ||
+              err.name === 'OverconstrainedError' ||
               err.name === 'NotFoundError' ||
               err.name === 'DevicesNotFoundError') {
             deviceNotFoundCount++;
