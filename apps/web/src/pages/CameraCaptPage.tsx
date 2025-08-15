@@ -553,7 +553,10 @@ export default function CameraCaptPage() {
       // Request permission to refresh device list
       try {
         const tempStream = await navigator.mediaDevices.getUserMedia({
-          video: { width: 1, height: 1 } // Minimal request to refresh devices
+          video: {
+            width: { ideal: 320 },
+            height: { ideal: 240 }
+          }
         });
         tempStream.getTracks().forEach(track => track.stop());
 
@@ -571,9 +574,20 @@ export default function CameraCaptPage() {
 
         // Now try to start camera with fresh device list
         startCamera();
-      } catch (refreshError) {
+      } catch (refreshError: any) {
         console.error('Failed to refresh devices:', refreshError);
-        setCameraError('Failed to refresh camera devices. Please check if your camera is connected and not being used by another application.');
+
+        // Try one more time with basic constraints
+        try {
+          console.log('Trying fallback refresh...');
+          const fallbackStream = await navigator.mediaDevices.getUserMedia({ video: true });
+          fallbackStream.getTracks().forEach(track => track.stop());
+
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          startCamera();
+        } catch (fallbackError) {
+          setCameraError('Unable to access camera. Please ensure:\n• Camera is connected and working\n• No other apps are using the camera\n• Browser has camera permissions\n• Try refreshing the page');
+        }
       }
     } catch (error) {
       console.error('Force refresh failed:', error);
