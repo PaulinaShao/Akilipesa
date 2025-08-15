@@ -31,6 +31,11 @@ export default function LoginPage() {
 
   const from = location.state?.from?.pathname || '/reels';
 
+  // Initialize reCAPTCHA on component mount
+  useEffect(() => {
+    ensureInvisibleRecaptcha();
+  }, []);
+
 
   // Resend timer
   useEffect(() => {
