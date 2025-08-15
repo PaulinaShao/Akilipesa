@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, MessageCircle, Share, MoreHorizontal, Music2, ShoppingBag, Phone, Video, UserPlus } from 'lucide-react';
+import { Heart, MessageCircle, Share, MoreHorizontal, Music2, ShoppingBag, Phone, Video, UserPlus, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import WalletChip from '@/components/WalletChip';
 import { useAppStore } from '@/store';
@@ -255,19 +255,31 @@ function ReelCard({
       <div className="reel-content">
         {/* User info */}
         <div className="flex items-center space-x-3 mb-3">
-          <button onClick={onProfileClick} className="relative">
-            <img 
-              src={reel.user.avatar} 
-              alt={reel.user.displayName}
-              className="w-12 h-12 rounded-full border-2 border-white/30"
-            />
-            {reel.user.isLive && (
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex-center">
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-              </div>
+          <div className="relative">
+            <button onClick={onProfileClick} className="relative">
+              <img
+                src={reel.user.avatar}
+                alt={reel.user.displayName}
+                className="w-12 h-12 rounded-full border-2 border-white/30"
+              />
+              {reel.user.isLive && (
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex-center">
+                  <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                </div>
+              )}
+            </button>
+
+            {/* TikTok-style follow plus button */}
+            {!reel.interactions.followed && (
+              <button
+                onClick={onFollow}
+                className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center border-2 border-white transition-all hover:bg-red-600"
+              >
+                <Plus className="w-3 h-3 text-white" />
+              </button>
             )}
-          </button>
-          
+          </div>
+
           <div className="flex-1">
             <div className="flex items-center space-x-2">
               <button onClick={onProfileClick} className="font-semibold text-white">
@@ -284,15 +296,6 @@ function ReelCard({
             </div>
             <span className="text-sm text-white/80">{reel.user.displayName}</span>
           </div>
-
-          {!reel.interactions.followed && (
-            <button
-              onClick={onFollow}
-              className="btn-outline text-xs px-3 py-1 font-semibold"
-            >
-              Follow
-            </button>
-          )}
         </div>
 
         {/* Caption */}
