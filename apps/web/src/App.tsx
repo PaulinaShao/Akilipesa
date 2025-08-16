@@ -347,6 +347,7 @@ function App() {
             </MobileLayout>
           } />
           <Route path="/chat/ai" element={<ChatAIPage />} />
+          <Route path="/chat/akili" element={<ChatAIPage />} />
 
           <Route path="/trial-policy" element={<TrialPolicyPage />} />
 
