@@ -17,12 +17,36 @@ const cfg = {
 
 export const app = initializeApp(cfg);
 
-// 👇 Only initialize App Check if the env key exists
+// 👇 Only initialize App Check if the env key exists and we're on a supported domain
 const appCheckKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
-if (appCheckKey) {
-  initializeAppCheck(app, {
-    provider: new ReCaptchaV3Provider(appCheckKey),
-    isTokenAutoRefreshEnabled: true,
+const isProduction = import.meta.env.PROD;
+const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
+
+// Only initialize App Check in production and on authorized domains
+if (appCheckKey && isProduction) {
+  try {
+    // Skip App Check for development domains like fly.dev, localhost, etc.
+    const isAuthorizedDomain = hostname.includes('akilipesa.com') ||
+                              hostname.includes('akilipesa-prod.web.app') ||
+                              hostname.includes('akilipesa-prod.firebaseapp.com');
+
+    if (isAuthorizedDomain) {
+      console.log('Initializing App Check for authorized domain:', hostname);
+      initializeAppCheck(app, {
+        provider: new ReCaptchaV3Provider(appCheckKey),
+        isTokenAutoRefreshEnabled: true,
+      });
+    } else {
+      console.log('Skipping App Check for unauthorized domain:', hostname);
+    }
+  } catch (error) {
+    console.warn('App Check initialization failed, continuing without App Check:', error);
+  }
+} else {
+  console.log('App Check disabled:', {
+    hasKey: !!appCheckKey,
+    isProduction,
+    hostname
   });
 }
 
