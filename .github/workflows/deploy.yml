@@ -1,13 +1,24 @@
-name: Deploy All
+name: Deploy AkiliPesa
+
 on:
   push:
     branches: [ main ]
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
-      - name: Firebase deploy (placeholder)
-        run: echo "Add firebase deploy steps here once secrets are set"
+      - run: npm ci --workspaces
+      - run: npm -w firebase/functions run build
+      - run: npm -w apps/web run build
+      
+      # (Optional) apply Make blueprints here
+      
+      - uses: w9jds/firebase-action@v13.5.0
+        with:
+          args: deploy --only functions,hosting,firestore:rules,storage
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_TOKEN }}

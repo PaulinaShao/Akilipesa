@@ -1,16 +1,10 @@
 {
   "functions": {
-    "source": "functions"
-  },
-  "firestore": {
-    "rules": "firestore.rules"
-  },
-  "storage": {
-    "rules": "storage.rules"
+    "source": "firebase/functions"
   },
   "hosting": {
+    "site": "akilipesa-prod",
     "public": "apps/web/dist",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "rewrites": [{ "source": "**", "destination": "/index.html" }]
+    "ignore": ["**/.*", "**/node_modules/**"]
   }
 }
