@@ -391,6 +391,7 @@ export async function getRtcToken(channel: string, uid?: number): Promise<{
       token: data.token,
       channel: data.channel,
       uid: parseInt(data.uid),
+      appId: data.appId,
       expiryTime: Date.now() + (data.expiresIn * 1000) // Convert seconds to milliseconds
     };
   } catch (error) {
@@ -401,6 +402,7 @@ export async function getRtcToken(channel: string, uid?: number): Promise<{
       token: 'offline_rtc_token',
       channel,
       uid: uid || Math.floor(Math.random() * 100000),
+      appId: 'offline_app_id',
       expiryTime: Date.now() + (60 * 60 * 1000) // 1 hour
     };
   }
