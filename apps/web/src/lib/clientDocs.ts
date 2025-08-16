@@ -1,5 +1,5 @@
 import { auth, db } from './firebase';
-import { doc, setDoc, serverTimestamp, collection, addDoc } from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp, collection } from 'firebase/firestore';
 
 /**
  * Client-owned document creation helpers
