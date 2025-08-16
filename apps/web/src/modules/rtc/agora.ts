@@ -241,22 +241,25 @@ export async function join(channel: string, token?: string, uid?: number): Promi
   
   let rtcToken = token;
   let rtcUid = uid;
-  
+  let appId = import.meta.env.VITE_AGORA_APP_ID || 'mock_app_id';
+
   // Fetch token from server if not provided
   if (!rtcToken) {
     try {
       const tokenData = await getRtcToken(channel, uid);
       rtcToken = tokenData.token;
       rtcUid = tokenData.uid;
+      // Note: The API response format doesn't include appId in this implementation
+      // but the server knows the correct appId, so we trust the token
     } catch (error) {
       console.warn('Failed to get RTC token, using mock:', error);
       rtcToken = 'mock_token';
       rtcUid = uid || Math.floor(Math.random() * 100000);
     }
   }
-  
+
   const joinedUid = await rtcClient.join({
-    appId: import.meta.env.VITE_AGORA_APP_ID || 'mock_app_id',
+    appId,
     channel,
     token: rtcToken,
     uid: rtcUid
