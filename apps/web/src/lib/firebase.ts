@@ -55,6 +55,9 @@ setPersistence(auth, browserLocalPersistence);
 export const db = getFirestore(app);
 export const fns = getFunctions(app, import.meta.env.VITE_FUNCTIONS_REGION);
 
+// Export demo mode flag for other modules
+export const isFirebaseDemoMode = import.meta.env.VITE_APP_ENV === 'demo' || import.meta.env.DEV;
+
 // Alias for backward compatibility
 export const functions = fns;
 
