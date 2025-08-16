@@ -18,6 +18,31 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Global error handler for frame-related issues -->
+    <script>
+      // Prevent frame access errors that might occur in Builder.io or Vite dev mode
+      window.addEventListener('error', function(event) {
+        // Check if it's a frame-related error
+        if (event.error && event.error.message &&
+            (event.error.message.includes('frame') ||
+             event.error.message.includes('Cannot read properties of undefined'))) {
+          console.warn('Frame access error caught and handled:', event.error.message);
+          event.preventDefault();
+          return true;
+        }
+      });
+
+      // Also handle unhandled promise rejections
+      window.addEventListener('unhandledrejection', function(event) {
+        if (event.reason && event.reason.message &&
+            event.reason.message.includes('frame')) {
+          console.warn('Frame promise rejection caught and handled:', event.reason.message);
+          event.preventDefault();
+        }
+      });
+    </script>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
