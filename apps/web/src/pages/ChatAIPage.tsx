@@ -186,17 +186,21 @@ export default function ChatAIPage() {
       <div className="safe-top p-4 border-b border-white/10 bg-black/20 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <button
-            onClick={() => navigate('/create')}
+            onClick={() => navigate(isAkiliChat ? '/inbox' : '/create')}
             className="p-2 hover:bg-white/10 rounded-full transition-colors"
           >
             <ArrowLeft className="w-6 h-6 text-white" />
           </button>
-          
+
           <div className="text-center">
-            <h1 className="text-lg font-semibold text-white">AkiliPesa AI</h1>
+            <h1 className="text-lg font-semibold text-white">
+              {isAkiliChat ? 'Chat with AkiliPesa' : 'AkiliPesa AI'}
+            </h1>
             <div className="flex items-center gap-1">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              <span className="text-xs text-green-400">Online</span>
+              <span className="text-xs text-green-400">
+                {isAkiliChat ? 'Always Available' : 'Online'}
+              </span>
             </div>
           </div>
           
