@@ -9,17 +9,14 @@ export async function startJob(type: string, inputs: any) {
 
 // Agora tokens
 export async function getRtc() {
-  const region = import.meta.env.VITE_FUNCTIONS_REGION || 'europe-west1';
-  const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID || 'akilipesa-prod';
-  const url = `https://${region}-${projectId}.cloudfunctions.net/getRtcToken`;
-
-  const r = await fetch(url, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({})
-  });
-  if (!r.ok) throw new Error(`getRtc failed: ${r.status}`);
-  return r.json() as Promise<{ appId: string; channel: string; uid: string; token: string; expiresIn: number }>;
+  const res = await call<{}, {appId: string, channel: string, uid: number, token: string, expire: number}>('getRtcToken')({});
+  return {
+    appId: res.data.appId,
+    channel: res.data.channel,
+    uid: String(res.data.uid),
+    token: res.data.token,
+    expiresIn: res.data.expire
+  };
 }
 
 export async function endCall(payload: {channel:string, minutes:number, msisdn?:string, tier?:'free'|'premium'}) {
