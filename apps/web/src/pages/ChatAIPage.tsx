@@ -32,8 +32,11 @@ interface Message {
 
 export default function ChatAIPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const mode = searchParams.get('mode') || 'text';
+  const isAkiliChat = location.pathname.includes('/chat/akili');
+  const chatRole = searchParams.get('role') || 'assistant';
   
   const [messages, setMessages] = useState<Message[]>([
     {
