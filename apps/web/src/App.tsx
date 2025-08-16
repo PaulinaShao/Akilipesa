@@ -374,6 +374,7 @@ function App() {
           } />
           <Route path="/chat/ai" element={<ChatAIPage />} />
           <Route path="/chat/akili" element={<ChatAIPage />} />
+          <Route path="/call-demo" element={<CallDemoPage />} />
 
           <Route path="/trial-policy" element={<TrialPolicyPage />} />
 
