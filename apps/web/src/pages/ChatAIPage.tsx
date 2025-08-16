@@ -352,9 +352,11 @@ export default function ChatAIPage() {
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder={
-                mode === 'voice' ? 'Tap mic to speak or type...' :
-                mode === 'image' ? 'Ask about images or upload one...' :
-                'Type your message...'
+                isAkiliChat
+                  ? 'Ask about payments, transfers, wallet, or business...'
+                  : mode === 'voice' ? 'Tap mic to speak or type...' :
+                    mode === 'image' ? 'Ask about images or upload one...' :
+                    'Type your message...'
               }
               className="w-full bg-white/10 border border-white/20 rounded-2xl px-4 py-3 pr-12 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               disabled={isLoading}
