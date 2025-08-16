@@ -268,7 +268,7 @@ export const incrementReaction = functions.https.onCall(async (data, context) =>
     await db.runTransaction(async (transaction) => {
       const doc = await transaction.get(trialRef);
       
-      if (!doc.exists()) {
+      if (!doc.exists) {
         throw new Error('Invalid trial token');
       }
       
