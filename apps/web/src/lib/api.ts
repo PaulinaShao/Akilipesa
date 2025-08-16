@@ -30,7 +30,7 @@ export async function createOrder(payload: any) {
 }
 
 // User permissions and interactions
-export function canPerformAction(action: 'like' | 'comment' | 'follow' | 'call' | 'share' | 'shop'): boolean {
+export function canPerformAction(_action: 'like' | 'comment' | 'follow' | 'call' | 'share' | 'shop'): boolean {
   // Check if user is authenticated
   const user = auth.currentUser;
   if (!user || user.isAnonymous) {
@@ -40,7 +40,7 @@ export function canPerformAction(action: 'like' | 'comment' | 'follow' | 'call' 
 }
 
 // Social interactions
-export async function toggleLike(contentId: string): Promise<{liked: boolean, count: number}> {
+export async function toggleLike(_contentId: string): Promise<{liked: boolean, count: number}> {
   // In a real app, this would call the backend
   // For now, return mock data
   return {
@@ -49,7 +49,7 @@ export async function toggleLike(contentId: string): Promise<{liked: boolean, co
   };
 }
 
-export async function toggleFollow(userId: string): Promise<{following: boolean}> {
+export async function toggleFollow(_userId: string): Promise<{following: boolean}> {
   // In a real app, this would call the backend
   return {
     following: Math.random() > 0.5
@@ -66,7 +66,7 @@ export function getContentForSharing(contentId: string): {url: string, title: st
 }
 
 // Call flow
-export async function startCallFlow(targetUserId: string, callType: 'audio' | 'video' = 'audio'): Promise<{success: boolean, channel?: string}> {
+export async function startCallFlow(_targetUserId: string, _callType: 'audio' | 'video' = 'audio'): Promise<{success: boolean, channel?: string}> {
   try {
     // Get RTC token for the call
     const rtcData = await getRtc();
