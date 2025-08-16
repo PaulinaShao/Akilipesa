@@ -36,6 +36,7 @@ export const ROUTES = {
   CALL_NEW: '/call/new',
   LIVE_SESSION: '/live/:channelId',
   CHAT_AI: '/chat/ai',
+  CHAT_AKILI: '/chat/akili',
   
   // Commerce
   WALLET: '/wallet',
