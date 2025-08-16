@@ -102,7 +102,7 @@ export default function CommentDrawer({
   isOpen, 
   onClose, 
   contentId, 
-  contentCreator,
+  // contentCreator,
   onAuthRequired 
 }: CommentDrawerProps) {
   const [comments, setComments] = useState<Comment[]>(mockComments);
