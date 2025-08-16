@@ -1,12 +1,23 @@
 import * as functions from 'firebase-functions';
+import { onRequest } from 'firebase-functions/v2/https';
+import * as logger from 'firebase-functions/logger';
+import { defineSecret } from 'firebase-functions/params';
 import * as admin from 'firebase-admin';
 import crypto from 'crypto';
 import fetch from 'node-fetch';
 import { RtcTokenBuilder, RtcRole } from 'agora-access-token';
+import corsLib from 'cors';
 
 admin.initializeApp();
 const db = admin.firestore();
 const REGION: any = 'europe-west1';
+
+// Define secrets for Agora
+const AGORA_APP_ID = defineSecret('AGORA_APP_ID');
+const AGORA_APP_CERT = defineSecret('AGORA_APP_CERT');
+
+// CORS configuration
+const cors = corsLib({ origin: true });
 
 // createJob → Make webhook
 export const createJob = functions.region(REGION).https.onCall(async (data, ctx) => {
@@ -41,16 +52,42 @@ export const markJob = functions.region(REGION).https.onRequest(async (req, res)
   res.json({ ok: true });
 });
 
-// Agora tokens
-export const getRtcToken = functions.region(REGION).https.onCall(async (_data, ctx) => {
-  if (!ctx.auth) throw new functions.https.HttpsError('unauthenticated', 'Login required');
-  const appId = process.env.AGORA_APP_ID!;
-  const cert = process.env.AGORA_APP_CERT!;
-  const channel = `ai-${ctx.auth.uid}-${Date.now()}`;
-  const uid = Math.floor(Math.random() * 1e9);
-  const token = RtcTokenBuilder.buildTokenWithUid(appId, cert, channel, uid, RtcRole.PUBLISHER, 60 * 60);
-  return { appId, channel, uid, token };
-});
+// Agora RTC Token Generation (v2 HTTPS function with secrets and CORS)
+export const getRtcToken = onRequest(
+  {
+    region: 'europe-west1',
+    secrets: [AGORA_APP_ID, AGORA_APP_CERT],
+    cors: true
+  },
+  (req, res) => {
+    cors(req, res, () => {
+      try {
+        const body = (req.method === 'POST' ? req.body : req.query) || {};
+        const channel = String(body.channel || `ak-${Date.now().toString(36)}`);
+        const uid = Number.isInteger(body.uid) ? Number(body.uid) : Math.floor(Math.random() * 2_000_000_000);
+
+        const appId = AGORA_APP_ID.value();
+        const appCert = AGORA_APP_CERT.value();
+        if (!appId || !appCert) {
+          res.status(500).json({ error: 'Agora credentials not configured' });
+          return;
+        }
+
+        const role = RtcRole.PUBLISHER;
+        const ttlSeconds = 60 * 60; // 1 hour
+        const expireTs = Math.floor(Date.now() / 1000) + ttlSeconds;
+
+        const token = RtcTokenBuilder.buildTokenWithUid(appId, appCert, channel, uid, role, expireTs);
+
+        logger.info('Issued Agora RTC token', { channel, uid });
+        res.json({ appId, channel, uid: String(uid), token, expiresIn: ttlSeconds });
+      } catch (e: any) {
+        logger.error('getRtcToken failed', e);
+        res.status(500).json({ error: e?.message || 'Unknown error' });
+      }
+    });
+  }
+);
 
 // End call → post to Make
 export const endCall = functions.region(REGION).https.onCall(async (data, ctx) => {
