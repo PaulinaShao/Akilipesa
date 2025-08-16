@@ -192,7 +192,7 @@ export default function MoreOptions({
 
             {/* Options List */}
             <div className="py-4">
-              {moreOptions.map((option, index) => (
+              {moreOptions.map((option) => (
                 <div key={option.id}>
                   <button
                     onClick={option.action}
