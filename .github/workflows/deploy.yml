@@ -44,7 +44,22 @@ jobs:
       #   env:
       #     MAKE_API_TOKEN: ${{ secrets.MAKE_API_TOKEN }}
       #     MAKE_FOLDER_ID: ${{ secrets.MAKE_FOLDER_ID }}
-      
+
+      # Seed Firebase Secrets (idempotent)
+      - name: Seed Firebase Secrets
+        uses: w9jds/firebase-action@v13.5.0
+        with:
+          args: |
+            functions:secrets:set AGORA_APP_ID --data "$AGORA_APP_ID" --project akilipesa-prod --force &&
+            functions:secrets:set AGORA_APP_CERT --data "$AGORA_APP_CERT" --project akilipesa-prod --force &&
+            functions:secrets:set RTC_PROVIDER --data "$RTC_PROVIDER" --project akilipesa-prod --force
+        env:
+          PROJECT_PATH: ./firebase
+          GCP_SA_KEY: ${{ secrets.FIREBASE_TOKEN }}
+          AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
+          AGORA_APP_CERT: ${{ secrets.AGORA_APP_CERT }}
+          RTC_PROVIDER: ${{ vars.RTC_PROVIDER }}
+
       # Deploy hosting + functions + rules + storage
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@v13.5.0
