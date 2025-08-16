@@ -23,9 +23,10 @@ export interface GetRtcTokenParams {
 
 export interface GetRtcTokenResponse {
   token: string;
-  channelName: string;
+  channelName?: string;
   uid: number;
-  expiration: number;
+  appId: string;
+  expiration?: number;
 }
 
 export interface GetUploadUrlParams {
