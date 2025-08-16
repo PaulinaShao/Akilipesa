@@ -369,13 +369,28 @@ export async function getRtcToken(channel: string, uid?: number): Promise<{
       };
     }
 
-    const getRtcTokenFn = httpsCallable(functions, 'getRtcToken');
-    const result = await getRtcTokenFn({
-      channel,
-      uid: uid || Math.floor(Math.random() * 100000)
+    // Use direct HTTP endpoint for v2 function
+    const url = `https://europe-west1-akilipesa-prod.cloudfunctions.net/getRtcToken`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        channel,
+        uid: uid || Math.floor(Math.random() * 100000)
+      })
     });
 
-    return result.data as any;
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return {
+      token: data.token,
+      channel: data.channel,
+      uid: parseInt(data.uid),
+      expiryTime: Date.now() + (data.expiresIn * 1000) // Convert seconds to milliseconds
+    };
   } catch (error) {
     console.warn('Failed to get RTC token from server:', error);
 
