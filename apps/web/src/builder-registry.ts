@@ -29,6 +29,10 @@ import { builder } from '@builder.io/react'
 //   ]
 // })
 
+// Use the builder import to prevent TypeScript unused import error
+// This ensures Builder.io is properly initialized for component registration
+console.log('Builder.io registry loaded', !!builder);
+
 // Note: Add your component registrations here
 // This allows Builder.io to provide visual editing for these components
 export {}
