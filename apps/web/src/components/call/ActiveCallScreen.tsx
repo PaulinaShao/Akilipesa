@@ -204,7 +204,7 @@ export default function ActiveCallScreen({
           {/* Other participants (if any) */}
           {otherParticipants.length > 0 && (
             <div className="absolute bottom-24 left-4 flex gap-2">
-              {otherParticipants.map((participant, index) => (
+              {otherParticipants.map((participant) => (
                 <div
                   key={participant.id}
                   className="w-20 h-28 bg-gray-800 rounded-lg overflow-hidden border border-white/20"
