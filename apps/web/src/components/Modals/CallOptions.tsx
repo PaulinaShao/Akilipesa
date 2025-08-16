@@ -172,8 +172,8 @@ export default function CallOptions({
 
           {/* Call Type Selection */}
           <div className="p-6 pb-4">
-            <h3 className="text-white font-semibold mb-4">Choose call type:</h3>
-            <div className="grid grid-cols-2 gap-3 mb-6">
+            <h3 className="text-white font-semibold mb-6 text-center">Choose call type:</h3>
+            <div className="grid grid-cols-2 gap-4 mb-8">
               {callTypes.map((type) => {
                 const IconComponent = type.icon;
                 return (
@@ -181,22 +181,35 @@ export default function CallOptions({
                     key={type.type}
                     onClick={() => setCallType(type.type)}
                     className={cn(
-                      "flex flex-col items-center gap-3 p-4 rounded-2xl border-2 transition-all",
+                      "flex flex-col items-center gap-4 p-6 rounded-3xl border-2 transition-all relative overflow-hidden",
                       callType === type.type
-                        ? "border-primary bg-primary/10"
-                        : "border-white/10 bg-white/5 hover:bg-white/10"
+                        ? "border-primary bg-primary/15 shadow-xl"
+                        : "border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/30"
                     )}
                   >
+                    {/* Background gradient effect */}
                     <div className={cn(
-                      "w-12 h-12 rounded-full flex items-center justify-center",
+                      "absolute inset-0 opacity-10",
                       `bg-gradient-to-br ${type.color}`
+                    )} />
+
+                    <div className={cn(
+                      "w-16 h-16 rounded-full flex items-center justify-center relative z-10",
+                      type.bgColor
                     )}>
-                      <IconComponent className="w-6 h-6 text-white" />
+                      <IconComponent className={cn("w-8 h-8", type.iconColor)} />
                     </div>
-                    <div className="text-center">
-                      <div className="text-white font-medium text-sm">{type.title}</div>
-                      <div className="text-white/60 text-xs">{type.description}</div>
+                    <div className="text-center relative z-10">
+                      <div className="text-white font-semibold text-base mb-1">{type.title}</div>
+                      <div className="text-white/70 text-sm">{type.description}</div>
                     </div>
+
+                    {/* Selection indicator */}
+                    {callType === type.type && (
+                      <div className="absolute top-3 right-3 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                        <div className="w-3 h-3 bg-white rounded-full" />
+                      </div>
+                    )}
                   </button>
                 );
               })}
