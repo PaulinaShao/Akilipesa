@@ -39,7 +39,7 @@ async function validateCaptcha(token?: string): Promise<number> {
 async function getTrialConfig() {
   const configDoc = await db.doc('trialConfig/global').get();
   
-  if (!configDoc.exists()) {
+  if (!configDoc.exists) {
     // Default configuration
     return {
       enabled: true,
