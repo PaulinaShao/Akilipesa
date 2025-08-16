@@ -3,6 +3,11 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
+// Import RTC test in development
+if (import.meta.env.DEV) {
+  import('./test-rtc');
+}
+
 // Configure Builder.io
 import { builder } from '@builder.io/react'
 import './builder-registry' // Register components for visual editing
