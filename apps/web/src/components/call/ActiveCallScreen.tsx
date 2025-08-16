@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Phone, 
-  PhoneOff, 
-  Video, 
-  VideoOff, 
-  Mic, 
-  MicOff, 
+import {
+  PhoneOff,
+  Video,
+  VideoOff,
+  Mic,
+  MicOff,
   MessageCircle,
   MoreVertical,
   RotateCcw,
@@ -55,7 +54,7 @@ export default function ActiveCallScreen({
   isMinimized = false
 }: ActiveCallScreenProps) {
   const [showControls, setShowControls] = useState(true);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  // const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     // Auto-hide controls after 5 seconds in video calls
