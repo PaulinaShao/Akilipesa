@@ -41,7 +41,9 @@ export default function ChatAIPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: `Hello! I'm AkiliPesa AI Assistant. I can help you with ${mode === 'image' ? 'image analysis and generation' : mode === 'voice' ? 'voice interactions' : 'questions and creative tasks'}. How can I assist you today?`,
+      content: isAkiliChat && chatRole === 'system'
+        ? `💎 Hello! I'm AkiliPesa, your personal AI assistant for payments, business, and financial services. I'm here to help you with transfers, wallet management, earning opportunities, and business growth. How can I assist you today?`
+        : `Hello! I'm AkiliPesa AI Assistant. I can help you with ${mode === 'image' ? 'image analysis and generation' : mode === 'voice' ? 'voice interactions' : 'questions and creative tasks'}. How can I assist you today?`,
       sender: 'ai',
       timestamp: new Date(),
       type: 'text'
