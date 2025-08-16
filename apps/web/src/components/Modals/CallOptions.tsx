@@ -88,9 +88,7 @@ export default function CallOptions({
     try {
       const { channel } = await startCallFlow(
         targetUser.id,
-        callType,
-        privacy,
-        [] // No specific invites for now
+        callType
       );
 
       // Navigate to call room
