@@ -210,11 +210,11 @@ export const guestChat = functions.https.onCall(async (data, context) => {
   
   // Update trial usage atomically
   const trialRef = db.doc(`trials/${deviceToken}`);
-  
+
   await db.runTransaction(async (transaction) => {
     const doc = await transaction.get(trialRef);
-    
-    if (!doc.exists()) {
+
+    if (!doc.exists) {
       throw new functions.https.HttpsError('permission-denied', 'Invalid trial token');
     }
     
