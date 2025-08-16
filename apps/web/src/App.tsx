@@ -59,6 +59,7 @@ import AddFundsPage from '@/pages/AddFundsPage';
 import WithdrawPage from '@/pages/WithdrawPage';
 import UpgradePlanPage from '@/pages/UpgradePlanPage';
 import PaymentMethodsPage from '@/pages/PaymentMethodsPage';
+import CallNotification from '@/components/call/CallNotification';
 
 // Admin Guard Component
 function AdminRoute({ children, user }: { children: React.ReactNode; user: User | null }) {
