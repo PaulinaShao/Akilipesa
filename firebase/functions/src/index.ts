@@ -57,6 +57,7 @@ export const markJob = functions.region(REGION).https.onRequest(async (req, res)
 });
 
 // Agora RTC Token Generation (v2 callable function with secrets)
+// Updated with improved secret handling and provider validation
 export const getRtcToken = functions.region(REGION).runWith({
   secrets: [AGORA_APP_ID, AGORA_APP_CERT, RTC_PROVIDER]
 }).https.onCall(async (data, context) => {
