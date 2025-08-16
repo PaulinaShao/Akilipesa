@@ -56,42 +56,37 @@ export const markJob = functions.region(REGION).https.onRequest(async (req, res)
   res.json({ ok: true });
 });
 
-// Agora RTC Token Generation (v2 HTTPS function with secrets and CORS)
-export const getRtcToken = onRequest(
-  {
-    region: 'europe-west1',
-    secrets: [AGORA_APP_ID, AGORA_APP_CERT],
-    cors: true
-  },
-  (req, res) => {
-    cors(req, res, () => {
-      try {
-        const body = (req.method === 'POST' ? req.body : req.query) || {};
-        const channel = String(body.channel || `ak-${Date.now().toString(36)}`);
-        const uid = Number.isInteger(body.uid) ? Number(body.uid) : Math.floor(Math.random() * 2_000_000_000);
+// Agora RTC Token Generation (v2 callable function with secrets)
+export const getRtcToken = functions.region(REGION).runWith({
+  secrets: [AGORA_APP_ID, AGORA_APP_CERT, RTC_PROVIDER]
+}).https.onCall(async (data, context) => {
+  try {
+    const appId = AGORA_APP_ID.value();
+    const cert = AGORA_APP_CERT.value();
+    const provider = RTC_PROVIDER.value() || 'agora';
 
-        const appId = AGORA_APP_ID.value();
-        const appCert = AGORA_APP_CERT.value();
-        if (!appId || !appCert) {
-          res.status(500).json({ error: 'Agora credentials not configured' });
-          return;
-        }
+    if (!appId || !cert) {
+      throw new functions.https.HttpsError('failed-precondition', 'Agora credentials not configured');
+    }
 
-        const role = RtcRole.PUBLISHER;
-        const ttlSeconds = 60 * 60; // 1 hour
-        const expireTs = Math.floor(Date.now() / 1000) + ttlSeconds;
+    if (provider !== 'agora') {
+      throw new functions.https.HttpsError('failed-precondition', `RTC provider ${provider} not supported here.`);
+    }
 
-        const token = RtcTokenBuilder.buildTokenWithUid(appId, appCert, channel, uid, role, expireTs);
+    const channel = data?.channel || `akili-${Date.now()}`;
+    const uid = data?.uid || Math.floor(Math.random() * 1e9);
+    const role = RtcRole.PUBLISHER;
+    const expire = 60 * 30; // 30 mins
 
-        logger.info('Issued Agora RTC token', { channel, uid });
-        res.json({ appId, channel, uid: String(uid), token, expiresIn: ttlSeconds });
-      } catch (e: any) {
-        logger.error('getRtcToken failed', e);
-        res.status(500).json({ error: e?.message || 'Unknown error' });
-      }
-    });
+    const token = RtcTokenBuilder.buildTokenWithUid(appId, cert, channel, uid, role, expire);
+
+    logger.info('Issued Agora RTC token', { channel, uid, provider });
+    return { appId, channel, uid, token, expire };
+  } catch (e: any) {
+    logger.error('getRtcToken failed', e);
+    throw new functions.https.HttpsError('internal', e?.message || 'Failed to mint token');
   }
-);
+});
 
 // End call → post to Make
 export const endCall = functions.region(REGION).https.onCall(async (data, ctx) => {
