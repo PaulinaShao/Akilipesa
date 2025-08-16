@@ -9,7 +9,10 @@ export async function startJob(type: string, inputs: any) {
 
 // Agora tokens
 export async function getRtc() {
-  const url = `https://europe-west1-akilipesa-prod.cloudfunctions.net/getRtcToken`;
+  const region = import.meta.env.VITE_FUNCTIONS_REGION || 'europe-west1';
+  const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID || 'akilipesa-prod';
+  const url = `https://${region}-${projectId}.cloudfunctions.net/getRtcToken`;
+
   const r = await fetch(url, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
