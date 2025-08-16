@@ -249,12 +249,12 @@ export async function join(channel: string, token?: string, uid?: number): Promi
       const tokenData = await getRtcToken(channel, uid);
       rtcToken = tokenData.token;
       rtcUid = tokenData.uid;
-      // Note: The API response format doesn't include appId in this implementation
-      // but the server knows the correct appId, so we trust the token
+      appId = tokenData.appId; // Use appId from server response
     } catch (error) {
       console.warn('Failed to get RTC token, using mock:', error);
       rtcToken = 'mock_token';
       rtcUid = uid || Math.floor(Math.random() * 100000);
+      // Keep fallback appId from env
     }
   }
 
