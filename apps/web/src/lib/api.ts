@@ -66,7 +66,7 @@ export function getContentForSharing(contentId: string): {url: string, title: st
 }
 
 // Call flow
-export async function startCallFlow(targetUserId: string, callType: 'audio' | 'video' = 'audio'): Promise<{success: boolean, channelId?: string}> {
+export async function startCallFlow(targetUserId: string, callType: 'audio' | 'video' = 'audio'): Promise<{success: boolean, channel?: string}> {
   try {
     // Get RTC token for the call
     const rtcData = await getRtc();
@@ -78,7 +78,7 @@ export async function startCallFlow(targetUserId: string, callType: 'audio' | 'v
 
     return {
       success: true,
-      channelId: rtcData.channel
+      channel: rtcData.channel
     };
   } catch (error) {
     console.error('Failed to start call:', error);
