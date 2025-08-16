@@ -354,6 +354,7 @@ export async function getRtcToken(channel: string, uid?: number): Promise<{
   token: string;
   channel: string;
   uid: number;
+  appId: string;
   expiryTime: number;
 }> {
   try {
