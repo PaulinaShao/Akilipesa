@@ -54,9 +54,26 @@ export const createJob = async (params: CreateJobParams): Promise<CreateJobRespo
 
 export const getRtcToken = async (params: GetRtcTokenParams): Promise<GetRtcTokenResponse> => {
   try {
-    const getRtcTokenFunction = httpsCallable<GetRtcTokenParams, GetRtcTokenResponse>(functions, 'getRtcToken');
-    const result = await getRtcTokenFunction(params);
-    return result.data;
+    const url = `https://europe-west1-akilipesa-prod.cloudfunctions.net/getRtcToken`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        channel: params.channelName,
+        uid: params.uid
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return {
+      token: data.token,
+      uid: parseInt(data.uid),
+      appId: data.appId
+    };
   } catch (error) {
     console.error('Error getting RTC token:', error);
     throw new Error('Failed to get call token. Please try again.');
