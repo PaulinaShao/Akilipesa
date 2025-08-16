@@ -32,10 +32,10 @@ jobs:
           echo "VITE_FUNCTIONS_REGION=${{ vars.VITE_FUNCTIONS_REGION }}" >> $GITHUB_ENV
           if [ -n "${{ vars.VITE_RECAPTCHA_SITE_KEY }}" ]; then echo "VITE_RECAPTCHA_SITE_KEY=${{ vars.VITE_RECAPTCHA_SITE_KEY }}" >> $GITHUB_ENV; fi
       
-      # Build Functions (TypeScript)
+      # Build Cloud Functions (TypeScript)
       - run: npm -w firebase/functions run build
-      
-      # Build Web (Vite)
+
+      # Build the web app (Vite)
       - run: npm -w apps/web run build
       
       # (Optional) apply Make blueprints here
