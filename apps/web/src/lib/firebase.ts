@@ -61,8 +61,5 @@ export const functions = fns;
 // Export demo mode flag for other modules
 export const isFirebaseDemoMode = import.meta.env.VITE_APP_ENV === 'demo' || import.meta.env.DEV;
 
-// Alias for backward compatibility
-export const functions = fns;
-
 export const call = <T=unknown, R=unknown>(name: string) =>
   httpsCallable<T, R>(fns, name);
