@@ -53,7 +53,7 @@ class CallService {
   private localVideoTrack: ILocalVideoTrack | null = null;
   private participants = new Map<string | number, CallParticipant>();
   private callStartTime: number = 0;
-  private metricsInterval: number | null = null;
+  private metricsInterval: ReturnType<typeof setInterval> | null = null;
   private onMetricsUpdate?: (metrics: CallMetrics) => void;
   private onParticipantUpdate?: (participants: CallParticipant[]) => void;
   private onCallEnd?: () => void;
