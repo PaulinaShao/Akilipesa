@@ -44,7 +44,10 @@ export const createJob = functions.region(REGION).https.onCall(async (data, ctx)
 // markJob ← Make callback
 export const markJob = functions.region(REGION).https.onRequest(async (req, res) => {
   const { jobId, status, outputUrl, error } = req.body || {};
-  if (!jobId) return res.status(400).send('missing jobId');
+  if (!jobId) {
+    res.status(400).send('missing jobId');
+    return;
+  }
   await db.doc(`jobs/${jobId}`).set(
     { status, outputUrl, error, updatedAt: admin.firestore.FieldValue.serverTimestamp() },
     { merge: true }
@@ -112,7 +115,10 @@ export const endCall = functions.region(REGION).https.onCall(async (data, ctx) =
 // Payments (from Make)
 export const markPayment = functions.region(REGION).https.onRequest(async (req, res) => {
   const { userId, channel, minutes, tier, amount, currency, gateway, status, providerRef } = req.body || {};
-  if (!userId) return res.status(400).send('missing userId');
+  if (!userId) {
+    res.status(400).send('missing userId');
+    return;
+  }
   const ref = db.collection('payments').doc();
   await ref.set({
     paymentId: ref.id, userId, channel, minutes, tier,
@@ -124,7 +130,10 @@ export const markPayment = functions.region(REGION).https.onRequest(async (req, 
 
 export const markCallSettled = functions.region(REGION).https.onRequest(async (req, res) => {
   const { channel, paymentId, amount, currency } = req.body || {};
-  if (!channel) return res.status(400).send('missing channel');
+  if (!channel) {
+    res.status(400).send('missing channel');
+    return;
+  }
   await db.doc(`calls/${channel}`).set({
     settled: true, paymentId: paymentId || null,
     settledAt: admin.firestore.FieldValue.serverTimestamp(),
