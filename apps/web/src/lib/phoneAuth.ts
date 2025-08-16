@@ -17,7 +17,7 @@ export function ensureInvisibleRecaptcha(containerId = 'recaptcha-container') {
     size: 'invisible',
     callback: () => {}, // auto-validated on submit
     'expired-callback': () => verifier?.render()
-  }, { sitekey: siteKey });
+  });
   return verifier;
 }
 
