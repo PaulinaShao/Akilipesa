@@ -6,19 +6,48 @@ on:
 
 jobs:
   deploy:
+    environment: production   # Required for accessing environment variables and secrets
     runs-on: ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
+      
       - run: npm ci --workspaces
+      
+      # Make Vite see your environment values
+      - name: Export env for Vite build
+        run: |
+          echo "VITE_BUILDER_PUBLIC_KEY=${{ vars.VITE_BUILDER_PUBLIC_KEY }}" >> $GITHUB_ENV
+          echo "VITE_FIREBASE_API_KEY=${{ vars.VITE_FIREBASE_API_KEY }}" >> $GITHUB_ENV
+          echo "VITE_FIREBASE_AUTH_DOMAIN=${{ vars.VITE_FIREBASE_AUTH_DOMAIN }}" >> $GITHUB_ENV
+          echo "VITE_FIREBASE_PROJECT_ID=${{ vars.VITE_FIREBASE_PROJECT_ID }}" >> $GITHUB_ENV
+          echo "VITE_FIREBASE_STORAGE_BUCKET=${{ vars.VITE_FIREBASE_STORAGE_BUCKET }}" >> $GITHUB_ENV
+          echo "VITE_FIREBASE_MESSAGING_SENDER_ID=${{ vars.VITE_FIREBASE_MESSAGING_SENDER_ID }}" >> $GITHUB_ENV
+          echo "VITE_FIREBASE_APP_ID=${{ vars.VITE_FIREBASE_APP_ID }}" >> $GITHUB_ENV
+          echo "VITE_FIREBASE_MEASUREMENT_ID=${{ vars.VITE_FIREBASE_MEASUREMENT_ID }}" >> $GITHUB_ENV
+          echo "VITE_FUNCTIONS_REGION=${{ vars.VITE_FUNCTIONS_REGION }}" >> $GITHUB_ENV
+          if [ -n "${{ vars.VITE_RECAPTCHA_SITE_KEY }}" ]; then echo "VITE_RECAPTCHA_SITE_KEY=${{ vars.VITE_RECAPTCHA_SITE_KEY }}" >> $GITHUB_ENV; fi
+      
+      # Build Functions (TypeScript)
       - run: npm -w firebase/functions run build
+      
+      # Build Web (Vite)
       - run: npm -w apps/web run build
       
       # (Optional) apply Make blueprints here
+      # - name: Apply Make blueprints
+      #   run: node infra/make/apply-blueprints.mjs
+      #   env:
+      #     MAKE_API_TOKEN: ${{ secrets.MAKE_API_TOKEN }}
+      #     MAKE_FOLDER_ID: ${{ secrets.MAKE_FOLDER_ID }}
       
+      # Deploy hosting + functions + rules + storage rules
       - uses: w9jds/firebase-action@v13.5.0
         with:
-          args: deploy --only functions,hosting,firestore:rules,storage
+          args: deploy --only hosting,functions,firestore:rules,storage
         env:
+          # IMPORTANT: this must be the full JSON of the service account key
           GCP_SA_KEY: ${{ secrets.FIREBASE_TOKEN }}
