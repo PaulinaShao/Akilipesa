@@ -88,6 +88,15 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [devModeUser, setDevModeUser] = useState<User | null>(null);
   const [showSplash, setShowSplash] = useState(() => shouldShowSplashOnce());
+  const [incomingCall, setIncomingCall] = useState<{
+    caller: {
+      id: string;
+      name: string;
+      avatar: string;
+      username: string;
+    };
+    callType: 'audio' | 'video';
+  } | null>(null);
 
   // Initialize trial system
   const { initializeToken, fetchConfig } = useTrialStore();
