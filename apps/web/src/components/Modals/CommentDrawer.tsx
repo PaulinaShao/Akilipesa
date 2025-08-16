@@ -1,14 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  X, 
-  Send, 
-  Heart, 
-  MoreVertical, 
-  Reply,
+import {
+  X,
+  Send,
+  Heart,
+  MoreVertical,
   Smile,
-  Camera,
-  Gif
+  Camera
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { isGuest } from '@/lib/guards';
