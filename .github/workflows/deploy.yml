@@ -45,10 +45,13 @@ jobs:
       #     MAKE_API_TOKEN: ${{ secrets.MAKE_API_TOKEN }}
       #     MAKE_FOLDER_ID: ${{ secrets.MAKE_FOLDER_ID }}
       
-      # Deploy hosting + functions + rules + storage rules
-      - uses: w9jds/firebase-action@v13.5.0
+      # Deploy hosting + functions + rules + storage
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@v13.5.0
         with:
-          args: deploy --only hosting,functions,firestore:rules,storage
+          args: deploy --only hosting,functions,firestore:rules,storage -P akilipesa-prod
         env:
-          # IMPORTANT: this must be the full JSON of the service account key
+          # 2) Tell the action where firebase.json lives
+          PROJECT_PATH: ./firebase
+          # 3) Map your Environment secret (the SA JSON) to the variable the action expects
           GCP_SA_KEY: ${{ secrets.FIREBASE_TOKEN }}
