@@ -30,16 +30,16 @@ export default function LoadingOverlay({
     }
   };
 
-  const getSizeClasses = () => {
-    switch (size) {
-      case 'sm':
-        return 'w-6 h-6';
-      case 'lg':
-        return 'w-12 h-12';
-      default:
-        return 'w-8 h-8';
-    }
-  };
+  // const getSizeClasses = () => {
+  //   switch (size) {
+  //     case 'sm':
+  //       return 'w-6 h-6';
+  //     case 'lg':
+  //       return 'w-12 h-12';
+  //     default:
+  //       return 'w-8 h-8';
+  //   }
+  // };
 
   return (
     <motion.div

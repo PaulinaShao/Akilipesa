@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Phone, Video, Users, Lock, Globe, UserCheck } from 'lucide-react';
+import { X, Phone, Video, Lock, Globe, UserCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { startCallFlow, canPerformAction } from '@/lib/api';
