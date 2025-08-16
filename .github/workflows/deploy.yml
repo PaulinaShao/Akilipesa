@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
       
-      - run: npm ci --workspaces
+      - run: npm install --workspaces
       
       # Export Vite envs so the web build can read them
       - name: Export env for Vite build
