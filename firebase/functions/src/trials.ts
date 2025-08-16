@@ -105,17 +105,17 @@ export const issueTrialToken = functions.https.onCall(async (data, context) => {
 // Request a guest call
 export const requestGuestCall = functions.https.onCall(async (data, context) => {
   const { deviceToken, targetId, captchaToken } = data;
-  
+
   if (!deviceToken) {
     throw new functions.https.HttpsError('invalid-argument', 'Device token required');
   }
-  
+
   const config = await getTrialConfig();
-  
+
   if (!config.enabled) {
     throw new functions.https.HttpsError('failed-precondition', 'Trials are currently disabled');
   }
-  
+
   // Validate reCAPTCHA for call requests
   const captchaScore = await validateCaptcha(captchaToken);
   if (captchaScore < config.minCaptchaScore) {
@@ -128,27 +128,27 @@ export const requestGuestCall = functions.https.onCall(async (data, context) => 
   if (!quotaOk) {
     throw new functions.https.HttpsError('resource-exhausted', 'Daily call quota exceeded');
   }
-  
+
   // Check happy hour if required
   if (config.requireHappyHour && config.happyHours?.length > 0) {
     const now = new Date();
     const currentMin = now.getHours() * 60 + now.getMinutes();
-    const inHappyHour = config.happyHours.some((window: any) => 
+    const inHappyHour = config.happyHours.some((window: any) =>
       currentMin >= window.startMin && currentMin <= window.endMin
     );
-    
+
     if (!inHappyHour) {
       throw new functions.https.HttpsError('failed-precondition', 'Calls only available during happy hours');
     }
   }
-  
+
   // Update trial usage atomically
   const trialRef = db.doc(`trials/${deviceToken}`);
-  
+
   await db.runTransaction(async (transaction) => {
     const doc = await transaction.get(trialRef);
-    
-    if (!doc.exists()) {
+
+    if (!doc.exists) {
       throw new functions.https.HttpsError('permission-denied', 'Invalid trial token');
     }
     
