@@ -9,8 +9,14 @@ export async function startJob(type: string, inputs: any) {
 
 // Agora tokens
 export async function getRtc() {
-  const res = await call<{}, {channel:string, uid:number, token:string, appId:string}>('getRtcToken')({});
-  return res.data;
+  const url = `https://europe-west1-akilipesa-prod.cloudfunctions.net/getRtcToken`;
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({})
+  });
+  if (!r.ok) throw new Error(`getRtc failed: ${r.status}`);
+  return r.json() as Promise<{ appId: string; channel: string; uid: string; token: string; expiresIn: number }>;
 }
 
 export async function endCall(payload: {channel:string, minutes:number, msisdn?:string, tier?:'free'|'premium'}) {
