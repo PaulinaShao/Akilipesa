@@ -10,6 +10,7 @@ import Brand from '@/components/Brand';
 import { normalizeTanzanianPhone, sendCode, ensureInvisibleRecaptcha } from '@/lib/phoneAuth';
 import { useToast } from '@/hooks/useToast';
 import { handlePostLogin, getPostLoginIntent } from '@/lib/authGuard';
+import { ensureUserDoc } from '@/lib/ensureUserDoc';
 
 export default function LoginPage() {
   const [activeTab, setActiveTab] = useState<'phone' | 'email'>('phone');
@@ -116,6 +117,9 @@ export default function LoginPage() {
         // Use Firebase phone auth confirmation
         const credential = await confirmation.confirm(code);
         const firebaseUser = credential.user;
+
+        // Ensure user document exists in Firestore
+        await ensureUserDoc();
 
         // Convert Firebase user to app user format
         const appUser = {
