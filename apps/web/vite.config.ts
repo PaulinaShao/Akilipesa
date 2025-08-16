@@ -11,7 +11,12 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    host: true
+    host: true,
+    strictPort: false,
+    // Add headers to handle frame issues
+    headers: {
+      'X-Frame-Options': 'SAMEORIGIN',
+    }
   },
   build: {
     outDir: 'dist',
