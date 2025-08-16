@@ -386,6 +386,30 @@ function App() {
 
           {/* Emulator Warning */}
           <EmulatorWarning />
+
+          {/* Call Notification */}
+          <CallNotification
+            isVisible={!!incomingCall}
+            caller={incomingCall?.caller || { id: '', name: '', avatar: '', username: '' }}
+            callType={incomingCall?.callType || 'audio'}
+            onAccept={() => {
+              if (incomingCall) {
+                // Navigate to call page and accept call
+                window.location.href = `/call/new?type=${incomingCall.callType}&target=${incomingCall.caller.id}`;
+                setIncomingCall(null);
+              }
+            }}
+            onDecline={() => {
+              setIncomingCall(null);
+            }}
+            onMessage={() => {
+              if (incomingCall) {
+                // Navigate to chat with caller
+                window.location.href = `/chat/ai`;
+                setIncomingCall(null);
+              }
+            }}
+          />
         </ToastProvider>
       </QueryClientProvider>
     </ErrorBoundary>
