@@ -162,6 +162,21 @@ function App() {
 
     initTrialSystem();
 
+    // Demo incoming call after 10 seconds in dev mode
+    if (import.meta.env.DEV) {
+      setTimeout(() => {
+        setIncomingCall({
+          caller: {
+            id: 'demo-caller',
+            name: 'Sarah Johnson',
+            avatar: 'https://images.unsplash.com/photo-1494790108755-2616b9d38aad?w=300&h=300&fit=crop&crop=face',
+            username: 'sarah_creates'
+          },
+          callType: 'video'
+        });
+      }, 10000);
+    }
+
     // In development mode, create a simple mock user after a delay
     if (import.meta.env.DEV && !user) {
       setTimeout(() => {
