@@ -216,8 +216,8 @@ export default function CallOptions({
             </div>
 
             {/* Privacy Selection */}
-            <h3 className="text-white font-semibold mb-4">Privacy setting:</h3>
-            <div className="space-y-3 mb-6">
+            <h3 className="text-white font-semibold mb-6 text-center">Privacy setting:</h3>
+            <div className="space-y-4 mb-8">
               {privacyOptions.map((option) => {
                 const IconComponent = option.icon;
                 return (
@@ -225,22 +225,22 @@ export default function CallOptions({
                     key={option.type}
                     onClick={() => setPrivacy(option.type)}
                     className={cn(
-                      "w-full flex items-center gap-3 p-3 rounded-xl border transition-all",
+                      "w-full flex items-center gap-4 p-4 rounded-2xl border-2 transition-all relative overflow-hidden",
                       privacy === option.type
-                        ? "border-primary bg-primary/10"
-                        : "border-white/10 bg-white/5 hover:bg-white/10"
+                        ? "border-primary bg-primary/15 shadow-lg"
+                        : "border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/30"
                     )}
                   >
-                    <div className={cn("w-8 h-8 rounded-full bg-white/10 flex items-center justify-center", option.color)}>
-                      <IconComponent className="w-4 h-4" />
+                    <div className={cn("w-12 h-12 rounded-full bg-white/10 flex items-center justify-center", option.color)}>
+                      <IconComponent className="w-6 h-6" />
                     </div>
                     <div className="flex-1 text-left">
-                      <div className="text-white font-medium text-sm">{option.title}</div>
-                      <div className="text-white/60 text-xs">{option.description}</div>
+                      <div className="text-white font-semibold text-base">{option.title}</div>
+                      <div className="text-white/70 text-sm">{option.description}</div>
                     </div>
                     {privacy === option.type && (
-                      <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 bg-white rounded-full" />
+                      <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                        <div className="w-3 h-3 bg-white rounded-full" />
                       </div>
                     )}
                   </button>
