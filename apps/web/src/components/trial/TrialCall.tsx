@@ -34,8 +34,8 @@ export const TrialCall: React.FC<TrialCallProps> = ({
 
   // Update call duration and remaining time
   useEffect(() => {
-    let interval: number;
-    
+    let interval: ReturnType<typeof setInterval>;
+
     if (isInCall && rtcEngine.isActive()) {
       interval = setInterval(() => {
         setCallDuration(rtcEngine.getCallDuration());

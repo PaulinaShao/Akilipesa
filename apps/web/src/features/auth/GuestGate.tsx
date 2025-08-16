@@ -62,8 +62,8 @@ export default function GuestGate({
 }: GuestGateProps) {
   const [isVisible, setIsVisible] = useState(!autoShow);
   const [currentBenefit, setCurrentBenefit] = useState(0);
-  const navigate = useNavigate();
-  const { openAuthSheet, setAuthIntent } = useUIStore();
+  // const navigate = useNavigate();
+  const { openAuthSheet } = useUIStore();
 
   // Auto-show after delay
   useEffect(() => {
