@@ -6,7 +6,8 @@ on:
 
 jobs:
   deploy:
-    environment: production   # Required for accessing environment variables and secrets
+    # 1) Must match the Environment name EXACTLY as created in GitHub → Settings → Environments
+    environment: Production
     runs-on: ubuntu-latest
     
     steps:
