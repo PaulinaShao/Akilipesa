@@ -38,14 +38,18 @@ export default function CallOptions({
       icon: Phone,
       title: 'Audio Call',
       description: 'Voice only conversation',
-      color: 'from-green-500 to-emerald-500'
+      color: 'from-green-500 to-emerald-500',
+      bgColor: 'bg-green-500/20',
+      iconColor: 'text-green-400'
     },
     {
       type: 'video' as CallType,
       icon: Video,
       title: 'Video Call',
       description: 'Face-to-face conversation',
-      color: 'from-blue-500 to-cyan-500'
+      color: 'from-blue-500 to-cyan-500',
+      bgColor: 'bg-blue-500/20',
+      iconColor: 'text-blue-400'
     }
   ];
 
