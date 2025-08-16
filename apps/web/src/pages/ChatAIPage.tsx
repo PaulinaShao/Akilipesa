@@ -209,27 +209,29 @@ export default function ChatAIPage() {
           </button>
         </div>
 
-        {/* Mode Selector */}
-        <div className="flex gap-2 mt-3">
-          {modeButtons.map((btn) => {
-            const IconComponent = btn.icon;
-            return (
-              <button
-                key={btn.key}
-                onClick={() => navigate(`/chat/ai?mode=${btn.key}`)}
-                className={cn(
-                  "flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-all",
-                  btn.active
-                    ? "bg-primary text-white"
-                    : "bg-white/10 text-white/70 hover:bg-white/20"
-                )}
-              >
-                <IconComponent className="w-4 h-4" />
-                {btn.label}
-              </button>
-            );
-          })}
-        </div>
+        {/* Mode Selector - Hidden for AkiliPesa system chat */}
+        {!isAkiliChat && (
+          <div className="flex gap-2 mt-3">
+            {modeButtons.map((btn) => {
+              const IconComponent = btn.icon;
+              return (
+                <button
+                  key={btn.key}
+                  onClick={() => navigate(`/chat/ai?mode=${btn.key}`)}
+                  className={cn(
+                    "flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-all",
+                    btn.active
+                      ? "bg-primary text-white"
+                      : "bg-white/10 text-white/70 hover:bg-white/20"
+                  )}
+                >
+                  <IconComponent className="w-4 h-4" />
+                  {btn.label}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* Trial indicator for guests */}
         {isGuest() && (
