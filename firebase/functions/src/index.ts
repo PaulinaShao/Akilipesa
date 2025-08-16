@@ -15,6 +15,7 @@ const REGION: any = 'europe-west1';
 // Define secrets for Agora
 const AGORA_APP_ID = defineSecret('AGORA_APP_ID');
 const AGORA_APP_CERT = defineSecret('AGORA_APP_CERT');
+const RTC_PROVIDER = defineSecret('RTC_PROVIDER'); // optional (e.g., "agora" | "zego")
 
 // CORS configuration
 const cors = corsLib({ origin: true });
