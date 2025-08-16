@@ -197,7 +197,11 @@ export default function LoginPage() {
     try {
       // Simulate Google auth (replace with actual Firebase Auth)
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
+      // When implementing real Google auth, add ensureUserDoc() here:
+      // const credential = await signInWithPopup(auth, googleProvider);
+      // await ensureUserDoc();
+
       const mockUser = {
         id: 'user-google-123',
         name: 'Google User',
