@@ -366,6 +366,7 @@ export async function getRtcToken(channel: string, uid?: number): Promise<{
         token: 'demo_rtc_token',
         channel,
         uid: uid || Math.floor(Math.random() * 100000),
+        appId: 'demo_app_id',
         expiryTime: Date.now() + (60 * 60 * 1000) // 1 hour
       };
     }
