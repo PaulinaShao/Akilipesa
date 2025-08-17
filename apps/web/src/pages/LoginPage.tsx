@@ -164,6 +164,7 @@ export default function LoginPage() {
           avatar: 'https://images.unsplash.com/photo-1494790108755-2616b9d38aad?w=150&h=150&fit=crop&crop=face',
           verified: true,
           plan: 'free' as const,
+          role: 'user' as const,
           balance: 1000,
           earnings: 0,
         };
