@@ -200,7 +200,7 @@ export default function CallPage() {
   };
 
   const participants = activeCall?.participants?.map(p => ({
-    id: p.uid,
+    id: String(p.uid),
     name: p.uid === targetId ? targetUser.name : 'Participant',
     avatar: p.uid === targetId ? targetUser.avatar : 'https://images.unsplash.com/photo-1494790108755-2616b9d38aad?w=300&h=300&fit=crop&crop=face',
     username: p.uid === targetId ? targetUser.username : 'participant',
