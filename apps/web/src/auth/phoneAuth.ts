@@ -8,6 +8,8 @@ import {
   ConfirmationResult,
   UserCredential
 } from "firebase/auth";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 // Extend Window interface for reCAPTCHA
 declare global {
