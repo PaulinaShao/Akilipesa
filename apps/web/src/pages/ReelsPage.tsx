@@ -8,7 +8,6 @@ import { isGuest } from '@/lib/guards';
 import AuthUpsell from '@/components/Modals/AuthUpsell';
 import ShareSheet from '@/components/Modals/ShareSheet';
 import CommentDrawer from '@/components/Modals/CommentDrawer';
-import CallOptions from '@/components/Modals/CallOptions';
 import { toggleLike, toggleFollow, getContentForSharing, startCallFlow, canPerformAction } from '@/lib/api';
 
 interface ReelData {
