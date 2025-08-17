@@ -222,19 +222,19 @@ export default function CallPage() {
     );
   }
 
-  if (activeCall?.status === 'ringing') {
-    // For demo purposes, we'll show outgoing. In real app, you'd determine if incoming/outgoing
-    return (
-      <OutgoingCallScreen
-        callee={targetUser}
-        callType={callType}
-        onEndCall={handleEndCall}
-        onMessage={() => navigate('/chat/ai')}
-        onToggleMute={toggleMute}
-        isMuted={!localAudioEnabled}
-      />
-    );
-  }
+  // if (activeCall?.status === 'ringing') {
+  //   // For demo purposes, we'll show outgoing. In real app, you'd determine if incoming/outgoing
+  //   return (
+  //     <OutgoingCallScreen
+  //       callee={targetUser}
+  //       callType={callType}
+  //       onEndCall={handleEndCall}
+  //       onMessage={() => navigate('/chat/ai')}
+  //       onToggleMute={toggleMute}
+  //       isMuted={!localAudioEnabled}
+  //     />
+  //   );
+  // }
 
   // Active call with WhatsApp-style interface
   return (
