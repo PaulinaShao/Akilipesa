@@ -46,6 +46,11 @@
     -moz-osx-font-smoothing: grayscale;
     color: #EDECF7; /* Improved text contrast */
   }
+
+  /* Global scroll styles for all page roots */
+  .page-root {
+    @apply min-h-screen overflow-y-auto;
+  }
   
   /* Mobile optimization */
   @media (max-width: 768px) {
