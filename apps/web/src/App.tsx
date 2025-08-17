@@ -23,6 +23,7 @@ import { initFirebase } from '@/lib/firebaseEnhanced';
 import { seedTrialConfig } from '@/lib/seedTrialConfig';
 import { initGuestOnce } from '@/lib/initGuest';
 import { loadTrialConfig } from '@/lib/config';
+import { setIncomingCallHandler, acceptCall, declineCall, messageInsteadOfCall, type IncomingCallData } from '@/lib/callUtils';
 import { useTrialConfigStore } from '@/store/trialConfigStore';
 import { shouldShowSplashOnce } from '@/lib/entry';
 import { ensureRecaptchaContainer } from '@/lib/ensureRecaptchaContainer';
@@ -94,15 +95,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [devModeUser, setDevModeUser] = useState<User | null>(null);
   const [showSplash, setShowSplash] = useState(() => shouldShowSplashOnce());
-  const [incomingCall, setIncomingCall] = useState<{
-    caller: {
-      id: string;
-      name: string;
-      avatar: string;
-      username: string;
-    };
-    callType: 'audio' | 'video';
-  } | null>(null);
+  const [incomingCall, setIncomingCall] = useState<IncomingCallData | null>(null);
 
   // Initialize trial system
   const { initializeToken, fetchConfig } = useTrialStore();
@@ -121,6 +114,9 @@ function App() {
 
     // Initialize guest sign-in once (prevents duplicate anonymous users)
     initGuestOnce();
+
+    // Set up centralized incoming call handler
+    setIncomingCallHandler(setIncomingCall);
 
     // Load trial configuration
     let cancelled = false;
@@ -438,22 +434,16 @@ function App() {
             callType={incomingCall?.callType || 'audio'}
             onAccept={() => {
               if (incomingCall && trialConfig?.callsEnabled !== false) {
-                // Navigate to call page and accept call
-                window.location.href = `/call/new?type=${incomingCall.callType}&target=${incomingCall.caller.id}`;
-                setIncomingCall(null);
+                acceptCall(incomingCall);
               } else if (trialConfig?.callsEnabled === false) {
                 console.log('Calls are disabled in trial config');
-                setIncomingCall(null);
+                declineCall();
               }
             }}
-            onDecline={() => {
-              setIncomingCall(null);
-            }}
+            onDecline={declineCall}
             onMessage={() => {
               if (incomingCall) {
-                // Navigate to chat with caller
-                window.location.href = `/chat/ai`;
-                setIncomingCall(null);
+                messageInsteadOfCall(incomingCall);
               }
             }}
           />
