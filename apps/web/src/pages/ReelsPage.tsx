@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Heart, MessageCircle, Share, Music2, Phone, Video, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import WalletChip from '@/components/WalletChip';
+import LoginBadge from '@/components/LoginBadge';
 import { useAppStore } from '@/store';
 import { isGuest } from '@/lib/guards';
 import AuthUpsell from '@/components/Modals/AuthUpsell';
