@@ -14,6 +14,8 @@ type Props = {
 export default function WalletChip({
   variant = "guest",
   onClick,
+  onBalanceClick,
+  onPlanClick,
   labelGuest = "Tap to start earning",
   labelUser = "—",
   walletBalance = 284500,
