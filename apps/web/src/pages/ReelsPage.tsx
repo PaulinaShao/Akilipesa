@@ -214,13 +214,6 @@ function ReelCard({
     }
   };
 
-  const handleWalletClick = () => {
-    if (isGuest()) {
-      navigate('/wallet?upsell=1');
-    } else {
-      navigate('/wallet');
-    }
-  };
 
   return (
     <div className="reel-card">
