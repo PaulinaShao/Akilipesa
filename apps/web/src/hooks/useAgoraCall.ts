@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import AgoraRTC, { IAgoraRTCClient, ILocalAudioTrack, ILocalVideoTrack } from 'agora-rtc-sdk-ng';
 import { getRtc } from '@/lib/api';
+import { useAgoraClient } from './useAgoraClient';
 
 export interface AgoraCallConfig {
   appId?: string;
