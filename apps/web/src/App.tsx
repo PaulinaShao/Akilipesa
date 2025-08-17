@@ -110,6 +110,9 @@ function App() {
   const { setConfig: setTrialConfig, config: trialConfig, isLoaded: configLoaded } = useTrialConfigStore();
 
   useEffect(() => {
+    // Initialize fetch wrapper for problematic environments (like fly.dev with FullStory)
+    initializeFetchWrapper();
+
     // Initialize reCAPTCHA container for phone auth
     ensureRecaptchaContainer();
 
