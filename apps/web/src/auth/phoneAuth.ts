@@ -2,6 +2,7 @@ import {
   PhoneAuthProvider,
   linkWithCredential,
   signInWithCredential,
+  signInWithPhoneNumber,
   getAuth,
   RecaptchaVerifier,
   ConfirmationResult,
