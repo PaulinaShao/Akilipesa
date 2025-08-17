@@ -141,7 +141,7 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
       const { deviceToken } = get();
       if (!deviceToken) return;
 
-      const { db } = await import('../lib/firebase');
+      const { db } = await import('../lib/firebaseEnhanced');
       const { doc, getDoc } = await import('firebase/firestore');
 
       const usageDoc = await getDoc(doc(db, 'trials', deviceToken));
