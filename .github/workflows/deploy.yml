@@ -1,9 +1,8 @@
-name: Deploy AkiliPesa
+name: Deploy Functions
 
 on:
   push:
     branches: [ main ]
-    # Re-run only when these change (adjust as needed)
     paths:
       - 'firebase/functions/**'
       - 'firebase/firestore.rules'
@@ -12,36 +11,30 @@ on:
 
 permissions:
   contents: read
-  id-token: write   # <-- required for OIDC
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # Auth to Google Cloud using Workload Identity Federation
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            firebase/functions/package-lock.json
 
-      # (Optional) Install gcloud – handy for debugging
-      - name: Setup gcloud
-        uses: google-github-actions/setup-gcloud@v2
+      - name: Install workspace deps
+        run: npm ci --workspaces
 
-      # Install and build Cloud Functions
-      - name: Install functions deps
-        run: npm ci
-        working-directory: firebase/functions
-
-      - name: Build functions
+      - name: Build Cloud Functions (TypeScript)
         run: npm run build
         working-directory: firebase/functions
 
-      # Deploy from repo root so firebase.json is picked up
-      - name: Deploy to Firebase (functions + rules)
-        run: npx firebase-tools deploy --project akilipesa-prod --only functions,firestore:rules --non-interactive
+      - name: Deploy Functions + Firestore rules
+        run: npx firebase-tools deploy --only functions,firestore:rules --project "${{ vars.FIREBASE_PROJECT_ID }}" --non-interactive --token "${{ secrets.FIREBASE_TOKEN }}"
