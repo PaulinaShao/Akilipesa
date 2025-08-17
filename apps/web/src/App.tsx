@@ -449,9 +449,12 @@ function App() {
             caller={incomingCall?.caller || { id: '', name: '', avatar: '', username: '' }}
             callType={incomingCall?.callType || 'audio'}
             onAccept={() => {
-              if (incomingCall) {
+              if (incomingCall && trialConfig?.callsEnabled !== false) {
                 // Navigate to call page and accept call
                 window.location.href = `/call/new?type=${incomingCall.callType}&target=${incomingCall.caller.id}`;
+                setIncomingCall(null);
+              } else if (trialConfig?.callsEnabled === false) {
+                console.log('Calls are disabled in trial config');
                 setIncomingCall(null);
               }
             }}
