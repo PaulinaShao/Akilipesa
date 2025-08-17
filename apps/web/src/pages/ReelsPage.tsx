@@ -622,10 +622,17 @@ export default function ReelsPage() {
     const reel = reels.find(r => r.user.id === userId);
     if (!reel) return;
 
-    // Check authentication and plan status
+    // Check authentication status
     if (!canPerformAction('call')) {
-      setJoinConversationTrigger('comment'); // Use join conversation for better UX
+      setJoinConversationTrigger('comment');
       setShowJoinConversation(true);
+      return;
+    }
+
+    // Check if user is on free plan and show appropriate modal
+    if (user && user.plan === 'free') {
+      setFreeTrialFeature('call');
+      setShowFreeTrialModal(true);
       return;
     }
 
