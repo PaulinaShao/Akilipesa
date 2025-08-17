@@ -17,6 +17,7 @@ import { ErrorBoundary, OfflineIndicator } from '@/components/ErrorBoundary';
 import EmulatorWarning from '@/components/EmulatorWarning';
 import { useTrialStore } from '@/state/trialStore';
 import { useAppStore, type User as AppUser } from '@/store';
+import { db } from '@/lib/firebase';
 import { seedTrialConfig } from '@/lib/seedTrialConfig';
 import { ensureGuest } from '@/lib/guest';
 import { loadTrialConfig } from '@/lib/config';
