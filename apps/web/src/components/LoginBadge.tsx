@@ -10,7 +10,7 @@ export default function LoginBadge({ className }: LoginBadgeProps) {
   const { openAuthSheet } = useUIStore();
 
   const handleClick = () => {
-    openAuthSheet('sign_in');
+    openAuthSheet(undefined, 'sign_in');
   };
 
   return (
