@@ -1,5 +1,6 @@
 import { useAppStore } from '@/store';
 import { hasRole, hasPermission, canAccessAdmin, isAdmin, canModerate, isCreator, type UserRole } from '@/lib/roleGuards';
+import { isRealUser } from '@/auth/phoneAuth';
 
 export function useAuth() {
   const { user, setUser } = useAppStore();
