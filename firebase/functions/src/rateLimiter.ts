@@ -1,6 +1,4 @@
-import * as admin from "firebase-admin";
-
-const db = admin.firestore();
+import { db } from './adminApp';
 
 export async function checkDeviceQuota(deviceId: string, kind: "ai"|"call") {
   const ref = db.doc(`trialQuotas/${deviceId}`);

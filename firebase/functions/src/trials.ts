@@ -1,10 +1,9 @@
-import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions/v2/https';
 import * as pubsubFunctions from 'firebase-functions/v2/scheduler';
 import * as crypto from 'crypto';
 import { checkDeviceQuota } from './rateLimiter';
-
-const db = admin.firestore();
+import { db } from './adminApp';
+import { FieldValue } from 'firebase-admin/firestore';
 
 // Helper to get current day key
 const getCurrentDay = () => new Date().toISOString().slice(0, 10).replace(/-/g, '');
