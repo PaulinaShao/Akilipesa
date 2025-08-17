@@ -30,7 +30,7 @@ async function validateCaptcha(token?: string): Promise<number> {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
-        secret: functions.config().recaptcha?.secret || '',
+        secret: process.env.RECAPTCHA_SECRET || '',
         response: token,
       }),
     });
@@ -353,5 +353,4 @@ export const resetTrialCounters = pubsubFunctions.onSchedule({
     timeZone: 'Africa/Dar_es_Salaam'
   }, async (event) => {
     console.log('Trial counter reset job triggered (using dayKey logic instead)');
-    return null;
   });
