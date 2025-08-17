@@ -1,5 +1,5 @@
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { db } from './firebase';
+import { safeFirestoreOperation } from './firestoreManager';
 
 export interface TrialConfigData {
   enabled: boolean;
@@ -38,32 +38,30 @@ const devTrialConfig: TrialConfigData = {
 };
 
 export async function seedTrialConfig(isDev: boolean = false): Promise<void> {
-  try {
-    const configRef = doc(db, 'trialConfig', 'global');
-    const configSnap = await getDoc(configRef);
+  const config = isDev ? devTrialConfig : defaultTrialConfig;
 
-    if (configSnap.exists()) {
-      console.log('Trial config already exists:', configSnap.data());
-      return;
+  await safeFirestoreOperation(
+    async (db) => {
+      const configRef = doc(db, 'trialConfig', 'global');
+      const configSnap = await getDoc(configRef);
+
+      if (configSnap.exists()) {
+        console.log('✅ Trial config already exists:', configSnap.data());
+        return;
+      }
+
+      await setDoc(configRef, {
+        ...config,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      console.log('✅ Trial config seeded successfully:', config);
+    },
+    () => {
+      console.log('📱 Offline mode: using default trial config without seeding');
     }
-
-    const config = isDev ? devTrialConfig : defaultTrialConfig;
-
-    await setDoc(configRef, {
-      ...config,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-
-    console.log('Trial config seeded successfully:', config);
-  } catch (error) {
-    console.warn('Failed to seed trial config (offline mode):', (error as any)?.message || error);
-    // In offline mode, just log that we're using defaults
-    const config = isDev ? devTrialConfig : defaultTrialConfig;
-    console.log('Using default trial config in offline mode:', config);
-
-    // Don't throw error in offline mode, just continue with defaults
-  }
+  );
 }
 
 export async function updateTrialConfig(updates: Partial<TrialConfigData>): Promise<void> {
