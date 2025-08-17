@@ -1,10 +1,20 @@
-import { initializeApp } from 'firebase/app';
+// Single source of truth for Firebase client & Firestore.
+// Import ONLY from this file everywhere else.
+
+import { getApp, getApps, initializeApp, type FirebaseApp } from 'firebase/app';
+import {
+  getFirestore,
+  initializeFirestore,
+  persistentLocalCache,
+  persistentSingleTabManager,
+  type Firestore,
+} from 'firebase/firestore';
 import { getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
-import { getFirestoreInstance, safeFirestoreOperation } from './firestoreManager';
 
-const cfg = {
+// Firebase configuration
+const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
@@ -14,75 +24,130 @@ const cfg = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
+// Singleton instances
+let app: FirebaseApp | undefined;
+let db: Firestore | undefined;
+let auth: ReturnType<typeof getAuth> | undefined;
+let functions: ReturnType<typeof getFunctions> | undefined;
+let appCheckDone = false;
+
 // Validate configuration
 const requiredFields = ['apiKey', 'authDomain', 'projectId', 'appId'];
-const missingFields = requiredFields.filter(field => !cfg[field as keyof typeof cfg]);
+const missingFields = requiredFields.filter(field => !firebaseConfig[field as keyof typeof firebaseConfig]);
 
 if (missingFields.length > 0) {
   console.error('❌ Missing Firebase configuration:', missingFields);
   throw new Error(`Missing Firebase configuration: ${missingFields.join(', ')}`);
 }
 
-console.log('🔥 Initializing Firebase with config:', {
-  ...cfg,
-  apiKey: cfg.apiKey?.slice(0, 10) + '...',
-});
-
-export const app = initializeApp(cfg);
-
-// Authentication setup
-export const auth = getAuth(app);
-setPersistence(auth, browserLocalPersistence);
-
-// Enhanced Firestore setup with error handling
-export async function getDb() {
-  return getFirestoreInstance();
+export function getFirebaseApp(): FirebaseApp {
+  if (!app) {
+    app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+    console.log('🔥 Firebase app initialized:', firebaseConfig.projectId);
+  }
+  return app!;
 }
 
-// Safe Firestore operations export
-export { safeFirestoreOperation };
+export function getDb(): Firestore {
+  if (db) return db;
+  
+  const a = getFirebaseApp();
+  
+  // Try to initialize once with your preferred options…
+  try {
+    console.log('🗄️ Initializing Firestore with persistent cache...');
+    db = initializeFirestore(a, {
+      localCache: persistentLocalCache({ 
+        tabManager: persistentSingleTabManager() 
+      }),
+    });
+    console.log('✅ Firestore initialized with persistent cache');
+  } catch (error) {
+    // …but if another module already initialized with different options,
+    // fall back to the existing instance to avoid the crash.
+    console.warn('⚠️ Firestore already initialized, using existing instance:', error);
+    db = getFirestore(a);
+  }
+  
+  return db!;
+}
 
-// Functions setup
-export const fns = getFunctions(app, import.meta.env.VITE_FUNCTIONS_REGION || 'us-central1');
+export function getAuthInstance() {
+  if (!auth) {
+    auth = getAuth(getFirebaseApp());
+    setPersistence(auth, browserLocalPersistence);
+    console.log('🔐 Firebase Auth initialized');
+  }
+  return auth;
+}
+
+export function getFunctionsInstance() {
+  if (!functions) {
+    functions = getFunctions(getFirebaseApp(), import.meta.env.VITE_FUNCTIONS_REGION || 'us-central1');
+    console.log('⚡ Firebase Functions initialized');
+  }
+  return functions;
+}
+
+export function ensureAppCheck() {
+  if (appCheckDone) return;
+  
+  const key = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  const isProduction = import.meta.env.PROD;
+  const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
+  
+  console.log('🔐 App Check setup:', {
+    hasKey: !!key,
+    isProduction,
+    hostname,
+  });
+  
+  // Only enable App Check in production if you actually have a key set
+  if (isProduction && key) {
+    try {
+      // More permissive domain checking for fly.dev and other hosting platforms
+      const isAuthorizedDomain = hostname.includes('akilipesa.com') ||
+                                hostname.includes('akilipesa-prod.web.app') ||
+                                hostname.includes('akilipesa-prod.firebaseapp.com') ||
+                                hostname.includes('fly.dev'); // Add fly.dev support
+
+      if (isAuthorizedDomain) {
+        console.log('✅ Initializing App Check for authorized domain:', hostname);
+        initializeAppCheck(getFirebaseApp(), {
+          provider: new ReCaptchaV3Provider(key),
+          isTokenAutoRefreshEnabled: true,
+        });
+      } else {
+        console.log('⚠️ Skipping App Check for unauthorized domain:', hostname);
+      }
+    } catch (error) {
+      console.warn('⚠️ App Check initialization failed, continuing without App Check:', error);
+    }
+  } else {
+    console.log('📝 App Check disabled - not in production or no key provided');
+  }
+  
+  appCheckDone = true;
+}
+
+// Optional convenience for app start
+export function initFirebase() {
+  getFirebaseApp();
+  getDb();
+  getAuthInstance();
+  getFunctionsInstance();
+  ensureAppCheck();
+  console.log('🚀 Firebase fully initialized');
+}
+
+// Convenience exports for compatibility
+export const auth = getAuthInstance();
+export const db = getDb();
+export const fns = getFunctionsInstance();
 export const functions = fns; // Backward compatibility
 
 export const call = <T=unknown, R=unknown>(name: string) =>
   httpsCallable<T, R>(fns, name);
-
-// App Check setup with enhanced error handling
-const appCheckKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
-const isProduction = import.meta.env.PROD;
-const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
-
-console.log('🔐 App Check setup:', {
-  hasKey: !!appCheckKey,
-  isProduction,
-  hostname,
-});
-
-if (appCheckKey && isProduction) {
-  try {
-    // More permissive domain checking for fly.dev and other hosting platforms
-    const isAuthorizedDomain = hostname.includes('akilipesa.com') ||
-                              hostname.includes('akilipesa-prod.web.app') ||
-                              hostname.includes('akilipesa-prod.firebaseapp.com') ||
-                              hostname.includes('fly.dev'); // Add fly.dev support
-
-    if (isAuthorizedDomain) {
-      console.log('✅ Initializing App Check for authorized domain:', hostname);
-      initializeAppCheck(app, {
-        provider: new ReCaptchaV3Provider(appCheckKey),
-        isTokenAutoRefreshEnabled: true,
-      });
-    } else {
-      console.log('⚠️ Skipping App Check for unauthorized domain:', hostname);
-    }
-  } catch (error) {
-    console.warn('⚠️ App Check initialization failed, continuing without App Check:', error);
-  }
-} else {
-  console.log('📝 App Check disabled - not in production or no key provided');
-}
 
 // Export demo mode flag
 export const isFirebaseDemoMode = import.meta.env.VITE_APP_ENV === 'demo' || import.meta.env.DEV;
@@ -92,15 +157,16 @@ export function getFirebaseStatus() {
   return {
     app: !!app,
     auth: !!auth,
-    functions: !!fns,
+    db: !!db,
+    functions: !!functions,
     environment: {
       isDev: import.meta.env.DEV,
-      isProduction,
-      hostname,
+      isProduction: import.meta.env.PROD,
+      hostname: typeof window !== 'undefined' ? window.location.hostname : '',
     },
     config: {
-      projectId: cfg.projectId,
-      authDomain: cfg.authDomain,
+      projectId: firebaseConfig.projectId,
+      authDomain: firebaseConfig.authDomain,
       functionsRegion: import.meta.env.VITE_FUNCTIONS_REGION,
     }
   };

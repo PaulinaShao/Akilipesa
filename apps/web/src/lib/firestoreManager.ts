@@ -1,71 +1,30 @@
-import { 
-  getFirestore, 
-  enableNetwork, 
-  disableNetwork, 
-  connectFirestoreEmulator,
-  initializeFirestore,
-  CACHE_SIZE_UNLIMITED 
+import {
+  enableNetwork,
+  disableNetwork,
+  type Firestore
 } from 'firebase/firestore';
-import { app } from './firebase';
+import { getDb } from './firebaseEnhanced';
 import { isOnline, waitForOnline } from './connectivity';
 
 // Connection state management
-let firestoreInstance: ReturnType<typeof getFirestore> | null = null;
 let connectionAttempts = 0;
 let lastConnectionError: Error | null = null;
-let isConnecting = false;
 
 // Maximum connection attempts before falling back to offline mode
 const MAX_CONNECTION_ATTEMPTS = 3;
 const CONNECTION_TIMEOUT = 10000; // 10 seconds
 
 /**
- * Get a properly configured Firestore instance with error handling
+ * Get the centralized Firestore instance
  */
-export async function getFirestoreInstance() {
-  if (firestoreInstance) {
-    return firestoreInstance;
-  }
-
-  try {
-    // Initialize Firestore with optimized settings
-    firestoreInstance = initializeFirestore(app, {
-      // Use memory cache only to avoid IndexedDB issues
-      localCache: {
-        kind: 'memory'
-      },
-      // Set connection timeout
-      experimentalForceLongPolling: true, // Helps with proxy environments
-    });
-
-    // Test connection with timeout
-    await testFirestoreConnection(firestoreInstance);
-    
-    console.log('✅ Firestore connection established');
-    connectionAttempts = 0;
-    lastConnectionError = null;
-    
-    return firestoreInstance;
-  } catch (error) {
-    console.warn('⚠️ Firestore initialization failed:', error);
-    lastConnectionError = error as Error;
-    connectionAttempts++;
-    
-    // Fall back to basic getFirestore if custom initialization fails
-    try {
-      firestoreInstance = getFirestore(app);
-      return firestoreInstance;
-    } catch (fallbackError) {
-      console.error('❌ Firestore fallback also failed:', fallbackError);
-      throw fallbackError;
-    }
-  }
+export function getFirestoreInstance(): Firestore {
+  return getDb();
 }
 
 /**
  * Test Firestore connection with timeout
  */
-async function testFirestoreConnection(db: ReturnType<typeof getFirestore>): Promise<void> {
+async function testFirestoreConnection(db: Firestore): Promise<void> {
   return Promise.race([
     // Try to enable network (this will fail if connection is bad)
     enableNetwork(db).then(() => {
@@ -82,7 +41,7 @@ async function testFirestoreConnection(db: ReturnType<typeof getFirestore>): Pro
  * Safely execute Firestore operations with retry logic
  */
 export async function safeFirestoreOperation<T>(
-  operation: (db: ReturnType<typeof getFirestore>) => Promise<T>,
+  operation: (db: Firestore) => Promise<T>,
   fallback?: () => T
 ): Promise<T> {
   // Check if we're online first
@@ -99,35 +58,35 @@ export async function safeFirestoreOperation<T>(
   }
 
   try {
-    const db = await getFirestoreInstance();
+    const db = getFirestoreInstance();
     return await operation(db);
   } catch (error) {
     const err = error as Error;
     console.warn('Firestore operation failed:', err.message);
-    
+
     // Track connection failures
     if (isNetworkError(err)) {
       connectionAttempts++;
       lastConnectionError = err;
-      
+
       // Wait for network if we're offline
       if (!isOnline()) {
         console.log('🌐 Waiting for network connection...');
         const online = await waitForOnline(5000);
-        
+
         if (online && connectionAttempts < MAX_CONNECTION_ATTEMPTS) {
           console.log('🔄 Network restored, retrying operation...');
           return safeFirestoreOperation(operation, fallback);
         }
       }
     }
-    
+
     // Use fallback if available
     if (fallback) {
       console.log('🔄 Using fallback for failed operation');
       return fallback();
     }
-    
+
     throw err;
   }
 }
@@ -147,7 +106,7 @@ export function resetFirestoreConnection() {
  */
 export function getConnectionStatus() {
   return {
-    isConnected: !!firestoreInstance && connectionAttempts === 0,
+    isConnected: connectionAttempts === 0,
     connectionAttempts,
     lastError: lastConnectionError?.message,
     isOnline: isOnline(),
@@ -175,7 +134,7 @@ function isNetworkError(error: Error): boolean {
  */
 export async function forceEnableFirestore() {
   try {
-    const db = await getFirestoreInstance();
+    const db = getFirestoreInstance();
     await enableNetwork(db);
     resetFirestoreConnection();
     console.log('✅ Firestore network force-enabled');
