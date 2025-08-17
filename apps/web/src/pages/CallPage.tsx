@@ -48,7 +48,7 @@ export default function CallPage() {
               type: callData.type || callType,
               targetId: callData.targetUser.id
             });
-            setIsPrivate(callData.privacy === 'private');
+            // setIsPrivate(callData.privacy === 'private');
           } else if (targetId) {
             // Fallback: create minimal call state from URL params
             await startCall({
