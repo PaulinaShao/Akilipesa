@@ -65,19 +65,18 @@ export async function seedTrialConfig(isDev: boolean = false): Promise<void> {
 }
 
 export async function updateTrialConfig(updates: Partial<TrialConfigData>): Promise<void> {
-  try {
+  const { safeFirestoreOperation } = await import('./firestoreManager');
+
+  await safeFirestoreOperation(async (db) => {
     const configRef = doc(db, 'trialConfig', 'global');
-    
+
     await setDoc(configRef, {
       ...updates,
       updatedAt: new Date(),
     }, { merge: true });
 
     console.log('Trial config updated:', updates);
-  } catch (error) {
-    console.error('Failed to update trial config:', error);
-    throw error;
-  }
+  });
 }
 
 export async function getTrialConfig(): Promise<TrialConfigData | null> {
