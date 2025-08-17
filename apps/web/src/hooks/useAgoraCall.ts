@@ -25,8 +25,9 @@ export interface UseAgoraCallReturn {
   isVideoEnabled: boolean;
 }
 
-export function useAgoraCall(): UseAgoraCallReturn {
-  const [client, setClient] = useState<IAgoraRTCClient | null>(null);
+export function useAgoraCall(enabled: boolean = false): UseAgoraCallReturn {
+  // Use centralized client
+  const client = useAgoraClient(enabled);
   const [localAudioTrack, setLocalAudioTrack] = useState<ILocalAudioTrack | null>(null);
   const [localVideoTrack, setLocalVideoTrack] = useState<ILocalVideoTrack | null>(null);
   const [isJoined, setIsJoined] = useState(false);
