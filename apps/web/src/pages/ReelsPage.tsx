@@ -243,6 +243,7 @@ function ReelCard({
         loop
         muted
         playsInline
+        autoPlay
         onClick={handleVideoClick}
       >
         <source src={reel.videoUrl} type="video/mp4" />
