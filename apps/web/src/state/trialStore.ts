@@ -360,8 +360,10 @@ if (typeof window !== 'undefined') {
         store.fetchConfig()
       ]).then(() => {
         store.fetchUsage();
+        useTrialStore.setState({ isInitialized: true });
       }).catch(error => {
         debugLog.warn('Trial system initialization failed (will retry later):', error);
+        useTrialStore.setState({ isInitialized: true }); // Mark as initialized even on error
       });
     }
   }, 1000); // 1 second delay
