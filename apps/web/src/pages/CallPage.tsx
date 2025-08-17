@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, useLocation, useParams } from 'react-router-dom';
 import {
-  Mic, MicOff, Video, VideoOff, PhoneOff, AlertTriangle
+  Mic, Video, AlertTriangle
 } from 'lucide-react';
 // import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store';
@@ -22,7 +22,7 @@ export default function CallPage() {
   const targetId = searchParams.get('target');
   const channel = useParams().channel;
 
-  const [isPrivate, setIsPrivate] = useState(true);
+  // const [isPrivate, setIsPrivate] = useState(true);
   const [showLowCreditsWarning, setShowLowCreditsWarning] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
 
@@ -30,7 +30,7 @@ export default function CallPage() {
   const [localVideoEnabled, setLocalVideoEnabled] = useState(callType === 'video');
   const [cameraFacing, setCameraFacing] = useState<'user' | 'environment'>('user');
   const [isMinimized, setIsMinimized] = useState(false);
-  const [callScreenType] = useState<'outgoing' | 'incoming' | 'active'>('outgoing');
+  // const [callScreenType] = useState<'outgoing' | 'incoming' | 'active'>('outgoing');
 
   // Initialize call if no active call but we have channel info
   useEffect(() => {

@@ -5,7 +5,7 @@ let verifier: RecaptchaVerifier | null = null;
 
 export function ensureInvisibleRecaptcha(containerId = 'recaptcha-container') {
   if (verifier) return verifier;
-  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  // const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
   // Make sure a container exists in the DOM
   if (!document.getElementById(containerId)) {
     const el = document.createElement('div');
