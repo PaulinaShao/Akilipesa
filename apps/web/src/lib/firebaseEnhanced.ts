@@ -141,13 +141,13 @@ export function initFirebase() {
 }
 
 // Convenience exports for compatibility
-export const auth = getAuthInstance();
-export const db = getDb();
-export const fns = getFunctionsInstance();
-export const functions = fns; // Backward compatibility
+export { getAuthInstance as auth };
+export { getDb as db };
+export { getFunctionsInstance as fns };
+export { getFunctionsInstance as functions }; // Backward compatibility
 
 export const call = <T=unknown, R=unknown>(name: string) =>
-  httpsCallable<T, R>(fns, name);
+  httpsCallable<T, R>(getFunctionsInstance(), name);
 
 // Export demo mode flag
 export const isFirebaseDemoMode = import.meta.env.VITE_APP_ENV === 'demo' || import.meta.env.DEV;
