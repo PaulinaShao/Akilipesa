@@ -112,13 +112,12 @@ export default function CallScreen({ className }: CallScreenProps) {
 
   const handleToggleMute = async () => {
     await toggleMute();
-    setIsMuted(!isMuted);
   };
 
   const handleToggleVideo = async () => {
     if (callType === 'video') {
       await toggleVideo();
-      setIsVideoOff(!isVideoOff);
+      setIsVideoOff(!isVideoEnabled);
     }
   };
 
