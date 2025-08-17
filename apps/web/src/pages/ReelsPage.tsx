@@ -437,6 +437,8 @@ export default function ReelsPage() {
   // Modal states
   const [showAuthUpsell, setShowAuthUpsell] = useState(false);
   const [authUpsellTrigger, setAuthUpsellTrigger] = useState<'like' | 'comment' | 'follow' | 'call' | 'shop' | 'create' | 'general'>('general');
+  const [showJoinConversation, setShowJoinConversation] = useState(false);
+  const [joinConversationTrigger, setJoinConversationTrigger] = useState<'like' | 'comment' | 'follow'>('comment');
   const [showShareSheet, setShowShareSheet] = useState(false);
   const [shareContent, setShareContent] = useState<any>(null);
   const [showCommentDrawer, setShowCommentDrawer] = useState(false);
