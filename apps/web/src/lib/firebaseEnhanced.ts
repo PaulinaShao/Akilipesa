@@ -140,11 +140,11 @@ export function initFirebase() {
   console.log('🚀 Firebase fully initialized');
 }
 
-// Convenience exports for compatibility
-export { getAuthInstance as auth };
-export { getDb as db };
-export { getFunctionsInstance as fns };
-export { getFunctionsInstance as functions }; // Backward compatibility
+// Convenience exports for compatibility - use getters to avoid redeclaration
+export const auth = getAuthInstance();
+export const db = getDb();
+export const fns = getFunctionsInstance();
+export const functions = getFunctionsInstance(); // Backward compatibility
 
 export const call = <T=unknown, R=unknown>(name: string) =>
   httpsCallable<T, R>(getFunctionsInstance(), name);

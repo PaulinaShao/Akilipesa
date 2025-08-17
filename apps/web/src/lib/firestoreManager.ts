@@ -97,7 +97,6 @@ export async function safeFirestoreOperation<T>(
 export function resetFirestoreConnection() {
   connectionAttempts = 0;
   lastConnectionError = null;
-  isConnecting = false;
   console.log('🔄 Firestore connection state reset');
 }
 
