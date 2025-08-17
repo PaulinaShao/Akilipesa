@@ -24,6 +24,18 @@ export function FirestoreDebug() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "d") {
+        const next = !on;
+        localStorage.setItem("enableFirestoreDebug", next ? "1" : "0");
+        setOn(next);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [on]);
+
   const handleForceReconnect = async () => {
     try {
       await forceEnableFirestore();
