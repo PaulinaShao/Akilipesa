@@ -10,13 +10,13 @@ export async function startJob(type: string, inputs: any) {
 
 // Agora tokens
 export async function getRtc() {
-  const res = await call<{}, {appId: string, channel: string, uid: number, token: string, expire: number}>('getRtcToken')({});
+  const res = await call<{}, {appId: string, channel: string, uid: number, token: string, expiresIn: number}>('getRtcToken')({});
   return {
     appId: res.data.appId,
     channel: res.data.channel,
     uid: String(res.data.uid),
     token: res.data.token,
-    expiresIn: res.data.expire
+    expiresIn: res.data.expiresIn
   };
 }
 
