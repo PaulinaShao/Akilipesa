@@ -111,10 +111,32 @@ function App() {
     // Initialize reCAPTCHA container for phone auth
     ensureRecaptchaContainer();
 
-    // Initialize guest auth for read-only browsing (non-blocking)
-    ensureGuestAuth().catch(error => {
-      console.warn('Guest auth initialization failed, app will continue:', error);
-    });
+    // Guest bootstrap and trial config loading (one-shot, no retries)
+    let cancelled = false;
+    (async () => {
+      try {
+        // Try guest authentication once
+        const user = await ensureGuest(auth);
+        if (user && !cancelled) {
+          console.log('Guest authentication successful');
+        }
+
+        // Load trial configuration
+        const cfg = await loadTrialConfig(db);
+        if (!cancelled) {
+          setTrialConfig(cfg);
+          console.log('Trial config loaded:', cfg);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          console.warn('Guest bootstrap failed, app will continue:', error);
+          // Set empty config to mark as loaded
+          setTrialConfig({});
+        }
+      }
+    })();
+
+    const cleanupBootstrap = () => { cancelled = true; };
 
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
