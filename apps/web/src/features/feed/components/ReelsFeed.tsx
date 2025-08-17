@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { mockReels } from '../mockData';
 import { Reel } from '../types';
 import ReelCard from './ReelCard';
+import { initiateCall } from '@/lib/callUtils';
 
 export default function ReelsFeed() {
   const [reels] = useState<Reel[]>(mockReels);
