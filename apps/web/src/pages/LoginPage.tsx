@@ -8,6 +8,7 @@ import CodeInput from '@/components/auth/CodeInput';
 import GoogleButton from '@/components/auth/GoogleButton';
 import Brand from '@/components/Brand';
 import { normalizeTanzanianPhone, sendCode, ensureInvisibleRecaptcha } from '@/lib/phoneAuth';
+import { formatTZPhoneDisplay } from '@/lib/phoneValidation';
 import { useToast } from '@/hooks/useToast';
 import { handlePostLogin, getPostLoginIntent } from '@/lib/authGuard';
 import { ensureUserDoc } from '@/lib/ensureUserDoc';
@@ -448,7 +449,7 @@ export default function LoginPage() {
                   Enter verification code
                 </h2>
                 <p className="text-[var(--tz-muted)] text-sm">
-                  We sent a 6-digit code to {activeTab === 'phone' ? formatAsDisplay(phoneE164) : email}
+                  We sent a 6-digit code to {activeTab === 'phone' ? formatTZPhoneDisplay(phoneE164.replace('+255', '')) : email}
                 </p>
               </div>
 
