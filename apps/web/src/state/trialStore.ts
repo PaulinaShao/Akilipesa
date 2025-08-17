@@ -29,6 +29,7 @@ export interface TrialStore {
   config: TrialConfig | null;
   usage: TrialUsage | null;
   isLoading: boolean;
+  isInitialized: boolean;
   error: string | null;
   
   // Happy hour state
