@@ -231,7 +231,10 @@ function App() {
       }, 1000);
     }
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      cleanupBootstrap();
+    };
   }, [user, initializeToken, fetchConfig, setAppUser]);
 
   const currentUser = user || devModeUser;
