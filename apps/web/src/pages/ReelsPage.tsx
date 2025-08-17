@@ -343,11 +343,41 @@ function ReelCard({
           </div>
         </button>
 
+        {/* Bottom-left like/comment cluster */}
+        <div className="flex items-center space-x-4 mb-2">
+          <button
+            onClick={onLike}
+            className={cn(
+              "flex items-center space-x-1 transition-all",
+              reel.interactions.liked && "text-red-500"
+            )}
+          >
+            <Heart
+              className={cn(
+                "w-5 h-5 drop-shadow-md transition-all duration-200",
+                reel.interactions.liked && "fill-red-500 text-red-500 scale-110"
+              )}
+            />
+            <span className="text-white text-sm font-medium drop-shadow-md">
+              {formatNumber(reel.stats.likes)}
+            </span>
+          </button>
+
+          <button
+            onClick={onComment}
+            className="flex items-center space-x-1 text-white transition-all hover:text-white/80"
+          >
+            <MessageCircle className="w-5 h-5 drop-shadow-md" />
+            <span className="text-sm font-medium drop-shadow-md">
+              {formatNumber(reel.stats.comments)}
+            </span>
+          </button>
+        </div>
+
         {/* Stats */}
         <div className="flex items-center space-x-4 text-white/60 text-xs">
           <span>{formatNumber(reel.stats.views)} views</span>
-          <span>{formatNumber(reel.stats.likes)} likes</span>
-          <span>{formatNumber(reel.stats.comments)} comments</span>
+          <span>{formatNumber(reel.stats.shares)} shares</span>
         </div>
       </div>
 
