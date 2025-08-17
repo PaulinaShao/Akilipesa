@@ -127,20 +127,20 @@ export default function CallPage() {
     return null; // Will redirect due to useEffect above
   }
 
-  const formatDuration = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
+  // const formatDuration = (seconds: number) => {
+  //   const mins = Math.floor(seconds / 60);
+  //   const secs = seconds % 60;
+  //   return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  // };
 
-  const togglePrivacy = () => {
-    setIsPrivate(!isPrivate);
-  };
+  // const togglePrivacy = () => {
+  //   setIsPrivate(!isPrivate);
+  // };
 
-  const addAkiliAgent = () => {
-    // TODO: Implement adding AI agent to call
-    console.log('Add AkiliPesa Assistant to call');
-  };
+  // const addAkiliAgent = () => {
+  //   // TODO: Implement adding AI agent to call
+  //   console.log('Add AkiliPesa Assistant to call');
+  // };
 
   const handleEndCall = async () => {
     try {
