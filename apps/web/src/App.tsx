@@ -118,7 +118,7 @@ function App() {
     let cancelled = false;
     (async () => {
       try {
-        const cfg = await loadTrialConfig(db);
+        const cfg = await loadTrialConfig();
         if (!cancelled) {
           setTrialConfig(cfg);
           console.log('Trial config loaded:', cfg);
