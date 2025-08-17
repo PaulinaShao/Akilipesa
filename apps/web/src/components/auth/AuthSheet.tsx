@@ -67,8 +67,8 @@ export default function AuthSheet() {
 
     try {
       if (activeTab === 'phone') {
-        // Use Firebase phone authentication
-        const confirmationResult = await startPhoneSignIn(phoneE164);
+        // Use new phone authentication with linking
+        const confirmationResult = await sendPhoneCode(phoneE164);
         setConfirmation(confirmationResult);
       } else {
         // Email auth simulation
