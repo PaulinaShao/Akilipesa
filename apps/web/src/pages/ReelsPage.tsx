@@ -443,8 +443,6 @@ export default function ReelsPage() {
   const [shareContent, setShareContent] = useState<any>(null);
   const [showCommentDrawer, setShowCommentDrawer] = useState(false);
   const [commentContentId, setCommentContentId] = useState('');
-  const [showCallOptions, setShowCallOptions] = useState(false);
-  const [callTargetUser, setCallTargetUser] = useState<any>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
