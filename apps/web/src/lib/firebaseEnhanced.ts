@@ -9,8 +9,8 @@ import {
   persistentSingleTabManager,
   type Firestore,
 } from 'firebase/firestore';
-import { getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth';
-import { getFunctions, httpsCallable } from 'firebase/functions';
+import { getAuth, setPersistence, browserLocalPersistence, type Auth } from 'firebase/auth';
+import { getFunctions, httpsCallable, type Functions } from 'firebase/functions';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 
 // Firebase configuration
@@ -25,10 +25,10 @@ const firebaseConfig = {
 };
 
 // Singleton instances
-let app: FirebaseApp | undefined;
-let db: Firestore | undefined;
-let auth: ReturnType<typeof getAuth> | undefined;
-let functions: ReturnType<typeof getFunctions> | undefined;
+let appInstance: FirebaseApp | undefined;
+let dbInstance: Firestore | undefined;
+let authInstance: Auth | undefined;
+let functionsInstance: Functions | undefined;
 let appCheckDone = false;
 
 // Validate configuration
@@ -41,22 +41,22 @@ if (missingFields.length > 0) {
 }
 
 export function getFirebaseApp(): FirebaseApp {
-  if (!app) {
-    app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  if (!appInstance) {
+    appInstance = getApps().length ? getApp() : initializeApp(firebaseConfig);
     console.log('🔥 Firebase app initialized:', firebaseConfig.projectId);
   }
-  return app!;
+  return appInstance;
 }
 
 export function getDb(): Firestore {
-  if (db) return db;
+  if (dbInstance) return dbInstance;
   
-  const a = getFirebaseApp();
+  const app = getFirebaseApp();
   
   // Try to initialize once with your preferred options…
   try {
     console.log('🗄️ Initializing Firestore with persistent cache...');
-    db = initializeFirestore(a, {
+    dbInstance = initializeFirestore(app, {
       localCache: persistentLocalCache({ 
         tabManager: persistentSingleTabManager() 
       }),
@@ -66,27 +66,27 @@ export function getDb(): Firestore {
     // …but if another module already initialized with different options,
     // fall back to the existing instance to avoid the crash.
     console.warn('⚠️ Firestore already initialized, using existing instance:', error);
-    db = getFirestore(a);
+    dbInstance = getFirestore(app);
   }
   
-  return db!;
+  return dbInstance;
 }
 
-export function getAuthInstance() {
-  if (!auth) {
-    auth = getAuth(getFirebaseApp());
-    setPersistence(auth, browserLocalPersistence);
+export function getAuthInstance(): Auth {
+  if (!authInstance) {
+    authInstance = getAuth(getFirebaseApp());
+    setPersistence(authInstance, browserLocalPersistence);
     console.log('🔐 Firebase Auth initialized');
   }
-  return auth;
+  return authInstance;
 }
 
-export function getFunctionsInstance() {
-  if (!functions) {
-    functions = getFunctions(getFirebaseApp(), import.meta.env.VITE_FUNCTIONS_REGION || 'us-central1');
+export function getFunctionsInstance(): Functions {
+  if (!functionsInstance) {
+    functionsInstance = getFunctions(getFirebaseApp(), import.meta.env.VITE_FUNCTIONS_REGION || 'us-central1');
     console.log('⚡ Firebase Functions initialized');
   }
-  return functions;
+  return functionsInstance;
 }
 
 export function ensureAppCheck() {
@@ -140,7 +140,7 @@ export function initFirebase() {
   console.log('🚀 Firebase fully initialized');
 }
 
-// Convenience exports for compatibility - use getters to avoid redeclaration
+// Convenience exports for compatibility
 export const auth = getAuthInstance();
 export const db = getDb();
 export const fns = getFunctionsInstance();
@@ -155,10 +155,10 @@ export const isFirebaseDemoMode = import.meta.env.VITE_APP_ENV === 'demo' || imp
 // Enhanced connection diagnostics
 export function getFirebaseStatus() {
   return {
-    app: !!app,
-    auth: !!auth,
-    db: !!db,
-    functions: !!functions,
+    app: !!appInstance,
+    auth: !!authInstance,
+    db: !!dbInstance,
+    functions: !!functionsInstance,
     environment: {
       isDev: import.meta.env.DEV,
       isProduction: import.meta.env.PROD,
