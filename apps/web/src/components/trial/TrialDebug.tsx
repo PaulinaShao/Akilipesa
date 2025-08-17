@@ -13,7 +13,7 @@ export const TrialDebug: React.FC = () => {
     // Check demo mode
     const checkDemoMode = async () => {
       try {
-        const { isFirebaseDemoMode } = await import('../../lib/firebase');
+        const { isFirebaseDemoMode } = await import('../../lib/firebaseEnhanced');
         setIsDemoMode(isFirebaseDemoMode);
       } catch (error) {
         console.warn('Failed to check demo mode:', error);
