@@ -3,13 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   Star, 
   ThumbsUp, 
-  ThumbsDown, 
+  // ThumbsDown, 
   PhoneOff, 
   Clock, 
   Users, 
   DollarSign,
   Share,
-  Home,
+  // Home,
   MessageCircle,
   RefreshCw
 } from 'lucide-react';

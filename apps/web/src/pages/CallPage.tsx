@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams, useLocation, useParams } from 'react-router-dom';
 import {
-  Mic, MicOff, Video, VideoOff, PhoneOff, RotateCcw,
-  UserPlus, Globe, Lock, Sparkles, Coins, AlertTriangle
+  Mic, MicOff, Video, VideoOff, PhoneOff
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+// import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store';
 import { callService } from '@/lib/callService';
-import IncomingCallScreen from '@/components/call/IncomingCallScreen';
+// import IncomingCallScreen from '@/components/call/IncomingCallScreen';
 import OutgoingCallScreen from '@/components/call/OutgoingCallScreen';
 import ActiveCallScreen from '@/components/call/ActiveCallScreen';
 
@@ -15,7 +14,7 @@ export default function CallPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const location = useLocation();
-  const videoRef = useRef<HTMLVideoElement>(null);
+  // const videoRef = useRef<HTMLVideoElement>(null);
 
   const { activeCall, endCall, user, startCall } = useAppStore();
 
@@ -31,7 +30,7 @@ export default function CallPage() {
   const [localVideoEnabled, setLocalVideoEnabled] = useState(callType === 'video');
   const [cameraFacing, setCameraFacing] = useState<'user' | 'environment'>('user');
   const [isMinimized, setIsMinimized] = useState(false);
-  const [callScreenType, setCallScreenType] = useState<'outgoing' | 'incoming' | 'active'>('outgoing');
+  const [callScreenType] = useState<'outgoing' | 'incoming' | 'active'>('outgoing');
 
   // Initialize call if no active call but we have channel info
   useEffect(() => {

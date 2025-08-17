@@ -12,7 +12,7 @@ export default function CallDemoPage() {
   const navigate = useNavigate();
   const [currentScreen, setCurrentScreen] = useState<CallScreenType>('menu');
   const [callType, setCallType] = useState<CallType>('video');
-  const [callDuration, setCallDuration] = useState(45);
+  const [callDuration] = useState(45);
   const [isMuted, setIsMuted] = useState(false);
   const [hasVideo, setHasVideo] = useState(true);
 
