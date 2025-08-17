@@ -71,8 +71,8 @@ const debugCameraDevices = async (): Promise<string> => {
       }
     }
 
-  } catch (error) {
-    debugInfo.push(`Debug error: ${error.message}`);
+  } catch (error: any) {
+    debugInfo.push(`Debug error: ${error?.message || 'Unknown error'}`);
   }
 
   return debugInfo.join('\n');

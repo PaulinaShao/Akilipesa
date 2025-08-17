@@ -112,7 +112,7 @@ export default function CheckoutPage() {
 
   const applyPromoCode = () => {
     // Mock promo code validation
-    const validCodes = {
+    const validCodes: Record<string, number> = {
       'SAVE10': 10,
       'WELCOME20': 20,
       'STUDENT15': 15
