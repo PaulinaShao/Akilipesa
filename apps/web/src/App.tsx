@@ -12,7 +12,7 @@ import { TrialBadge } from '@/components/trial/TrialBadge';
 import { TrialPaywallContainer } from '@/components/trial/TrialPaywall';
 import { TrialPolicyPage } from '@/pages/TrialPolicyPage';
 import { TrialDebug } from '@/components/trial/TrialDebug';
-import NetworkStatus from '@/components/NetworkStatus';
+import { NetworkStatus } from '@/components/NetworkStatus';
 import { ErrorBoundary, OfflineIndicator } from '@/components/ErrorBoundary';
 import EmulatorWarning from '@/components/EmulatorWarning';
 import { useTrialStore } from '@/state/trialStore';
