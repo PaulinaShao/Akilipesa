@@ -57,8 +57,8 @@ export function getDb(): Firestore {
   try {
     console.log('🗄️ Initializing Firestore with persistent cache...');
     dbInstance = initializeFirestore(app, {
-      localCache: persistentLocalCache({ 
-        tabManager: persistentSingleTabManager() 
+      localCache: persistentLocalCache({
+        tabManager: persistentSingleTabManager({})
       }),
     });
     console.log('✅ Firestore initialized with persistent cache');
