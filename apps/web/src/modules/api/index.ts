@@ -1,6 +1,6 @@
 import { httpsCallable } from 'firebase/functions';
 import { doc, onSnapshot, collection, query, where, orderBy, serverTimestamp } from 'firebase/firestore';
-import { functions, db } from '../../lib/firebase';
+import { functions, db } from '../../lib/firebaseEnhanced';
 
 export interface JobInput {
   type: 'image' | 'video' | 'audio' | 'voice' | 'music' | 'unknown';
@@ -81,7 +81,7 @@ export interface GuestChatResponse {
  */
 export async function startJob(type: string, inputs: any): Promise<string> {
   try {
-    const { isFirebaseDemoMode } = await import('../../lib/firebase');
+    const { isFirebaseDemoMode } = await import('../../lib/firebaseEnhanced');
 
     // In demo mode, always create offline job
     if (isFirebaseDemoMode) {
@@ -299,7 +299,7 @@ export function subscribeUserJobs(userId: string, callback: (jobs: Job[]) => voi
  */
 export async function finishCall(data: CallFinishData): Promise<void> {
   try {
-    const { isFirebaseDemoMode } = await import('../../lib/firebase');
+    const { isFirebaseDemoMode } = await import('../../lib/firebaseEnhanced');
 
     if (isFirebaseDemoMode) {
       console.log('Demo mode: call finished locally:', data);
@@ -320,7 +320,7 @@ export async function finishCall(data: CallFinishData): Promise<void> {
  */
 export async function createOrder(payload: Partial<Order>): Promise<OrderResponse> {
   try {
-    const { isFirebaseDemoMode } = await import('../../lib/firebase');
+    const { isFirebaseDemoMode } = await import('../../lib/firebaseEnhanced');
 
     if (isFirebaseDemoMode) {
       console.log('Demo mode: creating demo order:', payload);
@@ -358,7 +358,7 @@ export async function getRtcToken(channel: string, uid?: number): Promise<{
   expiryTime: number;
 }> {
   try {
-    const { isFirebaseDemoMode } = await import('../../lib/firebase');
+    const { isFirebaseDemoMode } = await import('../../lib/firebaseEnhanced');
 
     if (isFirebaseDemoMode) {
       console.log('Demo mode: creating demo RTC token');
@@ -449,7 +449,7 @@ export async function cancelJob(jobId: string): Promise<void> {
  */
 export async function issueTrialToken(data: TrialTokenRequest): Promise<TrialTokenResponse> {
   try {
-    const { isFirebaseDemoMode } = await import('../../lib/firebase');
+    const { isFirebaseDemoMode } = await import('../../lib/firebaseEnhanced');
 
     if (isFirebaseDemoMode) {
       console.log('Demo mode: issuing demo trial token');
@@ -475,7 +475,7 @@ export async function issueTrialToken(data: TrialTokenRequest): Promise<TrialTok
  */
 export async function requestGuestCall(data: GuestCallRequest): Promise<GuestCallResponse> {
   try {
-    const { isFirebaseDemoMode } = await import('../../lib/firebase');
+    const { isFirebaseDemoMode } = await import('../../lib/firebaseEnhanced');
 
     if (isFirebaseDemoMode) {
       console.log('Demo mode: creating demo guest call');
@@ -510,7 +510,7 @@ export async function requestGuestCall(data: GuestCallRequest): Promise<GuestCal
  */
 export async function guestChat(data: GuestChatRequest): Promise<GuestChatResponse> {
   try {
-    const { isFirebaseDemoMode } = await import('../../lib/firebase');
+    const { isFirebaseDemoMode } = await import('../../lib/firebaseEnhanced');
 
     if (isFirebaseDemoMode) {
       console.log('Demo mode: guest chat message');

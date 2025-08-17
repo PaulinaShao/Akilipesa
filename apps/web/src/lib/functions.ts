@@ -1,5 +1,5 @@
 import { httpsCallable } from 'firebase/functions';
-import { functions } from './firebase';
+import { functions } from './firebaseEnhanced';
 
 // Type definitions for function parameters and returns
 export interface CreateJobParams {

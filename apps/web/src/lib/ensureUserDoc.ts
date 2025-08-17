@@ -1,4 +1,4 @@
-import { auth, db } from './firebase';
+import { auth, db } from './firebaseEnhanced';
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 
 export async function ensureUserDoc() {

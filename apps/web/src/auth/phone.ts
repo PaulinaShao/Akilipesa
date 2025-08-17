@@ -1,5 +1,5 @@
 // apps/web/src/auth/phone.ts
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebaseEnhanced";
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from "firebase/auth";
 
 let verifier: RecaptchaVerifier | null = null;

@@ -1,5 +1,5 @@
 import { signOut } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebaseEnhanced";
 import { resetRecaptcha } from "@/auth/phone";
 
 export async function logout() {

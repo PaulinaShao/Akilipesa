@@ -1,5 +1,4 @@
-import { call } from './firebase';
-import { auth } from './firebase';
+import { call, auth } from './firebaseEnhanced';
 import { isRealUser } from '@/auth/phoneAuth';
 
 // AI jobs

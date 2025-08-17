@@ -9,7 +9,7 @@ import {
   UserCredential
 } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firebaseEnhanced";
 
 // Extend Window interface for reCAPTCHA
 declare global {

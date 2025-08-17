@@ -1,4 +1,4 @@
-import { auth } from './firebase';
+import { auth } from './firebaseEnhanced';
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
 
 let verifier: RecaptchaVerifier | null = null;

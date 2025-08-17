@@ -1,4 +1,4 @@
-import { auth, db } from './firebase';
+import { auth, db } from './firebaseEnhanced';
 import { doc, setDoc, serverTimestamp, collection } from 'firebase/firestore';
 
 /**
