@@ -580,8 +580,8 @@ export default function ReelsPage() {
 
   const handleComment = async (reelId: string) => {
     if (!canPerformAction('comment')) {
-      setAuthUpsellTrigger('comment');
-      setShowAuthUpsell(true);
+      setJoinConversationTrigger('comment');
+      setShowJoinConversation(true);
       return;
     }
 
