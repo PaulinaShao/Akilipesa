@@ -7,7 +7,8 @@ import { useAppStore } from '@/store';
 import PhoneInput from './PhoneInput';
 import CodeInput from './CodeInput';
 import GoogleButton from './GoogleButton';
-import { startPhoneSignIn } from '@/auth/phone';
+import { sendPhoneCode, verifyPhoneCode } from '@/auth/phoneAuth';
+import { signInWithGoogle } from '@/auth/googleAuth';
 import { isValidTZ } from '@/lib/phone';
 
 export default function AuthSheet() {
