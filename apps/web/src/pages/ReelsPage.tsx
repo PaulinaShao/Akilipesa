@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heart, MessageCircle, Share, Music2, Phone, Video, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { initiateCall } from '@/lib/callUtils';
 import WalletChip from '@/components/WalletChip';
 import LoginBadge from '@/components/LoginBadge';
 import { useAppStore } from '@/store';
