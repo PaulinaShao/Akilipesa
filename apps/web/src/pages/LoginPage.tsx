@@ -68,6 +68,7 @@ export default function LoginPage() {
 
     try {
       if (activeTab === 'phone') {
+        const normalizedPhone = normalizeTanzanianPhone(phoneInput);
         // Use Firebase phone authentication with reCAPTCHA
         const confirmationResult = await sendCode(normalizedPhone);
         setConfirmation(confirmationResult);
@@ -75,7 +76,7 @@ export default function LoginPage() {
         setResendTimer(30);
         addToast({
           title: 'Code sent!',
-          description: `Verification code sent to ${normalizedPhone}`,
+          description: `Verification code sent to ${normalizeTanzanianPhone(phoneInput)}`,
           type: 'success'
         });
       } else {
