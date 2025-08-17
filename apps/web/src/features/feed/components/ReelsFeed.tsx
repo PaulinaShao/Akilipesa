@@ -88,10 +88,24 @@ export default function ReelsFeed() {
     // TODO: Open product drawer
   }, []);
 
-  const handleLiveCall = useCallback((reelId: string) => {
+  const handleLiveCall = useCallback(async (reelId: string) => {
     console.log('Join live call:', reelId);
-    // TODO: Implement live call functionality
-  }, []);
+
+    // Find the reel to get user info
+    const reel = reels.find(r => r.id === reelId);
+    if (!reel) return;
+
+    try {
+      await initiateCall({
+        targetId: reel.user.id,
+        callType: 'video', // Live calls are typically video
+        targetName: reel.user.displayName,
+        targetAvatar: reel.user.avatar
+      });
+    } catch (error) {
+      console.error('Failed to initiate live call:', error);
+    }
+  }, [reels]);
 
   const handleFollow = useCallback((userId: string) => {
     console.log('Follow user:', userId);
