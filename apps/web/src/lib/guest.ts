@@ -37,32 +37,22 @@ export function markGuestTry(success: boolean, error?: any): void {
 
 /**
  * Ensure guest authentication with rate limiting and error handling
- * Returns existing user, new anonymous user, or null if disabled/failed
+ * Returns existing user or null if disabled/failed
+ * NOTE: This function no longer creates new anonymous users - use initGuestOnce() instead
  */
 export async function ensureGuest(auth: Auth): Promise<User | null> {
   // Return existing user if already authenticated
   if (auth.currentUser) {
     return auth.currentUser;
   }
-  
+
   // Skip if guest auth is disabled
   if (localStorage.getItem(GUEST_DISABLED_KEY) === 'true') {
     return null;
   }
-  
-  // Skip if too many recent attempts
-  if (!shouldTryGuest()) {
-    return null;
-  }
-  
-  try {
-    const result = await signInAnonymously(auth);
-    markGuestTry(true);
-    console.log('Guest auth successful');
-    return result.user;
-  } catch (error: any) {
-    markGuestTry(false, error);
-    console.warn('Guest auth failed:', error?.code, error?.message);
-    return null;
-  }
+
+  // No longer creates new anonymous users to prevent duplicates
+  // Use initGuestOnce() during app initialization instead
+  console.warn('ensureGuest called but no current user - use initGuestOnce() for initialization');
+  return null;
 }
