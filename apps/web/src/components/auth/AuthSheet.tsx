@@ -95,8 +95,8 @@ export default function AuthSheet() {
 
     try {
       if (activeTab === 'phone' && confirmation) {
-        // Use Firebase phone auth confirmation
-        const credential = await confirmation.confirm(code);
+        // Use new phone auth with linking
+        const credential = await verifyPhoneCode(confirmation, code);
         const firebaseUser = credential.user;
 
         // Convert Firebase user to app user format
