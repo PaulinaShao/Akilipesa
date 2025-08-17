@@ -1,5 +1,5 @@
 import { httpsCallable } from 'firebase/functions';
-import { functions } from './firebase';
+import { functions } from './firebaseEnhanced';
 
 // Type definitions for social functions
 export interface LikePostParams {

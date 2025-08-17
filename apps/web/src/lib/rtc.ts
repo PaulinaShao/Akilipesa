@@ -1,5 +1,5 @@
 import { httpsCallable } from 'firebase/functions';
-import { functions } from './firebase';
+import { functions } from './firebaseEnhanced';
 import { getDeviceToken } from './device';
 
 export interface RTCToken {

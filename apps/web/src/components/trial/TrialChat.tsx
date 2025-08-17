@@ -4,7 +4,7 @@ import { useTrialStore } from '../../state/trialStore';
 import { useAppStore } from '../../store';
 import { useGatedChat } from '../../hooks/useAuthGate';
 import { httpsCallable } from 'firebase/functions';
-import { functions } from '../../lib/firebase';
+import { functions } from '../../lib/firebaseEnhanced';
 import { getDeviceToken } from '../../lib/device';
 
 interface Message {
