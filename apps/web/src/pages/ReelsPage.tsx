@@ -615,32 +615,68 @@ export default function ReelsPage() {
     }
   };
 
-  const handleAudioCall = (userId: string) => {
+  const handleAudioCall = async (userId: string) => {
     const reel = reels.find(r => r.user.id === userId);
     if (!reel) return;
 
-    setCallTargetUser({
-      id: reel.user.id,
-      username: reel.user.username,
-      displayName: reel.user.displayName,
-      avatar: reel.user.avatar,
-      isLive: reel.user.isLive
-    });
-    setShowCallOptions(true);
+    if (!canPerformAction('call')) {
+      setAuthUpsellTrigger('call');
+      setShowAuthUpsell(true);
+      return;
+    }
+
+    try {
+      // Generate a channel ID for this call
+      const channelId = `audio-${reel.user.id}-${Date.now()}`;
+      // Navigate directly to call page with private default
+      navigate(`/call/${channelId}?type=audio&target=${reel.user.id}&privacy=private`, {
+        state: {
+          targetUser: {
+            id: reel.user.id,
+            username: reel.user.username,
+            displayName: reel.user.displayName,
+            avatar: reel.user.avatar,
+            isLive: reel.user.isLive
+          },
+          type: 'audio',
+          privacy: 'private'
+        }
+      });
+    } catch (error) {
+      console.error('Failed to start audio call:', error);
+    }
   };
 
-  const handleVideoCall = (userId: string) => {
+  const handleVideoCall = async (userId: string) => {
     const reel = reels.find(r => r.user.id === userId);
     if (!reel) return;
 
-    setCallTargetUser({
-      id: reel.user.id,
-      username: reel.user.username,
-      displayName: reel.user.displayName,
-      avatar: reel.user.avatar,
-      isLive: reel.user.isLive
-    });
-    setShowCallOptions(true);
+    if (!canPerformAction('call')) {
+      setAuthUpsellTrigger('call');
+      setShowAuthUpsell(true);
+      return;
+    }
+
+    try {
+      // Generate a channel ID for this call
+      const channelId = `video-${reel.user.id}-${Date.now()}`;
+      // Navigate directly to call page with private default
+      navigate(`/call/${channelId}?type=video&target=${reel.user.id}&privacy=private`, {
+        state: {
+          targetUser: {
+            id: reel.user.id,
+            username: reel.user.username,
+            displayName: reel.user.displayName,
+            avatar: reel.user.avatar,
+            isLive: reel.user.isLive
+          },
+          type: 'video',
+          privacy: 'private'
+        }
+      });
+    } catch (error) {
+      console.error('Failed to start video call:', error);
+    }
   };
 
   const handleLiveCall = (reelId: string) => {
