@@ -3,70 +3,45 @@ name: Deploy AkiliPesa
 on:
   push:
     branches: [ main ]
+    # Re-run only when these change (adjust as needed)
+    paths:
+      - 'firebase/functions/**'
+      - 'firebase/firestore.rules'
+      - 'firebase.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write   # <-- required for OIDC
 
 jobs:
   deploy:
-    # 1) Must match the Environment name EXACTLY as created in GitHub → Settings → Environments
-    environment: Production
     runs-on: ubuntu-latest
-    
+
     steps:
-      - uses: actions/checkout@v4
-      
-      - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      
-      - run: npm install --workspaces
-      
-      # Export Vite envs so the web build can read them
-      - name: Export env for Vite build
-        run: |
-          echo "VITE_BUILDER_PUBLIC_KEY=${{ vars.VITE_BUILDER_PUBLIC_KEY }}" >> $GITHUB_ENV
-          echo "VITE_FIREBASE_API_KEY=${{ vars.VITE_FIREBASE_API_KEY }}" >> $GITHUB_ENV
-          echo "VITE_FIREBASE_AUTH_DOMAIN=${{ vars.VITE_FIREBASE_AUTH_DOMAIN }}" >> $GITHUB_ENV
-          echo "VITE_FIREBASE_PROJECT_ID=${{ vars.VITE_FIREBASE_PROJECT_ID }}" >> $GITHUB_ENV
-          echo "VITE_FIREBASE_STORAGE_BUCKET=${{ vars.VITE_FIREBASE_STORAGE_BUCKET }}" >> $GITHUB_ENV
-          echo "VITE_FIREBASE_APP_ID=${{ vars.VITE_FIREBASE_APP_ID }}" >> $GITHUB_ENV
-          echo "VITE_FIREBASE_MEASUREMENT_ID=${{ vars.VITE_FIREBASE_MEASUREMENT_ID }}" >> $GITHUB_ENV
-          echo "VITE_FIREBASE_MESSAGING_SENDER_ID=${{ vars.VITE_FIREBASE_MESSAGING_SENDER_ID }}" >> $GITHUB_ENV
-          echo "VITE_FUNCTIONS_REGION=${{ vars.VITE_FUNCTIONS_REGION }}" >> $GITHUB_ENV
-          if [ -n "${{ vars.VITE_RECAPTCHA_SITE_KEY }}" ]; then echo "VITE_RECAPTCHA_SITE_KEY=${{ vars.VITE_RECAPTCHA_SITE_KEY }}" >> $GITHUB_ENV; fi
-      
-      # Build Cloud Functions (TypeScript)
-      - run: npm -w firebase/functions run build
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      # Build the web app (Vite)
-      - run: npm -w apps/web run build
-      
-      # (Optional) apply Make blueprints here
-      # - name: Apply Make blueprints
-      #   run: node infra/make/apply-blueprints.mjs
-      #   env:
-      #     MAKE_API_TOKEN: ${{ secrets.MAKE_API_TOKEN }}
-      #     MAKE_FOLDER_ID: ${{ secrets.MAKE_FOLDER_ID }}
-
-      # Seed Firebase Secrets (idempotent)
-      - name: Seed Firebase Secrets
-        uses: w9jds/firebase-action@v13.5.0
+      # Auth to Google Cloud using Workload Identity Federation
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          args: |
-            functions:secrets:set AGORA_APP_ID --data "$AGORA_APP_ID" --project akilipesa-prod --force &&
-            functions:secrets:set AGORA_APP_CERT --data "$AGORA_APP_CERT" --project akilipesa-prod --force &&
-            functions:secrets:set RTC_PROVIDER --data "$RTC_PROVIDER" --project akilipesa-prod --force
-        env:
-          PROJECT_PATH: ./firebase
-          GCP_SA_KEY: ${{ secrets.FIREBASE_TOKEN }}
-          AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
-          AGORA_APP_CERT: ${{ secrets.AGORA_APP_CERT }}
-          RTC_PROVIDER: ${{ vars.RTC_PROVIDER }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
 
-      # Deploy hosting + functions + rules + storage
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@v13.5.0
-        with:
-          args: deploy --only hosting,functions,firestore:rules,storage -P akilipesa-prod
-        env:
-          # 2) Tell the action where firebase.json lives
-          PROJECT_PATH: ./firebase
-          # 3) Map your Environment secret (the SA JSON) to the variable the action expects
-          GCP_SA_KEY: ${{ secrets.FIREBASE_TOKEN }}
+      # (Optional) Install gcloud – handy for debugging
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      # Install and build Cloud Functions
+      - name: Install functions deps
+        run: npm ci
+        working-directory: firebase/functions
+
+      - name: Build functions
+        run: npm run build
+        working-directory: firebase/functions
+
+      # Deploy from repo root so firebase.json is picked up
+      - name: Deploy to Firebase (functions + rules)
+        run: npx firebase-tools deploy --project akilipesa-prod --only functions,firestore:rules --non-interactive
