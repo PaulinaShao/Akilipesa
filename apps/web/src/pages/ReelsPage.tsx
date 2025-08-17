@@ -190,6 +190,7 @@ function ReelCard({
 }: ReelCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showPlayButton, setShowPlayButton] = useState(false);
   const [showFullCaption, setShowFullCaption] = useState(false);
   const navigate = useNavigate();
 
@@ -199,7 +200,7 @@ function ReelCard({
 
     if (isActive) {
       video.play().catch(() => {
-        console.log('Autoplay failed');
+        setShowPlayButton(true);
       });
       setIsPlaying(true);
     } else {
@@ -216,7 +217,9 @@ function ReelCard({
       video.pause();
       setIsPlaying(false);
     } else {
-      video.play();
+      video.play().catch(() => {
+        setShowPlayButton(true);
+      });
       setIsPlaying(true);
     }
   };
