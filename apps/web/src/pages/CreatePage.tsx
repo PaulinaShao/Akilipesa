@@ -1,608 +1,506 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera, Video, Music, Users, Mic, Sparkles, Upload, X, MessageCircle, Image, DollarSign } from 'lucide-react';
+import { 
+  Video, 
+  Camera, 
+  Music, 
+  Users, 
+  Sparkles, 
+  ArrowRight, 
+  ArrowLeft,
+  Package,
+  Briefcase,
+  FileText,
+  Image,
+  Mic,
+  Star,
+  Shield,
+  Zap
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useJob, JobTypes, type JobType } from '@/modules/jobs';
 import { isGuest } from '@/lib/guards';
-import CTABanner from '@/components/CTABanner';
+import { useAuth } from '@/hooks/useAuth';
+import { useUIStore } from '@/state/uiStore';
 
-interface CreateOption {
+interface WizardStep {
   id: string;
   title: string;
   description: string;
   icon: React.ComponentType<any>;
   color: string;
+  options: WizardOption[];
+}
+
+interface WizardOption {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.ComponentType<any>;
+  isPro?: boolean;
   isAI?: boolean;
   route?: string;
+  action?: () => void;
 }
 
-const createOptions: CreateOption[] = [
+const wizardSteps: WizardStep[] = [
   {
-    id: 'video',
-    title: 'Record Video',
-    description: 'Create a new reel with your camera',
-    icon: Video,
+    id: 'content',
+    title: 'Content',
+    description: 'Share your creativity with the world',
+    icon: FileText,
     color: 'from-blue-500 to-purple-500',
-    route: '/create/camera',
+    options: [
+      {
+        id: 'video',
+        title: 'Record Video',
+        description: 'Create a reel with your camera',
+        icon: Video,
+        route: '/create/camera'
+      },
+      {
+        id: 'photo',
+        title: 'Take Photo',
+        description: 'Capture a moment to share',
+        icon: Camera,
+        route: '/create/camera'
+      },
+      {
+        id: 'live',
+        title: 'Go Live',
+        description: 'Start a live broadcast',
+        icon: Users,
+        isPro: true,
+        route: '/create/live'
+      },
+      {
+        id: 'ai-video',
+        title: 'AI Video',
+        description: 'Generate video with AI',
+        icon: Sparkles,
+        isAI: true,
+        isPro: true
+      },
+      {
+        id: 'ai-image',
+        title: 'AI Image',
+        description: 'Create images with AI',
+        icon: Image,
+        isAI: true,
+        isPro: true
+      },
+      {
+        id: 'ai-music',
+        title: 'AI Music',
+        description: 'Compose music with AI',
+        icon: Music,
+        isAI: true,
+        isPro: true
+      }
+    ]
   },
   {
-    id: 'photo',
-    title: 'Take Photo',
-    description: 'Capture a moment to share',
-    icon: Camera,
-    color: 'from-pink-500 to-red-500',
-    route: '/create/camera',
-  },
-  {
-    id: 'live',
-    title: 'Go Live',
-    description: 'Start a live broadcast',
-    icon: Users,
-    color: 'from-red-500 to-orange-500',
-    route: '/create/live',
-  },
-  {
-    id: 'ai-image',
-    title: 'AI Image',
-    description: 'Generate images with AI',
-    icon: Image,
-    color: 'from-violet-500 to-purple-500',
-    isAI: true,
-  },
-  {
-    id: 'ai-video',
-    title: 'AI Video (Runway)',
-    description: 'Generate video with Runway AI',
-    icon: Sparkles,
-    color: 'from-accent-500 to-glow-500',
-    isAI: true,
-  },
-  {
-    id: 'ai-music',
-    title: 'AI Music (Udio)',
-    description: 'Create music with Udio AI',
-    icon: Music,
+    id: 'service',
+    title: 'Service',
+    description: 'Offer your skills and expertise',
+    icon: Briefcase,
     color: 'from-green-500 to-teal-500',
-    isAI: true,
+    options: [
+      {
+        id: 'consultation',
+        title: 'Consultation',
+        description: 'Offer 1-on-1 advice sessions',
+        icon: Users,
+        isPro: true
+      },
+      {
+        id: 'tutorial',
+        title: 'Tutorial',
+        description: 'Teach a skill or process',
+        icon: Video,
+        isPro: true
+      },
+      {
+        id: 'coaching',
+        title: 'Coaching',
+        description: 'Ongoing mentorship programs',
+        icon: Star,
+        isPro: true
+      },
+      {
+        id: 'ai-assistant',
+        title: 'AI Assistant',
+        description: 'Create AI-powered services',
+        icon: Sparkles,
+        isAI: true,
+        isPro: true
+      }
+    ]
   },
   {
-    id: 'ai-voice',
-    title: 'AI Voice (OpenVoice)',
-    description: 'Text-to-speech with OpenVoice',
-    icon: Mic,
-    color: 'from-purple-500 to-indigo-500',
-    isAI: true,
-  },
+    id: 'product',
+    title: 'Product',
+    description: 'Sell physical or digital products',
+    icon: Package,
+    color: 'from-orange-500 to-red-500',
+    options: [
+      {
+        id: 'physical',
+        title: 'Physical Product',
+        description: 'Sell tangible items with shipping',
+        icon: Package,
+        isPro: true
+      },
+      {
+        id: 'digital',
+        title: 'Digital Product',
+        description: 'Sell downloads, courses, ebooks',
+        icon: FileText,
+        isPro: true
+      },
+      {
+        id: 'subscription',
+        title: 'Subscription',
+        description: 'Recurring revenue products',
+        icon: Shield,
+        isPro: true
+      },
+      {
+        id: 'ai-product',
+        title: 'AI-Generated Product',
+        description: 'Create products with AI',
+        icon: Sparkles,
+        isAI: true,
+        isPro: true
+      }
+    ]
+  }
 ];
-
-interface AIJobModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  jobType: JobType;
-  onStartJob: (inputs: any) => void;
-}
-
-function AIJobModal({ isOpen, onClose, jobType, onStartJob }: AIJobModalProps) {
-  const [prompt, setPrompt] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const jobConfig = JobTypes[jobType];
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!prompt.trim()) return;
-
-    setIsLoading(true);
-    try {
-      await onStartJob({ type: jobType, prompt: prompt.trim() });
-      onClose();
-    } catch (error) {
-      console.error('Failed to start job:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <>
-      <div className="fixed inset-0 bg-black/70 z-50" onClick={onClose} />
-      <div className="fixed inset-x-4 top-1/2 transform -translate-y-1/2 z-50 max-w-md mx-auto">
-        <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 border border-violet-500/20 rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{jobConfig.icon}</span>
-              <h3 className="text-xl font-bold text-white">{jobConfig.name}</h3>
-            </div>
-            <button onClick={onClose} className="text-zinc-400 hover:text-white">
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          <p className="text-zinc-400 text-sm mb-4">{jobConfig.description}</p>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
-                Prompt
-              </label>
-              <textarea
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                placeholder={`Describe what you want to create...`}
-                className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
-                rows={3}
-                required
-              />
-            </div>
-
-            <div className="bg-violet-500/10 border border-violet-500/20 rounded-lg p-3">
-              <p className="text-xs text-violet-300 mb-2">💡 Try these examples:</p>
-              <div className="space-y-1">
-                {jobConfig.examples.slice(0, 2).map((example, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    onClick={() => setPrompt(example)}
-                    className="block text-xs text-violet-400 hover:text-violet-300 text-left"
-                  >
-                    "{example}"
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex gap-3 pt-2">
-              <button
-                type="button"
-                onClick={onClose}
-                className="flex-1 py-2 px-4 bg-zinc-700 hover:bg-zinc-600 text-white rounded-lg transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={!prompt.trim() || isLoading}
-                className="flex-1 py-2 px-4 bg-gradient-to-r from-violet-600 to-violet-500 hover:from-violet-500 hover:to-violet-400 disabled:from-zinc-600 disabled:to-zinc-600 text-white rounded-lg transition-all"
-              >
-                {isLoading ? 'Starting...' : `Create ${jobConfig.name}`}
-              </button>
-            </div>
-
-            <p className="text-xs text-zinc-500 text-center">
-              Estimated time: {jobConfig.estimatedTime}
-            </p>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-}
-
-interface PricingPanelProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (pricing: any) => void;
-}
-
-function PricingPanel({ isOpen, onClose, onSubmit }: PricingPanelProps) {
-  const [price, setPrice] = useState('');
-  const [discount, setDiscount] = useState('');
-  const [commission, setCommission] = useState('15'); // Default 15%
-
-  const calculateFinalPrice = () => {
-    const basePrice = parseFloat(price) || 0;
-    const discountPercent = parseFloat(discount) || 0;
-    return basePrice * (1 - discountPercent / 100);
-  };
-
-  const calculateCommission = () => {
-    const finalPrice = calculateFinalPrice();
-    const commissionPercent = parseFloat(commission) || 0;
-    return finalPrice * (commissionPercent / 100);
-  };
-
-  const calculateEarnings = () => {
-    return calculateFinalPrice() - calculateCommission();
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit({
-      price: parseFloat(price) || 0,
-      discount: parseFloat(discount) || 0,
-      commission: parseFloat(commission) || 15,
-      finalPrice: calculateFinalPrice(),
-      commissionAmount: calculateCommission(),
-      earnings: calculateEarnings(),
-    });
-    onClose();
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <>
-      <div className="fixed inset-0 bg-black/70 z-50" onClick={onClose} />
-      <div className="fixed inset-x-4 top-1/2 transform -translate-y-1/2 z-50 max-w-md mx-auto">
-        <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 border border-green-500/20 rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <DollarSign className="w-6 h-6 text-green-400" />
-              <h3 className="text-xl font-bold text-white">Sell as Product/Service</h3>
-            </div>
-            <button onClick={onClose} className="text-zinc-400 hover:text-white">
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
-                Price (TSH)
-              </label>
-              <input
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                placeholder="10000"
-                className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                min="0"
-                step="100"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
-                Discount (%)
-              </label>
-              <input
-                type="number"
-                value={discount}
-                onChange={(e) => setDiscount(e.target.value)}
-                placeholder="0"
-                className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                min="0"
-                max="100"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
-                Platform Commission (%)
-              </label>
-              <select
-                value={commission}
-                onChange={(e) => setCommission(e.target.value)}
-                className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              >
-                <option value="10">10% (Basic)</option>
-                <option value="15">15% (Standard)</option>
-                <option value="20">20% (Premium Support)</option>
-              </select>
-            </div>
-
-            {price && (
-              <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 space-y-2">
-                <h4 className="text-sm font-medium text-green-400">Pricing Breakdown</h4>
-                <div className="text-xs space-y-1">
-                  <div className="flex justify-between">
-                    <span className="text-zinc-400">Original Price:</span>
-                    <span className="text-white">TSH {parseFloat(price || '0').toLocaleString()}</span>
-                  </div>
-                  {discount && (
-                    <div className="flex justify-between">
-                      <span className="text-zinc-400">Discount ({discount}%):</span>
-                      <span className="text-red-400">-TSH {(parseFloat(price || '0') * parseFloat(discount || '0') / 100).toLocaleString()}</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between font-medium">
-                    <span className="text-zinc-300">Final Price:</span>
-                    <span className="text-white">TSH {calculateFinalPrice().toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-zinc-400">Platform Fee ({commission}%):</span>
-                    <span className="text-orange-400">-TSH {calculateCommission().toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between font-bold text-green-400 pt-1 border-t border-green-500/20">
-                    <span>Your Earnings:</span>
-                    <span>TSH {calculateEarnings().toLocaleString()}</span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            <div className="flex gap-3 pt-2">
-              <button
-                type="button"
-                onClick={onClose}
-                className="flex-1 py-2 px-4 bg-zinc-700 hover:bg-zinc-600 text-white rounded-lg transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="flex-1 py-2 px-4 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white rounded-lg transition-all"
-              >
-                Add Pricing
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-}
 
 export default function CreatePage() {
   const navigate = useNavigate();
+  const { isGuest } = useAuth();
+  const { openAuthSheet } = useUIStore();
   const { startJob } = useJob();
-
-  const [showUpload, setShowUpload] = useState(false);
+  
+  const [currentStep, setCurrentStep] = useState<string | null>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [showAIModal, setShowAIModal] = useState(false);
+  const [showAIPrompt, setShowAIPrompt] = useState(false);
+  const [aiPrompt, setAIPrompt] = useState('');
   const [selectedAIType, setSelectedAIType] = useState<JobType>('image');
-  const [showPricing, setShowPricing] = useState(false);
 
-  const handleOptionSelect = (optionId: string) => {
-    setSelectedOption(optionId);
-    
-    if (optionId.startsWith('ai-')) {
-      // Handle AI generation
-      const aiType = optionId.replace('ai-', '') as JobType;
+  const currentStepData = wizardSteps.find(step => step.id === currentStep);
+
+  const handleStepSelect = (stepId: string) => {
+    setCurrentStep(stepId);
+    setSelectedOption(null);
+  };
+
+  const handleOptionSelect = (option: WizardOption) => {
+    setSelectedOption(option.id);
+
+    // Check if user needs to be authenticated for pro features
+    if (option.isPro && isGuest) {
+      openAuthSheet(() => {
+        handleOptionAfterAuth(option);
+      }, 'create');
+      return;
+    }
+
+    handleOptionAfterAuth(option);
+  };
+
+  const handleOptionAfterAuth = (option: WizardOption) => {
+    if (option.isAI) {
+      // Handle AI options
+      const aiType = option.id.replace('ai-', '').replace('-product', '') as JobType;
       setSelectedAIType(aiType);
-      setShowAIModal(true);
+      setShowAIPrompt(true);
+    } else if (option.route) {
+      // Navigate to specific creation page
+      navigate(option.route);
     } else {
-      // Handle regular creation
-      const option = createOptions.find(opt => opt.id === optionId);
-      if (option?.route) {
-        navigate(option.route);
-      }
+      // Handle service/product creation (would open detailed forms)
+      console.log('Creating:', option.id);
+      navigate('/create/setup', { state: { type: option.id, category: currentStep } });
     }
   };
 
-  const handleStartAIJob = async (inputs: any) => {
+  const handleAISubmit = async () => {
+    if (!aiPrompt.trim()) return;
+
     try {
-      const jobId = await startJob(inputs);
-      console.log('Started AI job:', jobId);
-      // Navigate to job status page or show success
+      const jobId = await startJob({
+        type: selectedAIType,
+        prompt: aiPrompt.trim(),
+        category: currentStep
+      });
+      
+      setShowAIPrompt(false);
+      setAIPrompt('');
       navigate('/jobs', { state: { jobId } });
     } catch (error) {
       console.error('Failed to start AI job:', error);
     }
   };
 
-  const handleChatWithAI = (type: 'text' | 'image' | 'voice' | 'live') => {
-    switch (type) {
-      case 'text':
-        navigate('/chat/ai');
-        break;
-      case 'image':
-        navigate('/chat/ai?mode=image');
-        break;
-      case 'voice':
-        navigate('/chat/ai?mode=voice');
-        break;
-      case 'live':
-        navigate('/create/live');
-        break;
+  const handleCreateWithAI = () => {
+    if (isGuest) {
+      openAuthSheet(() => {
+        setShowAIPrompt(true);
+        setSelectedAIType('image');
+      }, 'ai_create');
+      return;
+    }
+    
+    setShowAIPrompt(true);
+    setSelectedAIType('image');
+  };
+
+  const handleBack = () => {
+    if (showAIPrompt) {
+      setShowAIPrompt(false);
+      setAIPrompt('');
+    } else {
+      setCurrentStep(null);
+      setSelectedOption(null);
     }
   };
 
   return (
-    <div className="h-screen-safe bg-gradient-to-br from-[#0b0c14] to-[#2b1769] overflow-y-auto">
+    <div className="page-root bg-gradient-to-br from-[#0b0c14] to-[#2b1769]">
       {/* Header */}
-      <div className="safe-top p-4 border-b border-white/10">
+      <div className="safe-top p-4 border-b border-white/10 sticky top-0 bg-black/20 backdrop-blur-md z-10">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-white">Create</h1>
-          <div className="flex gap-2">
-            <button 
-              onClick={() => setShowPricing(true)}
-              className="flex items-center gap-2 px-3 py-1.5 bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 rounded-lg text-green-400 text-sm transition-colors"
-            >
-              <DollarSign className="w-4 h-4" />
-              <span>Sell</span>
-            </button>
-            <button 
-              onClick={() => setShowUpload(true)}
-              className="flex items-center gap-2 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-white text-sm transition-colors"
-            >
-              <Upload className="w-4 h-4" />
-              <span>Upload</span>
-            </button>
+          <div className="flex items-center gap-3">
+            {(currentStep || showAIPrompt) && (
+              <button
+                onClick={handleBack}
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <ArrowLeft className="w-5 h-5 text-white" />
+              </button>
+            )}
+            <h1 className="text-2xl font-bold text-white">
+              {showAIPrompt ? 'Create with AI' : currentStepData ? currentStepData.title : 'Create'}
+            </h1>
           </div>
+          
+          <button
+            onClick={handleCreateWithAI}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 rounded-xl text-white font-medium transition-all"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>Create with AI</span>
+          </button>
         </div>
+        
+        {currentStepData && !showAIPrompt && (
+          <p className="text-white/60 text-sm mt-2">{currentStepData.description}</p>
+        )}
       </div>
 
-      {/* Guest CTA Banner */}
-      {isGuest() && (
-        <div className="p-4">
-          <CTABanner
-            variant="create"
-            compact={true}
-          />
-        </div>
-      )}
-
-      {/* Message Top Bar */}
-      <div className="p-4 border-b border-white/10">
-        <div className="bg-gradient-to-r from-violet-500/20 to-blue-500/20 border border-violet-500/30 rounded-xl p-4">
-          <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
-            <MessageCircle className="w-5 h-5 text-violet-400" />
-            Chat with AkiliPesa AI
-          </h3>
-          <div className="grid grid-cols-2 gap-2">
-            <button 
-              onClick={() => handleChatWithAI('text')}
-              className="flex items-center gap-2 p-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm transition-colors"
-            >
-              <MessageCircle className="w-4 h-4" />
-              Text
-            </button>
-            <button 
-              onClick={() => handleChatWithAI('image')}
-              className="flex items-center gap-2 p-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm transition-colors"
-            >
-              <Image className="w-4 h-4" />
-              Image
-            </button>
-            <button 
-              onClick={() => handleChatWithAI('voice')}
-              className="flex items-center gap-2 p-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm transition-colors"
-            >
-              <Mic className="w-4 h-4" />
-              Voice
-            </button>
-            <button 
-              onClick={() => handleChatWithAI('live')}
-              className="flex items-center gap-2 p-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm transition-colors"
-            >
-              <Users className="w-4 h-4" />
-              Go Live
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Content */}
       <div className="p-4">
-        {/* Quick Actions */}
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-white mb-4">Quick Create</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {createOptions.slice(0, 4).map((option) => {
-              const IconComponent = option.icon;
-              return (
-                <button
-                  key={option.id}
-                  onClick={() => handleOptionSelect(option.id)}
-                  className={cn(
-                    "relative p-6 rounded-2xl overflow-hidden transition-all duration-300",
-                    "hover:scale-105 active:scale-95",
-                    selectedOption === option.id ? "ring-2 ring-violet-400" : ""
-                  )}
-                  style={{
-                    background: `linear-gradient(135deg, ${option.color.split(' ')[1]}, ${option.color.split(' ')[3]})`
-                  }}
-                >
-                  <div className="relative z-10">
-                    <IconComponent className="w-8 h-8 text-white mb-3" />
-                    <h3 className="text-white font-semibold text-left">{option.title}</h3>
-                    <p className="text-white/80 text-sm text-left mt-1">{option.description}</p>
-                  </div>
-                  
-                  {option.isAI && (
-                    <div className="absolute top-2 right-2 bg-white/20 rounded-full px-2 py-1">
-                      <span className="text-white text-xs font-medium">AI</span>
-                    </div>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        {!currentStep && !showAIPrompt && (
+          // Step Selection
+          <div className="space-y-4">
+            <div className="text-center mb-8">
+              <h2 className="text-xl font-semibold text-white mb-2">What would you like to create?</h2>
+              <p className="text-white/60">Choose a category to get started</p>
+            </div>
 
-        {/* AI Generation */}
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-violet-400" />
-            <span>AI-Powered Creation</span>
-          </h2>
-          <div className="space-y-3">
-            {createOptions.filter(option => option.isAI).map((option) => {
-              const IconComponent = option.icon;
-              return (
-                <button
-                  key={option.id}
-                  onClick={() => handleOptionSelect(option.id)}
-                  className="w-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/10 hover:border-violet-500/30 transition-all duration-300 text-left"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={cn(
-                      "w-12 h-12 rounded-full flex items-center justify-center",
-                      `bg-gradient-to-r ${option.color}`
-                    )}>
-                      <IconComponent className="w-6 h-6 text-white" />
+            <div className="space-y-4">
+              {wizardSteps.map((step) => {
+                const IconComponent = step.icon;
+                return (
+                  <button
+                    key={step.id}
+                    onClick={() => handleStepSelect(step.id)}
+                    className="w-full p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl hover:bg-white/10 hover:border-violet-500/30 transition-all duration-300 text-left group"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className={cn(
+                        "w-16 h-16 rounded-2xl flex items-center justify-center",
+                        `bg-gradient-to-r ${step.color}`
+                      )}>
+                        <IconComponent className="w-8 h-8 text-white" />
+                      </div>
+                      
+                      <div className="flex-1">
+                        <h3 className="text-xl font-semibold text-white group-hover:text-violet-300 transition-colors">
+                          {step.title}
+                        </h3>
+                        <p className="text-white/60 mt-1">{step.description}</p>
+                        <div className="flex items-center gap-1 mt-2 text-white/40 text-sm">
+                          <span>{step.options.length} options</span>
+                          {step.options.some(opt => opt.isAI) && (
+                            <>
+                              <span>•</span>
+                              <Sparkles className="w-3 h-3" />
+                              <span>AI-powered</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <ArrowRight className="w-6 h-6 text-white/40 group-hover:text-violet-400 transition-colors" />
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-white font-semibold">{option.title}</h3>
-                      <p className="text-white/60 text-sm">{option.description}</p>
-                    </div>
-                    <div className="text-violet-400">
-                      <Sparkles className="w-5 h-5" />
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+                  </button>
+                );
+              })}
+            </div>
 
-        {/* Templates */}
-        <div>
-          <h2 className="text-lg font-semibold text-white mb-4">Templates</h2>
-          <div className="grid grid-cols-3 gap-3">
-            {[1, 2, 3, 4, 5, 6].map((template) => (
-              <div key={template} className="aspect-video rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors">
-                <span className="text-white/60 text-sm">Template {template}</span>
+            {/* Guest CTA */}
+            {isGuest && (
+              <div className="mt-8 p-4 bg-gradient-to-r from-violet-500/20 to-purple-500/20 border border-violet-500/30 rounded-xl">
+                <div className="text-center">
+                  <h3 className="text-white font-semibold mb-2">Unlock Premium Features</h3>
+                  <p className="text-white/60 text-sm mb-4">
+                    Sign in to access AI creation, advanced tools, and monetization options
+                  </p>
+                  <button
+                    onClick={() => openAuthSheet(undefined, 'create')}
+                    className="px-6 py-2 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-lg transition-colors"
+                  >
+                    Get Started
+                  </button>
+                </div>
               </div>
-            ))}
+            )}
           </div>
-        </div>
-      </div>
+        )}
 
-      {/* Upload Modal */}
-      {showUpload && (
-        <>
-          <div 
-            className="fixed inset-0 bg-black/50 z-40"
-            onClick={() => setShowUpload(false)}
-          />
-          <div className="fixed inset-x-4 top-1/2 transform -translate-y-1/2 z-50">
-            <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 border border-white/20 rounded-2xl p-6 max-w-sm mx-auto">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white font-semibold text-lg">Upload Content</h3>
-                <button 
-                  onClick={() => setShowUpload(false)}
-                  className="p-1 hover:bg-white/10 rounded"
-                >
-                  <X className="w-5 h-5 text-white" />
-                </button>
-              </div>
-              
-              <div className="space-y-3">
-                <button className="w-full py-3 px-4 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-white flex items-center justify-center gap-2 transition-colors">
-                  <Video className="w-5 h-5" />
-                  <span>Upload Video</span>
-                </button>
-                <button className="w-full py-3 px-4 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-white flex items-center justify-center gap-2 transition-colors">
-                  <Camera className="w-5 h-5" />
-                  <span>Upload Photo</span>
-                </button>
-                <button className="w-full py-3 px-4 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-white flex items-center justify-center gap-2 transition-colors">
-                  <Music className="w-5 h-5" />
-                  <span>Upload Audio</span>
-                </button>
-              </div>
+        {currentStepData && !showAIPrompt && (
+          // Option Selection
+          <div className="space-y-4">
+            <div className="grid gap-4">
+              {currentStepData.options.map((option) => {
+                const IconComponent = option.icon;
+                const isSelected = selectedOption === option.id;
+                const needsAuth = option.isPro && isGuest;
+                
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() => handleOptionSelect(option)}
+                    className={cn(
+                      "w-full p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl transition-all duration-300 text-left group",
+                      isSelected ? "bg-violet-500/20 border-violet-500/40" : "hover:bg-white/10 hover:border-white/20",
+                      needsAuth ? "opacity-80" : ""
+                    )}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                        <IconComponent className="w-6 h-6 text-white" />
+                      </div>
+                      
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="text-white font-medium">{option.title}</h4>
+                          <div className="flex gap-1">
+                            {option.isAI && (
+                              <span className="px-2 py-0.5 bg-violet-500/20 text-violet-300 text-xs rounded-full border border-violet-500/30">
+                                AI
+                              </span>
+                            )}
+                            {option.isPro && (
+                              <span className="px-2 py-0.5 bg-amber-500/20 text-amber-300 text-xs rounded-full border border-amber-500/30">
+                                PRO
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <p className="text-white/60 text-sm">{option.description}</p>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        {needsAuth && (
+                          <div className="flex items-center gap-1 text-white/40 text-xs">
+                            <Shield className="w-3 h-3" />
+                            <span>Sign in</span>
+                          </div>
+                        )}
+                        <ArrowRight className="w-5 h-5 text-white/40 group-hover:text-white/60 transition-colors" />
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
-        </>
-      )}
+        )}
 
-      {/* AI Job Modal */}
-      <AIJobModal
-        isOpen={showAIModal}
-        onClose={() => setShowAIModal(false)}
-        jobType={selectedAIType}
-        onStartJob={handleStartAIJob}
-      />
+        {showAIPrompt && (
+          // AI Prompt Interface
+          <div className="space-y-6">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-violet-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Sparkles className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-xl font-semibold text-white mb-2">Create with AkiliPesa AI</h2>
+              <p className="text-white/60">Describe what you'd like to create and let our AI bring it to life</p>
+            </div>
 
-      {/* Pricing Panel */}
-      <PricingPanel
-        isOpen={showPricing}
-        onClose={() => setShowPricing(false)}
-        onSubmit={(pricing) => console.log('Pricing set:', pricing)}
-      />
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  What would you like to create?
+                </label>
+                <textarea
+                  value={aiPrompt}
+                  onChange={(e) => setAIPrompt(e.target.value)}
+                  placeholder="Describe your idea in detail... For example: 'A vibrant sunset over Mount Kilimanjaro with traditional Maasai silhouettes'"
+                  className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
+                  rows={4}
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                {['image', 'video', 'music'].map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => setSelectedAIType(type as JobType)}
+                    className={cn(
+                      "p-3 rounded-lg border text-sm font-medium transition-all",
+                      selectedAIType === type
+                        ? "bg-violet-500/20 border-violet-500 text-violet-300"
+                        : "bg-white/5 border-white/20 text-white/60 hover:bg-white/10"
+                    )}
+                  >
+                    {type === 'image' && <Image className="w-4 h-4 mx-auto mb-1" />}
+                    {type === 'video' && <Video className="w-4 h-4 mx-auto mb-1" />}
+                    {type === 'music' && <Music className="w-4 h-4 mx-auto mb-1" />}
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </button>
+                ))}
+              </div>
+
+              <div className="bg-violet-500/10 border border-violet-500/20 rounded-xl p-4">
+                <h4 className="text-violet-300 font-medium mb-2 flex items-center gap-2">
+                  <Zap className="w-4 h-4" />
+                  Pro Tips
+                </h4>
+                <div className="space-y-1 text-sm text-violet-200/80">
+                  <p>• Be specific about colors, style, and mood</p>
+                  <p>• Include Tanzanian cultural elements for local appeal</p>
+                  <p>• Mention lighting, perspective, or composition preferences</p>
+                </div>
+              </div>
+
+              <button
+                onClick={handleAISubmit}
+                disabled={!aiPrompt.trim()}
+                className="w-full py-4 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 disabled:from-gray-600 disabled:to-gray-600 text-white font-semibold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <Sparkles className="w-5 h-5" />
+                  <span>Create with AI</span>
+                </div>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
