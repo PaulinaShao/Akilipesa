@@ -1,29 +1,51 @@
-name: Deploy Functions
+name: Deploy Functions (WIF)
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]     # Builder should push here; add more branches if needed
     paths:
       - 'firebase/functions/**'
       - 'firebase.json'
-      - 'package.json'
+  workflow_dispatch:        # allow manual runs
+
+permissions:
+  contents: read
+  id-token: write           # REQUIRED for Workload Identity Federation
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      - run: npm ci --prefix firebase/functions
-      - run: npm run build --prefix firebase/functions
-      - uses: google-github-actions/auth@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: firebase/functions/package-lock.json
+
+      - name: Authenticate to Google (WIF)
+        uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
-      - name: Deploy Firestore rules
-        run: npx firebase-tools deploy --only firestore:rules --project akilipesa-prod
-      - run: npx firebase-tools deploy --only functions --project akilipesa-prod
+          export_environment_variables: true   # makes ADC available to firebase-tools
+
+      - name: Install deps
+        working-directory: firebase/functions
+        run: npm ci
+
+      - name: Build
+        working-directory: firebase/functions
+        run: npm run build
+
+      - name: Deploy Cloud Functions
+        run: npx firebase-tools deploy --only functions --project akilipesa-prod --non-interactive
+
+      # Optional: also deploy Firestore rules from CI
+      - name: Deploy Firestore Rules
+        if: always()
+        run: npx firebase-tools deploy --only firestore:rules --project akilipesa-prod --non-interactive
