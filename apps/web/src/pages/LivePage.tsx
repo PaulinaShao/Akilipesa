@@ -502,7 +502,7 @@ export default function LivePage() {
       </AnimatePresence>
 
       {/* CSS for floating hearts animation */}
-      <style jsx global>{`
+      <style>{`
         @keyframes float-up {
           0% {
             opacity: 1;
