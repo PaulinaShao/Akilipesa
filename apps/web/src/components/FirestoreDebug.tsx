@@ -50,6 +50,8 @@ export function FirestoreDebug() {
     setStatus(getConnectionStatus());
   };
 
+  if (!on) return null;
+
   if (!import.meta.env.DEV && !showDetails) {
     return (
       <button
