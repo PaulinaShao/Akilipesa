@@ -1,14 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams, useLocation, useParams } from 'react-router-dom';
-import {
-  Mic, Video, AlertTriangle
-} from 'lucide-react';
-// import { cn } from '@/lib/utils';
-import { useAppStore } from '@/store';
-import { callService } from '@/lib/callService';
-// import IncomingCallScreen from '@/components/call/IncomingCallScreen';
-import OutgoingCallScreen from '@/components/call/OutgoingCallScreen';
-import ActiveCallScreen from '@/components/call/ActiveCallScreen';
+import CallScreen from '@/components/call/CallScreen';
 
 export default function CallPage() {
   const navigate = useNavigate();
