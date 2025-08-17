@@ -38,7 +38,6 @@ export async function sendPhoneCode(phoneNumber: string): Promise<ConfirmationRe
   }
 
   // Use signInWithPhoneNumber to get ConfirmationResult
-  const { signInWithPhoneNumber } = await import('firebase/auth');
   return await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier!);
 }
 
