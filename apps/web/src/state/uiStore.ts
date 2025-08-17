@@ -4,7 +4,7 @@ interface AuthSheetState {
   isOpen: boolean;
   step: 'phone' | 'code' | 'success';
   pendingAction?: () => void; // Action to execute after successful auth
-  pendingActionType?: 'like' | 'comment' | 'follow' | 'share' | 'message' | 'buy' | 'live';
+  pendingActionType?: 'like' | 'comment' | 'follow' | 'share' | 'message' | 'buy' | 'live' | 'call_access' | 'upgrade' | 'join_conversation' | 'sign_in' | 'ai_create';
 }
 
 interface TrialPaywallState {
