@@ -113,7 +113,13 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
       const config = await loadTrialConfig();
 
       if (config) {
-        set({ config });
+        // Ensure config has all required properties for TrialConfig type
+        const fullConfig = {
+          ...config,
+          happyHours: (config as any).happyHours || [],
+          version: (config as any).version || 1
+        } as TrialConfig;
+        set({ config: fullConfig });
 
         // Update happy hour status (fallback to empty array if not present)
         const happyHours = (config as any).happyHours || [];

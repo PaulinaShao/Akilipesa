@@ -13,7 +13,7 @@ async function enhancedFetch(
   const { timeout = 10000, retries = 2, ...fetchInit } = init || {};
   
   for (let attempt = 0; attempt <= retries; attempt++) {
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: NodeJS.Timeout | undefined;
 
     try {
       // Create abort controller for timeout
