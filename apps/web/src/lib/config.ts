@@ -1,5 +1,5 @@
-import { getDoc, doc, Firestore } from 'firebase/firestore';
-import { isOnline, retryWithBackoff, isNetworkError } from './connectivity';
+import { getDoc, doc } from 'firebase/firestore';
+import { safeFirestoreOperation } from './firestoreManager';
 
 export type TrialConfig = {
   uiShowIncomingDemo?: boolean;
@@ -32,27 +32,20 @@ const DEFAULT_TRIAL_CONFIG: TrialConfig = {
  * Load trial configuration from public Firestore document
  * Falls back to default config if read fails or offline
  */
-export async function loadTrialConfig(db: Firestore): Promise<TrialConfig> {
-  // Return default config immediately if offline
-  if (!isOnline()) {
-    console.log('Offline: using default trial config');
-    return DEFAULT_TRIAL_CONFIG;
-  }
-
-  try {
-    return await retryWithBackoff(async () => {
+export async function loadTrialConfig(): Promise<TrialConfig> {
+  return safeFirestoreOperation(
+    async (db) => {
       const snap = await getDoc(doc(db, 'config', 'trial'));
       const config = snap.exists() ? snap.data() as TrialConfig : {};
 
       // Merge with defaults to ensure all properties exist
-      return { ...DEFAULT_TRIAL_CONFIG, ...config };
-    }, 2, 1000);
-  } catch (error) {
-    if (isNetworkError(error)) {
-      console.warn('Network error loading trial config, using defaults:', error);
-    } else {
-      console.warn('Failed to load trial config, using defaults:', error);
+      const mergedConfig = { ...DEFAULT_TRIAL_CONFIG, ...config };
+      console.log('✅ Trial config loaded from Firestore:', mergedConfig);
+      return mergedConfig;
+    },
+    () => {
+      console.log('📱 Using default trial config (fallback)');
+      return DEFAULT_TRIAL_CONFIG;
     }
-    return DEFAULT_TRIAL_CONFIG;
-  }
+  );
 }
