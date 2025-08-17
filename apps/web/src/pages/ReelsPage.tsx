@@ -8,6 +8,7 @@ import { useAppStore } from '@/store';
 import { isGuest } from '@/lib/guards';
 import AuthSheet from '@/components/auth/AuthSheet';
 import AuthUpsell from '@/components/Modals/AuthUpsell';
+import JoinConversationModal from '@/components/Modals/JoinConversationModal';
 import ShareSheet from '@/components/Modals/ShareSheet';
 import CommentDrawer from '@/components/Modals/CommentDrawer';
 import { toggleLike, toggleFollow, getContentForSharing, startCallFlow, canPerformAction } from '@/lib/api';
