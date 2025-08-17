@@ -10,7 +10,7 @@
   "dependencies": {
     "firebase-admin": "^12.6.0",
     "firebase-functions": "^5.0.1",
-    "agora-access-token": "^2.0.6",
+    "agora-access-token": "^2.0.4",
     "zod": "^3.23.8"
   },
   "devDependencies": {
