@@ -33,7 +33,6 @@ export default function CallScreen({ className }: CallScreenProps) {
   const initialPrivacy = searchParams.get('privacy') || 'private';
   
   const [isPrivate, setIsPrivate] = useState(initialPrivacy === 'private');
-  const [isMuted, setIsMuted] = useState(false);
   const [isVideoOff, setIsVideoOff] = useState(false);
   const [isSpeakerOn, setIsSpeakerOn] = useState(true);
   const [showAddParticipants, setShowAddParticipants] = useState(false);
