@@ -24,4 +24,6 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+      - name: Deploy Firestore rules
+        run: npx firebase-tools deploy --only firestore:rules --project akilipesa-prod
       - run: npx firebase-tools deploy --only functions --project akilipesa-prod
