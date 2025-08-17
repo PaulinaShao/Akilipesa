@@ -7,6 +7,7 @@ import LoginBadge from '@/components/LoginBadge';
 import { useAppStore } from '@/store';
 import { isGuest } from '@/lib/guards';
 import { useAuth } from '@/hooks/useAuth';
+import { isRealUser } from '@/auth/phoneAuth';
 import AuthSheet from '@/components/auth/AuthSheet';
 import AuthUpsell from '@/components/Modals/AuthUpsell';
 import JoinConversationModal from '@/components/Modals/JoinConversationModal';
