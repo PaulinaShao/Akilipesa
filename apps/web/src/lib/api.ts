@@ -1,5 +1,6 @@
 import { call } from './firebase';
 import { auth } from './firebase';
+import { isRealUser } from '@/auth/phoneAuth';
 
 // AI jobs
 export async function startJob(type: string, inputs: any) {
