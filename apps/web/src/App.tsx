@@ -19,7 +19,7 @@ import { useTrialStore } from '@/state/trialStore';
 import { useAppStore, type User as AppUser } from '@/store';
 import { db } from '@/lib/firebase';
 import { seedTrialConfig } from '@/lib/seedTrialConfig';
-import { ensureGuest } from '@/lib/guest';
+import { initGuestSignIn } from '@/auth/initGuest';
 import { loadTrialConfig } from '@/lib/config';
 import { useTrialConfigStore } from '@/store/trialConfigStore';
 import { shouldShowSplashOnce } from '@/lib/entry';
