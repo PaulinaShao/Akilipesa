@@ -10,7 +10,15 @@ import {
 
 export async function sendPhoneCode(phoneNumber: string): Promise<ConfirmationResult> {
   const auth = getAuth();
-  
+
+  // Ensure reCAPTCHA container exists
+  if (!document.getElementById('recaptcha-container')) {
+    const container = document.createElement('div');
+    container.id = 'recaptcha-container';
+    container.style.display = 'none';
+    document.body.appendChild(container);
+  }
+
   // Initialize reCAPTCHA if not already done
   if (!window.recaptchaVerifier) {
     window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
