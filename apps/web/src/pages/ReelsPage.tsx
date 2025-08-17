@@ -814,6 +814,13 @@ export default function ReelsPage() {
       {/* Auth Sheet */}
       <AuthSheet />
 
+      {/* Join Conversation Modal */}
+      <JoinConversationModal
+        isOpen={showJoinConversation}
+        onClose={() => setShowJoinConversation(false)}
+        trigger={joinConversationTrigger}
+      />
+
       {/* Auth Upsell Modal */}
       <AuthUpsell
         isOpen={showAuthUpsell}
