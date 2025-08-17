@@ -232,8 +232,7 @@ export default function CreatePage() {
     try {
       const jobId = await startJob({
         type: selectedAIType,
-        prompt: aiPrompt.trim(),
-        category: currentStep
+        prompt: aiPrompt.trim()
       });
       
       setShowAIPrompt(false);
