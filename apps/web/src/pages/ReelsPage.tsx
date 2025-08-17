@@ -657,9 +657,9 @@ export default function ReelsPage() {
     try {
       const { channel } = await startCallFlow(reel.user.id, 'video');
       navigate(`/call/${channel}?type=video&target=${reel.user.id}`);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to join call:', error);
-      if (error.message.includes('limit')) {
+      if (error?.message?.includes('limit')) {
         setAuthUpsellTrigger('call');
         setShowAuthUpsell(true);
       }
