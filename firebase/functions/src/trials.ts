@@ -13,10 +13,17 @@ const hashIP = (ip: string): string => {
   return crypto.createHash('sha256').update(ip + 'trial_salt').digest('hex').slice(0, 16);
 };
 
+// Type definition for reCAPTCHA response
+type TrialResult = { success?: boolean; score?: number };
+
+function isTrialResult(x: unknown): x is TrialResult {
+  return !!x && typeof x === 'object' && ('success' in (x as any) || 'score' in (x as any));
+}
+
 // Helper to validate reCAPTCHA score
 async function validateCaptcha(token?: string): Promise<number> {
   if (!token) return 0.5; // Default score for development
-  
+
   try {
     const response = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
       method: 'POST',
@@ -26,9 +33,10 @@ async function validateCaptcha(token?: string): Promise<number> {
         response: token,
       }),
     });
-    
+
     const result = await response.json();
-    return result.success ? (result.score || 0) : 0;
+    if (!isTrialResult(result)) return 0;
+    return result.success ? (result.score ?? 0) : 0;
   } catch (error) {
     console.warn('reCAPTCHA validation failed:', error);
     return 0.3; // Lower score on validation failure
