@@ -1,0 +1,27 @@
+name: Deploy Functions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'firebase/functions/**'
+      - 'firebase.json'
+      - 'package.json'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm ci --prefix firebase/functions
+      - run: npm run build --prefix firebase/functions
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+      - run: npx firebase-tools deploy --only functions --project akilipesa-prod
