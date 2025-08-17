@@ -441,6 +441,8 @@ export default function ReelsPage() {
   const [authUpsellTrigger, setAuthUpsellTrigger] = useState<'like' | 'comment' | 'follow' | 'call' | 'shop' | 'create' | 'general'>('general');
   const [showJoinConversation, setShowJoinConversation] = useState(false);
   const [joinConversationTrigger, setJoinConversationTrigger] = useState<'like' | 'comment' | 'follow'>('comment');
+  const [showFreeTrialModal, setShowFreeTrialModal] = useState(false);
+  const [freeTrialFeature, setFreeTrialFeature] = useState<'call' | 'video_call'>('call');
   const [showShareSheet, setShowShareSheet] = useState(false);
   const [shareContent, setShareContent] = useState<any>(null);
   const [showCommentDrawer, setShowCommentDrawer] = useState(false);
@@ -448,6 +450,7 @@ export default function ReelsPage() {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { setStoriesVisible, setBalanceBannerVisible } = useAppStore();
 
   // Pull to refresh handler
