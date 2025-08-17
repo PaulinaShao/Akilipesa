@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams, useLocation, useParams } from 'react-router-dom';
 import {
-  Mic, MicOff, Video, VideoOff, PhoneOff
+  Mic, MicOff, Video, VideoOff, PhoneOff, AlertTriangle
 } from 'lucide-react';
 // import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store';
