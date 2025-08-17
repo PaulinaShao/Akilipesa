@@ -85,6 +85,7 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
   config: null,
   usage: null,
   isLoading: false,
+  isInitialized: false,
   error: null,
   isHappyHour: true,
   nextHappyHour: 0,
