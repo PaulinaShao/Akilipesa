@@ -32,12 +32,8 @@ export async function createOrder(payload: any) {
 
 // User permissions and interactions
 export function canPerformAction(_action: 'like' | 'comment' | 'follow' | 'call' | 'share' | 'shop'): boolean {
-  // Check if user is authenticated
-  const user = auth.currentUser;
-  if (!user || user.isAnonymous) {
-    return false; // Require auth for all actions
-  }
-  return true;
+  // Check if user is a real user (not anonymous)
+  return isRealUser();
 }
 
 // Social interactions
