@@ -1,5 +1,4 @@
-name: Deploy Functions
-
+name: Deploy AkiliPesa
 on:
   push:
     branches: [ main ]
@@ -17,24 +16,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: |
-            package-lock.json
-            firebase/functions/package-lock.json
-
-      - name: Install workspace deps
-        run: npm ci --workspaces
-
-      - name: Build Cloud Functions (TypeScript)
-        run: npm run build
+      # (Optional) build functions if using TypeScript
+      - run: npm ci
+        working-directory: firebase/functions
+      - run: npm run build
         working-directory: firebase/functions
 
-      - name: Deploy Functions + Firestore rules
-        run: npx firebase-tools deploy --only functions,firestore:rules --project "${{ vars.FIREBASE_PROJECT_ID }}" --non-interactive --token "${{ secrets.FIREBASE_TOKEN }}"
+      # Seed/update Cloud Functions secrets (idempotent)
+      - name: Seed CF secrets
+        run: |
+          npx firebase-tools functions:secrets:set AGORA_APP_ID --data "${{ secrets.AGORA_APP_ID }}" --project akilipesa-prod --force
+          npx firebase-tools functions:secrets:set AGORA_APP_CERT --data "${{ secrets.AGORA_APP_CERT }}" --project akilipesa-prod --force
+          npx firebase-tools functions:secrets:set RTC_PROVIDER --data "${{ vars.RTC_PROVIDER }}" --project akilipesa-prod --force
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      # Deploy functions + rules (add hosting/storage if you want)
+      - name: Deploy to Firebase
+        run: npx firebase-tools deploy --only functions,firestore:rules --project akilipesa-prod --non-interactive
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
