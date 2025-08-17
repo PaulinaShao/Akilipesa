@@ -311,9 +311,9 @@ export default function ShopPage() {
               className="p-4 rounded-2xl bg-gradient-to-br text-white text-left overflow-hidden relative"
               style={{
                 background: `linear-gradient(135deg, var(--tw-gradient-from), var(--tw-gradient-to))`,
-                '--tw-gradient-from': category.color.split(' ')[1],
-                '--tw-gradient-to': category.color.split(' ')[3]
-              }}
+                ['--tw-gradient-from' as any]: category.color.split(' ')[1],
+                ['--tw-gradient-to' as any]: category.color.split(' ')[3]
+              } as React.CSSProperties}
             >
               <category.icon className="w-8 h-8 mb-2" />
               <h3 className="font-semibold mb-1">{category.name}</h3>
