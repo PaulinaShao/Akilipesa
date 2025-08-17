@@ -111,17 +111,13 @@ function App() {
     // Initialize reCAPTCHA container for phone auth
     ensureRecaptchaContainer();
 
-    // Guest bootstrap and trial config loading (one-shot, no retries)
+    // Initialize guest sign-in (prevents anonymous user explosion)
+    initGuestSignIn();
+
+    // Load trial configuration
     let cancelled = false;
     (async () => {
       try {
-        // Try guest authentication once
-        const user = await ensureGuest(auth);
-        if (user && !cancelled) {
-          console.log('Guest authentication successful');
-        }
-
-        // Load trial configuration
         const cfg = await loadTrialConfig(db);
         if (!cancelled) {
           setTrialConfig(cfg);
@@ -129,7 +125,7 @@ function App() {
         }
       } catch (error) {
         if (!cancelled) {
-          console.warn('Guest bootstrap failed, app will continue:', error);
+          console.warn('Trial config loading failed, app will continue:', error);
           // Set empty config to mark as loaded
           setTrialConfig({});
         }
