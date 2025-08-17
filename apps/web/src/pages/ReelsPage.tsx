@@ -383,47 +383,13 @@ function ReelCard({
 
       {/* Right actions rail - TikTok style */}
       <div className="reel-actions">
-        {/* Like */}
-        <div className="flex flex-col items-center space-y-1">
-          <button
-            onClick={onLike}
-            className={cn(
-              "w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center transition-all",
-              reel.interactions.liked && "bg-red-500/30"
-            )}
-          >
-            <Heart
-              className={cn(
-                "w-7 h-7 transition-all duration-200",
-                reel.interactions.liked && "fill-red-500 text-red-500 scale-110"
-              )}
-            />
-          </button>
-          <span className="text-white text-xs font-medium">
-            {formatNumber(reel.stats.likes)}
-          </span>
-        </div>
-
-        {/* Comment */}
-        <div className="flex flex-col items-center space-y-1">
-          <button
-            onClick={onComment}
-            className="w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-black/50"
-          >
-            <MessageCircle className="w-7 h-7" />
-          </button>
-          <span className="text-white text-xs font-medium">
-            {formatNumber(reel.stats.comments)}
-          </span>
-        </div>
-
         {/* Share */}
         <div className="flex flex-col items-center space-y-1">
           <button
             onClick={onShare}
             className="w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-black/50"
           >
-            <Share className="w-7 h-7" />
+            <Share className="w-6 h-6" />
           </button>
           <span className="text-white text-xs font-medium">
             {formatNumber(reel.stats.shares)}
@@ -436,7 +402,7 @@ function ReelCard({
             onClick={onAudioCall}
             className="w-12 h-12 rounded-full bg-green-500/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-green-500/50"
           >
-            <Phone className="w-7 h-7 text-green-400" />
+            <Phone className="w-6 h-6 text-green-400" />
           </button>
         </div>
 
@@ -446,21 +412,16 @@ function ReelCard({
             onClick={onVideoCall}
             className="w-12 h-12 rounded-full bg-blue-500/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-blue-500/50"
           >
-            <Video className="w-7 h-7 text-blue-400" />
+            <Video className="w-6 h-6 text-blue-400" />
           </button>
         </div>
-
-        {/* More */}
-        <button onClick={onMore} className="reel-action-btn">
-          <MoreHorizontal className="w-6 h-6" />
-        </button>
 
         {/* Creator avatar (spinning) */}
         <div className="mt-4">
           <button onClick={onProfileClick}>
             <div className="w-12 h-12 rounded-full border-2 border-white/30 overflow-hidden animate-spin-slow">
-              <img 
-                src={reel.user.avatar} 
+              <img
+                src={reel.user.avatar}
                 alt={reel.user.displayName}
                 className="w-full h-full object-cover"
               />
