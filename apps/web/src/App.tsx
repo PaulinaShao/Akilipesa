@@ -105,7 +105,7 @@ function App() {
   // Initialize trial system
   const { initializeToken, fetchConfig } = useTrialStore();
   const { setUser: setAppUser } = useAppStore();
-  const { setConfig: setTrialConfig } = useTrialConfigStore();
+  const { setConfig: setTrialConfig, config: trialConfig, isLoaded: configLoaded } = useTrialConfigStore();
 
   useEffect(() => {
     // Initialize reCAPTCHA container for phone auth
