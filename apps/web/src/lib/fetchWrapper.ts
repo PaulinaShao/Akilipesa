@@ -13,37 +13,39 @@ async function enhancedFetch(
   const { timeout = 10000, retries = 2, ...fetchInit } = init || {};
   
   for (let attempt = 0; attempt <= retries; attempt++) {
+    let timeoutId: NodeJS.Timeout;
+
     try {
       // Create abort controller for timeout
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), timeout);
-      
+      timeoutId = setTimeout(() => controller.abort(), timeout);
+
       const response = await originalFetch(input, {
         ...fetchInit,
         signal: controller.signal,
       });
-      
+
       clearTimeout(timeoutId);
-      
+
       // If response is ok, return it
       if (response.ok || attempt === retries) {
         return response;
       }
-      
+
       // If not ok and we have retries left, wait and try again
       if (attempt < retries) {
         await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
       }
-      
+
     } catch (error) {
-      clearTimeout(timeoutId);
-      
+      if (timeoutId) clearTimeout(timeoutId);
+
       // If it's the last attempt, throw the error
       if (attempt === retries) {
         console.error('Enhanced fetch failed after all retries:', error);
         throw error;
       }
-      
+
       // Wait before retrying
       await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
       console.warn(`Fetch attempt ${attempt + 1} failed, retrying...`, error);
