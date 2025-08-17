@@ -780,8 +780,8 @@ export default function ReelsPage() {
 
   return (
     <div className="reel-container">
-      {/* Login Badge - only show for logged-out users */}
-      {isGuest() && <LoginBadge />}
+      {/* Login Badge - only show for anonymous users (not real users) */}
+      {!isRealUser() && <LoginBadge />}
 
       {/* Pull to refresh indicator */}
       {isRefreshing && (
