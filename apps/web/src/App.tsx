@@ -225,6 +225,8 @@ function App() {
     };
   }, [user, initializeToken, fetchConfig, setAppUser]);
 
+  const currentUser = user || devModeUser;
+
   // Show demo incoming call when config is loaded and conditions are met
   useEffect(() => {
     if (configLoaded && trialConfig?.uiShowIncomingDemo && currentUser) {
@@ -246,8 +248,6 @@ function App() {
       }
     }
   }, [configLoaded, trialConfig?.uiShowIncomingDemo, currentUser]);
-
-  const currentUser = user || devModeUser;
 
   if (loading) {
     return (
