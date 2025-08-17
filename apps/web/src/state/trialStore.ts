@@ -345,17 +345,22 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
   }
 }));
 
-// Initialize trial system on module load
+// Initialize trial system on module load (with delay to avoid conflicts with App.tsx)
 if (typeof window !== 'undefined') {
-  const store = useTrialStore.getState();
-  
-  // Auto-initialize
-  Promise.all([
-    store.initializeToken(),
-    store.fetchConfig()
-  ]).then(() => {
-    store.fetchUsage();
-  }).catch(error => {
-    debugLog.warn('Trial system initialization failed:', error);
-  });
+  // Delay initialization to let App.tsx handle auth and primary config loading first
+  setTimeout(() => {
+    const store = useTrialStore.getState();
+
+    // Only auto-initialize if not already initialized
+    if (!store.isInitialized && !store.isLoading) {
+      Promise.all([
+        store.initializeToken(),
+        store.fetchConfig()
+      ]).then(() => {
+        store.fetchUsage();
+      }).catch(error => {
+        debugLog.warn('Trial system initialization failed (will retry later):', error);
+      });
+    }
+  }, 1000); // 1 second delay
 }
