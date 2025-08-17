@@ -21,7 +21,7 @@ import { useTrialStore } from '@/state/trialStore';
 import { useAppStore, type User as AppUser } from '@/store';
 import { initFirebase } from '@/lib/firebaseEnhanced';
 import { seedTrialConfig } from '@/lib/seedTrialConfig';
-import { initGuestSignIn } from '@/auth/initGuest';
+import { initGuestOnce } from '@/lib/initGuest';
 import { loadTrialConfig } from '@/lib/config';
 import { useTrialConfigStore } from '@/store/trialConfigStore';
 import { shouldShowSplashOnce } from '@/lib/entry';
@@ -119,8 +119,8 @@ function App() {
     // Initialize reCAPTCHA container for phone auth
     ensureRecaptchaContainer();
 
-    // Initialize guest sign-in (prevents anonymous user explosion)
-    initGuestSignIn();
+    // Initialize guest sign-in once (prevents duplicate anonymous users)
+    initGuestOnce();
 
     // Load trial configuration
     let cancelled = false;
