@@ -708,8 +708,8 @@ export default function ReelsPage() {
 
   const handleFollow = async (userId: string) => {
     if (!canPerformAction('like')) { // Using like check as proxy for follow
-      setAuthUpsellTrigger('follow');
-      setShowAuthUpsell(true);
+      setJoinConversationTrigger('follow');
+      setShowJoinConversation(true);
       return;
     }
 
