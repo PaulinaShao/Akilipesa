@@ -37,7 +37,7 @@ export async function sendPhoneCode(phoneNumber: string): Promise<ConfirmationRe
   }
 
   const provider = new PhoneAuthProvider(auth);
-  return await provider.verifyPhoneNumber(phoneNumber, window.recaptchaVerifier);
+  return await provider.verifyPhoneNumber(phoneNumber, window.recaptchaVerifier!);
 }
 
 export async function verifyPhoneCode(confirmationResult: ConfirmationResult, code: string): Promise<UserCredential> {
