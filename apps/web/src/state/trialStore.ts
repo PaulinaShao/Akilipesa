@@ -106,17 +106,11 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
   // Fetch trial configuration
   fetchConfig: async () => {
     try {
-      const { safeFirebaseOperation, firestore } = await import('../lib/firebase');
+      const { db } = await import('../lib/firebase');
       const { doc, getDoc } = await import('firebase/firestore');
 
-      const config = await safeFirebaseOperation(
-        async () => {
-          const configDoc = await getDoc(doc(firestore, 'trialConfig', 'global'));
-          return configDoc.exists() ? configDoc.data() as TrialConfig : null;
-        },
-        'fetchTrialConfig',
-        DEFAULT_CONFIG
-      );
+      const configDoc = await getDoc(doc(db, 'trialConfig', 'global'));
+      const config = configDoc.exists() ? configDoc.data() as TrialConfig : DEFAULT_CONFIG;
 
       if (config) {
         set({ config });
@@ -140,17 +134,11 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
       const { deviceToken } = get();
       if (!deviceToken) return;
 
-      const { safeFirebaseOperation, firestore } = await import('../lib/firebase');
+      const { db } = await import('../lib/firebase');
       const { doc, getDoc } = await import('firebase/firestore');
 
-      const usage = await safeFirebaseOperation(
-        async () => {
-          const usageDoc = await getDoc(doc(firestore, 'trials', deviceToken));
-          return usageDoc.exists() ? usageDoc.data() : null;
-        },
-        'fetchTrialUsage',
-        null
-      );
+      const usageDoc = await getDoc(doc(db, 'trials', deviceToken));
+      const usage = usageDoc.exists() ? usageDoc.data() : null;
 
       if (usage) {
         // Check if day has changed
