@@ -6,6 +6,7 @@ import WalletChip from '@/components/WalletChip';
 import LoginBadge from '@/components/LoginBadge';
 import { useAppStore } from '@/store';
 import { isGuest } from '@/lib/guards';
+import AuthSheet from '@/components/auth/AuthSheet';
 import AuthUpsell from '@/components/Modals/AuthUpsell';
 import ShareSheet from '@/components/Modals/ShareSheet';
 import CommentDrawer from '@/components/Modals/CommentDrawer';
