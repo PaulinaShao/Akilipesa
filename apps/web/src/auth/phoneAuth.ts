@@ -46,18 +46,35 @@ export async function sendPhoneCode(phoneNumber: string): Promise<ConfirmationRe
 export async function verifyPhoneCode(confirmationResult: ConfirmationResult, code: string): Promise<UserCredential> {
   const auth = getAuth();
   const credential = PhoneAuthProvider.credential(confirmationResult.verificationId, code);
-  
+
   const user = auth.currentUser;
-  
+  let result: UserCredential;
+
   if (user?.isAnonymous) {
     // Convert guest -> real account by linking
     console.log("Linking anonymous user with phone number");
-    return await linkWithCredential(user, credential);
+    result = await linkWithCredential(user, credential);
   } else {
     // No anonymous user, sign in normally
     console.log("Signing in with phone number");
-    return await signInWithCredential(auth, credential);
+    result = await signInWithCredential(auth, credential);
   }
+
+  // Create/merge user document in Firestore
+  if (result.user) {
+    await setDoc(doc(db, "users", result.user.uid), {
+      displayName: result.user.displayName ?? "",
+      phoneNumber: result.user.phoneNumber ?? "",
+      plan: "free",
+      role: "user",
+      createdAt: serverTimestamp(),
+      lastSignIn: serverTimestamp()
+    }, { merge: true });
+
+    console.log("User document created/updated in Firestore");
+  }
+
+  return result;
 }
 
 // Utility to check if user is real (not anonymous)
