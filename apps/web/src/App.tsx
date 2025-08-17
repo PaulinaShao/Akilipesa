@@ -234,26 +234,7 @@ function App() {
   const currentUser = user || devModeUser;
 
   // Show demo incoming call when config is loaded and conditions are met
-  useEffect(() => {
-    if (configLoaded && trialConfig?.uiShowIncomingDemo && currentUser) {
-      // Only show in dev mode or if explicitly enabled
-      if (import.meta.env.DEV || trialConfig.uiShowIncomingDemo === true) {
-        const timer = setTimeout(() => {
-          setIncomingCall({
-            caller: {
-              id: 'demo-caller',
-              name: 'Sarah Johnson',
-              avatar: 'https://images.unsplash.com/photo-1494790108755-2616b9d38aad?w=300&h=300&fit=crop&crop=face',
-              username: 'sarah_creates'
-            },
-            callType: 'video'
-          });
-        }, 10000);
-
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [configLoaded, trialConfig?.uiShowIncomingDemo, currentUser]);
+  // Demo incoming call removed - will only be triggered by explicit user actions like call buttons
 
   if (loading) {
     return (
