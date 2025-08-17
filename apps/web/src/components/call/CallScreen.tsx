@@ -51,7 +51,8 @@ export default function CallScreen({ className }: CallScreenProps) {
     isJoined,
     localAudioTrack,
     localVideoTrack,
-    remoteUsers
+    isMuted,
+    isVideoEnabled
   } = useAgoraCall();
 
   // Initialize call
