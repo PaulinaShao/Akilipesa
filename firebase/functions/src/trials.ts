@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions/v2/https';
+import * as pubsubFunctions from 'firebase-functions/v2/scheduler';
 import * as crypto from 'crypto';
 import { checkDeviceQuota } from './rateLimiter';
 
@@ -65,8 +66,9 @@ async function getTrialConfig() {
 }
 
 // Issue a trial token for a new device
-export const issueTrialToken = functions.https.onCall(async (data, context) => {
-  const ip = context.rawRequest?.ip || '0.0.0.0';
+export const issueTrialToken = functions.onCall(async (request) => {
+  const { data } = request;
+  const ip = request.rawRequest?.ip || '0.0.0.0';
   const ipHash = hashIP(ip);
   const { deviceInfo, captchaToken } = data;
   
@@ -75,7 +77,7 @@ export const issueTrialToken = functions.https.onCall(async (data, context) => {
   const config = await getTrialConfig();
   
   if (captchaScore < config.minCaptchaScore) {
-    throw new functions.https.HttpsError(
+    throw new functions.HttpsError(
       'permission-denied',
       'Security verification failed'
     );
@@ -111,7 +113,8 @@ export const issueTrialToken = functions.https.onCall(async (data, context) => {
 });
 
 // Request a guest call
-export const requestGuestCall = functions.https.onCall(async (data, context) => {
+export const requestGuestCall = functions.onCall(async (request) => {
+  const { data } = request;
   const { deviceToken, targetId, captchaToken } = data;
 
   if (!deviceToken) {
@@ -191,7 +194,8 @@ export const requestGuestCall = functions.https.onCall(async (data, context) => 
 });
 
 // Guest chat with AI
-export const guestChat = functions.https.onCall(async (data, context) => {
+export const guestChat = functions.onCall(async (request) => {
+  const { data } = request;
   const { deviceToken, message, captchaToken } = data;
   
   if (!deviceToken) {
@@ -257,7 +261,8 @@ export const guestChat = functions.https.onCall(async (data, context) => {
 });
 
 // Increment reaction usage
-export const incrementReaction = functions.https.onCall(async (data, context) => {
+export const incrementReaction = functions.onCall(async (request) => {
+  const { data } = request;
   const { deviceToken } = data;
   
   if (!deviceToken) {
@@ -343,9 +348,10 @@ async function generateTrialAIResponse(message: string): Promise<string> {
 }
 
 // Scheduled function to reset trial counters (optional - we use dayKey logic instead)
-export const resetTrialCounters = functions.pubsub.schedule('0 0 * * *')
-  .timeZone('Africa/Dar_es_Salaam')
-  .onRun(async (context) => {
+export const resetTrialCounters = pubsubFunctions.onSchedule({
+    schedule: '0 0 * * *',
+    timeZone: 'Africa/Dar_es_Salaam'
+  }, async (event) => {
     console.log('Trial counter reset job triggered (using dayKey logic instead)');
     return null;
   });
