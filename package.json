@@ -9,7 +9,6 @@
   },
   "workspaces": [
     "apps/web",
-    "firebase/functions",
     "packages/shared"
   ]
 }
