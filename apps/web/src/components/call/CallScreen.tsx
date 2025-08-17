@@ -78,7 +78,7 @@ export default function CallScreen({ className }: CallScreenProps) {
     localVideoTrack,
     isMuted,
     isVideoEnabled
-  } = useAgoraCall();
+  } = useAgoraCall(true); // Enable client when call screen is active
 
   // Initialize call with improved connection handling
   useEffect(() => {
