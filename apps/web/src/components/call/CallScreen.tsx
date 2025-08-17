@@ -70,7 +70,7 @@ export default function CallScreen({ className }: CallScreenProps) {
           appId: rtcData.appId,
           channel: channel,
           token: rtcData.token,
-          uid: rtcData.uid
+          uid: parseInt(rtcData.uid)
         });
         
         setIsConnecting(false);
