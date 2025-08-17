@@ -108,11 +108,9 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
   // Fetch trial configuration
   fetchConfig: async () => {
     try {
-      const { db } = await import('../lib/firebase');
-      const { doc, getDoc } = await import('firebase/firestore');
+      const { loadTrialConfig } = await import('../lib/config');
 
-      const configDoc = await getDoc(doc(db, 'trialConfig', 'global'));
-      const config = configDoc.exists() ? configDoc.data() as TrialConfig : DEFAULT_CONFIG;
+      const config = await loadTrialConfig();
 
       if (config) {
         set({ config });
