@@ -81,19 +81,21 @@ export async function updateTrialConfig(updates: Partial<TrialConfigData>): Prom
 }
 
 export async function getTrialConfig(): Promise<TrialConfigData | null> {
-  try {
-    const configRef = doc(db, 'trialConfig', 'global');
-    const configSnap = await getDoc(configRef);
+  const { safeFirestoreOperation } = await import('./firestoreManager');
 
-    if (!configSnap.exists()) {
-      return null;
-    }
+  return safeFirestoreOperation(
+    async (db) => {
+      const configRef = doc(db, 'trialConfig', 'global');
+      const configSnap = await getDoc(configRef);
 
-    return configSnap.data() as TrialConfigData;
-  } catch (error) {
-    console.error('Failed to get trial config:', error);
-    return null;
-  }
+      if (!configSnap.exists()) {
+        return null;
+      }
+
+      return configSnap.data() as TrialConfigData;
+    },
+    () => null
+  );
 }
 
 // Test helper functions

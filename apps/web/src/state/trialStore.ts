@@ -114,10 +114,11 @@ export const useTrialStore = create<TrialStore>((set, get) => ({
 
       if (config) {
         set({ config });
-        
-        // Update happy hour status
-        const happyHour = isHappyHour(config.happyHours);
-        const nextHappy = timeUntilHappyHour(config.happyHours);
+
+        // Update happy hour status (fallback to empty array if not present)
+        const happyHours = (config as any).happyHours || [];
+        const happyHour = isHappyHour(happyHours);
+        const nextHappy = timeUntilHappyHour(happyHours);
         set({ isHappyHour: happyHour, nextHappyHour: nextHappy });
         
         debugLog.log('Trial config loaded:', config);

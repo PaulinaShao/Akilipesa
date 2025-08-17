@@ -31,10 +31,8 @@ export async function getFirestoreInstance() {
     // Initialize Firestore with optimized settings
     firestoreInstance = initializeFirestore(app, {
       // Use memory cache only to avoid IndexedDB issues
-      localCache: { 
-        kind: 'memory',
-        garbageCollector: 'lru',
-        cacheSize: CACHE_SIZE_UNLIMITED
+      localCache: {
+        kind: 'memory'
       },
       // Set connection timeout
       experimentalForceLongPolling: true, // Helps with proxy environments
@@ -74,7 +72,7 @@ async function testFirestoreConnection(db: ReturnType<typeof getFirestore>): Pro
       console.log('Firestore network enabled successfully');
     }),
     // Timeout after 10 seconds
-    new Promise((_, reject) => 
+    new Promise<void>((_, reject) =>
       setTimeout(() => reject(new Error('Firestore connection timeout')), CONNECTION_TIMEOUT)
     )
   ]);
