@@ -535,8 +535,8 @@ export default function ReelsPage() {
 
   const handleLike = async (reelId: string) => {
     if (!canPerformAction('like')) {
-      setAuthUpsellTrigger('like');
-      setShowAuthUpsell(true);
+      setJoinConversationTrigger('like');
+      setShowJoinConversation(true);
       return;
     }
 
