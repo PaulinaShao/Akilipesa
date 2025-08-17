@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, MessageCircle, Share, MoreHorizontal, Music2, ShoppingBag, Phone, Video, UserPlus, Plus } from 'lucide-react';
+import { Heart, MessageCircle, Share, Music2, Phone, Video, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import WalletChip from '@/components/WalletChip';
 import { useAppStore } from '@/store';
