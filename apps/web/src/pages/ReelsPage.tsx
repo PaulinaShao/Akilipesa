@@ -187,6 +187,7 @@ function ReelCard({
 }: ReelCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showFullCaption, setShowFullCaption] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
