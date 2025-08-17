@@ -2,10 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { getConnectionStatus, forceEnableFirestore, resetFirestoreConnection } from '../lib/firestoreManager';
 import { getFirebaseStatus } from '../lib/firebaseEnhanced';
 
+const debugEnabled = () => {
+  const url = new URL(window.location.href);
+  if (url.searchParams.get("debug") === "1") return true;
+  if (localStorage.getItem("enableFirestoreDebug") === "1") return true;
+  return import.meta.env.VITE_SHOW_FIRESTORE_DEBUG === "1";
+};
+
 export function FirestoreDebug() {
   const [status, setStatus] = useState(getConnectionStatus());
   const [firebaseStatus, setFirebaseStatus] = useState(getFirebaseStatus());
   const [showDetails, setShowDetails] = useState(false);
+  const [on, setOn] = useState(debugEnabled());
 
   useEffect(() => {
     const interval = setInterval(() => {
