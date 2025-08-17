@@ -284,6 +284,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ToastProvider>
           <OfflineIndicator />
+          <FirestoreDebug />
         <Router>
           <Routes>
           {/* Public routes */}
