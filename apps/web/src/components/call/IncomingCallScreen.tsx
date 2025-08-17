@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, PhoneOff, Video, MessageCircle } from 'lucide-react';
+import { Phone, PhoneOff, Video, MessageCircle, Mic } from 'lucide-react';
 // import { cn } from '@/lib/utils';
 
 interface IncomingCallScreenProps {

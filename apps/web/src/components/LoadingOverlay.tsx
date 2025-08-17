@@ -14,7 +14,7 @@ export default function LoadingOverlay({
   isVisible,
   message = 'Loading...',
   type = 'default',
-  size = 'md',
+  // size = 'md',
   className
 }: LoadingOverlayProps) {
   if (!isVisible) return null;
