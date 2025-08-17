@@ -41,11 +41,6 @@ export function useAgoraCall(): UseAgoraCallReturn {
   const localVideoTrackRef = useRef<ILocalVideoTrack | null>(null);
 
   useEffect(() => {
-    // Initialize Agora client
-    const agoraClient = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
-    setClient(agoraClient);
-    clientRef.current = agoraClient;
-
     return () => {
       // Cleanup on unmount
       cleanup();
