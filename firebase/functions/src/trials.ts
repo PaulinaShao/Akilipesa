@@ -102,8 +102,8 @@ export const issueTrialToken = functions.onCall(async (request) => {
     reactionsUsed: 0,
     captchaScore,
     flagged: captchaScore < 0.5,
-    createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    createdAt: FieldValue.serverTimestamp(),
+    updatedAt: FieldValue.serverTimestamp(),
   };
   
   await db.collection('trials').doc(tokenId).set(trialData);
@@ -181,7 +181,7 @@ export const requestGuestCall = functions.onCall(async (request) => {
     
     // Increment usage
     trial.callsUsed += 1;
-    trial.updatedAt = admin.firestore.FieldValue.serverTimestamp();
+    trial.updatedAt = FieldValue.serverTimestamp();
     
     transaction.set(trialRef, trial, { merge: true });
   });
@@ -248,7 +248,7 @@ export const guestChat = functions.onCall(async (request) => {
     
     // Increment usage
     trial.chatUsed += 1;
-    trial.updatedAt = admin.firestore.FieldValue.serverTimestamp();
+    trial.updatedAt = FieldValue.serverTimestamp();
     
     transaction.set(trialRef, trial, { merge: true });
   });
@@ -303,7 +303,7 @@ export const incrementReaction = functions.onCall(async (request) => {
       
       // Increment usage
       trial.reactionsUsed += 1;
-      trial.updatedAt = admin.firestore.FieldValue.serverTimestamp();
+      trial.updatedAt = FieldValue.serverTimestamp();
       
       transaction.set(trialRef, trial, { merge: true });
     });
