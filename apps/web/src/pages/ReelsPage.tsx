@@ -846,6 +846,13 @@ export default function ReelsPage() {
         trigger={joinConversationTrigger}
       />
 
+      {/* Free Trial Modal */}
+      <FreeTrialModal
+        isOpen={showFreeTrialModal}
+        onClose={() => setShowFreeTrialModal(false)}
+        feature={freeTrialFeature}
+      />
+
       {/* Auth Upsell Modal */}
       <AuthUpsell
         isOpen={showAuthUpsell}
