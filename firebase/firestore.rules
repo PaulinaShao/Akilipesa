@@ -3,6 +3,18 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function isSignedIn() { return request.auth != null; }
 
+    // Public configuration documents (readable by anyone)
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if false; // Only server can write
+    }
+
+    // Trial configuration (public read for guest users)
+    match /trialConfig/{docId} {
+      allow read: if true;
+      allow write: if false; // Only server can write
+    }
+
     match /users/{uid} {
       allow read, write: if isSignedIn() && request.auth.uid == uid;
     }
@@ -11,6 +23,16 @@ service cloud.firestore {
       allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
       allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
       allow update, delete: if false; // server updates via Functions
+    }
+
+    // Trial documents (for guest users)
+    match /trials/{trialId} {
+      allow read, write: if true; // Accessible by trial token
+    }
+
+    // Trial quota tracking (server-only)
+    match /trialQuotas/{deviceId} {
+      allow read, write: if false; // Server-only
     }
 
     match /payments/{id} { allow read, write: if false; }
