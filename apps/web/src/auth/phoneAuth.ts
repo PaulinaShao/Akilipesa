@@ -1,12 +1,19 @@
-import { 
-  PhoneAuthProvider, 
-  linkWithCredential, 
-  signInWithCredential, 
-  getAuth, 
+import {
+  PhoneAuthProvider,
+  linkWithCredential,
+  signInWithCredential,
+  getAuth,
   RecaptchaVerifier,
   ConfirmationResult,
   UserCredential
 } from "firebase/auth";
+
+// Extend Window interface for reCAPTCHA
+declare global {
+  interface Window {
+    recaptchaVerifier?: RecaptchaVerifier;
+  }
+}
 
 export async function sendPhoneCode(phoneNumber: string): Promise<ConfirmationResult> {
   const auth = getAuth();
