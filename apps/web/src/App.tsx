@@ -152,6 +152,7 @@ function App() {
           avatar: firebaseUser.photoURL || '',
           verified: firebaseUser.emailVerified,
           plan: 'free' as const,
+          role: 'user' as const,
           balance: 0,
           earnings: 0,
         };
