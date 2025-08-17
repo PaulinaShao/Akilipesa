@@ -1,44 +1,68 @@
-import { getAuth, signInAnonymously } from "firebase/auth";
+import { Auth, signInAnonymously, User } from 'firebase/auth';
 
-// Check if we're in demo mode
-const isDemoMode = import.meta.env.VITE_FIREBASE_PROJECT_ID === 'demo-project' ||
-                   import.meta.env.VITE_FIREBASE_API_KEY === 'demo-api-key' ||
-                   !import.meta.env.VITE_FIREBASE_PROJECT_ID ||
-                   !import.meta.env.VITE_FIREBASE_API_KEY;
+const GUEST_TRY_KEY = 'akili:lastGuestTry';
+const GUEST_DISABLED_KEY = 'akili:guestDisabled';
+const RETRY_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
-export async function ensureGuestAuth(): Promise<string> {
+/**
+ * Check if we should attempt guest authentication
+ * Only allows one attempt per 5 minutes
+ */
+export function shouldTryGuest(): boolean {
+  const lastTry = localStorage.getItem(GUEST_TRY_KEY);
+  if (!lastTry) return true;
+  
+  const lastTryTime = parseInt(lastTry, 10);
+  const now = Date.now();
+  
+  return (now - lastTryTime) > RETRY_INTERVAL;
+}
+
+/**
+ * Mark guest authentication attempt with timestamp and result
+ */
+export function markGuestTry(success: boolean, error?: any): void {
+  localStorage.setItem(GUEST_TRY_KEY, Date.now().toString());
+  
+  if (!success && error) {
+    const errorCode = error?.code || '';
+    // Disable guest auth for specific admin-only errors
+    if (errorCode === 'auth/operation-not-allowed' || 
+        errorCode === 'auth/admin-restricted-operation') {
+      localStorage.setItem(GUEST_DISABLED_KEY, 'true');
+      console.warn('Guest auth disabled due to admin restriction');
+    }
+  }
+}
+
+/**
+ * Ensure guest authentication with rate limiting and error handling
+ * Returns existing user, new anonymous user, or null if disabled/failed
+ */
+export async function ensureGuest(auth: Auth): Promise<User | null> {
+  // Return existing user if already authenticated
+  if (auth.currentUser) {
+    return auth.currentUser;
+  }
+  
+  // Skip if guest auth is disabled
+  if (localStorage.getItem(GUEST_DISABLED_KEY) === 'true') {
+    return null;
+  }
+  
+  // Skip if too many recent attempts
+  if (!shouldTryGuest()) {
+    return null;
+  }
+  
   try {
-    // In demo mode, skip Firebase authentication entirely
-    if (isDemoMode) {
-      console.log('Demo mode - skipping Firebase authentication');
-      return "demo-guest";
-    }
-
-    const auth = getAuth();
-
-    // If someone is already signed in (phone/google), keep it.
-    if (auth.currentUser && !auth.currentUser.isAnonymous) {
-      return auth.currentUser.uid;
-    }
-
-    // If no user or anonymous, try to create anonymous session
-    if (!auth.currentUser) {
-      try {
-        await signInAnonymously(auth);
-        console.log('Anonymous authentication successful');
-      } catch (error: any) {
-        // Handle specific Firebase errors gracefully
-        console.warn('Anonymous auth failed, continuing in offline mode:', error?.message || error);
-
-        // For offline browsing, we'll return a consistent guest ID
-        return "offline-guest";
-      }
-    }
-
-    return auth.currentUser?.uid || "offline-guest";
+    const result = await signInAnonymously(auth);
+    markGuestTry(true);
+    console.log('Guest auth successful');
+    return result.user;
   } catch (error: any) {
-    // Catch any other authentication errors
-    console.warn('Guest authentication error, falling back to offline mode:', error?.message || error);
-    return "offline-guest";
+    markGuestTry(false, error);
+    console.warn('Guest auth failed:', error?.code, error?.message);
+    return null;
   }
 }
