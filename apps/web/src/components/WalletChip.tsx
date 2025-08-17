@@ -77,9 +77,10 @@ export default function WalletChip({
   return (
     <div className="fixed top-4 left-4 z-[60] flex items-center gap-2">
       {/* Wallet Balance */}
-      <div
+      <button
+        onClick={onBalanceClick}
         className="px-3 h-9 rounded-full text-sm font-medium backdrop-blur-md shadow-lg
-                   border border-white/10 flex items-center gap-2"
+                   border border-white/10 flex items-center gap-2 transition hover:scale-[1.02]"
         style={{
           background:
             "linear-gradient(135deg, rgba(31,21,74,.70), rgba(74,35,150,.60))",
@@ -88,12 +89,15 @@ export default function WalletChip({
       >
         <span className="w-5 h-5 rounded-full bg-white/15 grid place-items-center">💰</span>
         <span className="font-semibold">{formatCurrency(walletBalance)}</span>
-      </div>
+      </button>
 
       {/* Plan Status */}
-      <div
-        className="px-3 h-9 rounded-full text-sm font-medium backdrop-blur-md shadow-lg
-                   border border-white/10 flex items-center gap-1"
+      <button
+        onClick={onPlanClick}
+        className={`px-3 h-9 rounded-full text-sm font-medium backdrop-blur-md shadow-lg
+                   border border-white/10 flex items-center gap-1 transition hover:scale-[1.02] ${
+                     currentPlan === 'free' ? 'animate-pulse' : ''
+                   }`}
         style={{
           background:
             "linear-gradient(135deg, rgba(31,21,74,.70), rgba(74,35,150,.60))",
@@ -104,7 +108,7 @@ export default function WalletChip({
         <span className={`font-medium capitalize ${getPlanColor(currentPlan)}`}>
           {currentPlan}
         </span>
-      </div>
+      </button>
 
       {/* Earning Button */}
       <button
