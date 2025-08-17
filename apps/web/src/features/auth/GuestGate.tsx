@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Star, Heart, MessageCircle, Phone, Sparkles } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useUIStore } from '@/state/uiStore';
 import { Trial } from '@/state/guestTrialStore';
 import { cn } from '@/lib/utils';
@@ -88,14 +88,14 @@ export default function GuestGate({
   }, [isVisible]);
 
   const handleContinueWithPhone = () => {
-    setAuthIntent(trigger);
+    // setAuthIntent(trigger);
     openAuthSheet();
     handleClose();
     onAuth?.();
   };
 
   const handleContinueWithGoogle = () => {
-    setAuthIntent(trigger);
+    // setAuthIntent(trigger);
     openAuthSheet();
     handleClose();
     onAuth?.();
