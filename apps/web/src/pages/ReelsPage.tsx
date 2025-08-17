@@ -845,8 +845,8 @@ export default function ReelsPage() {
         contentCreator={reels.find(r => r.id === commentContentId)?.user.displayName || ''}
         onAuthRequired={() => {
           setShowCommentDrawer(false);
-          setAuthUpsellTrigger('comment');
-          setShowAuthUpsell(true);
+          setJoinConversationTrigger('comment');
+          setShowJoinConversation(true);
         }}
       />
 
