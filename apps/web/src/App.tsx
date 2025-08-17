@@ -211,6 +211,7 @@ function App() {
           avatar: '',
           verified: true,
           plan: 'free',
+          role: 'admin' as const,
           balance: 0,
           earnings: 0,
         };
