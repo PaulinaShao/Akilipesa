@@ -118,26 +118,26 @@ export const requestGuestCall = functions.onCall(async (request) => {
   const { deviceToken, targetId, captchaToken } = data;
 
   if (!deviceToken) {
-    throw new functions.https.HttpsError('invalid-argument', 'Device token required');
+    throw new functions.HttpsError('invalid-argument', 'Device token required');
   }
 
   const config = await getTrialConfig();
 
   if (!config.enabled) {
-    throw new functions.https.HttpsError('failed-precondition', 'Trials are currently disabled');
+    throw new functions.HttpsError('failed-precondition', 'Trials are currently disabled');
   }
 
   // Validate reCAPTCHA for call requests
   const captchaScore = await validateCaptcha(captchaToken);
   if (captchaScore < config.minCaptchaScore) {
-    throw new functions.https.HttpsError('permission-denied', 'Security verification failed');
+    throw new functions.HttpsError('permission-denied', 'Security verification failed');
   }
 
   // Check server-side device quota
   const deviceId = data.deviceId || deviceToken.slice(0, 16);
   const quotaOk = await checkDeviceQuota(deviceId, 'call');
   if (!quotaOk) {
-    throw new functions.https.HttpsError('resource-exhausted', 'Daily call quota exceeded');
+    throw new functions.HttpsError('resource-exhausted', 'Daily call quota exceeded');
   }
 
   // Check happy hour if required
@@ -149,7 +149,7 @@ export const requestGuestCall = functions.onCall(async (request) => {
     );
 
     if (!inHappyHour) {
-      throw new functions.https.HttpsError('failed-precondition', 'Calls only available during happy hours');
+      throw new functions.HttpsError('failed-precondition', 'Calls only available during happy hours');
     }
   }
 
@@ -160,7 +160,7 @@ export const requestGuestCall = functions.onCall(async (request) => {
     const doc = await transaction.get(trialRef);
 
     if (!doc.exists) {
-      throw new functions.https.HttpsError('permission-denied', 'Invalid trial token');
+      throw new functions.HttpsError('permission-denied', 'Invalid trial token');
     }
     
     const trial = doc.data()!;
@@ -177,7 +177,7 @@ export const requestGuestCall = functions.onCall(async (request) => {
     
     // Check quota
     if (trial.callsUsed >= config.callsPerDay) {
-      throw new functions.https.HttpsError('resource-exhausted', 'Daily call quota exceeded');
+      throw new functions.HttpsError('resource-exhausted', 'Daily call quota exceeded');
     }
     
     // Increment usage
@@ -199,25 +199,25 @@ export const guestChat = functions.onCall(async (request) => {
   const { deviceToken, message, captchaToken } = data;
   
   if (!deviceToken) {
-    throw new functions.https.HttpsError('invalid-argument', 'Device token required');
+    throw new functions.HttpsError('invalid-argument', 'Device token required');
   }
   
   const config = await getTrialConfig();
   
   if (!config.enabled) {
-    throw new functions.https.HttpsError('failed-precondition', 'Trials are currently disabled');
+    throw new functions.HttpsError('failed-precondition', 'Trials are currently disabled');
   }
   
   // Validate input
   if (!message || typeof message !== 'string' || message.length > 500) {
-    throw new functions.https.HttpsError('invalid-argument', 'Invalid message');
+    throw new functions.HttpsError('invalid-argument', 'Invalid message');
   }
 
   // Check server-side device quota
   const deviceId = data.deviceId || deviceToken.slice(0, 16);
   const quotaOk = await checkDeviceQuota(deviceId, 'ai');
   if (!quotaOk) {
-    throw new functions.https.HttpsError('resource-exhausted', 'Daily AI quota exceeded');
+    throw new functions.HttpsError('resource-exhausted', 'Daily AI quota exceeded');
   }
   
   // Update trial usage atomically
@@ -227,7 +227,7 @@ export const guestChat = functions.onCall(async (request) => {
     const doc = await transaction.get(trialRef);
 
     if (!doc.exists) {
-      throw new functions.https.HttpsError('permission-denied', 'Invalid trial token');
+      throw new functions.HttpsError('permission-denied', 'Invalid trial token');
     }
     
     const trial = doc.data()!;
@@ -244,7 +244,7 @@ export const guestChat = functions.onCall(async (request) => {
     
     // Check quota
     if (trial.chatUsed >= config.chatMessagesPerDay) {
-      throw new functions.https.HttpsError('resource-exhausted', 'Daily chat quota exceeded');
+      throw new functions.HttpsError('resource-exhausted', 'Daily chat quota exceeded');
     }
     
     // Increment usage
@@ -266,7 +266,7 @@ export const incrementReaction = functions.onCall(async (request) => {
   const { deviceToken } = data;
   
   if (!deviceToken) {
-    throw new functions.https.HttpsError('invalid-argument', 'Device token required');
+    throw new functions.HttpsError('invalid-argument', 'Device token required');
   }
   
   const config = await getTrialConfig();
@@ -312,9 +312,9 @@ export const incrementReaction = functions.onCall(async (request) => {
     return { success: true };
   } catch (error: any) {
     if (error.message === 'Quota exceeded') {
-      throw new functions.https.HttpsError('resource-exhausted', 'Daily reaction quota exceeded');
+      throw new functions.HttpsError('resource-exhausted', 'Daily reaction quota exceeded');
     }
-    throw new functions.https.HttpsError('permission-denied', 'Invalid trial token');
+    throw new functions.HttpsError('permission-denied', 'Invalid trial token');
   }
 });
 
