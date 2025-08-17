@@ -108,7 +108,7 @@ export default function AuthSheet() {
           avatar: firebaseUser.photoURL || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
           verified: firebaseUser.emailVerified,
           plan: 'free' as const,
-          role: 'user' as const,
+          role: authSheet.pendingActionType === 'call_access' ? 'creator' as const : 'user' as const,
           balance: 1000,
           earnings: 0,
         };
