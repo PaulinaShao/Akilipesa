@@ -808,6 +808,9 @@ export default function ReelsPage() {
         </div>
       </div>
 
+      {/* Auth Sheet */}
+      <AuthSheet />
+
       {/* Auth Upsell Modal */}
       <AuthUpsell
         isOpen={showAuthUpsell}
