@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { auth } from '@/lib/firebaseEnhanced';
 import { mockUser } from '@/lib/mock-data';
 import MobileLayout from '@/components/layout/MobileLayout';
 import { ToastProvider } from '@/hooks/useToast';
@@ -19,7 +19,7 @@ import { ErrorBoundary, OfflineIndicator } from '@/components/ErrorBoundary';
 import EmulatorWarning from '@/components/EmulatorWarning';
 import { useTrialStore } from '@/state/trialStore';
 import { useAppStore, type User as AppUser } from '@/store';
-import { db } from '@/lib/firebase';
+import { initFirebase } from '@/lib/firebaseEnhanced';
 import { seedTrialConfig } from '@/lib/seedTrialConfig';
 import { initGuestSignIn } from '@/auth/initGuest';
 import { loadTrialConfig } from '@/lib/config';
@@ -110,6 +110,9 @@ function App() {
   const { setConfig: setTrialConfig, config: trialConfig, isLoaded: configLoaded } = useTrialConfigStore();
 
   useEffect(() => {
+    // Initialize Firebase first
+    initFirebase();
+
     // Initialize fetch wrapper for problematic environments (like fly.dev with FullStory)
     initializeFetchWrapper();
 
