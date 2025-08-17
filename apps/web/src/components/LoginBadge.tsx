@@ -1,6 +1,7 @@
 import { LogIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUIStore } from '@/state/uiStore';
+import { isRealUser } from '@/auth/phoneAuth';
 
 interface LoginBadgeProps {
   className?: string;
@@ -12,6 +13,11 @@ export default function LoginBadge({ className }: LoginBadgeProps) {
   const handleClick = () => {
     openAuthSheet(undefined, 'sign_in');
   };
+
+  // Hide the badge if user is already a real user (not anonymous)
+  if (isRealUser()) {
+    return null;
+  }
 
   return (
     <button
