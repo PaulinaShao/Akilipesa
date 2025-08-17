@@ -11,6 +11,7 @@ export interface User {
   avatar: string;
   verified: boolean;
   plan: 'free' | 'starter' | 'premium' | 'business';
+  role: 'user' | 'creator' | 'moderator' | 'admin';
   balance: number;
   earnings: number;
 }
