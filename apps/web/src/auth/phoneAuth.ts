@@ -1,0 +1,49 @@
+import { 
+  PhoneAuthProvider, 
+  linkWithCredential, 
+  signInWithCredential, 
+  getAuth, 
+  RecaptchaVerifier,
+  ConfirmationResult,
+  UserCredential
+} from "firebase/auth";
+
+export async function sendPhoneCode(phoneNumber: string): Promise<ConfirmationResult> {
+  const auth = getAuth();
+  
+  // Initialize reCAPTCHA if not already done
+  if (!window.recaptchaVerifier) {
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      size: 'invisible',
+      callback: () => {
+        console.log("reCAPTCHA verified");
+      }
+    });
+  }
+
+  const provider = new PhoneAuthProvider(auth);
+  return await provider.verifyPhoneNumber(phoneNumber, window.recaptchaVerifier);
+}
+
+export async function verifyPhoneCode(confirmationResult: ConfirmationResult, code: string): Promise<UserCredential> {
+  const auth = getAuth();
+  const credential = PhoneAuthProvider.credential(confirmationResult.verificationId, code);
+  
+  const user = auth.currentUser;
+  
+  if (user?.isAnonymous) {
+    // Convert guest -> real account by linking
+    console.log("Linking anonymous user with phone number");
+    return await linkWithCredential(user, credential);
+  } else {
+    // No anonymous user, sign in normally
+    console.log("Signing in with phone number");
+    return await signInWithCredential(auth, credential);
+  }
+}
+
+// Utility to check if user is real (not anonymous)
+export function isRealUser(): boolean {
+  const auth = getAuth();
+  return !!auth.currentUser && !auth.currentUser.isAnonymous;
+}
