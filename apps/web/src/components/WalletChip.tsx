@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 type Props = {
   variant?: "guest" | "user";
   onClick?: () => void;
+  onBalanceClick?: () => void;
+  onPlanClick?: () => void;
   labelGuest?: string;
   labelUser?: string;
   walletBalance?: number;
