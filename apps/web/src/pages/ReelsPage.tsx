@@ -299,10 +299,30 @@ function ReelCard({
           </div>
         </div>
 
-        {/* Caption */}
+        {/* Caption with truncation */}
         <div className="mb-3">
           <p className="text-white text-sm leading-relaxed">
-            {reel.caption}
+            {showFullCaption ? reel.caption : (
+              reel.caption.length > 100 ? (
+                <>
+                  {reel.caption.slice(0, 100)}...
+                  <button
+                    onClick={() => setShowFullCaption(true)}
+                    className="text-white/60 ml-1 hover:text-white"
+                  >
+                    more
+                  </button>
+                </>
+              ) : reel.caption
+            )}
+            {showFullCaption && reel.caption.length > 100 && (
+              <button
+                onClick={() => setShowFullCaption(false)}
+                className="text-white/60 ml-1 hover:text-white"
+              >
+                {' '}less
+              </button>
+            )}
           </p>
           <div className="flex flex-wrap gap-1 mt-2">
             {reel.hashtags.map((tag, index) => (
