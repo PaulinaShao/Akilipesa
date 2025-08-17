@@ -229,7 +229,10 @@ function ReelCard({
         <WalletChip
           variant={isGuest() ? 'guest' : 'user'}
           labelUser="284,500 TSH"
-          onClick={handleWalletClick}
+          currentPlan={isGuest() ? 'free' : 'standard'}
+          onClick={() => navigate('/create')}
+          onBalanceClick={() => navigate('/wallet')}
+          onPlanClick={() => navigate('/upgrade-plan')}
         />
       )}
       {/* Video */}
