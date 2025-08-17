@@ -156,31 +156,33 @@ export default function AuthSheet() {
     setError('');
 
     try {
-      // Simulate Google auth (replace with actual Firebase Auth)
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const mockUser = {
-        id: 'user-google-123',
-        name: 'Google User',
-        username: 'googleuser',
-        email: 'user@gmail.com',
-        phone: '',
-        avatar: 'https://images.unsplash.com/photo-1494790108755-2616b9d38aad?w=150&h=150&fit=crop&crop=face',
-        verified: true,
+      // Use new Google auth with linking
+      const credential = await signInWithGoogle();
+      const firebaseUser = credential.user;
+
+      // Convert Firebase user to app user format
+      const appUser = {
+        id: firebaseUser.uid,
+        name: firebaseUser.displayName || 'Google User',
+        username: firebaseUser.email?.split('@')[0] || 'googleuser',
+        email: firebaseUser.email || '',
+        phone: firebaseUser.phoneNumber || '',
+        avatar: firebaseUser.photoURL || 'https://images.unsplash.com/photo-1494790108755-2616b9d38aad?w=150&h=150&fit=crop&crop=face',
+        verified: firebaseUser.emailVerified,
         plan: 'free' as const,
-        role: 'user' as const,
+        role: authSheet.pendingActionType === 'call_access' ? 'creator' as const : 'user' as const,
         balance: 1000,
         earnings: 0,
       };
 
-      setUser(mockUser);
-      
+      setUser(appUser);
+
       // Execute pending action and close
       executePendingAction();
       closeAuthSheet();
-      
-    } catch (error) {
-      setError('Google sign-in failed. Please try again.');
+
+    } catch (error: any) {
+      setError(error?.message || 'Google sign-in failed. Please try again.');
     } finally {
       setLoading(false);
     }
