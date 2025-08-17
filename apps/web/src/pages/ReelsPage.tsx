@@ -836,19 +836,6 @@ export default function ReelsPage() {
         }}
       />
 
-      {/* Call Options Modal */}
-      {callTargetUser && (
-        <CallOptions
-          isOpen={showCallOptions}
-          onClose={() => setShowCallOptions(false)}
-          targetUser={callTargetUser}
-          onAuthRequired={() => {
-            setShowCallOptions(false);
-            setAuthUpsellTrigger('call');
-            setShowAuthUpsell(true);
-          }}
-        />
-      )}
 
     </div>
   );
