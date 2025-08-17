@@ -652,16 +652,18 @@ export default function ReelsPage() {
     const reel = reels.find(r => r.user.id === userId);
     if (!reel) return;
 
+    // Check authentication and plan status
     if (!canPerformAction('call')) {
-      setAuthUpsellTrigger('call');
-      setShowAuthUpsell(true);
+      setJoinConversationTrigger('comment'); // Use join conversation for better UX
+      setShowJoinConversation(true);
       return;
     }
 
     try {
-      // Generate a channel ID for this call
+      // Generate a unique channel ID for this call
       const channelId = `video-${reel.user.id}-${Date.now()}`;
-      // Navigate directly to call page with private default
+
+      // Navigate directly to call page with private default - streamlined flow
       navigate(`/call/${channelId}?type=video&target=${reel.user.id}&privacy=private`, {
         state: {
           targetUser: {
@@ -672,7 +674,8 @@ export default function ReelsPage() {
             isLive: reel.user.isLive
           },
           type: 'video',
-          privacy: 'private'
+          privacy: 'private',
+          autoConnect: true // Enable immediate connection
         }
       });
     } catch (error) {
