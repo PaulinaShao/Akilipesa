@@ -49,10 +49,10 @@ export default function BottomNav() {
         <div className="flex justify-center">
           <button
             onClick={() => navigate('/create')}
-            className="h-12 w-12 rounded-2xl tz-gem-border tz-action-button grid place-items-center"
+            className="h-11 w-11 rounded-2xl tz-gem-border tz-action-button grid place-items-center relative -top-1"
             aria-label="Create"
           >
-            <Gem className="h-6 w-6 text-white" />
+            <Gem className="h-5 w-5 text-white" />
           </button>
         </div>
         <Item
@@ -83,14 +83,14 @@ function Item({ icon, label, active = false, showDot = false, onClick }: {
   return (
     <button
       onClick={onClick}
-      className={`relative flex flex-col items-center gap-1 transition-colors tz-action-button ${active ? 'text-white' : 'text-white/70'}`}
+      className={`relative flex flex-col items-center gap-0.5 p-1 transition-colors tz-action-button min-h-[44px] min-w-[44px] ${active ? 'text-white' : 'text-white/70'}`}
       aria-label={label}
     >
-      <div className="relative">
+      <div className="relative flex items-center justify-center h-6 w-6">
         {icon}
-        {showDot && <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-black/70" />}
+        {showDot && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-500 ring-1 ring-black/70" />}
       </div>
-      <span className="text-[11px] opacity-80">{label}</span>
+      <span className="text-[10px] opacity-80 leading-tight">{label}</span>
     </button>
   );
 }
