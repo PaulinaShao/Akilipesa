@@ -795,7 +795,7 @@ export default function ReelsPage() {
       <div className="fixed top-4 right-4 z-50">
         <ProfileButton onClick={() => {
           if (!isRealUser()) {
-            setShowAuthSheet(true);
+            openAuthSheet(undefined, 'sign_in');
           } else {
             navigate('/profile');
           }
