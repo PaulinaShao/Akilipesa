@@ -85,6 +85,17 @@
     bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    z-index: 50 !important;
+    z-index: 9999 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
+}
+
+/* Ensure the nav is always visible regardless of screen size */
+.bottom-nav {
+  display: block;
+  position: fixed;
+  visibility: visible;
+  opacity: 1;
 }
