@@ -99,7 +99,7 @@ export default function TikTokReel({
           <button
             onClick={onLike}
             className={cn(
-              "tz-glass tz-action-button rounded-full p-3",
+              "rail-btn",
               reel.interactions.liked && "bg-red-500/20"
             )}
           >
@@ -114,7 +114,7 @@ export default function TikTokReel({
         </div>
 
         <div className="flex flex-col items-center">
-          <button onClick={onComment} className="tz-glass tz-action-button rounded-full p-3">
+          <button onClick={onComment} className="rail-btn">
             <MessageCircle className="h-6 w-6 text-white" />
           </button>
           <span className="text-white text-xs mt-1 font-medium">
@@ -123,7 +123,7 @@ export default function TikTokReel({
         </div>
 
         <div className="flex flex-col items-center">
-          <button onClick={onShare} className="tz-glass tz-action-button rounded-full p-3">
+          <button onClick={onShare} className="rail-btn">
             <Share2 className="h-6 w-6 text-white" />
           </button>
           <span className="text-white text-xs mt-1 font-medium">
@@ -131,7 +131,7 @@ export default function TikTokReel({
           </span>
         </div>
 
-        <button onClick={onFollow} className="tz-glass tz-action-button rounded-full p-3">
+        <button onClick={onFollow} className="rail-btn">
           <Sparkles className="h-6 w-6 text-white" />
         </button>
 
