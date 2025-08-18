@@ -25,8 +25,11 @@ export function FeedCard({
         draggable={false}
       />
 
-      {/* gradient bottom for caption */}
-      <div className="absolute inset-x-0 bottom-0 p-4 pb-[calc(72px+env(safe-area-inset-bottom))] bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+      {/* feed bottom glass / gradient overlay */}
+      <div className="feed-bottom-overlay pointer-events-none
+                      absolute inset-x-0
+                      bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom))]
+                      p-4 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
         <div className="max-w-screen-sm mx-auto text-white">
           {/* handle + live dots etc can be placed above */}
           <p className={`text-[15px] ${open ? "" : "caption"}`}>
