@@ -25,40 +25,48 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className="bottom-nav fixed inset-x-0 bottom-0 z-50 grid grid-cols-5 items-center px-3 bg-black/55 backdrop-blur">
-      <Item
-        icon={<Home />}
-        label="Home"
-        active={isActive('/reels')}
-        onClick={() => handlePress('/reels')}
-      />
-      <Item
-        icon={<Compass />}
-        label="Discover"
-        active={isActive('/search')}
-        onClick={() => handlePress('/search')}
-      />
-      <div className="grid place-items-center">
-        <button
-          onClick={() => navigate('/create')}
-          className="h-12 w-12 rounded-2xl tz-gem-border tz-action-button grid place-items-center"
-        >
-          <Gem className="h-6 w-6 text-white" />
-        </button>
+    <nav className="
+      fixed bottom-0 inset-x-0 z-50
+      tnz-glass
+      px-4 pt-2 pb-[calc(env(safe-area-inset-bottom)+10px)]
+      backdrop-saturate-150
+    ">
+      <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-3 text-white">
+        <Item
+          icon={<Home />}
+          label="Home"
+          active={isActive('/reels')}
+          onClick={() => handlePress('/reels')}
+        />
+        <Item
+          icon={<Compass />}
+          label="Discover"
+          active={isActive('/search')}
+          onClick={() => handlePress('/search')}
+        />
+        <div className="flex justify-center">
+          <button
+            onClick={() => navigate('/create')}
+            className="h-12 w-12 rounded-2xl tz-gem-border tz-action-button grid place-items-center"
+            aria-label="Create"
+          >
+            <Gem className="h-6 w-6 text-white" />
+          </button>
+        </div>
+        <Item
+          icon={<Bell />}
+          label="Inbox"
+          active={isActive('/inbox')}
+          onClick={() => handlePress('/inbox')}
+        />
+        <Item
+          icon={<User2 />}
+          label="Profile"
+          active={isActive('/profile')}
+          onClick={() => handlePress('/profile')}
+          showDot={!isAuthed}
+        />
       </div>
-      <Item
-        icon={<Bell />}
-        label="Inbox"
-        active={isActive('/inbox')}
-        onClick={() => handlePress('/inbox')}
-      />
-      <Item
-        icon={<User2 />}
-        label="Profile"
-        active={isActive('/profile')}
-        onClick={() => handlePress('/profile')}
-        showDot={!isAuthed}
-      />
     </nav>
   );
 }
