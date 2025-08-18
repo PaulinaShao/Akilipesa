@@ -299,9 +299,14 @@ function ReelCard({
                 <div className="w-4 h-4 bg-primary rounded-full" />
               )}
               {reel.user.isLive && (
-                <span className="px-2 py-0.5 bg-red-500 text-white text-xs rounded-full font-medium">
-                  LIVE
-                </span>
+                <div className="flex items-center space-x-2">
+                  <span className="px-2 py-0.5 bg-red-500 text-white text-xs rounded-full font-medium animate-pulse">
+                    LIVE
+                  </span>
+                  <span className="text-white/80 text-xs font-medium">
+                    1.2K watching
+                  </span>
+                </div>
               )}
             </div>
             <span className="text-sm text-white/80">{reel.user.displayName}</span>
