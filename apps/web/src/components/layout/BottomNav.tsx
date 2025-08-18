@@ -81,13 +81,14 @@ function Item({ icon, label, active = false, showDot = false, onClick }: {
   return (
     <button
       onClick={onClick}
-      className={`relative grid place-items-center gap-0.5 transition-colors tz-action-button ${active ? 'text-white' : 'text-white/80'}`}
+      className={`relative flex flex-col items-center gap-1 transition-colors tz-action-button ${active ? 'text-white' : 'text-white/70'}`}
+      aria-label={label}
     >
       <div className="relative">
         {icon}
         {showDot && <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-black/70" />}
       </div>
-      <span className="text-[11px]">{label}</span>
+      <span className="text-[11px] opacity-80">{label}</span>
     </button>
   );
 }
