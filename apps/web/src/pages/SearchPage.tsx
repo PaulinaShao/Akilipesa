@@ -3,6 +3,8 @@ import { Search, TrendingUp, Hash, Music, User, ShoppingBag, X } from 'lucide-re
 import { cn } from '@/lib/utils';
 import { isGuest } from '@/lib/guards';
 import CTABanner from '@/components/CTABanner';
+import Screen from '@/components/Screen';
+import BackToTop from '@/components/BackToTop';
 
 const categories = [
   { id: 'all', name: 'All', icon: Search },
