@@ -96,10 +96,10 @@ export default function TikTokReel({
       {/* Right action rail */}
       <aside className="absolute right-2 bottom-28 flex flex-col items-center gap-4 z-20">
         <div className="flex flex-col items-center">
-          <button 
+          <button
             onClick={onLike}
             className={cn(
-              "tz-glass rounded-full p-3 transition-all duration-200",
+              "tz-glass tz-action-button rounded-full p-3",
               reel.interactions.liked && "bg-red-500/20"
             )}
           >
@@ -114,7 +114,7 @@ export default function TikTokReel({
         </div>
 
         <div className="flex flex-col items-center">
-          <button onClick={onComment} className="tz-glass rounded-full p-3">
+          <button onClick={onComment} className="tz-glass tz-action-button rounded-full p-3">
             <MessageCircle className="h-6 w-6 text-white" />
           </button>
           <span className="text-white text-xs mt-1 font-medium">
@@ -123,7 +123,7 @@ export default function TikTokReel({
         </div>
 
         <div className="flex flex-col items-center">
-          <button onClick={onShare} className="tz-glass rounded-full p-3">
+          <button onClick={onShare} className="tz-glass tz-action-button rounded-full p-3">
             <Share2 className="h-6 w-6 text-white" />
           </button>
           <span className="text-white text-xs mt-1 font-medium">
@@ -131,7 +131,7 @@ export default function TikTokReel({
           </span>
         </div>
 
-        <button onClick={onFollow} className="tz-glass rounded-full p-3">
+        <button onClick={onFollow} className="tz-glass tz-action-button rounded-full p-3">
           <Sparkles className="h-6 w-6 text-white" />
         </button>
 
