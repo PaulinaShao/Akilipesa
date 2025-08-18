@@ -40,11 +40,33 @@
 }
 
 /* shimmer accent (very light) */
-@keyframes tz-shimmer { 
-  0%{ background-position:-200% 0 } 100%{ background-position:200% 0 } 
+@keyframes tz-shimmer {
+  0%{ background-position:-200% 0 } 100%{ background-position:200% 0 }
 }
 .tz-shimmer {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
   background-size: 200% 100%;
   animation: tz-shimmer 1400ms linear infinite;
+  will-change: background-position; /* performance hint */
+}
+
+/* Performance optimizations */
+.tz-optimized {
+  transform: translateZ(0); /* force GPU acceleration */
+  backface-visibility: hidden; /* prevent flicker */
+}
+
+/* Action button optimizations */
+.tz-action-button {
+  will-change: transform;
+  transform: translateZ(0);
+  transition: transform 0.15s ease-out;
+}
+
+.tz-action-button:hover {
+  transform: translateZ(0) scale(1.05);
+}
+
+.tz-action-button:active {
+  transform: translateZ(0) scale(0.95);
 }
