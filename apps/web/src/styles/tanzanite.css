@@ -56,6 +56,63 @@
   will-change: background-position; /* performance hint */
 }
 
+/* mobile viewport fix */
+:root { --vh: 100svh; }
+@supports(height: 100dvh) {
+  :root{ --vh: 100dvh; }
+}
+
+/* screen wrapper w/ smart scroll padding */
+.scroll-screen{
+  min-height: var(--vh);
+  padding-bottom: calc(56px + env(safe-area-inset-bottom)); /* room for bottom nav */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* glossy tanzanite "glass" - enhanced version */
+.tnz-glass{
+  backdrop-filter: blur(var(--tnz-blur));
+  -webkit-backdrop-filter: blur(var(--tnz-blur));
+  background: linear-gradient(
+    180deg,
+    rgba(var(--tnz-glass),0.12),
+    rgba(var(--tnz-accent),0.15)
+  );
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow:
+    0 6px 24px rgba(98,84,255,.22),
+    inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+/* rail buttons */
+.rail-btn{
+  backdrop-filter: blur(var(--tnz-blur));
+  -webkit-backdrop-filter: blur(var(--tnz-blur));
+  background: linear-gradient(
+    180deg,
+    rgba(var(--tnz-glass),0.12),
+    rgba(var(--tnz-accent),0.15)
+  );
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow:
+    0 6px 24px rgba(98,84,255,.22),
+    inset 0 1px 0 rgba(255,255,255,.25);
+  @apply rounded-2xl w-12 h-12 flex items-center justify-center text-white transition-transform active:scale-95;
+}
+
+/* caption clamp */
+.caption{
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.caption.expanded {
+  -webkit-line-clamp: unset;
+  display: block;
+}
+
 /* Performance optimizations */
 .tz-optimized {
   transform: translateZ(0); /* force GPU acceleration */
