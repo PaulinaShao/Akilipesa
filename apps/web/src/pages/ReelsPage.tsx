@@ -873,6 +873,9 @@ export default function ReelsPage() {
       {/* Auth Sheet */}
       <AuthSheet />
 
+      {/* Sign In Toast Notification */}
+      <SignInToast />
+
       {/* Join Conversation Modal */}
       <JoinConversationModal
         isOpen={showJoinConversation}
