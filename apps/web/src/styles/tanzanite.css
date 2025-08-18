@@ -56,13 +56,14 @@
   will-change: background-position; /* performance hint */
 }
 
-/* mobile viewport fix */
-:root {
-  --vh: 100svh;
+/* Global viewport and navigation variables */
+:root{
+  --nav-h: 64px;         /* bottom nav height */
+  --vh: 100svh;          /* stable mobile viewport */
   --tnz-surface: 16,25,48;
 }
-@supports(height: 100dvh) {
-  :root{ --vh: 100dvh; }
+@supports (height: 100dvh){
+  :root{ --vh: 100dvh; } /* Safari/Chrome modern fix */
 }
 
 /* screen wrapper w/ smart scroll padding */
