@@ -83,7 +83,7 @@ export default function TikTokReel({
       />
 
       {/* Right action rail */}
-      <aside className="absolute right-2 bottom-28 flex flex-col items-center gap-4 z-20">
+      <aside className="absolute right-2 bottom-20 flex flex-col items-center gap-4 z-20">
         <div className="flex flex-col items-center">
           <button
             onClick={onLike}
@@ -141,38 +141,33 @@ export default function TikTokReel({
         </div>
       </aside>
 
-      {/* Bottom caption area */}
-      <div className="absolute inset-x-0 bottom-16 px-3 z-20">
-        <div className="max-w-[92%] rounded-xl tz-glass p-3">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-sm font-semibold text-white">@{reel.user.username}</span>
-            {reel.user.isLive && (
-              <span className="text-xs tz-text-dim">• LIVE</span>
-            )}
-          </div>
-          <div className="mb-2">
-            <p className={cn(
-              "text-sm text-white/90 leading-relaxed",
-              !captionExpanded && "caption"
-            )}>
-              {reel.caption}
-            </p>
-            {reel.caption.length > 100 && (
-              <button
-                onClick={() => setCaptionExpanded(!captionExpanded)}
-                className="text-xs text-white/60 mt-1 hover:text-white/80 transition-colors"
-              >
-                {captionExpanded ? '...less' : '...more'}
-              </button>
-            )}
-          </div>
-          <p className="text-xs tz-text-dim">
-            {reel.hashtags.join(' ')}
-          </p>
-          <div className="flex items-center gap-4 mt-2 text-xs text-white/60">
-            <span>{formatNumber(reel.stats.views)} views</span>
-          </div>
+      {/* Bottom caption area - clean overlay */}
+      <div className="absolute left-3 bottom-20 right-16 z-20">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-sm font-semibold text-white drop-shadow-lg">@{reel.user.username}</span>
+          {reel.user.isLive && (
+            <span className="text-xs bg-red-500 text-white px-1.5 py-0.5 rounded-full font-medium">LIVE</span>
+          )}
         </div>
+        <div className="mb-1">
+          <p className={cn(
+            "text-sm text-white leading-relaxed drop-shadow-lg",
+            !captionExpanded && "line-clamp-2"
+          )}>
+            {reel.caption}
+          </p>
+          {reel.caption.length > 80 && (
+            <button
+              onClick={() => setCaptionExpanded(!captionExpanded)}
+              className="text-xs text-white/80 mt-0.5 hover:text-white font-medium drop-shadow-lg"
+            >
+              {captionExpanded ? 'less' : 'more'}
+            </button>
+          )}
+        </div>
+        <p className="text-xs text-white/80 drop-shadow-lg">
+          {reel.hashtags.slice(0, 3).join(' ')}
+        </p>
       </div>
     </div>
   );
