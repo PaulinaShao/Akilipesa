@@ -110,7 +110,8 @@ export default function ProfilePage() {
   const [showSettingsModal, setShowSettingsModal] = useState(false);
 
   return (
-    <div className="h-screen-safe bg-gem-dark overflow-y-auto">
+    <>
+      <Screen id="profile" className="bg-gem-dark">
       {/* Profile Header */}
       <div className="safe-top p-4 border-b border-white/10">
         <div className="flex-between mb-4">
@@ -414,6 +415,8 @@ export default function ProfilePage() {
         isOwnProfile={true}
         username={profileData.user.username}
       />
-    </div>
+      </Screen>
+      <BackToTop />
+    </>
   );
 }
