@@ -27,23 +27,18 @@ export default function BottomNav() {
   return (
     <nav
       className="
-        fixed bottom-0 left-0 right-0
-        bg-black/90
-        border-t border-gray-800
-        px-4 py-2
-        backdrop-blur-md
-        bottom-nav
+        w-full
+        bg-black
+        border-t border-gray-700
+        px-4 py-3
+        bottom-nav-container
       "
       style={{
-        zIndex: 9999,
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        display: 'block',
-        visibility: 'visible',
-        opacity: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.95)'
+        position: 'relative',
+        zIndex: 1000,
+        backgroundColor: '#000000',
+        minHeight: '60px',
+        paddingBottom: 'max(env(safe-area-inset-bottom), 12px)'
       }}
     >
       <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-1 items-center justify-items-center min-h-[52px]">
