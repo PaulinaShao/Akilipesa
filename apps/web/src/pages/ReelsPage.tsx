@@ -807,21 +807,7 @@ export default function ReelsPage() {
 
 
   return (
-    <div className="reel-container">
-      {/* Top gradient for better text readability */}
-      <TopGradient />
-
-      {/* Profile button with sign-in badge - positioned top-right */}
-      <div className="fixed top-4 right-4 z-50">
-        <ProfileButton onClick={() => {
-          if (!isRealUser()) {
-            openAuthSheet(undefined, 'sign_in');
-          } else {
-            navigate('/profile');
-          }
-        }} />
-      </div>
-
+    <div className="reel-container tz-bg">
       {/* Pull to refresh indicator */}
       {isRefreshing && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-black/80 backdrop-blur-md rounded-full px-4 py-2">
