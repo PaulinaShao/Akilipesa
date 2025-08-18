@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Search, MoreVertical, Phone, Video, Heart, Sparkles, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { requireAuth } from '@/lib/authGuard';
+import Screen from '@/components/Screen';
+import BackToTop from '@/components/BackToTop';
 
 interface Message {
   id: string;
