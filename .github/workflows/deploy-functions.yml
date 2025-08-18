@@ -4,18 +4,18 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "firebase/functions/**"
-      - "firebase/firestore.rules"
-      - "firebase.json"
+      - 'firebase/functions/**'
+      - 'firebase/firestore.rules'
+      - 'firebase.json'
   workflow_dispatch:
 
 permissions:
   contents: read
-  id-token: write   # required for Workload Identity Federation
+  id-token: write
 
 jobs:
   deploy:
-    environment: Production   # optional; use if you protect this env
+    environment: Production
     runs-on: ubuntu-latest
 
     steps:
@@ -27,37 +27,18 @@ jobs:
         with:
           node-version: 20
 
-      # Authenticate to GCP with your WIF provider + SA (no JSON keys)
+      # 🔐 WIF: export env vars so firebase-tools picks up ADC
       - name: Authenticate to Google Cloud (WIF)
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
-          project_id: akilipesa-prod
-          export_environment_variables: true  # makes ADC available to gcloud/firebase
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }} # projects/26736767264/locations/global/workloadIdentityPools/github/providers/github-oidc
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}                # firebase-deployer@akilipesa-prod.iam.gserviceaccount.com
+          export_environment_variables: true
 
-      # Install gcloud so we can call Secret Manager & any other gcloud cmds
-      - name: Setup gcloud
+      - name: Install gcloud (optional, but keeps SDK aligned)
         uses: google-github-actions/setup-gcloud@v2
 
-      # (Optional but recommended) Seed/update secrets in Secret Manager.
-      # If you already created the secrets once in the console, keep this anyway—
-      # it's idempotent and simply adds new versions when values change.
-      - name: Seed Agora secrets (idempotent, Secret Manager)
-        env:
-          AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
-          AGORA_APP_CERT: ${{ secrets.AGORA_APP_CERT }}
-        run: |
-          set -euo pipefail
-          if [ -n "${AGORA_APP_ID:-}" ]; then
-            printf '%s' "$AGORA_APP_ID"  | gcloud secrets versions add AGORA_APP_ID  --data-file=- || true
-          fi
-          if [ -n "${AGORA_APP_CERT:-}" ]; then
-            printf '%s' "$AGORA_APP_CERT" | gcloud secrets versions add AGORA_APP_CERT --data-file=- || true
-          fi
-
-      # Build your functions
-      - name: Install deps
+      - name: Install functions deps
         working-directory: firebase/functions
         run: npm ci
 
@@ -65,9 +46,20 @@ jobs:
         working-directory: firebase/functions
         run: npm run build
 
-      # Install the Firebase CLI and deploy
       - name: Install Firebase CLI
-        run: npm i -g firebase-tools
+        run: npm i -g firebase-tools@latest
 
+      # ✅ New syntax for seeding secrets (no --data flag)
+      - name: Seed Agora secrets (idempotent)
+        env:
+          AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
+          AGORA_APP_CERT: ${{ secrets.AGORA_APP_CERT }}
+          RTC_PROVIDER: ${{ vars.RTC_PROVIDER }}
+        run: |
+          printf "%s" "$AGORA_APP_ID"   | firebase functions:secrets:set AGORA_APP_ID   --project akilipesa-prod --force
+          printf "%s" "$AGORA_APP_CERT" | firebase functions:secrets:set AGORA_APP_CERT --project akilipesa-prod --force
+          printf "%s" "$RTC_PROVIDER"   | firebase functions:secrets:set RTC_PROVIDER   --project akilipesa-prod --force
+
+      # Deploy Functions + Firestore rules
       - name: Deploy Functions + Firestore rules
         run: firebase deploy --only functions,firestore:rules --project akilipesa-prod --non-interactive
