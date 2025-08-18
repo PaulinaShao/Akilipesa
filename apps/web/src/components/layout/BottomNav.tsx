@@ -96,14 +96,20 @@ function Item({ icon, label, active = false, showDot = false, onClick }: {
   return (
     <button
       onClick={onClick}
-      className={`relative flex flex-col items-center gap-0.5 p-1 transition-colors tz-action-button min-h-[48px] min-w-[48px] ${active ? 'text-white' : 'text-white/70'}`}
+      className={`relative flex flex-col items-center gap-1 p-2 transition-all duration-200 min-h-[50px] min-w-[50px] ${
+        active
+          ? 'text-white'
+          : 'text-gray-300 hover:text-white'
+      }`}
       aria-label={label}
     >
-      <div className="relative flex items-center justify-center h-6 w-6">
+      <div className="relative flex items-center justify-center">
         {icon}
-        {showDot && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-500 ring-1 ring-black/70" />}
+        {showDot && <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-black" />}
       </div>
-      <span className="text-[10px] opacity-80 leading-tight">{label}</span>
+      <span className={`text-[10px] font-medium leading-tight ${
+        active ? 'text-white' : 'text-gray-400'
+      }`}>{label}</span>
     </button>
   );
 }
