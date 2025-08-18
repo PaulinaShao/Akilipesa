@@ -162,9 +162,22 @@ export default function TikTokReel({
               <span className="text-xs tz-text-dim">• LIVE</span>
             )}
           </div>
-          <p className="text-sm text-white/90 leading-relaxed mb-2">
-            {reel.caption}
-          </p>
+          <div className="mb-2">
+            <p className={cn(
+              "text-sm text-white/90 leading-relaxed",
+              !captionExpanded && "caption"
+            )}>
+              {reel.caption}
+            </p>
+            {reel.caption.length > 100 && (
+              <button
+                onClick={() => setCaptionExpanded(!captionExpanded)}
+                className="text-xs text-white/60 mt-1 hover:text-white/80 transition-colors"
+              >
+                {captionExpanded ? '...less' : '...more'}
+              </button>
+            )}
+          </div>
           <p className="text-xs tz-text-dim">
             {reel.hashtags.join(' ')}
           </p>
