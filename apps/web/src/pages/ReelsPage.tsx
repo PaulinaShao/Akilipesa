@@ -460,6 +460,7 @@ export default function ReelsPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { setStoriesVisible, setBalanceBannerVisible } = useAppStore();
+  const { openAuthSheet } = useUIStore();
 
   // Pull to refresh handler
   const handleRefresh = async () => {
