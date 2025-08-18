@@ -4,7 +4,8 @@ import { Heart, MessageCircle, Share, Music2, Phone, Video, Plus } from 'lucide-
 import { cn } from '@/lib/utils';
 import { initiateCall } from '@/lib/callUtils';
 import WalletChip from '@/components/WalletChip';
-import LoginBadge from '@/components/LoginBadge';
+import ProfileButton from '@/components/ProfileButton';
+import TopGradient from '@/components/TopGradient';
 import { useAppStore } from '@/store';
 import { isGuest } from '@/lib/guards';
 import { useAuth } from '@/hooks/useAuth';
