@@ -7,6 +7,9 @@
 /* Import Tanzanite brand design system */
 @import './styles/tanzanite.css';
 
+/* Import layout-safe styles for persistent navigation */
+@import './styles/layout-safe.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
