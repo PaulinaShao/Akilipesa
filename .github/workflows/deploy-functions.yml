@@ -22,6 +22,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Guard - no Firebase token allowed in WIF
+        run: |
+          if [ -n "${{ secrets.FIREBASE_TOKEN }}" ] || [ -n "${{ secrets.FIREBASE_CI_TOKEN }}" ]; then
+            echo "Do not set Firebase token secrets in the WIF workflow."; exit 1
+          fi
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
