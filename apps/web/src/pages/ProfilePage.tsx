@@ -15,6 +15,8 @@ import {
   Gift
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Screen from '@/components/Screen';
+import BackToTop from '@/components/BackToTop';
 import ShareModal from '@/components/ShareModal';
 import ProfileSettingsModal from '@/components/ProfileSettingsModal';
 
