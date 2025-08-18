@@ -59,8 +59,8 @@ jobs:
       - name: Sanity check auth
         run: |
           gcloud auth list
-          firebase --version
-          firebase projects:list --non-interactive || true
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS"
+          gcloud secrets list --project ${{ vars.FIREBASE_PROJECT_ID }} | head -n 5
 
       # Seed Cloud Functions secrets (idempotent, non-interactive)
       - name: Seed CF secrets
