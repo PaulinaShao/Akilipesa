@@ -35,6 +35,10 @@ jobs:
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
           export_environment_variables: true
 
+      # (recommended; some tools look for gcloud on PATH)
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
       - name: Install Firebase CLI
         run: |
           npm i -g firebase-tools@latest
@@ -46,19 +50,24 @@ jobs:
           npm ci
           npm run build
 
-      - name: Seed Firebase Secrets (idempotent)
+      - name: Sanity check auth
         run: |
-          firebase functions:secrets:set AGORA_APP_ID \
-            --project ${{ vars.FIREBASE_PROJECT_ID }} \
-            --data "${{ secrets.AGORA_APP_ID }}" --force
+          gcloud auth list
+          firebase --version
+          firebase projects:list --non-interactive || true
 
-          firebase functions:secrets:set AGORA_APP_CERT \
-            --project ${{ vars.FIREBASE_PROJECT_ID }} \
-            --data "${{ secrets.AGORA_APP_CERT }}" --force
-
-          firebase functions:secrets:set RTC_PROVIDER \
-            --project ${{ vars.FIREBASE_PROJECT_ID }} \
-            --data "${{ vars.RTC_PROVIDER }}" --force
+      # ---------- FIXED SECRETS SEEDING ----------
+      - name: Seed Firebase Secrets (idempotent)
+        env:
+          PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+          AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
+          AGORA_APP_CERT: ${{ secrets.AGORA_APP_CERT }}
+          RTC_PROVIDER: ${{ vars.RTC_PROVIDER }}
+        run: |
+          echo -n "$AGORA_APP_ID"   | firebase functions:secrets:set AGORA_APP_ID   --project "$PROJECT_ID" --force --non-interactive
+          echo -n "$AGORA_APP_CERT" | firebase functions:secrets:set AGORA_APP_CERT --project "$PROJECT_ID" --force --non-interactive
+          echo -n "$RTC_PROVIDER"   | firebase functions:secrets:set RTC_PROVIDER   --project "$PROJECT_ID" --force --non-interactive
+      # -------------------------------------------
 
       - name: Deploy Functions + Firestore rules
         run: |
