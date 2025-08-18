@@ -17,16 +17,16 @@ export default function MobileLayout({ children, hideBottomNav = false }: Mobile
     location.pathname.includes('/auth');
 
   return (
-    <div className="min-h-dvh flex flex-col tz-bg overflow-hidden">
+    <div className="min-h-dvh flex flex-col tz-bg relative">
       {/* Main content area */}
-      <main className={`flex-1 overflow-hidden ${!shouldHideNav ? 'pb-safe-nav' : ''}`}>
+      <main className="flex-1 relative">
         {children}
       </main>
 
       {/* AI Assistant floating button */}
       <AIAssistantButton />
 
-      {/* Bottom navigation */}
+      {/* Bottom navigation - always render when not hidden */}
       {!shouldHideNav && <BottomNav />}
     </div>
   );
