@@ -10,6 +10,12 @@
   --tz-g1:#1d2b64; /* deep sapphire */
   --tz-g2:#8f5cff; /* violet */
   --tz-g3:#2ec5ff; /* ice blue edge */
+
+  /* Enhanced layout tokens */
+  --tnz-surface: 16,25,48;           /* deep sapphire */
+  --tnz-accent:  98,84,255;          /* tanzanite glow */
+  --tnz-glass:   255,255,255;        /* glass highlights */
+  --tnz-blur:    18px;
 }
 
 .tz-bg      { background: var(--tz-bg); color: var(--tz-ink); }
