@@ -79,18 +79,14 @@ export default function WalletChip({
       {/* Primary Rewards/Earning Button */}
       <button
         onClick={onClick}
-        className="px-4 h-10 rounded-full text-sm font-medium backdrop-blur-md shadow-lg
-                   transition hover:scale-[1.02] border border-white/10 touch-target"
+        className="px-4 h-10 text-sm font-medium tz-glass tz-gem-border transition hover:scale-[1.02] touch-target"
         style={{
-          background:
-            "linear-gradient(135deg, rgba(31,21,74,.70), rgba(74,35,150,.60))",
-          color: "white",
           minHeight: '44px', // Ensure minimum tap target
         }}
       >
         <span className="inline-flex items-center gap-2">
           <span className="w-5 h-5 rounded-full bg-white/15 grid place-items-center">💎</span>
-          Start earning
+          <span className="tz-shimmer">Start earning</span>
         </span>
       </button>
 
@@ -98,16 +94,10 @@ export default function WalletChip({
       {currentPlan === 'free' && (
         <button
           onClick={onPlanClick}
-          className="px-2 h-8 rounded-full text-xs font-medium backdrop-blur-md shadow-lg
-                     border border-white/10 flex items-center gap-1 transition hover:scale-[1.02] animate-pulse"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(31,21,74,.70), rgba(74,35,150,.60))",
-            color: "white",
-          }}
+          className="px-2 h-8 text-xs font-medium tz-glass flex items-center gap-1 transition hover:scale-[1.02] animate-pulse"
         >
           <span className="text-sm">🆓</span>
-          <span className="text-gray-300">Free</span>
+          <span className="tz-text-dim">Free</span>
         </button>
       )}
     </div>
