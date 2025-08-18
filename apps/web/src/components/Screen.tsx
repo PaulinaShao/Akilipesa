@@ -1,24 +1,26 @@
 import { useEffect, useRef } from "react";
 
-type Props = { 
-  id: string; 
+type Props = {
+  id?: string;
   children: React.ReactNode;
   className?: string;
 };
 
-/** 
- * Wrap each page with <Screen id="route-key">...</Screen>
- * id should be a stable key per tab/route (e.g., "home", "discover")
+/**
+ * Wrap each page with <Screen>...</Screen>
+ * Keeps scroll + nav spacing everywhere
  */
 export default function Screen({ id, children, className = "" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
-  // Restore remembered scroll position for this screen
+  // Restore remembered scroll position for this screen (if id provided)
   useEffect(() => {
+    if (!id) return;
+
     const key = `scroll:${id}`;
     const y = Number(sessionStorage.getItem(key) ?? 0);
     const el = ref.current;
-    
+
     if (el) {
       // Use requestAnimationFrame to ensure DOM is ready
       requestAnimationFrame(() => {
@@ -32,7 +34,7 @@ export default function Screen({ id, children, className = "" }: Props) {
       const saveScroll = () => {
         sessionStorage.setItem(key, String(el.scrollTop));
       };
-      
+
       if ('requestIdleCallback' in window) {
         requestIdleCallback(saveScroll);
       } else {
@@ -45,16 +47,11 @@ export default function Screen({ id, children, className = "" }: Props) {
   }, [id]);
 
   return (
-    <div
+    <main
       ref={ref}
-      className={`tz-bg h-full w-full scroll-screen hide-scrollbar relative overflow-y-auto ${className}`}
-      style={{
-        height: '100%',
-        overflowY: 'auto',
-        WebkitOverflowScrolling: 'touch'
-      }}
+      className={`scroll-screen relative bg-[rgb(var(--tnz-surface))] ${className}`}
     >
       {children}
-    </div>
+    </main>
   );
 }
