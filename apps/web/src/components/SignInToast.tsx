@@ -49,7 +49,7 @@ export default function SignInToast() {
           exit={{ opacity: 0, y: 50 }}
           className="fixed bottom-20 left-4 right-4 z-50 max-w-sm mx-auto"
         >
-          <div className="bg-black/90 backdrop-blur-md rounded-lg p-4 border border-white/10 shadow-lg">
+          <div className="tz-glass tz-gem-border p-4 shadow-lg">
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <p className="text-white text-sm font-medium mb-2">
