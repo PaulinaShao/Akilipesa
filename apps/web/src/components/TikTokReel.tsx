@@ -142,7 +142,7 @@ export default function TikTokReel({
       </aside>
 
       {/* Bottom caption area - clean overlay */}
-      <div className="absolute left-3 bottom-20 right-16 z-20">
+      <div className="absolute left-3 bottom-16 right-16 z-20">
         <div className="flex items-center gap-2 mb-1">
           <span className="text-sm font-semibold text-white drop-shadow-lg">@{reel.user.username}</span>
           {reel.user.isLive && (
