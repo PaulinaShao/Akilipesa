@@ -21,6 +21,7 @@
   border: 1px solid var(--tz-border);
   border-radius: 16px;
   backdrop-filter: blur(6px); /* keep ≤ 6 for perf */
+  will-change: transform; /* performance hint for animations */
 }
 
 /* gemstone "shine" border */
