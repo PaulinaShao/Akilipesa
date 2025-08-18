@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { Heart, MessageCircle, Share2, Sparkles, Radio, Play, Pause } from "lucide-react";
+import { Heart, MessageCircle, Share2, Sparkles, Radio } from "lucide-react";
 import ProfileButton from "@/components/ProfileButton";
+import VideoPlayer from "@/components/VideoPlayer";
 import { cn } from '@/lib/utils';
 
 interface TikTokReelProps {
