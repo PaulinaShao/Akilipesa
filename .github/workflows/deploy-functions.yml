@@ -27,39 +27,42 @@ jobs:
         with:
           node-version: 20
 
-      # 🔐 WIF: export env vars so firebase-tools picks up ADC
       - name: Authenticate to Google Cloud (WIF)
+        id: auth
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }} # projects/26736767264/locations/global/workloadIdentityPools/github/providers/github-oidc
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}                # firebase-deployer@akilipesa-prod.iam.gserviceaccount.com
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
           export_environment_variables: true
 
-      - name: Install gcloud (optional, but keeps SDK aligned)
-        uses: google-github-actions/setup-gcloud@v2
-
-      - name: Install functions deps
-        working-directory: firebase/functions
-        run: npm ci
-
-      - name: Build functions
-        working-directory: firebase/functions
-        run: npm run build
-
       - name: Install Firebase CLI
-        run: npm i -g firebase-tools@latest
-
-      # ✅ New syntax for seeding secrets (no --data flag)
-      - name: Seed Agora secrets (idempotent)
-        env:
-          AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
-          AGORA_APP_CERT: ${{ secrets.AGORA_APP_CERT }}
-          RTC_PROVIDER: ${{ vars.RTC_PROVIDER }}
         run: |
-          printf "%s" "$AGORA_APP_ID"   | firebase functions:secrets:set AGORA_APP_ID   --project akilipesa-prod --force
-          printf "%s" "$AGORA_APP_CERT" | firebase functions:secrets:set AGORA_APP_CERT --project akilipesa-prod --force
-          printf "%s" "$RTC_PROVIDER"   | firebase functions:secrets:set RTC_PROVIDER   --project akilipesa-prod --force
+          npm i -g firebase-tools@latest
+          firebase --version
 
-      # Deploy Functions + Firestore rules
+      - name: Install & build Cloud Functions
+        working-directory: firebase/functions
+        run: |
+          npm ci
+          npm run build
+
+      - name: Seed Firebase Secrets (idempotent)
+        run: |
+          firebase functions:secrets:set AGORA_APP_ID \
+            --project ${{ vars.FIREBASE_PROJECT_ID }} \
+            --data "${{ secrets.AGORA_APP_ID }}" --force
+
+          firebase functions:secrets:set AGORA_APP_CERT \
+            --project ${{ vars.FIREBASE_PROJECT_ID }} \
+            --data "${{ secrets.AGORA_APP_CERT }}" --force
+
+          firebase functions:secrets:set RTC_PROVIDER \
+            --project ${{ vars.FIREBASE_PROJECT_ID }} \
+            --data "${{ vars.RTC_PROVIDER }}" --force
+
       - name: Deploy Functions + Firestore rules
-        run: firebase deploy --only functions,firestore:rules --project akilipesa-prod --non-interactive
+        run: |
+          firebase deploy \
+            --only functions,firestore:rules \
+            --project ${{ vars.FIREBASE_PROJECT_ID }} \
+            --non-interactive
