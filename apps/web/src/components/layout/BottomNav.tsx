@@ -119,7 +119,7 @@ export default function BottomNav() {
                 {active && (
                   <div className="absolute -top-2 w-1 h-1 bg-primary rounded-full opacity-80" />
                 )}
-                
+
                 {/* Icon */}
                 <div className={cn(
                   "relative transition-all duration-200",
@@ -127,17 +127,22 @@ export default function BottomNav() {
                 )}>
                   <IconComponent className={cn(
                     "w-6 h-6 transition-all duration-200",
-                    active 
-                      ? "text-primary drop-shadow-lg" 
+                    active
+                      ? "text-primary drop-shadow-lg"
                       : "text-white/60 group-hover:text-white"
                   )} />
-                  
+
+                  {/* Sign-in badge for Profile tab */}
+                  {item.id === 'profile' && !loading && !isAuthed && (
+                    <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-black/80" />
+                  )}
+
                   {/* Glow effect for active state */}
                   {active && (
                     <IconComponent className="absolute inset-0 w-6 h-6 text-primary opacity-30 blur-sm" />
                   )}
                 </div>
-                
+
                 {/* Label */}
                 <span className={cn(
                   "text-xs mt-1 font-medium transition-colors duration-200 text-center",
