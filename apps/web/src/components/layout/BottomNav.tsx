@@ -28,10 +28,12 @@ export default function BottomNav() {
     <nav className="
       fixed bottom-0 inset-x-0 z-50
       tnz-glass
-      px-4 pt-2 pb-[calc(env(safe-area-inset-bottom)+10px)]
+      px-4 py-2
       backdrop-saturate-150
+      bottom-nav
+      border-t border-white/10
     ">
-      <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-3 text-white">
+      <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-1 text-white items-center justify-items-center">
         <Item
           icon={<Home />}
           label="Home"
