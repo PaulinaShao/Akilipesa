@@ -70,17 +70,16 @@ jobs:
       # Seed Cloud Functions secrets (idempotent, non-interactive)
       - name: Seed CF secrets
         env:
-          PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
-          AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
+          PROJECT_ID: akilipesa-prod
+          AGORA_APP_ID:   ${{ secrets.AGORA_APP_ID }}
           AGORA_APP_CERT: ${{ secrets.AGORA_APP_CERT }}
-          RTC_PROVIDER: ${{ vars.RTC_PROVIDER }}
+          RTC_PROVIDER:   ${{ vars.RTC_PROVIDER }}
         run: |
           set -euo pipefail
           firebase --version
-
-          printf '%s' "$AGORA_APP_ID"  | firebase functions:secrets:set AGORA_APP_ID  --project "$PROJECT_ID" --force
-          printf '%s' "$AGORA_APP_CERT"| firebase functions:secrets:set AGORA_APP_CERT --project "$PROJECT_ID" --force
-          printf '%s' "$RTC_PROVIDER"  | firebase functions:secrets:set RTC_PROVIDER  --project "$PROJECT_ID" --force
+          printf '%s' "$AGORA_APP_ID"   | firebase functions:secrets:set AGORA_APP_ID   --project "$PROJECT_ID" --force
+          printf '%s' "$AGORA_APP_CERT" | firebase functions:secrets:set AGORA_APP_CERT --project "$PROJECT_ID" --force
+          printf '%s' "$RTC_PROVIDER"   | firebase functions:secrets:set RTC_PROVIDER   --project "$PROJECT_ID" --force
 
       - name: Deploy Functions + Firestore rules
         run: |
