@@ -55,6 +55,7 @@ const navItems = [
 
 export default function BottomNav() {
   const location = useLocation();
+  const { isAuthed, loading } = useAuthStatus();
 
   const isActive = (path: string) => {
     if (path === '/reels') {
