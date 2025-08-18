@@ -76,56 +76,40 @@ export default function WalletChip({
 
   return (
     <div className="fixed top-4 left-4 z-[60] flex items-center gap-2">
-      {/* Wallet Balance */}
-      <button
-        onClick={onBalanceClick}
-        className="px-3 h-9 rounded-full text-sm font-medium backdrop-blur-md shadow-lg
-                   border border-white/10 flex items-center gap-2 transition hover:scale-[1.02]"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(31,21,74,.70), rgba(74,35,150,.60))",
-          color: "white",
-        }}
-      >
-        <span className="w-5 h-5 rounded-full bg-white/15 grid place-items-center">💰</span>
-        <span className="font-semibold">{formatCurrency(walletBalance)}</span>
-      </button>
-
-      {/* Plan Status */}
-      <button
-        onClick={onPlanClick}
-        className={`px-3 h-9 rounded-full text-sm font-medium backdrop-blur-md shadow-lg
-                   border border-white/10 flex items-center gap-1 transition hover:scale-[1.02] ${
-                     currentPlan === 'free' ? 'animate-pulse' : ''
-                   }`}
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(31,21,74,.70), rgba(74,35,150,.60))",
-          color: "white",
-        }}
-      >
-        <span className="text-base">{getPlanSymbol(currentPlan)}</span>
-        <span className={`font-medium capitalize ${getPlanColor(currentPlan)}`}>
-          {currentPlan}
-        </span>
-      </button>
-
-      {/* Earning Button */}
+      {/* Primary Rewards/Earning Button */}
       <button
         onClick={onClick}
-        className="px-3 h-9 rounded-full text-sm font-medium backdrop-blur-md shadow-lg
-                   transition hover:scale-[1.02] border border-white/10"
+        className="px-4 h-10 rounded-full text-sm font-medium backdrop-blur-md shadow-lg
+                   transition hover:scale-[1.02] border border-white/10 touch-target"
         style={{
           background:
             "linear-gradient(135deg, rgba(31,21,74,.70), rgba(74,35,150,.60))",
           color: "white",
+          minHeight: '44px', // Ensure minimum tap target
         }}
       >
         <span className="inline-flex items-center gap-2">
           <span className="w-5 h-5 rounded-full bg-white/15 grid place-items-center">💎</span>
-          {label}
+          Start earning
         </span>
       </button>
+
+      {/* Compact Plan Indicator */}
+      {currentPlan === 'free' && (
+        <button
+          onClick={onPlanClick}
+          className="px-2 h-8 rounded-full text-xs font-medium backdrop-blur-md shadow-lg
+                     border border-white/10 flex items-center gap-1 transition hover:scale-[1.02] animate-pulse"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(31,21,74,.70), rgba(74,35,150,.60))",
+            color: "white",
+          }}
+        >
+          <span className="text-sm">🆓</span>
+          <span className="text-gray-300">Free</span>
+        </button>
+      )}
     </div>
   );
 }
