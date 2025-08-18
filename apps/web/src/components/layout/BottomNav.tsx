@@ -26,14 +26,15 @@ export default function BottomNav() {
 
   return (
     <nav className="
-      fixed bottom-0 inset-x-0 z-50
+      fixed bottom-0 left-0 right-0 z-50
       tnz-glass
       px-4 py-2
       backdrop-saturate-150
       bottom-nav
       border-t border-white/10
+      bg-gradient-to-t from-black/20 to-transparent
     ">
-      <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-1 text-white items-center justify-items-center">
+      <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-2 text-white items-center justify-items-center h-12">
         <Item
           icon={<Home />}
           label="Home"
