@@ -230,13 +230,15 @@
   
   /* Reel specific styles */
   .reel-container {
-    @apply h-screen-safe w-full relative overflow-hidden bg-black;
+    @apply h-full w-full relative overflow-hidden bg-black;
     scroll-snap-type: y mandatory;
   }
-  
+
   .reel-card {
-    @apply h-screen-safe w-full relative flex-shrink-0;
+    @apply h-full w-full relative flex-shrink-0;
     scroll-snap-align: start;
+    min-height: 100vh;
+    min-height: 100dvh;
   }
   
   .reel-video {
