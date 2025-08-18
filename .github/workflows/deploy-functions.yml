@@ -56,11 +56,16 @@ jobs:
           npm ci
           npm run build
 
-      - name: Sanity check auth
+      - name: Sanity check WIF & SA
         run: |
-          gcloud auth list
+          set -euo pipefail
           echo "GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS"
-          gcloud secrets list --project ${{ vars.FIREBASE_PROJECT_ID }} | head -n 5
+          # Proves the service account email is valid in this project
+          gcloud iam service-accounts describe "${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}" \
+            --project ${{ vars.FIREBASE_PROJECT_ID }} --format='value(email)'
+          # Proves ADC token can be minted
+          gcloud auth print-access-token >/dev/null
+          echo "WIF impersonation OK"
 
       # Seed Cloud Functions secrets (idempotent, non-interactive)
       - name: Seed CF secrets
