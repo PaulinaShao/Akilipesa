@@ -60,10 +60,10 @@ jobs:
         run: |
           set -euo pipefail
           echo "GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS"
-          # Proves the service account email is valid in this project
+          # SA must exist
           gcloud iam service-accounts describe "${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}" \
-            --project ${{ vars.FIREBASE_PROJECT_ID }} --format='value(email)'
-          # Proves ADC token can be minted
+            --project akilipesa-prod --format='value(email)'
+          # Must be able to mint a token with current ADC (WIF)
           gcloud auth print-access-token >/dev/null
           echo "WIF impersonation OK"
 
