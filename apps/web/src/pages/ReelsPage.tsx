@@ -104,7 +104,7 @@ const mockReels: ReelData[] = [
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
       verified: false,
     },
-    caption: 'Tech innovation meets African creativity! 🚀 Building the future from Tanzania 💙',
+    caption: 'Tech innovation meets African creativity! 🚀 Building the future from Tanzania 💙 Our startup ecosystem is growing rapidly with amazing talents working on solutions that matter. From fintech to agtech, we are solving real problems and creating opportunities for millions across East Africa.',
     hashtags: ['#TechTZ', '#Innovation', '#Startup', '#Africa', '#Technology'],
     music: {
       name: 'Afrobeat Vibes',
