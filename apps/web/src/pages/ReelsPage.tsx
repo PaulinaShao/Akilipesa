@@ -229,6 +229,9 @@ function ReelCard({
 
   return (
     <div className="reel-card">
+      {/* Top gradient for text readability */}
+      <TopGradient />
+
       {/* WalletChip - only show on first reel */}
       {isFirst && (
         <WalletChip
