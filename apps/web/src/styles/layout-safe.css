@@ -1,0 +1,40 @@
+/* Layout Safe - Persistent Bottom Nav + Smart Scrolling */
+:root{
+  --nav-h: 56px;                      /* bottom nav visual height */
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+/* dynamic viewport fallbacks */
+.min-h-dvh { min-height: 100vh; }
+@supports (height: 100dvh) { .min-h-dvh { min-height: 100dvh; } }
+@supports (height: 100svh) { .min-h-dvh { min-height: 100svh; } }
+
+/* padding for screens so content never sits under the nav */
+.pb-safe-nav { padding-bottom: calc(var(--nav-h) + var(--safe-b)); }
+.scroll-screen {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  scroll-padding-bottom: calc(var(--nav-h) + var(--safe-b));
+}
+
+/* bottom nav sizing with safe area */
+.bottom-nav {
+  height: calc(var(--nav-h) + var(--safe-b));
+  padding-bottom: var(--safe-b);
+}
+
+/* Performance optimizations for scrolling */
+.scroll-screen {
+  will-change: scroll-position;
+  contain: layout style paint;
+}
+
+/* Hide scrollbars but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
