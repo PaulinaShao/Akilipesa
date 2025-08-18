@@ -6,6 +6,7 @@ import { initiateCall } from '@/lib/callUtils';
 import WalletChip from '@/components/WalletChip';
 import ProfileButton from '@/components/ProfileButton';
 import TopGradient from '@/components/TopGradient';
+import SignInToast from '@/components/SignInToast';
 import { useAppStore } from '@/store';
 import { useUIStore } from '@/state/uiStore';
 import { isGuest } from '@/lib/guards';
