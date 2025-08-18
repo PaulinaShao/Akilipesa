@@ -57,7 +57,10 @@
 }
 
 /* mobile viewport fix */
-:root { --vh: 100svh; }
+:root {
+  --vh: 100svh;
+  --tnz-surface: 16,25,48;
+}
 @supports(height: 100dvh) {
   :root{ --vh: 100dvh; }
 }
