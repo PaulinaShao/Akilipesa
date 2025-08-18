@@ -72,7 +72,7 @@ const mockReels: ReelData[] = [
       verified: true,
       isLive: true,
     },
-    caption: 'Showcasing the beauty of Tanzanian culture! 🇹🇿✨ What do you think about this traditional dance?',
+    caption: 'Showcasing the beauty of Tanzanian culture! 🇹🇿✨ What do you think about this traditional dance? This is our rich heritage passed down through generations, and every movement tells a story of our ancestors. The rhythms connect us to our roots and bring our community together in celebration. Would love to hear your thoughts on preserving cultural traditions in the modern world!',
     hashtags: ['#Tanzania', '#Culture', '#Dance', '#Traditional', '#Beauty'],
     music: {
       name: 'Bongo Flava Beat',
