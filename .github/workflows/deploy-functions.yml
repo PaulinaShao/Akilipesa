@@ -7,25 +7,41 @@ on:
       - 'firebase/functions/**'
       - 'firebase/firestore.rules'
       - 'firebase.json'
-  workflow_dispatch:
 
 permissions:
   contents: read
   id-token: write
 
+env:
+  PROJECT_ID: akilipesa-prod
+
 jobs:
   deploy:
-    runs-on: ubuntu-latest
     environment: Production
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Install Firebase CLI
+        run: npm i -g firebase-tools@latest
+
+      - name: Auth to Google Cloud (WIF)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/26736767264/locations/global/workloadIdentityPools/github/providers/github-oidc
+          service_account: firebase-deployer@akilipesa-prod.iam.gserviceaccount.com
+          export_environment_variables: true
+
+      - name: Seed Firebase Secrets (idempotent)
+        run: |
+          firebase functions:secrets:set AGORA_APP_ID   --data "${{ secrets.AGORA_APP_ID }}"   --project "$PROJECT_ID" --force
+          firebase functions:secrets:set AGORA_APP_CERT --data "${{ secrets.AGORA_APP_CERT }}" --project "$PROJECT_ID" --force
+          firebase functions:secrets:set RTC_PROVIDER   --data "${{ vars.RTC_PROVIDER }}"      --project "$PROJECT_ID" --force
 
       - name: Install & build Cloud Functions
         working-directory: firebase/functions
@@ -33,20 +49,5 @@ jobs:
           npm ci
           npm run build
 
-      - name: Authenticate to Google Cloud (WIF)
-        uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
-
-      - name: Install Firebase CLI
-        run: npm i -g firebase-tools
-
-      - name: Seed Firebase Secrets (idempotent)
-        run: |
-          firebase functions:secrets:set AGORA_APP_ID    --project akilipesa-prod --data "${{ secrets.AGORA_APP_ID }}" --force
-          firebase functions:secrets:set AGORA_APP_CERT  --project akilipesa-prod --data "${{ secrets.AGORA_APP_CERT }}" --force
-          firebase functions:secrets:set RTC_PROVIDER    --project akilipesa-prod --data "${{ vars.RTC_PROVIDER }}" --force
-
       - name: Deploy Functions + Rules
-        run: firebase deploy --only functions,firestore:rules --project akilipesa-prod --non-interactive
+        run: firebase deploy --only functions,firestore:rules --project "$PROJECT_ID" --non-interactive
