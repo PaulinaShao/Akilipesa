@@ -82,8 +82,4 @@ jobs:
           printf '%s' "$RTC_PROVIDER"   | firebase functions:secrets:set RTC_PROVIDER   --project "$PROJECT_ID" --force
 
       - name: Deploy Functions + Firestore rules
-        run: |
-          firebase deploy \
-            --only functions,firestore:rules \
-            --project ${{ vars.FIREBASE_PROJECT_ID }} \
-            --non-interactive
+        run: firebase deploy --only functions,firestore:rules --project akilipesa-prod --non-interactive
