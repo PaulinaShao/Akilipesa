@@ -1,4 +1,5 @@
 name: Deploy AkiliPesa
+
 on:
   push:
     branches: [ main ]
@@ -6,7 +7,7 @@ on:
 
 permissions:
   contents: read
-  id-token: write   # required for OIDC
+  id-token: write
 
 jobs:
   deploy:
@@ -22,7 +23,7 @@ jobs:
         with:
           node-version: 20
 
-      # Auth using WIF → exports ADC env so firebase CLI picks it up
+      # WIF: create short-lived SA creds + export ADC env vars
       - name: Authenticate to Google Cloud (WIF)
         uses: google-github-actions/auth@v2
         with:
@@ -30,10 +31,13 @@ jobs:
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
           export_environment_variables: true
 
+      # (recommended; some tools look for gcloud on PATH)
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
       - name: Install Firebase CLI
         run: npm i -g firebase-tools@latest
 
-      # (Optional) build your functions if needed
       - name: Install deps (functions)
         working-directory: firebase/functions
         run: npm ci
@@ -42,16 +46,24 @@ jobs:
         working-directory: firebase/functions
         run: npm run build
 
-      # Seed Cloud Functions secrets (idempotent)
+      - name: Sanity check auth
+        run: |
+          gcloud auth list
+          firebase --version
+          firebase projects:list --non-interactive || true
+
+      # ---------- FIXED SECRETS SEEDING ----------
       - name: Seed CF secrets
         env:
           PROJECT_ID: akilipesa-prod
+          AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
+          AGORA_APP_CERT: ${{ secrets.AGORA_APP_CERT }}
+          RTC_PROVIDER: ${{ vars.RTC_PROVIDER }}
         run: |
-          firebase --version
-          firebase functions:secrets:set AGORA_APP_ID --data "${{ secrets.AGORA_APP_ID }}" --project "$PROJECT_ID" --force
-          firebase functions:secrets:set AGORA_APP_CERT --data "${{ secrets.AGORA_APP_CERT }}" --project "$PROJECT_ID" --force
-          firebase functions:secrets:set RTC_PROVIDER --data "${{ vars.RTC_PROVIDER }}" --project "$PROJECT_ID" --force
+          echo -n "$AGORA_APP_ID"   | firebase functions:secrets:set AGORA_APP_ID   --project "$PROJECT_ID" --force --non-interactive
+          echo -n "$AGORA_APP_CERT" | firebase functions:secrets:set AGORA_APP_CERT --project "$PROJECT_ID" --force --non-interactive
+          echo -n "$RTC_PROVIDER"   | firebase functions:secrets:set RTC_PROVIDER   --project "$PROJECT_ID" --force --non-interactive
+      # -------------------------------------------
 
-      # Deploy Functions + Firestore rules from repo root so firebase.json is found
       - name: Deploy Functions + Firestore rules
         run: firebase deploy --only functions,firestore:rules --project akilipesa-prod --non-interactive
