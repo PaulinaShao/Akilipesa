@@ -58,16 +58,16 @@ export default function SignInToast() {
                 <div className="flex space-x-2">
                   <button
                     onClick={handleSignIn}
-                    className="flex items-center space-x-1 px-3 py-1.5 bg-primary rounded-full text-white text-xs font-medium transition-all hover:bg-primary/80"
+                    className="flex items-center space-x-1 px-3 py-1.5 tz-gem-border text-white text-xs font-medium transition-all hover:scale-105"
                   >
                     <LogIn className="w-3 h-3" />
-                    <span>Sign in</span>
+                    <span className="tz-shimmer">Sign in</span>
                   </button>
                   <button
                     onClick={handleDismiss}
-                    className="px-3 py-1.5 bg-white/10 rounded-full text-white text-xs font-medium transition-all hover:bg-white/20"
+                    className="px-3 py-1.5 tz-glass text-white text-xs font-medium transition-all hover:scale-105"
                   >
-                    Dismiss
+                    <span className="tz-text-dim">Dismiss</span>
                   </button>
                 </div>
               </div>
