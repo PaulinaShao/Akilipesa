@@ -48,13 +48,13 @@ export default function BottomNav() {
     >
       <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-1 items-center justify-items-center min-h-[52px]">
         <Item
-          icon={<Home />}
+          icon={<Home className="h-6 w-6" />}
           label="Home"
           active={isActive('/reels')}
           onClick={() => handlePress('/reels')}
         />
         <Item
-          icon={<Compass />}
+          icon={<Compass className="h-6 w-6" />}
           label="Discover"
           active={isActive('/search')}
           onClick={() => handlePress('/search')}
@@ -62,20 +62,20 @@ export default function BottomNav() {
         <div className="flex justify-center">
           <button
             onClick={() => navigate('/create')}
-            className="h-12 w-12 rounded-2xl tz-gem-border tz-action-button grid place-items-center relative -top-1"
+            className="h-12 w-12 bg-white rounded-2xl grid place-items-center relative -top-1 transition-transform hover:scale-105 active:scale-95"
             aria-label="Create"
           >
-            <Gem className="h-5 w-5 text-white" />
+            <Gem className="h-6 w-6 text-black" />
           </button>
         </div>
         <Item
-          icon={<Bell />}
+          icon={<Bell className="h-6 w-6" />}
           label="Inbox"
           active={isActive('/inbox')}
           onClick={() => handlePress('/inbox')}
         />
         <Item
-          icon={<User2 />}
+          icon={<User2 className="h-6 w-6" />}
           label="Profile"
           active={isActive('/profile')}
           onClick={() => handlePress('/profile')}
