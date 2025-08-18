@@ -66,9 +66,9 @@ export default function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-fixed safe-bottom">
-      {/* Blurred background */}
-      <div className="absolute inset-0 glass-heavy border-t border-white/10" />
-      
+      {/* Tanzanite glass background */}
+      <div className="absolute inset-0 tz-glass border-t border-white/10" />
+
       {/* Navigation content */}
       <div className="relative flex items-center justify-around px-2 py-2">
         {navItems.map((item) => {
