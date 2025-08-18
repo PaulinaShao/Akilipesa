@@ -356,27 +356,31 @@ function ReelCard({
           <button
             onClick={onLike}
             className={cn(
-              "flex items-center space-x-1 transition-all",
+              "flex items-center space-x-1 transition-all touch-target p-2 -m-2 rounded-lg",
               reel.interactions.liked && "text-red-500"
             )}
+            style={{ minHeight: '44px', minWidth: '44px' }}
+            aria-label={`${reel.interactions.liked ? 'Unlike' : 'Like'} this video`}
           >
             <Heart
               className={cn(
-                "w-5 h-5 drop-shadow-md transition-all duration-200",
+                "w-6 h-6 drop-shadow-md transition-all duration-200",
                 reel.interactions.liked && "fill-red-500 text-red-500 scale-110"
               )}
             />
-            <span className="text-white text-sm font-medium drop-shadow-md">
+            <span className="text-white text-base font-medium drop-shadow-md">
               {formatNumber(reel.stats.likes)}
             </span>
           </button>
 
           <button
             onClick={onComment}
-            className="flex items-center space-x-1 text-white transition-all hover:text-white/80"
+            className="flex items-center space-x-1 text-white transition-all hover:text-white/80 touch-target p-2 -m-2 rounded-lg"
+            style={{ minHeight: '44px', minWidth: '44px' }}
+            aria-label="View comments"
           >
-            <MessageCircle className="w-5 h-5 drop-shadow-md" />
-            <span className="text-sm font-medium drop-shadow-md">
+            <MessageCircle className="w-6 h-6 drop-shadow-md" />
+            <span className="text-base font-medium drop-shadow-md">
               {formatNumber(reel.stats.comments)}
             </span>
           </button>
