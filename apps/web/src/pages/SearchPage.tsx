@@ -101,7 +101,8 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="h-screen-safe flex flex-col">
+    <>
+      <Screen id="discover" className="flex flex-col">
       {/* Header */}
       <div className="safe-top p-4 border-b border-white/10">
         {/* Search Bar */}
@@ -331,6 +332,8 @@ export default function SearchPage() {
           </div>
         )}
       </div>
-    </div>
+      </Screen>
+      <BackToTop />
+    </>
   );
 }
