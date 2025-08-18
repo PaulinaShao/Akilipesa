@@ -10,6 +10,16 @@
 @supports (height: 100dvh) { .min-h-dvh { min-height: 100dvh; } }
 @supports (height: 100svh) { .min-h-dvh { min-height: 100svh; } }
 
+/* Safe area utilities - used throughout the app */
+.h-screen-safe {
+  height: 100vh;
+  height: 100dvh;
+}
+.min-h-screen-safe {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
 /* padding for screens so content never sits under the nav */
 .pb-safe-nav { padding-bottom: var(--nav-total); }
 .scroll-screen {
