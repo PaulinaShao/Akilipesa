@@ -1,9 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  Home, 
-  Search, 
-  Plus, 
-  MessageCircle, 
+import {
+  Home,
+  Search,
+  Plus,
+  MessageCircle,
   User,
   Play,
   Compass,
@@ -12,6 +12,7 @@ import {
   UserCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuthStatus } from '@/auth/useAuthStatus';
 
 const navItems = [
   {
