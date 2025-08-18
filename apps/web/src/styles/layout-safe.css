@@ -108,6 +108,20 @@
   transform: none !important;
   bottom: 0 !important;
   width: 100% !important;
+  background: rgba(0, 0, 0, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* Instagram/TikTok style navigation styling */
+.bottom-nav button {
+  color: #ffffff !important;
+  transition: all 0.2s ease !important;
+}
+
+.bottom-nav button:hover {
+  color: #ffffff !important;
+  transform: scale(1.1) !important;
 }
 
 /* Prevent any parent containers from hiding the navigation */
