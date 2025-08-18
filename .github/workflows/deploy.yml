@@ -26,17 +26,22 @@ jobs:
       - run: npm run build
         working-directory: firebase/functions
 
-      # Seed/update Cloud Functions secrets (idempotent)
-      - name: Seed CF secrets
-        run: |
-          npx firebase-tools functions:secrets:set AGORA_APP_ID --data "${{ secrets.AGORA_APP_ID }}" --project akilipesa-prod --force
-          npx firebase-tools functions:secrets:set AGORA_APP_CERT --data "${{ secrets.AGORA_APP_CERT }}" --project akilipesa-prod --force
-          npx firebase-tools functions:secrets:set RTC_PROVIDER --data "${{ vars.RTC_PROVIDER }}" --project akilipesa-prod --force
+      - name: Install Firebase CLI
+        run: npm i -g firebase-tools@latest
+
+      - name: Seed CF secrets (stdin)
         env:
+          AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
+          AGORA_APP_CERT: ${{ secrets.AGORA_APP_CERT }}
+          RTC_PROVIDER: ${{ vars.RTC_PROVIDER }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          printf "%s" "$AGORA_APP_ID"   | firebase functions:secrets:set AGORA_APP_ID   --project akilipesa-prod --force
+          printf "%s" "$AGORA_APP_CERT" | firebase functions:secrets:set AGORA_APP_CERT --project akilipesa-prod --force
+          printf "%s" "$RTC_PROVIDER"   | firebase functions:secrets:set RTC_PROVIDER   --project akilipesa-prod --force
 
       # Deploy functions + rules (add hosting/storage if you want)
       - name: Deploy to Firebase
-        run: npx firebase-tools deploy --only functions,firestore:rules --project akilipesa-prod --non-interactive
+        run: firebase deploy --only functions,firestore:rules --project akilipesa-prod --non-interactive
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
