@@ -141,8 +141,8 @@ export default function TikTokReel({
         </div>
       </aside>
 
-      {/* Bottom caption area - clean overlay */}
-      <div className="absolute left-3 bottom-16 right-16 z-20">
+      {/* Bottom caption area - clean overlay lifted above nav */}
+      <div className="absolute left-3 right-16 z-20 bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom)+1rem)]">
         <div className="flex items-center gap-2 mb-1">
           <span className="text-sm font-semibold text-white drop-shadow-lg">@{reel.user.username}</span>
           {reel.user.isLive && (
