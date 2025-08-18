@@ -45,9 +45,9 @@ export default function Screen({ id, children, className = "" }: Props) {
   }, [id]);
 
   return (
-    <div 
-      ref={ref} 
-      className={`tz-bg min-h-dvh pb-safe-nav scroll-screen hide-scrollbar ${className}`}
+    <div
+      ref={ref}
+      className={`tz-bg min-h-screen-safe pb-safe-nav scroll-screen hide-scrollbar relative ${className}`}
     >
       {children}
     </div>
