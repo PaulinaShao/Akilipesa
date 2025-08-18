@@ -809,7 +809,8 @@ export default function ReelsPage() {
 
 
   return (
-    <div className="reel-container tz-bg">
+    <>
+      <Screen id="home" className="reel-container">
       {/* Pull to refresh indicator */}
       {isRefreshing && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-black/80 backdrop-blur-md rounded-full px-4 py-2">
@@ -822,12 +823,12 @@ export default function ReelsPage() {
 
       <div
         ref={containerRef}
-        className="h-full overflow-y-auto snap-y snap-mandatory hide-scrollbar"
+        className="h-full overflow-y-auto snap-y snap-mandatory"
       >
         {reels.map((reel, index) => (
           <div
             key={reel.id}
-            className="h-screen-safe snap-start"
+            className="h-screen snap-start"
             {...(index === 1 ? { 'data-second-reel': 'true' } : {})}
           >
             <TikTokReel
@@ -907,7 +908,9 @@ export default function ReelsPage() {
         }}
       />
 
-
-    </div>
+      {/* Back to Top FAB */}
+      <BackToTop />
+      </Screen>
+    </>
   );
 }
