@@ -47,7 +47,12 @@ export default function Screen({ id, children, className = "" }: Props) {
   return (
     <div
       ref={ref}
-      className={`tz-bg min-h-screen-safe pb-safe-nav scroll-screen hide-scrollbar relative ${className}`}
+      className={`tz-bg h-full w-full scroll-screen hide-scrollbar relative overflow-y-auto ${className}`}
+      style={{
+        height: '100%',
+        overflowY: 'auto',
+        WebkitOverflowScrolling: 'touch'
+      }}
     >
       {children}
     </div>
