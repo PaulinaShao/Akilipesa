@@ -2,46 +2,56 @@ name: Deploy AkiliPesa
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'firebase/functions/**'
-      - 'firebase/firestore.rules'
-      - 'firebase.json'
   workflow_dispatch:
 
 permissions:
   contents: read
+  id-token: write   # required for OIDC
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: Production
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 20 }
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      # (Optional) build functions if using TypeScript
-      - run: npm ci
-        working-directory: firebase/functions
-      - run: npm run build
-        working-directory: firebase/functions
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Auth using WIF → exports ADC env so firebase CLI picks it up
+      - name: Authenticate to Google Cloud (WIF)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+          export_environment_variables: true
 
       - name: Install Firebase CLI
         run: npm i -g firebase-tools@latest
 
-      - name: Seed CF secrets (stdin)
-        env:
-          AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
-          AGORA_APP_CERT: ${{ secrets.AGORA_APP_CERT }}
-          RTC_PROVIDER: ${{ vars.RTC_PROVIDER }}
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: |
-          printf "%s" "$AGORA_APP_ID"   | firebase functions:secrets:set AGORA_APP_ID   --project akilipesa-prod --force
-          printf "%s" "$AGORA_APP_CERT" | firebase functions:secrets:set AGORA_APP_CERT --project akilipesa-prod --force
-          printf "%s" "$RTC_PROVIDER"   | firebase functions:secrets:set RTC_PROVIDER   --project akilipesa-prod --force
+      # (Optional) build your functions if needed
+      - name: Install deps (functions)
+        working-directory: firebase/functions
+        run: npm ci
 
-      # Deploy functions + rules (add hosting/storage if you want)
-      - name: Deploy to Firebase
-        run: firebase deploy --only functions,firestore:rules --project akilipesa-prod --non-interactive
+      - name: Build functions
+        working-directory: firebase/functions
+        run: npm run build
+
+      # Seed Cloud Functions secrets (idempotent)
+      - name: Seed CF secrets
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_ID: akilipesa-prod
+        run: |
+          firebase --version
+          firebase functions:secrets:set AGORA_APP_ID --data "${{ secrets.AGORA_APP_ID }}" --project "$PROJECT_ID" --force
+          firebase functions:secrets:set AGORA_APP_CERT --data "${{ secrets.AGORA_APP_CERT }}" --project "$PROJECT_ID" --force
+          firebase functions:secrets:set RTC_PROVIDER --data "${{ vars.RTC_PROVIDER }}" --project "$PROJECT_ID" --force
+
+      # Deploy Functions + Firestore rules from repo root so firebase.json is found
+      - name: Deploy Functions + Firestore rules
+        run: firebase deploy --only functions,firestore:rules --project akilipesa-prod --non-interactive
