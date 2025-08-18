@@ -786,8 +786,19 @@ export default function ReelsPage() {
 
   return (
     <div className="reel-container">
-      {/* Login Badge - only show for anonymous users (not real users) */}
-      {!isRealUser() && <LoginBadge />}
+      {/* Top gradient for better text readability */}
+      <TopGradient />
+
+      {/* Profile button with sign-in badge - positioned top-right */}
+      <div className="fixed top-4 right-4 z-50">
+        <ProfileButton onClick={() => {
+          if (!isRealUser()) {
+            setShowAuthSheet(true);
+          } else {
+            navigate('/profile');
+          }
+        }} />
+      </div>
 
       {/* Pull to refresh indicator */}
       {isRefreshing && (
