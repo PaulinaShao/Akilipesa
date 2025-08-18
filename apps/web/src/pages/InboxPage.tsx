@@ -134,7 +134,8 @@ export default function InboxPage() {
   });
 
   return (
-    <div className="h-screen-safe bg-gem-dark overflow-y-auto">
+    <>
+      <Screen id="inbox" className="bg-gem-dark">
       {/* Header */}
       <div className="safe-top p-4 border-b border-white/10">
         <div className="flex-between mb-4">
@@ -353,6 +354,8 @@ export default function InboxPage() {
           <Plus className="w-6 h-6 text-black" />
         </button>
       </div>
-    </div>
+      </Screen>
+      <BackToTop />
+    </>
   );
 }
