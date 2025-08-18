@@ -40,3 +40,41 @@
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* Mobile-specific bottom nav improvements */
+@media (max-width: 640px) {
+  :root {
+    --nav-h: 60px; /* slightly smaller on mobile */
+  }
+}
+
+/* Ensure minimum viewport height on mobile */
+@media (max-height: 700px) {
+  .scroll-screen {
+    min-height: 100vh; /* fallback for very short screens */
+  }
+}
+
+/* Better touch targets for mobile */
+@media (hover: none) and (pointer: coarse) {
+  .tz-action-button {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  .bottom-nav {
+    padding-bottom: max(var(--safe-b), 8px); /* ensure minimum padding */
+  }
+}
+
+/* Force visibility on mobile screens */
+@media (max-width: 768px) {
+  .bottom-nav {
+    display: block !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 50 !important;
+  }
+}
