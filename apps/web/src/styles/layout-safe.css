@@ -54,7 +54,12 @@
 /* Mobile-specific bottom nav improvements */
 @media (max-width: 640px) {
   :root {
-    --nav-h: 60px; /* slightly smaller on mobile */
+    --nav-h: 70px; /* ensure enough height on mobile */
+  }
+
+  .bottom-nav {
+    padding-bottom: max(env(safe-area-inset-bottom), 12px);
+    min-height: 70px;
   }
 }
 
