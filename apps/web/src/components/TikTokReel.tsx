@@ -44,38 +44,17 @@ export default function TikTokReel({
   onShare, 
   onFollow 
 }: TikTokReelProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [showPlayButton, setShowPlayButton] = useState(false);
+  // Performance optimization: debounce analytics calls
+  const debouncedAnalytics = useRef<NodeJS.Timeout>();
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (isActive) {
-      video.play().catch(() => {
-        setShowPlayButton(true);
-      });
-      setIsPlaying(true);
-    } else {
-      video.pause();
-      setIsPlaying(false);
+  const handleVideoEnd = () => {
+    // Debounced analytics for better performance
+    if (debouncedAnalytics.current) {
+      clearTimeout(debouncedAnalytics.current);
     }
-  }, [isActive]);
-
-  const handleVideoClick = () => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (isPlaying) {
-      video.pause();
-      setIsPlaying(false);
-    } else {
-      video.play().catch(() => {
-        setShowPlayButton(true);
-      });
-      setIsPlaying(true);
-    }
+    debouncedAnalytics.current = setTimeout(() => {
+      console.log('Video completed:', reel.id);
+    }, 100);
   };
 
   const formatNumber = (num: number): string => {
