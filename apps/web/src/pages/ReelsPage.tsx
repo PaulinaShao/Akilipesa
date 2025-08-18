@@ -7,6 +7,7 @@ import WalletChip from '@/components/WalletChip';
 import ProfileButton from '@/components/ProfileButton';
 import TopGradient from '@/components/TopGradient';
 import { useAppStore } from '@/store';
+import { useUIStore } from '@/state/uiStore';
 import { isGuest } from '@/lib/guards';
 import { useAuth } from '@/hooks/useAuth';
 import { isRealUser } from '@/auth/phoneAuth';
