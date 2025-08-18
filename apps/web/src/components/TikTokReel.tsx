@@ -75,24 +75,12 @@ export default function TikTokReel({
         className="absolute inset-0"
       />
 
-      {/* Top veil + header */}
-      <div className="absolute inset-x-0 top-0 h-14 tz-top-veil" />
-      <header className="absolute inset-x-0 top-0 h-14 flex items-center justify-between px-3 z-20">
-        <div className="flex items-center gap-2">
-          <div className="px-2 py-1 rounded-md tz-gem-border text-xs text-white/90">
-            <span className="tz-shimmer">A K I L I P E S A</span>
-          </div>
-          {reel.user.isLive && (
-            <>
-              <span className="ml-2 text-xs text-red-400 font-semibold animate-pulse">LIVE</span>
-              <span className="ml-1 flex items-center gap-1 text-xs text-white/80">
-                <Radio className="h-3.5 w-3.5" /> 1.2k
-              </span>
-            </>
-          )}
-        </div>
-        <ProfileButton onClick={onProfile} />
-      </header>
+      {/* Auto-hide header */}
+      <AutoHideHeader
+        onProfileClick={onProfile}
+        showLiveInfo={reel.user.isLive}
+        viewerCount="1.2k"
+      />
 
       {/* Right action rail */}
       <aside className="absolute right-2 bottom-28 flex flex-col items-center gap-4 z-20">
