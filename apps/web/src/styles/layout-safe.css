@@ -99,8 +99,23 @@
 
 /* Ensure the nav is always visible regardless of screen size */
 .bottom-nav {
-  display: block;
-  position: fixed;
-  visibility: visible;
-  opacity: 1;
+  display: block !important;
+  position: fixed !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+  bottom: 0 !important;
+  width: 100% !important;
+}
+
+/* Prevent any parent containers from hiding the navigation */
+body, #root, main {
+  position: relative;
+}
+
+/* Ensure minimum body height accounts for navigation */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: var(--nav-total, 70px);
+  }
 }
