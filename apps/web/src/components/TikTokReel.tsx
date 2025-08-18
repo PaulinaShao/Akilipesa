@@ -65,34 +65,14 @@ export default function TikTokReel({
 
   return (
     <div className="relative h-dvh w-full overflow-hidden tz-bg">
-      {/* Video element */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover"
+      {/* Performance-optimized video player */}
+      <VideoPlayer
+        src={reel.videoUrl}
         poster={reel.thumbnailUrl}
-        loop
-        muted
-        playsInline
-        onClick={handleVideoClick}
-      >
-        <source src={reel.videoUrl} type="video/mp4" />
-      </video>
-
-      {/* Play/Pause overlay */}
-      {showPlayButton && (
-        <div 
-          className="absolute inset-0 flex items-center justify-center bg-black/20 z-10"
-          onClick={handleVideoClick}
-        >
-          <div className="tz-glass rounded-full p-4">
-            {isPlaying ? (
-              <Pause className="w-12 h-12 text-white" />
-            ) : (
-              <Play className="w-12 h-12 text-white" />
-            )}
-          </div>
-        </div>
-      )}
+        isActive={isActive}
+        onEnded={handleVideoEnd}
+        className="absolute inset-0"
+      />
 
       {/* Top veil + header */}
       <div className="absolute inset-x-0 top-0 h-14 tz-top-veil" />
