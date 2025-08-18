@@ -46,6 +46,7 @@ export default function TikTokReel({
 }: TikTokReelProps) {
   // Performance optimization: debounce analytics calls
   const debouncedAnalytics = useRef<NodeJS.Timeout>();
+  const [captionExpanded, setCaptionExpanded] = useState(false);
 
   const handleVideoEnd = () => {
     // Debounced analytics for better performance
