@@ -155,6 +155,36 @@ const mockReels: ReelData[] = [
       { id: '3', name: 'Tanzanite Earrings', price: '250,000 TSH' }
     ],
   },
+  {
+    id: '4',
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_720x480_1mb.mp4',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=700&fit=crop',
+    user: {
+      id: '4',
+      username: 'chef_maua',
+      displayName: 'Chef Maua',
+      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+      verified: true,
+      isLive: true,
+    },
+    caption: 'Live cooking session! Today we are making traditional Ugali with sukuma wiki and some delicious nyama choma 🔥 Join me as I share family recipes passed down through generations. Perfect for Sunday dinner with the family!',
+    hashtags: ['#Cooking', '#TanzanianFood', '#LiveCooking', '#Traditional', '#Recipe'],
+    music: {
+      name: 'Kitchen Vibes',
+      artist: 'Chef Maua',
+    },
+    stats: {
+      likes: 34567,
+      comments: 2156,
+      shares: 891,
+      views: 156789,
+    },
+    interactions: {
+      liked: true,
+      saved: false,
+      followed: true,
+    },
+  },
 ];
 
 function formatNumber(num: number): string {
