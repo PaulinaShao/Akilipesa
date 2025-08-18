@@ -1,19 +1,7 @@
-// Legacy component - use AkiliLogo instead
-import AkiliLogo from './AkiliLogo';
-
-interface TanzaniteLogoProps {
-  className?: string;
-  size?: 'sm' | 'md' | 'lg';
-  showText?: boolean;
-}
-
-export default function TanzaniteLogo({ className }: TanzaniteLogoProps) {
-  // Legacy component - use AkiliLogo instead
+export default function TanzaniteLogo({ className = "" }: { className?: string }) {
   return (
-    <AkiliLogo
-      variant="compact"
-      className={className}
-      showSparkles={false}
-    />
+    <div className={`px-2 py-1 rounded-md tz-gem-border text-xs text-white/90 ${className}`}>
+      <span className="tz-shimmer font-semibold tracking-wider">A K I L I P E S A</span>
+    </div>
   );
 }
