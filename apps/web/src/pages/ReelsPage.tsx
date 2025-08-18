@@ -842,20 +842,14 @@ export default function ReelsPage() {
             className="h-screen-safe snap-start"
             {...(index === 1 ? { 'data-second-reel': 'true' } : {})}
           >
-            <ReelCard
+            <TikTokReel
               reel={reel}
               isActive={index === currentIndex && !isScrolling}
-              isFirst={index === 0}
+              onProfile={() => handleProfileClick(reel.user.id)}
               onLike={() => handleLike(reel.id)}
               onComment={() => handleComment(reel.id)}
               onShare={() => handleShare(reel.id)}
-              onShop={() => handleShop(reel.id)}
-              onAudioCall={() => handleAudioCall(reel.user.id)}
-              onVideoCall={() => handleVideoCall(reel.user.id)}
-              onLiveCall={() => handleLiveCall(reel.id)}
-              onJoin={() => handleJoin(reel.id)}
               onFollow={() => handleFollow(reel.user.id)}
-              onProfileClick={() => handleProfileClick(reel.user.id)}
             />
           </div>
         ))}
