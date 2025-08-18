@@ -394,16 +394,18 @@ function ReelCard({
       </div>
 
       {/* Right actions rail - TikTok style */}
-      <div className="reel-actions">
+      <div className="reel-actions space-y-4">
         {/* Share */}
         <div className="flex flex-col items-center space-y-1">
           <button
             onClick={onShare}
-            className="w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-black/50"
+            className="w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-black/50 touch-target"
+            style={{ minHeight: '48px', minWidth: '48px' }}
+            aria-label="Share this video"
           >
             <Share className="w-6 h-6" />
           </button>
-          <span className="text-white text-xs font-medium">
+          <span className="text-white text-sm font-medium">
             {formatNumber(reel.stats.shares)}
           </span>
         </div>
@@ -412,7 +414,9 @@ function ReelCard({
         <div className="flex flex-col items-center space-y-1">
           <button
             onClick={onAudioCall}
-            className="w-12 h-12 rounded-full bg-green-500/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-green-500/50"
+            className="w-12 h-12 rounded-full bg-green-500/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-green-500/50 touch-target"
+            style={{ minHeight: '48px', minWidth: '48px' }}
+            aria-label="Start audio call"
           >
             <Phone className="w-6 h-6 text-green-400" />
           </button>
@@ -422,7 +426,9 @@ function ReelCard({
         <div className="flex flex-col items-center space-y-1">
           <button
             onClick={onVideoCall}
-            className="w-12 h-12 rounded-full bg-blue-500/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-blue-500/50"
+            className="w-12 h-12 rounded-full bg-blue-500/30 backdrop-blur-sm flex items-center justify-center transition-all hover:bg-blue-500/50 touch-target"
+            style={{ minHeight: '48px', minWidth: '48px' }}
+            aria-label="Start video call"
           >
             <Video className="w-6 h-6 text-blue-400" />
           </button>
