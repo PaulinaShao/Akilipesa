@@ -17,9 +17,9 @@ export default function MobileLayout({ children, hideBottomNav = false }: Mobile
     location.pathname.includes('/auth');
 
   return (
-    <div className="h-screen-safe flex flex-col bg-gem-dark overflow-hidden">
+    <div className="min-h-dvh flex flex-col tz-bg overflow-hidden">
       {/* Main content area */}
-      <main className={`flex-1 overflow-hidden ${!shouldHideNav ? 'pb-16' : ''}`}>
+      <main className={`flex-1 overflow-hidden ${!shouldHideNav ? 'pb-safe-nav' : ''}`}>
         {children}
       </main>
 
