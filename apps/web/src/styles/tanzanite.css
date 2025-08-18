@@ -131,6 +131,12 @@
   backface-visibility: hidden; /* prevent flicker */
 }
 
+/* Z-index contract for proper stacking */
+/* Bottom nav: z-[9999] (highest) */
+/* Top header: z-[60] */
+/* Right action rail: z-[50] */
+/* Feed overlays: z-[40] or less */
+
 /* Action button optimizations */
 .tz-action-button {
   will-change: transform;
