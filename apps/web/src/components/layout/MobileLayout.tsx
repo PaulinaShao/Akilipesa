@@ -20,23 +20,17 @@ export default function MobileLayout({ children, hideBottomNav = false }: Mobile
   console.log('MobileLayout render:', { shouldHideNav, pathname: location.pathname });
 
   return (
-    <div className="h-screen flex flex-col tz-bg">
-      {/* Main content area - takes remaining space */}
-      <main className="flex-1 overflow-hidden relative">
-        <div className="h-full w-full relative">
-          {children}
-        </div>
+    <div className="h-screen tz-bg">
+      {/* Main content area - full viewport */}
+      <main className="h-full w-full relative">
+        {children}
       </main>
-
-      {/* Bottom navigation - ALWAYS render for main pages */}
-      {!shouldHideNav && (
-        <div className="flex-shrink-0">
-          <BottomNav />
-        </div>
-      )}
 
       {/* AI Assistant floating button */}
       <AIAssistantButton />
+
+      {/* Bottom navigation - ALWAYS render as direct fixed child */}
+      {!shouldHideNav && <BottomNav />}
     </div>
   );
 }
