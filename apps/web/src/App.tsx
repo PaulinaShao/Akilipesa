@@ -290,6 +290,10 @@ function App() {
             </MobileLayout>
           } />
 
+          <Route path="/home-feed" element={
+            <HomeFeedPage />
+          } />
+
           <Route path="/search" element={
             <MobileLayout>
               <SearchPage />
