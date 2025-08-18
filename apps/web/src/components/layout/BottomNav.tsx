@@ -28,12 +28,11 @@ export default function BottomNav() {
     <nav
       className="
         fixed bottom-0 left-0 right-0
-        tnz-glass
+        bg-black/90
+        border-t border-gray-800
         px-4 py-2
-        backdrop-saturate-150
+        backdrop-blur-md
         bottom-nav
-        border-t border-white/10
-        bg-gradient-to-t from-black/20 to-transparent
       "
       style={{
         zIndex: 9999,
@@ -43,10 +42,11 @@ export default function BottomNav() {
         right: 0,
         display: 'block',
         visibility: 'visible',
-        opacity: 1
+        opacity: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.95)'
       }}
     >
-      <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-1 text-white items-center justify-items-center min-h-[48px]">
+      <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-1 items-center justify-items-center min-h-[52px]">
         <Item
           icon={<Home />}
           label="Home"
