@@ -94,6 +94,8 @@
     visibility: visible !important;
     opacity: 1 !important;
     pointer-events: auto !important;
+    background-color: rgba(0, 0, 0, 0.95) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
   }
 }
 
