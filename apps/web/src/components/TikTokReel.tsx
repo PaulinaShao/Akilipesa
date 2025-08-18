@@ -150,20 +150,21 @@ export default function TikTokReel({
           )}
         </div>
         <div className="mb-1">
-          <p className={cn(
-            "text-sm text-white leading-relaxed drop-shadow-lg",
-            !captionExpanded && "line-clamp-2"
-          )}>
-            {reel.caption}
+          <p className="text-sm text-white leading-relaxed drop-shadow-lg">
+            {captionExpanded
+              ? reel.caption
+              : reel.caption.split(' ').slice(0, 3).join(' ')
+            }
+            {reel.caption.split(' ').length > 3 && !captionExpanded && '...'}
+            {reel.caption.split(' ').length > 3 && (
+              <button
+                onClick={() => setCaptionExpanded(!captionExpanded)}
+                className="text-xs text-white/80 ml-1 hover:text-white font-medium drop-shadow-lg"
+              >
+                {captionExpanded ? ' less' : ' more'}
+              </button>
+            )}
           </p>
-          {reel.caption.length > 80 && (
-            <button
-              onClick={() => setCaptionExpanded(!captionExpanded)}
-              className="text-xs text-white/80 mt-0.5 hover:text-white font-medium drop-shadow-lg"
-            >
-              {captionExpanded ? 'less' : 'more'}
-            </button>
-          )}
         </div>
         <p className="text-xs text-white/80 drop-shadow-lg">
           {reel.hashtags.slice(0, 3).join(' ')}
