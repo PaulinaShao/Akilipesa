@@ -7,6 +7,8 @@ export default function BottomNav() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  console.log('BottomNav rendering at:', location.pathname, { isAuthed });
+
   const isActive = (path: string) => {
     if (path === '/reels') {
       return location.pathname === '/' || location.pathname === '/reels';
