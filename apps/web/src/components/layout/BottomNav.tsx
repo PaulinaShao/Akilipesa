@@ -46,7 +46,7 @@ export default function BottomNav() {
         opacity: 1
       }}
     >
-      <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-2 text-white items-center justify-items-center h-12">
+      <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-1 text-white items-center justify-items-center min-h-[48px]">
         <Item
           icon={<Home />}
           label="Home"
@@ -62,7 +62,7 @@ export default function BottomNav() {
         <div className="flex justify-center">
           <button
             onClick={() => navigate('/create')}
-            className="h-11 w-11 rounded-2xl tz-gem-border tz-action-button grid place-items-center relative -top-1"
+            className="h-12 w-12 rounded-2xl tz-gem-border tz-action-button grid place-items-center relative -top-1"
             aria-label="Create"
           >
             <Gem className="h-5 w-5 text-white" />
@@ -96,7 +96,7 @@ function Item({ icon, label, active = false, showDot = false, onClick }: {
   return (
     <button
       onClick={onClick}
-      className={`relative flex flex-col items-center gap-0.5 p-1 transition-colors tz-action-button min-h-[44px] min-w-[44px] ${active ? 'text-white' : 'text-white/70'}`}
+      className={`relative flex flex-col items-center gap-0.5 p-1 transition-colors tz-action-button min-h-[48px] min-w-[48px] ${active ? 'text-white' : 'text-white/70'}`}
       aria-label={label}
     >
       <div className="relative flex items-center justify-center h-6 w-6">
