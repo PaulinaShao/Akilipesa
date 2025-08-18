@@ -66,10 +66,10 @@
   :root{ --vh: 100dvh; } /* Safari/Chrome modern fix */
 }
 
-/* screen wrapper w/ smart scroll padding */
+/* All scrollable screens must reserve space for the bottom nav */
 .scroll-screen{
   min-height: var(--vh);
-  padding-bottom: var(--nav-total, calc(64px + env(safe-area-inset-bottom))); /* room for bottom nav */
+  padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
   -webkit-overflow-scrolling: touch;
 }
 
