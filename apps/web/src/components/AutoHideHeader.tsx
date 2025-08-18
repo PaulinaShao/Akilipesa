@@ -56,7 +56,7 @@ export default function AutoHideHeader({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -60 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="absolute inset-x-0 top-0 h-14 flex items-center justify-between px-3 z-30"
+          className="absolute inset-x-0 top-0 h-14 flex items-center justify-between px-3 z-[60]"
         >
           {/* Top veil for legibility */}
           <div className="absolute inset-0 tz-top-veil" />
