@@ -65,7 +65,7 @@
 /* screen wrapper w/ smart scroll padding */
 .scroll-screen{
   min-height: var(--vh);
-  padding-bottom: calc(56px + env(safe-area-inset-bottom)); /* room for bottom nav */
+  padding-bottom: var(--nav-total, calc(64px + env(safe-area-inset-bottom))); /* room for bottom nav */
   -webkit-overflow-scrolling: touch;
 }
 
