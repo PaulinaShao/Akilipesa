@@ -7,16 +7,12 @@ export default function ProfileButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur text-white touch-target"
-      style={{ minHeight: '44px', minWidth: '44px' }} // Ensure minimum tap target
+      className="relative h-10 w-10 rounded-full tz-glass grid place-items-center"
       aria-label={isAuthed ? "Open profile" : "Sign in"}
     >
-      <UserCircle2 className="h-6 w-6" />
+      <UserCircle2 className="h-6 w-6 text-white/90" />
       {!loading && !isAuthed && (
-        <span
-          className="absolute -top-1 -right-1 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-white shadow"
-          role="status"
-        >
+        <span className="absolute -top-1 -right-1 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-white shadow tz-gem-border">
           SIGN&nbsp;IN
         </span>
       )}
