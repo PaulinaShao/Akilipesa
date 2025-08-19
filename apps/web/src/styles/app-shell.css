@@ -20,7 +20,7 @@ html,body{height:100%; background:var(--tnz-bg); color:#eaf1ff;}
 }
 
 /* Layering contract (do not exceed these z-indexes elsewhere) */
-.header{ z-index: 60; position: sticky; top: 0; }
+.header{ z-index: 60; position: fixed; top: 0; left: 0; right: 0; }
 .bottom-nav{ z-index: 9999; position: fixed; left:0; right:0; bottom:0; height: var(--nav-h); }
 
 /* Tanzanite glass treatment */
