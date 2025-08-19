@@ -97,13 +97,13 @@ html, body, #app-root {
 
 /* Bottom nav — FIXED and LIFTED above system bar */
 .bottomnav, .bottom-nav{
-  position: fixed; 
-  left: 0; 
-  right: 0; 
-  bottom: 0; 
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--safe-bottom) + var(--extra-lift));
   z-index: 50;
-  /* Lift it above the browser bar with padding on itself */
-  padding-bottom: max(8px, var(--safe-bottom));
+  /* Additional internal padding for visual spacing */
+  padding-bottom: 8px;
   padding-top: 8px;
   background: rgba(20,26,54,.92);
   backdrop-filter: blur(10px);
