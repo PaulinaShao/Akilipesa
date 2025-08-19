@@ -29,11 +29,13 @@ export default function TopBar({ className = '' }: TopBarProps) {
   return (
     <div className={`top-bar ${className}`}>
       <div className="top-bar-content">
-        {/* Left: AkiliPesa Wordmark */}
+        {/* Left: AkiliPesa Logo */}
         <div className="top-bar-left">
-          <div className="tz-gem-text text-base font-semibold tracking-tight">
-            AkiliPesa
-          </div>
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets%2Fd3b228cddfa346f0aa1ed35137c6f24e%2F2e2320ae55384c21ba22df27af161694?format=webp&width=800"
+            alt="AkiliPesa"
+            className="h-8 w-auto"
+          />
 
           {/* TikTok-style navigation tabs */}
           <div className="top-nav-tabs">
