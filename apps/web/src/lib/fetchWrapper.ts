@@ -74,9 +74,15 @@ async function enhancedFetch(
 
 // Only override fetch in problematic environments (like fly.dev with FullStory)
 export function initializeFetchWrapper() {
-  if (typeof window !== 'undefined' && window.location.hostname.includes('fly.dev')) {
-    console.log('🔧 Initializing enhanced fetch wrapper for fly.dev environment');
-    window.fetch = enhancedFetch;
+  try {
+    if (typeof window !== 'undefined' && window.location.hostname.includes('fly.dev')) {
+      console.log('🔧 Initializing enhanced fetch wrapper for fly.dev environment');
+      console.log('🔧 Firebase and Google services will bypass the wrapper');
+      window.fetch = enhancedFetch;
+    }
+  } catch (error) {
+    console.warn('Failed to initialize fetch wrapper:', error);
+    // Don't break the app if wrapper initialization fails
   }
 }
 
