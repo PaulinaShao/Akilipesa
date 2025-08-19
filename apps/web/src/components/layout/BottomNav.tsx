@@ -1,6 +1,6 @@
-import { Home, Compass, Bell, User2, Gem } from "lucide-react";
+import { Home, Compass, Bell, User2, Plus } from "lucide-react";
 import { useAuthStatus } from "@/auth/useAuthStatus";
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function BottomNav() {
   const { isAuthed } = useAuthStatus();
@@ -8,7 +8,6 @@ export default function BottomNav() {
   const navigate = useNavigate();
 
   console.log('BottomNav rendering at:', location.pathname, { isAuthed });
-  console.log('BottomNav component is rendering with DOM element');
 
   const isActive = (path: string) => {
     if (path === '/reels') {
@@ -28,15 +27,18 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className="bottom-nav tnz-glass backdrop-saturate-150 px-4 pt-2">
-      <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-1 items-center justify-items-center min-h-[52px]">
-        <Item
+    <nav className="bottom-nav tnz-glass">
+      <div 
+        className="mx-auto max-w-screen-sm grid grid-cols-5 gap-1 items-center justify-items-center h-full px-4"
+        style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 10px)' }}
+      >
+        <NavItem
           icon={<Home className="h-6 w-6" />}
           label="Home"
           active={isActive('/reels')}
           onClick={() => handlePress('/reels')}
         />
-        <Item
+        <NavItem
           icon={<Compass className="h-6 w-6" />}
           label="Discover"
           active={isActive('/search')}
@@ -45,19 +47,19 @@ export default function BottomNav() {
         <div className="flex justify-center">
           <button
             onClick={() => navigate('/create')}
-            className="h-12 w-12 bg-white rounded-2xl grid place-items-center relative -top-1 transition-transform hover:scale-105 active:scale-95"
+            className="h-12 w-12 bg-white rounded-2xl grid place-items-center transition-transform hover:scale-105 active:scale-95"
             aria-label="Create"
           >
-            <Gem className="h-6 w-6 text-black" />
+            <Plus className="h-6 w-6 text-black" />
           </button>
         </div>
-        <Item
+        <NavItem
           icon={<Bell className="h-6 w-6" />}
-          label="Inbox"
+          label="Messages"
           active={isActive('/inbox')}
           onClick={() => handlePress('/inbox')}
         />
-        <Item
+        <NavItem
           icon={<User2 className="h-6 w-6" />}
           label="Profile"
           active={isActive('/profile')}
@@ -69,7 +71,7 @@ export default function BottomNav() {
   );
 }
 
-function Item({ icon, label, active = false, showDot = false, onClick }: {
+function NavItem({ icon, label, active = false, showDot = false, onClick }: {
   icon: React.ReactNode;
   label: string;
   active?: boolean;
@@ -80,8 +82,8 @@ function Item({ icon, label, active = false, showDot = false, onClick }: {
     <button
       onClick={onClick}
       className={`relative flex flex-col items-center gap-1 p-2 transition-all duration-200 min-h-[50px] min-w-[50px] ${
-        active
-          ? 'text-white'
+        active 
+          ? 'text-white' 
           : 'text-gray-300 hover:text-white'
       }`}
       aria-label={label}
