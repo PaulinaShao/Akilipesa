@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
-import TopBar from "./TopBar";
-import BottomNav from "./BottomNav";
+import TopBar from "./layout/TopBar";
+import BottomNav from "./layout/BottomNav";
 import "../styles/tanzanite.css";
 
 export default function AppShell({children}: PropsWithChildren) {
