@@ -83,7 +83,7 @@ export default function TikTokReel({
       />
 
       {/* Right action rail */}
-      <aside className="absolute right-2 flex flex-col items-center gap-4 z-[50] bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom)+1rem)]">
+      <aside className="feed-right-rail flex flex-col items-center gap-4">
         <div className="flex flex-col items-center">
           <button
             onClick={onLike}
