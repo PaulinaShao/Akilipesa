@@ -26,6 +26,7 @@ import { seedTrialConfig } from '@/lib/seedTrialConfig';
 import { initGuestOnce } from '@/lib/initGuest';
 import { loadTrialConfig } from '@/lib/config';
 import { runFirebaseHealthCheck } from '@/lib/firebaseHealthCheck';
+import { isolateFirebaseFromFetchWrappers, detectFetchIssues } from '@/lib/firebaseNetworkFix';
 import { setIncomingCallHandler, acceptCall, declineCall, messageInsteadOfCall, type IncomingCallData } from '@/lib/callUtils';
 import { useTrialConfigStore } from '@/store/trialConfigStore';
 import { shouldShowSplashOnce } from '@/lib/entry';
