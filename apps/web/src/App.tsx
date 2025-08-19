@@ -272,7 +272,7 @@ function App() {
     };
 
     initTrialSystem();
-    testConnection();
+    checkFirebaseHealth();
 
     // Demo incoming call - only show if explicitly enabled in trial config
     // No auto-retry, no loops - check config once after load
