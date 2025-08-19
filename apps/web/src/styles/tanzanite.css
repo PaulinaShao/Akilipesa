@@ -261,31 +261,41 @@ html, body, #app-root {
   margin: 0;
 }
 
-/* Mobile full-bleed (remove black gutters) */
-@media (max-width: 768px){
+/* Single, consistent reel size across feeds - Cross-browser hardened */
+@supports(height: 100dvh){
   .feed-item, .feed-card, .reel{
-    position: relative;
-    margin: 0;
-    width: 100vw;
-    left: 50%;
-    transform: translateX(-50%);
-    height: calc(100svh - var(--topbar-h)); /* full screen below topbar */
-    border-radius: 16px;
-    overflow: hidden;
-    background: #000;
+    height: calc(100dvh - var(--topbar-h, 56px));
+  }
+}
+@supports not (height: 100dvh){
+  .feed-item, .feed-card, .reel{
+    height: calc(100svh - var(--topbar-h, 56px));
   }
 }
 
-/* Desktop */
+/* Base reel styling - consistent across all feeds */
+.feed-item, .feed-card, .reel{
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  scroll-snap-align: start;
+}
+
+/* Desktop: flat edges for full-bleed */
 @media (min-width: 769px){
   .feed-item, .feed-card, .reel{
-    width: 100vw;
-    left: 50%;
-    transform: translateX(-50%);
-    height: calc(100vh - var(--topbar-h));
     border-radius: 0;
-    background: #000;
   }
+}
+
+/* Fallback for Samsung Internet / older Chrome */
+.reel.custom-vh{
+  height: calc(var(--vhpx, 100vh) - var(--topbar-h, 56px));
 }
 
 /* Mobile: Keep rounded corners for app-like feel */
