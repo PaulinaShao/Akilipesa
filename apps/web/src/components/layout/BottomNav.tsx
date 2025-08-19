@@ -8,6 +8,7 @@ export default function BottomNav() {
   const navigate = useNavigate();
 
   console.log('BottomNav rendering at:', location.pathname, { isAuthed });
+  console.log('BottomNav component is rendering with DOM element');
 
   const isActive = (path: string) => {
     if (path === '/reels') {
