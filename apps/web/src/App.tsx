@@ -357,13 +357,6 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ToastProvider>
           <OfflineIndicator />
-          {(() => {
-            const showDebug =
-              import.meta.env.VITE_SHOW_FIRESTORE_DEBUG === "1" ||
-              new URL(location.href).searchParams.get("debug") === "1" ||
-              localStorage.getItem("enableFirestoreDebug") === "1";
-            return showDebug && <FirestoreDebug />;
-          })()}
         <Router>
           <Routes>
           {/* Public routes */}
