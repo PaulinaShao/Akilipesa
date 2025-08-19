@@ -475,8 +475,6 @@ function App() {
           {/* Clean 404 handling */}
           <Route path="*" element={<NotFound />} />
           </Routes>
-          {/* Bottom navigation - ALWAYS render inside Router for useLocation */}
-          <BottomNav />
         </Router>
 
         {/* Global AuthSheet */}
