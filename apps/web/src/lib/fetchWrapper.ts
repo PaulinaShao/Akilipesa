@@ -10,8 +10,25 @@ async function enhancedFetch(
   input: RequestInfo | URL,
   init?: FetchOptions
 ): Promise<Response> {
+  // Don't interfere with Firebase, Google APIs, or other critical services
+  const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+  const shouldBypass = url && (
+    url.includes('firestore.googleapis.com') ||
+    url.includes('firebase.googleapis.com') ||
+    url.includes('googleapis.com') ||
+    url.includes('google.com') ||
+    url.includes('gstatic.com') ||
+    url.includes('fullstory.com') ||
+    url.includes('builder.io')
+  );
+
+  // If this is a critical service request, use original fetch directly
+  if (shouldBypass) {
+    return originalFetch(input, init);
+  }
+
   const { timeout = 10000, retries = 2, ...fetchInit } = init || {};
-  
+
   for (let attempt = 0; attempt <= retries; attempt++) {
     let timeoutId: NodeJS.Timeout | undefined;
 
@@ -51,7 +68,7 @@ async function enhancedFetch(
       console.warn(`Fetch attempt ${attempt + 1} failed, retrying...`, error);
     }
   }
-  
+
   throw new Error('All fetch attempts failed');
 }
 
