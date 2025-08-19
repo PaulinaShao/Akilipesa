@@ -235,11 +235,14 @@ html, body, #app-root {
 /* Mobile full-bleed (remove black gutters) */
 @media (max-width: 768px){
   .feed-item, .feed-card, .reel{
+    position: relative;
+    margin: 0;
     width: 100vw;
     left: 50%;
     transform: translateX(-50%);
-    height: calc(100svh - var(--topbar-h));
+    height: calc(100svh - var(--topbar-h)); /* full screen below topbar */
     border-radius: 16px;
+    overflow: hidden;
     background: #000;
   }
 }
