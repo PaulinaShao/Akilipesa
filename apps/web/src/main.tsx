@@ -3,32 +3,19 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-// Viewport stability and header auto-hide
+// Clean Tanzanite App Shell JS
 (function(){
-  // Stable vh
-  const setVH = () => document.documentElement.style.setProperty('--vh', window.innerHeight + 'px');
-  setVH();
-  addEventListener('resize', setVH, {passive:true});
+  // Stable viewport unit on mobile URL bar changes
+  const setVH = () => {
+    document.documentElement.style.setProperty('--vh', window.innerHeight + 'px');
+  };
+  setVH(); addEventListener('resize', setVH, {passive:true});
 
-  // Header auto-hide (wait for DOM to be ready)
-  document.addEventListener('DOMContentLoaded', () => {
-    const h = document.querySelector('.auto-hide-header');
-    let last = scrollY, ticking = false;
-    const run = () => {
-      const y = scrollY;
-      if (Math.abs(y-last)>4){
-        y>last ? h?.classList.add('hidden') : h?.classList.remove('hidden');
-        last=y;
-      }
-      ticking=false;
-    };
-    addEventListener('scroll', ()=>{
-      if(!ticking){
-        requestAnimationFrame(run);
-        ticking=true;
-      }
-    }, {passive:true});
-  });
+  // Header auto-hide (down hides, up reveals)
+  const h = document.querySelector('.auto-hide-header');
+  let last = scrollY, ticking = false;
+  const run = () => { const y = scrollY; if(Math.abs(y-last)>4){ y>last ? h?.classList.add('hidden') : h?.classList.remove('hidden'); last=y; } ticking=false; };
+  addEventListener('scroll', ()=>{ if(!ticking){ requestAnimationFrame(run); ticking=true; } }, {passive:true});
 })();
 
 // Import RTC test in development (disabled to prevent frame errors)
