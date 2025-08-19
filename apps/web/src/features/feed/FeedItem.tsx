@@ -102,20 +102,49 @@ export default function FeedItem(p: Props){
 
       </aside>
 
-      {/* Caption */}
+      {/* Caption with Profile */}
       <div className="caption">
-        <div style={{ marginBottom: "6px" }}>
-          <span className="user">@{p.user}</span>
-          {p.live && <span className="live">LIVE</span>}
-        </div>
+        {/* Profile Avatar */}
         <div style={{
-          marginTop: 6,
-          lineHeight: 1.35,
-          fontSize: "14px",
-          color: "white",
-          textShadow: "0 2px 8px rgba(0,0,0,0.5)"
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "8px"
         }}>
-          {truncatedCaption}
+          <button
+            onClick={p.onProfile}
+            style={{
+              width: "32px",
+              height: "32px",
+              borderRadius: "50%",
+              border: "2px solid white",
+              background: "linear-gradient(45deg, #6da8ff, #7d6bff)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              fontSize: "14px",
+              color: "white",
+              marginRight: "10px"
+            }}
+            aria-label={`View ${p.user}'s profile`}
+          >
+            @
+          </button>
+          <div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <span className="user">@{p.user}</span>
+              {p.live && <span className="live">LIVE</span>}
+            </div>
+            <div style={{
+              marginTop: 2,
+              lineHeight: 1.2,
+              fontSize: "13px",
+              color: "white",
+              textShadow: "0 2px 8px rgba(0,0,0,0.7)"
+            }}>
+              {truncatedCaption}
+            </div>
+          </div>
         </div>
       </div>
 
