@@ -1,0 +1,53 @@
+/* --- Tanzanite App Shell tokens --- */
+:root{
+  --vh: 100svh;            /* stable viewport height */
+  --nav-h: 64px;           /* bottom nav height */
+  --header-h: 56px;        /* header height */
+  --gap: 12px;             /* base gap */
+  --tnz-bg: #080f1f;       /* deep Tanzanite night */
+  --tnz-glass: rgba(8,15,31,.6);
+  --tnz-glow: 0 10px 30px rgba(67,97,238,.25);
+}
+@supports (height: 100dvh){ :root{ --vh: 100dvh; } }
+
+/* Page scaffold: header (sticky), content (scroll), bottom nav (fixed) */
+html,body{height:100%; background:var(--tnz-bg); color:#eaf1ff;}
+.scroll-screen{
+  min-height: var(--vh);
+  padding-top: calc(var(--header-h) + env(safe-area-inset-top));
+  padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Layering contract (do not exceed these z-indexes elsewhere) */
+.header{ z-index: 60; position: sticky; top: 0; }
+.bottom-nav{ z-index: 9999; position: fixed; left:0; right:0; bottom:0; height: var(--nav-h); }
+
+/* Tanzanite glass treatment */
+.tnz-glass{
+  backdrop-filter: saturate(140%) blur(16px);
+  background: linear-gradient(180deg, rgba(120,134,255,.22), rgba(120,134,255,.10)) , var(--tnz-glass);
+  box-shadow: var(--tnz-glow);
+  border: 1px solid rgba(150,170,255,.20);
+  border-radius: 18px;
+}
+
+/* Reel overlays – always sit ABOVE the nav */
+.feed-right-rail, .feed-caption, .feed-bottom-gradient{
+  position: absolute; z-index: 50;
+}
+.feed-right-rail{ right: 12px; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 12px); display:flex; flex-direction:column; gap:12px; }
+.feed-caption{ left: 16px; right: 16px; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 12px); }
+.feed-bottom-gradient{
+  left:0; right:0; height:120px;
+  bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
+  background: linear-gradient(0deg, rgba(0,0,0,.72), rgba(0,0,0,.24), transparent);
+  pointer-events: none; /* never block taps */
+}
+
+/* Header auto-hide on scroll */
+.auto-hide-header{ will-change: transform; transition: transform .18s ease-out; }
+.auto-hide-header.hidden{ transform: translateY(-100%); }
+
+/* Never let parent containers clip the fixed nav */
+*[style*="overflow: hidden"] .bottom-nav{ position: fixed !important; }
