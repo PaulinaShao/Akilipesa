@@ -377,24 +377,6 @@ html, body, #app-root {
   font-size: 12px;
 }
 
-.caption .user{ 
-  font-weight: 700; 
-  margin-right: 8px;
-  color: white;
-}
-
-.caption .live{ 
-  color: #ff3b30; 
-  font-weight: 700; 
-  margin-left: 4px;
-}
-
-.caption .more{ 
-  opacity: 0.8; 
-  margin-left: 6px; 
-  cursor: pointer;
-  color: white;
-}
 
 /* Utility Classes */
 .text-white { color: white; }
