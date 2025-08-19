@@ -760,19 +760,7 @@ html, body, #app-root {
   }
 }
 
-/* Micro Tanzanian accent (subtle, tasteful) - Removed from FAB to prevent green overlay */
-.avatar-ring::after, .caption-block .avatar::after{
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: 9999px;
-  pointer-events: none;
-  opacity: .5;
-  background: conic-gradient(#1db954 0 100deg, #c9a24a 100deg 140deg, transparent 140deg 360deg);
-  -webkit-mask: radial-gradient(circle, transparent 60%, #000 62%);
-          mask: radial-gradient(circle, transparent 60%, #000 62%);
-  z-index: -1;
-}
+/* Tanzanian accents completely removed to prevent any green overlay issues */
 
 /* Removed .fab::after to prevent green overlay appearance above bottom navigation */
 
