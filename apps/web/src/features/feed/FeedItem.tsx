@@ -137,7 +137,7 @@ export default function FeedItem(p: Props){
       </aside>
 
       {/* Caption */}
-      <div className="caption tnz-glass">
+      <div className="caption">
         <div style={{ marginBottom: "6px" }}>
           <span className="user">@{p.user}</span>
           {p.live && <span className="live">LIVE</span>}
