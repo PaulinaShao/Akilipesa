@@ -66,16 +66,22 @@
       });
     </script>
 
-    <!-- Legacy viewport fallback for older Android/iOS -->
+    <!-- Visual viewport support for stable navigation -->
     <script>
-      // Fallback for legacy browsers: keep --vh in sync
-      (function(){
+      // Set --vh to the true visual viewport height (prevents URL bar jump)
+      if ('visualViewport' in window) {
+        const vv = window.visualViewport;
+        const set = () => document.documentElement.style.setProperty('--vh', `${vv.height}px`);
+        vv.addEventListener('resize', set);
+        set();
+      } else {
+        // Fallback for legacy browsers: keep --vh in sync
         const setVh = () => {
           document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
         };
         setVh();
         window.addEventListener('resize', setVh);
-      })();
+      }
     </script>
 
     <script type="module" src="/src/main.tsx"></script>
