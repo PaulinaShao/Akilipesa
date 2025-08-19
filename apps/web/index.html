@@ -131,80 +131,71 @@
 
     <script type="module" src="/src/main.tsx"></script>
 
-    <!-- Auto-contrast script for action icons -->
+    <!-- Optimized auto-contrast and pleochroism effects -->
     <script>
-/**
- * Auto-contrast per icon: adds .on-light or .on-dark to .ak-action
- * Call after the reel loads & on slide changes.
- */
+// Pleochroism effect - zero cost feel of gemstone angle shifts
 (function(){
-  const THRESH = 0.6; // luminance threshold (0-1). >0.6 = bright
+  let a=135; const r=document.documentElement;
+  const set=()=>r.style.setProperty('--tz-pleochroic',`linear-gradient(${a}deg,var(--tz-blue-deep),var(--tz-indigo) 55%,var(--tz-violet))`);
+  set();
+  window.addEventListener('scroll',()=>{a=120+(scrollY%30); set();},{passive:true});
+})();
 
-  function luminanceOf(rgb){
-    const [r,g,b] = rgb.map(v => {
-      v/=255;
-      return v<=0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4);
+// Viewport height fix for Samsung Internet / older Chrome
+(function(){
+  function set(){
+    const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    document.documentElement.style.setProperty('--vhpx', `${h}px`);
+    // Apply custom height class if needed
+    document.querySelectorAll('.reel').forEach(el => {
+      if (h !== window.innerHeight) el.classList.add('custom-vh');
     });
-    return 0.2126*r + 0.7152*g + 0.0722*b;
   }
+  set();
+  window.addEventListener('resize', set);
+  window.addEventListener('orientationchange', set);
+})();
 
-  function sampleBehind(el){
-    // Create an offscreen canvas to sample an area (8x8) under the element, if it's a <video> or <img> background.
-    const reel = el.closest('.reel, .feed-item');
-    const video = reel && reel.querySelector('video');
-    const img   = reel && reel.querySelector('img');
-
-    const rect = el.getBoundingClientRect();
-    const rr   = reel.getBoundingClientRect();
-    const xRel = Math.max(0, Math.min((rect.left + rect.width/2) - rr.left, rr.width-1));
-    const yRel = Math.max(0, Math.min((rect.top + rect.height/2)  - rr.top,  rr.height-1));
-
-    const c = document.createElement('canvas');
-    c.width = c.height = 8; const ctx = c.getContext('2d', { willReadFrequently:true });
-
+// Optimized auto-contrast (lightweight)
+(function(){
+  const THRESH=0.6;
+  function lum([r,g,b]){const L=v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4};return .2126*L(r)+.7152*L(g)+.0722*L(b);}
+  function sampleUnder(el){
+    const reel=el.closest('.reel, .feed-item'), v=reel?.querySelector('video'), i=reel?.querySelector('img');
+    const rr=reel?.getBoundingClientRect(), r=el.getBoundingClientRect();
+    if (!rr) return null;
+    const x=Math.max(0,Math.min((r.left+r.width/2)-rr.left, rr.width-1));
+    const y=Math.max(0,Math.min((r.top +r.height/2)-rr.top,  rr.height-1));
+    const c=document.createElement('canvas'); c.width=c.height=8; const ctx=c.getContext('2d',{willReadFrequently:true});
     try{
-      if (video && video.readyState >= 2){
-        ctx.drawImage(video, xRel/video.clientWidth * video.videoWidth,
-                              yRel/video.clientHeight* video.videoHeight, 8,8, 0,0,8,8);
-      } else if (img && img.complete){
-        ctx.drawImage(img, xRel/img.clientWidth * img.naturalWidth,
-                           yRel/img.clientHeight* img.naturalHeight, 8,8, 0,0,8,8);
-      } else {
-        return null;
-      }
-      const data = ctx.getImageData(0,0,8,8).data;
-      let r=0,g=0,b=0,count=0;
-      for(let i=0;i<data.length;i+=4){ r+=data[i]; g+=data[i+1]; b+=data[i+2]; count++; }
-      return luminanceOf([r/count, g/count, b/count]);
-    }catch(e){ return null; }
+      if(v&&v.readyState>=2){ ctx.drawImage(v, x/v.clientWidth*v.videoWidth, y/v.clientHeight*v.videoHeight, 8,8,0,0,8,8); }
+      else if(i&&i.complete){ ctx.drawImage(i, x/i.clientWidth*i.naturalWidth, y/i.clientHeight*i.naturalHeight, 8,8,0,0,8,8); }
+      else return null;
+      const d=ctx.getImageData(0,0,8,8).data; let R=0,G=0,B=0,n=0; for(let k=0;k<d.length;k+=4){R+=d[k];G+=d[k+1];B+=d[k+2];n++;}
+      return lum([R/n,G/n,B/n]);
+    }catch{ return null; }
   }
-
-  function applyContrast(){
-    document.querySelectorAll('.ak-action, .rail-btn').forEach(el=>{
-      const L = sampleBehind(el);
-      el.classList.remove('on-light','on-dark');
-      el.classList.add((L!==null && L>THRESH) ? 'on-light' : 'on-dark');
+  function apply(){
+    document.querySelectorAll('.ak-action, .rail-btn').forEach(a=>{
+      const L=sampleUnder(a);
+      a.classList.remove('on-light','on-dark');
+      a.classList.add(L!==null && L>THRESH?'on-light':'on-dark');
     });
   }
+  const io=new IntersectionObserver(es=>{ if(es.some(e=>e.isIntersecting)) requestAnimationFrame(apply); },{threshold:[.3,.6]});
 
-  // Re-run when a reel comes into view
-  const io = new IntersectionObserver((ents)=>{
-    if(ents.some(e=>e.isIntersecting)) requestAnimationFrame(applyContrast);
-  }, {threshold:[0.2,0.5,0.8]});
-
-  // Observe both .reel and .feed-item containers
-  const observer = setInterval(() => {
+  // Dynamic observation for new reels
+  setInterval(() => {
     document.querySelectorAll('.reel, .feed-item').forEach(r => {
-      if (!r.hasAttribute('data-contrast-observed')) {
+      if (!r.hasAttribute('data-observed')) {
         io.observe(r);
-        r.setAttribute('data-contrast-observed', 'true');
+        r.setAttribute('data-observed', 'true');
       }
     });
   }, 1000);
 
-  // Also re-run on resize and when video frames update a bit later
-  window.addEventListener('resize', ()=>requestAnimationFrame(applyContrast));
-  setInterval(applyContrast, 1200); // lightweight periodic refresh
+  setInterval(apply,1200);
+  window.addEventListener('resize',()=>requestAnimationFrame(apply));
 })();
     </script>
   </body>
