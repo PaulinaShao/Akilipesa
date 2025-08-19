@@ -281,9 +281,12 @@
               const hasDebugClasses = /debug|overlay|progress|highlight|status|indicator/i.test(el.className);
               const hasDebugId = /debug|overlay|progress|highlight|status|indicator/i.test(el.id || '');
 
+              // More aggressive detection - remove any green element in problematic areas
               return (isGreenish && isPillLike && (isInSuspiciousArea || isAboveBottomNav) && isPositioned) ||
                      (isGreenish && (hasDebugClasses || hasDebugId)) ||
-                     (isGreenish && isAboveBottomNav);
+                     (isGreenish && isAboveBottomNav) ||
+                     (isGreenish && isInSuspiciousArea) ||
+                     (bg.includes('#1db954')); // Nuclear option for specific green color
 
             } catch (e) {
               return false;
