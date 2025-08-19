@@ -707,6 +707,21 @@ html, body, #app-root {
   z-index: 1;
 }
 
+/* Ensure no unwanted pseudo-elements create green overlays */
+.feed-item::after,
+.reel::after,
+.content *::after,
+.content *::before {
+  /* Reset any potential green overlays */
+}
+
+.feed-item > *::before,
+.feed-item > *::after,
+.reel > *::before,
+.reel > *::after {
+  /* Prevent child pseudo-elements from creating overlays */
+}
+
 /* Desktop color under the floating nav matches nav */
 @media (min-width: 769px){
   body, #app-root{ background: var(--tz-bg); }
