@@ -1,56 +1,21 @@
-import { PropsWithChildren, useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Home, Search, Plus, MessageCircle, User } from "lucide-react";
+import { PropsWithChildren } from "react";
+import TopBar from "./TopBar";
+import BottomNav from "./BottomNav";
 import "../styles/tanzanite.css";
 
 export default function AppShell({children}: PropsWithChildren) {
-  const headerRef = useRef<HTMLDivElement>(null);
-
-  // Stable mobile viewport and header auto-hide
-  useEffect(() => {
-    const setVH = () => {
-      document.documentElement.style.setProperty("--vh", window.innerHeight + "px");
-    };
-    setVH(); 
-    window.addEventListener("resize", setVH, {passive:true});
-
-    let last = window.scrollY, ticking = false;
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const y = window.scrollY;
-          if (Math.abs(y - last) > 4) {
-            if (y > last) headerRef.current?.classList.add("hidden");
-            else headerRef.current?.classList.remove("hidden");
-            last = y;
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    window.addEventListener("scroll", onScroll, {passive:true});
-    return () => {
-      window.removeEventListener("resize", setVH);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-
   return (
     <div className="app-shell">
-      <div ref={headerRef} className="app-header auto-hide">
-        <HeaderTabs />
-      </div>
+      {/* Top Bar */}
+      <TopBar />
 
+      {/* Main Content Area */}
       <main className="app-content">
-        <div className="main">
-          {children}
-        </div>
+        {children}
       </main>
 
-      <nav className="app-bottom-nav">
-        <BottomNav />
-      </nav>
+      {/* Bottom Navigation */}
+      <BottomNav />
     </div>
   );
 }
