@@ -252,10 +252,14 @@
               // Check if it's pill/bar-like dimensions
               const isPillLike = (r > 6) && (w > 60) && (h >= 16 && h <= 120);
 
-              // Check if positioned in suspicious area (bottom-right quadrant)
+              // Check if positioned in suspicious area (bottom-right quadrant or above bottom nav)
               const rect = el.getBoundingClientRect();
               const isInSuspiciousArea = (rect.right > (window.innerWidth * 0.4)) &&
                                        (rect.bottom > (window.innerHeight * 0.4));
+
+              // Special check for elements above bottom navigation (common problem area)
+              const isAboveBottomNav = rect.bottom > (window.innerHeight * 0.8) &&
+                                     rect.right > (window.innerWidth * 0.6);
 
               // Check if it's positioned/floating
               const isPositioned = ['fixed', 'absolute'].includes(pos);
