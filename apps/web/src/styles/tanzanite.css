@@ -666,6 +666,19 @@ html, body, #app-root {
   }
 }
 
+/* Micro Tanzanian accent (subtle, tasteful) */
+.avatar-ring::after, .fab::after{
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: .5;
+  background: conic-gradient(#1db954 0 100deg, #c9a24a 100deg 140deg, transparent 140deg 360deg);
+  -webkit-mask: radial-gradient(circle, transparent 60%, #000 62%);
+          mask: radial-gradient(circle, transparent 60%, #000 62%);
+}
+
 /* Hide scrollbars while maintaining functionality */
 .content::-webkit-scrollbar, .app-content::-webkit-scrollbar {
   display: none;
