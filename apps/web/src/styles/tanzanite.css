@@ -220,10 +220,10 @@ html, body, #app-root {
   height: 24px;
 }
 
-/* Feed items - Full-bleed edge-to-edge like Instagram/TikTok */
+/* Feed items - Clean content cards without dark highlight */
 .feed-item, .feed-card{
   scroll-snap-align: start;
-  background: #000; /* Pure black background for video content */
+  background: transparent; /* Remove dark background for clean view */
   overflow: hidden;
   position: relative;
   /* Full-bleed positioning */
@@ -258,14 +258,18 @@ html, body, #app-root {
   }
 }
 
-/* Media inside feed items - Ensure perfect fill */
+/* Media inside feed items - Ensure perfect fill and edge-to-edge coverage */
 .feed-media, .feed-item video, .feed-item img, .feed-item canvas{
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: #000; /* Avoid white flashes during load */
+  /* Remove background to eliminate black spaces */
+  background: transparent;
+  /* Ensure video bleeds to edges properly */
+  min-width: 100%;
+  min-height: 100%;
 }
 
 /* Ensure all media types fill properly */
