@@ -1,9 +1,10 @@
 :root{
-  /* Layout tokens */
+  /* Layout tokens - TikTok style viewport */
   --vh: 100svh;
-  --header-h: 48px;  /* Reduced header height */
-  --nav-h: 60px;     /* Slightly reduced nav height */
+  --header-h: 44px;  /* Minimal header height like TikTok */
+  --nav-h: 50px;     /* Compact nav height */
   --rail-gap: 12px;
+  --bottom-safe: max(env(safe-area-inset-bottom), 20px);
 
   /* Theme */
   --tnz-bg: #070f1e;
