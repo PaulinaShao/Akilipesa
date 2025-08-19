@@ -27,7 +27,18 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className="bottom-nav tnz-glass">
+    <nav
+      className="bottom-nav tnz-glass"
+      style={{
+        backgroundColor: 'rgba(255, 0, 0, 0.8)', // BRIGHT RED FOR DEBUGGING
+        border: '3px solid yellow', // YELLOW BORDER FOR DEBUGGING
+        zIndex: 9999,
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0
+      }}
+    >
       <div 
         className="mx-auto max-w-screen-sm grid grid-cols-5 gap-1 items-center justify-items-center h-full px-4"
         style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 10px)' }}
