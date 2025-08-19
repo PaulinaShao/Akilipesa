@@ -100,26 +100,6 @@ export default function FeedItem(p: Props){
           title="Video call"
         />
 
-        {/* Spinning music disc */}
-        <div style={{
-          marginTop: "12px",
-          display: "grid", 
-          placeItems: "center"
-        }}>
-          <div style={{
-            width: "48px",
-            height: "48px",
-            borderRadius: "50%",
-            background: "linear-gradient(45deg, #333, #666)",
-            border: "2px solid rgba(255,255,255,0.3)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            animation: "spin 10s linear infinite"
-          }}>
-            <Music className="h-5 w-5 text-white" />
-          </div>
-        </div>
       </aside>
 
       {/* Caption */}
