@@ -1,15 +1,16 @@
 /* THEME (Tanzanite) */
 :root{
-  --tz-bg:#0f1329; 
-  --tz-card:#141a36; 
+  --tz-bg:#0f1329;
+  --tz-card:#141a36;
   --tz-ink:#e8ecff;
-  --tz-accent:#6a5acd; 
-  --tz-primary:#1c2b5a; 
+  --tz-accent:#6a5acd;
+  --tz-primary:#1c2b5a;
   --tz-gold:#c9a24a;
   --tz-muted: #8a92b2;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
   --nav-h: 64px; /* visual height of bottom nav (without safe-area) */
+  --extra-lift: 12px; /* additional lift above safe area */
   --top-h: 56px; /* top bar height */
 }
 
