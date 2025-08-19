@@ -483,6 +483,9 @@ function App() {
           </Routes>
         </Router>
 
+        {/* Bottom navigation - ALWAYS render as direct child of root */}
+        <BottomNav />
+
         {/* Global AuthSheet */}
         <AuthSheet />
 
