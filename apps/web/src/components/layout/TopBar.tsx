@@ -40,7 +40,7 @@ export default function TopBar({ className = '' }: TopBarProps) {
           </div>
         </div>
 
-        {/* Right: FREE badge, wallet balance, Sign Up */}
+        {/* Right: FREE badge, wallet balance, Sign In */}
         <div className="top-bar-right">
           {/* FREE Badge */}
           <div className="plan-pill">
@@ -52,10 +52,10 @@ export default function TopBar({ className = '' }: TopBarProps) {
             {formatBalance(userBalance)}
           </div>
 
-          {/* Sign Up Link */}
+          {/* Sign In Label - only show if user is not signed in */}
           {!user && (
-            <a href="/auth" className="sign-up-btn">
-              Sign Up
+            <a href="/auth" className="sign-in-label">
+              Sign In
             </a>
           )}
         </div>
