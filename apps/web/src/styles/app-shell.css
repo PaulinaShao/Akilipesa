@@ -51,3 +51,13 @@ html,body{height:100%; background:var(--tnz-bg); color:#eaf1ff;}
 
 /* Never let parent containers clip the fixed nav */
 *[style*="overflow: hidden"] .bottom-nav{ position: fixed !important; }
+
+/* TikTok-style animations */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 10s linear infinite;
+}
