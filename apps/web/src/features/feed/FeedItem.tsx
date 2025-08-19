@@ -53,11 +53,6 @@ export default function FeedItem(p: Props){
           muted
           playsInline
           loop
-          style={{
-            left: "-335px",
-            top: "58px",
-            width: "738px"
-          }}
         />
       ) : (
         <img className="feed-media" src={p.media.src} alt="" />
@@ -122,13 +117,7 @@ export default function FeedItem(p: Props){
       </aside>
 
       {/* Caption */}
-      <div
-        className="caption"
-        style={{
-          left: "536px",
-          top: "746px"
-        }}
-      >
+      <div className="caption">
         <div style={{ marginBottom: "6px" }}>
           <span className="user">@{p.user}</span>
           {p.live && <span className="live">LIVE</span>}
