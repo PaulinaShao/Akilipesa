@@ -55,7 +55,8 @@ export default function FeedItem(p: Props){
           loop
           style={{
             left: "-6px",
-            top: "-39px"
+            top: "-39px",
+            width: "726px"
           }}
         />
       ) : (
@@ -63,7 +64,17 @@ export default function FeedItem(p: Props){
       )}
 
       {/* bottom fade never blocks taps */}
-      <div className="bottom-fade" aria-hidden />
+      <div
+        className="bottom-fade"
+        aria-hidden
+        style={{
+          "@media (max-width: 640px)": {
+            width: "355px",
+            height: "115px",
+            top: "20px"
+          }
+        }}
+      />
 
       {/* Right action rail */}
       <aside className="right-rail">
