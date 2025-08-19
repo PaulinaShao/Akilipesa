@@ -278,8 +278,9 @@
     }
   }
   
-  .reel-video {
+  .reel-video, .reel-card video, .reel-card img, .reel-card canvas {
     @apply absolute inset-0 w-full h-full object-cover;
+    background: #000; /* Avoid white flashes during load */
   }
   
   .reel-overlay {
