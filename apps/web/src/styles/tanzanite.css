@@ -361,18 +361,20 @@ html, body, #app-root {
   padding: 8px 0;
 }
 
-.caption-block .avatar{
-  width: 40px;
-  height: 40px;
-  border-radius: 9999px;
-  overflow: hidden;
-  box-shadow: 0 6px 16px rgba(0,0,0,.35);
+/* Caption text styling */
+.caption .user{
+  font-weight: 700;
+  margin-right: 8px;
+  color: white;
+  font-size: 14px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
-.caption-block .text{
-  color: #fff;
-  line-height: 1.2;
-  text-shadow: 0 2px 8px rgba(0,0,0,.5);
+.caption .live{
+  color: #ff3b30;
+  font-weight: 700;
+  margin-left: 4px;
+  font-size: 12px;
 }
 
 .caption .user{ 
