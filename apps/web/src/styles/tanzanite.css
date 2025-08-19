@@ -777,3 +777,74 @@ html, body, #app-root {
 .content, .app-content {
   scroll-behavior: smooth;
 }
+
+/* Cross-device consistency and safe zones */
+@media (max-width: 480px) {
+  .top-nav-tabs {
+    margin-left: 16px;
+    gap: 20px;
+  }
+
+  .nav-tab {
+    font-size: 15px;
+  }
+
+  .top-bar-right {
+    gap: 12px;
+    font-size: 14px;
+  }
+
+  .actions-rail, .right-rail {
+    right: 8px;
+    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .caption, .caption-block {
+    left: 12px;
+    right: 76px;
+    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Large screens */
+@media (min-width: 768px) {
+  .feed-item, .feed-card, .reel {
+    border-radius: 0;
+  }
+
+  .actions-rail, .right-rail {
+    right: 16px;
+  }
+
+  .caption, .caption-block {
+    left: 24px;
+    right: 100px;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+  .actions-rail, .right-rail {
+    gap: 6px;
+    bottom: 60px;
+  }
+
+  .caption, .caption-block {
+    bottom: 60px;
+  }
+
+  .rail-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .rail-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Ensure bottom nav is always visible above system UI */
+.bottomnav, .bottom-nav {
+  bottom: max(calc(var(--safe-bottom) + var(--extra-lift)), 20px);
+}
