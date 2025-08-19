@@ -104,9 +104,9 @@ html, body, #app-root {
   right: 0;
   bottom: calc(var(--safe-bottom) + var(--extra-lift));
   z-index: 50;
-  /* Additional internal padding for visual spacing */
-  padding-bottom: 8px;
-  padding-top: 8px;
+  /* Improved padding for better icon visibility */
+  padding: 10px 0;
+  padding-bottom: max(10px, var(--safe-bottom));
   background: rgba(20,26,54,.92);
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255,255,255,.06);
