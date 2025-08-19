@@ -236,11 +236,14 @@ function App() {
     const testConnection = async () => {
       try {
         const connectionSuccess = await testFirebaseConnectionWithRetry(2);
-        if (!connectionSuccess) {
-          console.warn('⚠️ Firebase connection issues detected, app may have limited functionality');
+        if (connectionSuccess) {
+          console.log('🔥 Firebase connectivity verified');
+        } else {
+          console.warn('⚠️ Firebase connection test had issues, but app will continue normally');
         }
       } catch (error: any) {
-        console.error('Firebase connection test error:', error?.message || error);
+        // Don't let connection test errors block the app
+        console.warn('Firebase connection test encountered an error:', error?.message || error);
       }
     };
 
