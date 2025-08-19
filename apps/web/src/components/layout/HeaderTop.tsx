@@ -18,7 +18,7 @@ export function HeaderTop({ isAuthed }: { isAuthed: boolean }){
   return (
     <header
       className={`
-        fixed top-0 inset-x-0 z-[60] transition-transform duration-300
+        fixed top-0 inset-x-0 z-[60] header-element transition-transform duration-300
         ${hidden ? "-translate-y-full" : "translate-y-0"}
       `}
     >
