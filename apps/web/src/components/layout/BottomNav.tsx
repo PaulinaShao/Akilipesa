@@ -44,38 +44,42 @@ export default function BottomNav() {
         style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 10px)' }}
       >
         <NavItem
-          icon={<Home className="h-6 w-6" />}
+          icon={<Home className="h-7 w-7" />}
           label="Home"
           active={isActive('/reels')}
           onClick={() => handlePress('/reels')}
         />
         <NavItem
-          icon={<Compass className="h-6 w-6" />}
-          label="Discover"
+          icon={<Search className="h-7 w-7" />}
+          label="Explore"
           active={isActive('/search')}
           onClick={() => handlePress('/search')}
         />
         <div className="flex justify-center">
           <button
             onClick={() => navigate('/create')}
-            className="h-12 w-12 bg-white rounded-2xl grid place-items-center transition-transform hover:scale-105 active:scale-95"
+            className="h-11 w-16 bg-gradient-to-r from-red-500 to-pink-500 rounded-lg grid place-items-center transition-transform hover:scale-105 active:scale-95"
             aria-label="Create"
           >
-            <Plus className="h-6 w-6 text-black" />
+            <Plus className="h-6 w-6 text-white font-bold" />
           </button>
         </div>
         <NavItem
-          icon={<Bell className="h-6 w-6" />}
-          label="Messages"
+          icon={
+            <div className="relative">
+              <MessageCircle className="h-7 w-7" />
+              <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
+            </div>
+          }
+          label="Inbox"
           active={isActive('/inbox')}
           onClick={() => handlePress('/inbox')}
         />
         <NavItem
-          icon={<User2 className="h-6 w-6" />}
-          label="Profile"
+          icon={<User className="h-7 w-7" />}
+          label="Me"
           active={isActive('/profile')}
           onClick={() => handlePress('/profile')}
-          showDot={!isAuthed}
         />
       </div>
     </nav>
