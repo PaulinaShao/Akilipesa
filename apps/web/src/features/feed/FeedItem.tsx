@@ -67,29 +67,6 @@ export default function FeedItem(p: Props){
 
       {/* Right action rail */}
       <aside className="right-rail">
-        {/* Profile avatar with follow button */}
-        <div style={{display:"grid", placeItems:"center", marginBottom: "8px"}}>
-          <button 
-            onClick={p.onProfile}
-            style={{
-              width: "48px",
-              height: "48px",
-              borderRadius: "50%",
-              border: "2px solid white",
-              background: "linear-gradient(45deg, #6da8ff, #7d6bff)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              fontSize: "20px",
-              color: "white"
-            }}
-            aria-label={`View ${p.user}'s profile`}
-          >
-            @
-          </button>
-        </div>
-
         <RailButton
           icon={<Heart className={`w-6 h-6 ${p.liked ? 'fill-current text-red-400' : 'text-white'}`} />}
           count={p.counts.likes}
