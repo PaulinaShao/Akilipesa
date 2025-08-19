@@ -104,12 +104,24 @@ html, body, #app-root {
   right: 0;
   bottom: calc(var(--safe-bottom) + var(--extra-lift));
   z-index: 50;
-  /* Improved padding for better icon visibility */
-  padding: 10px 0;
-  padding-bottom: max(10px, var(--safe-bottom));
+  /* Improved padding for better icon visibility - icons positioned higher like TikTok */
+  padding: 6px 0 4px 0;
+  padding-bottom: max(8px, var(--safe-bottom));
   background: rgba(20,26,54,.92);
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255,255,255,.06);
+}
+
+/* Add background color below bottom navigation to match nav background */
+.bottomnav::after, .bottom-nav::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: calc(var(--safe-bottom) + var(--extra-lift));
+  background: rgba(20,26,54,.92);
+  z-index: -1;
 }
 
 /* Inner row of items */
