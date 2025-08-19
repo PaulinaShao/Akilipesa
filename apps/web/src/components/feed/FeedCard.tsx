@@ -25,8 +25,11 @@ export function FeedCard({
         draggable={false}
       />
 
-      {/* feed bottom glass / gradient overlay */}
-      <div className="feed-bottom-overlay p-4">
+      {/* Bottom glass background for readability */}
+      <div className="feed-bottom-glass"></div>
+
+      {/* Caption area */}
+      <div className="feed-caption p-4">
         <div className="max-w-screen-sm mx-auto text-white">
           {/* handle + live dots etc can be placed above */}
           <p className={`text-[15px] ${open ? "" : "caption"}`}>
