@@ -395,9 +395,9 @@ function App() {
           <Route path="/inbox/:threadId" element={<InboxThreadPage />} />
 
           <Route path="/profile" element={
-            <MobileLayout>
+            <AppShell>
               <ProfilePage />
-            </MobileLayout>
+            </AppShell>
           } />
 
           <Route path="/profile/:userId" element={
