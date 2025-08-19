@@ -200,20 +200,17 @@ function RailButton({
   title,
   onClick
 }: {
-  icon: React.ReactNode; 
-  count?: number; 
+  icon: React.ReactNode;
+  count?: number;
   title?: string;
   onClick?: () => void;
 }) {
   return (
-    <div style={{display:"grid", placeItems:"center"}}>
-      <button 
-        className="rail-btn tnz-glass" 
+    <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+      <button
+        className="rail-btn"
         aria-label={title ?? "Button"}
         onClick={onClick}
-        style={{
-          background: count ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)'
-        }}
       >
         {icon}
       </button>
