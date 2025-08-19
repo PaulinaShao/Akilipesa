@@ -19,7 +19,7 @@
   <body>
     <div id="root"></div>
 
-    <!-- Global error handler for frame-related issues -->
+    <!-- Global error handler for frame-related and network issues -->
     <script>
       // Prevent frame access errors that might occur in Builder.io or Vite dev mode
       window.addEventListener('error', function(event) {
@@ -31,14 +31,37 @@
           event.preventDefault();
           return true;
         }
+
+        // Check if it's a network error
+        if (event.error && event.error.message &&
+            (event.error.message.includes('Failed to fetch') ||
+             event.error.message.includes('NetworkError') ||
+             event.error.message.includes('fetch'))) {
+          console.warn('Network error caught and handled:', event.error.message);
+          // Don't prevent default for network errors, but log them
+          return false;
+        }
       });
 
       // Also handle unhandled promise rejections
       window.addEventListener('unhandledrejection', function(event) {
-        if (event.reason && event.reason.message &&
-            event.reason.message.includes('frame')) {
-          console.warn('Frame promise rejection caught and handled:', event.reason.message);
-          event.preventDefault();
+        if (event.reason && event.reason.message) {
+          const message = event.reason.message;
+          if (message.includes('frame')) {
+            console.warn('Frame promise rejection caught and handled:', message);
+            event.preventDefault();
+            return;
+          }
+
+          // Handle Firebase/network related promise rejections
+          if (message.includes('Failed to fetch') ||
+              message.includes('NetworkError') ||
+              message.includes('firestore') ||
+              message.includes('firebase')) {
+            console.warn('Network/Firebase promise rejection caught:', message);
+            // Log but don't prevent default - let Firebase handle its own retries
+            return;
+          }
         }
       });
     </script>
