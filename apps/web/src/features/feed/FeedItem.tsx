@@ -146,7 +146,7 @@ function RailButton({
   onClick?: () => void;
 }) {
   return (
-    <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+    <div className="flex flex-col items-center">
       <button
         className="rail-btn ak-action"
         aria-label={title ?? "Button"}
