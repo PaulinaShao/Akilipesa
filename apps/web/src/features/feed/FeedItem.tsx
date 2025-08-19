@@ -42,14 +42,18 @@ export default function FeedItem(p: Props){
   return (
     <section className="feed-item">
       {p.media.type === "video" ? (
-        <video 
-          ref={ref} 
-          className="feed-media" 
-          src={p.media.src} 
-          poster={p.media.poster} 
-          muted 
-          playsInline 
-          loop 
+        <video
+          ref={ref}
+          className="feed-media"
+          src={p.media.src}
+          poster={p.media.poster}
+          muted
+          playsInline
+          loop
+          style={{
+            left: "-6px",
+            top: "-39px"
+          }}
         />
       ) : (
         <img className="feed-media" src={p.media.src} alt="" />
