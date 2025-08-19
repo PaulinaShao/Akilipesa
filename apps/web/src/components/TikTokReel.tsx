@@ -144,36 +144,56 @@ export default function TikTokReel({
       </aside>
 
       {/* Bottom gradient for readability */}
-      <div className="feed-bottom-gradient"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none"></div>
 
-      {/* Caption area positioned above nav */}
-      <div className="feed-caption">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-sm font-semibold text-white drop-shadow-lg">@{reel.user.username}</span>
-          {reel.user.isLive && (
-            <span className="text-xs bg-red-500 text-white px-1.5 py-0.5 rounded-full font-medium">LIVE</span>
-          )}
-        </div>
-        <div className="mb-1">
-          <p className="text-sm text-white leading-relaxed drop-shadow-lg">
-            {captionExpanded
-              ? reel.caption
-              : reel.caption.split(' ').slice(0, 3).join(' ')
-            }
-            {reel.caption.split(' ').length > 3 && !captionExpanded && '...'}
-            {reel.caption.split(' ').length > 3 && (
-              <button
-                onClick={() => setCaptionExpanded(!captionExpanded)}
-                className="text-xs text-white/80 ml-1 hover:text-white font-medium drop-shadow-lg"
-              >
-                {captionExpanded ? ' less' : ' more'}
-              </button>
+      {/* Caption area - TikTok style */}
+      <div className="absolute bottom-16 left-4 right-16 z-40">
+        <div className="space-y-2">
+          {/* Username */}
+          <div className="flex items-center gap-2">
+            <span className="text-white font-bold text-base">@{reel.user.username}</span>
+            {reel.user.isLive && (
+              <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-md font-semibold">LIVE</span>
             )}
-          </p>
+          </div>
+
+          {/* Caption text */}
+          <div className="pr-2">
+            <p className="text-white text-sm leading-relaxed">
+              {captionExpanded
+                ? reel.caption
+                : reel.caption.length > 100
+                  ? reel.caption.substring(0, 100) + '...'
+                  : reel.caption
+              }
+              {reel.caption.length > 100 && (
+                <button
+                  onClick={() => setCaptionExpanded(!captionExpanded)}
+                  className="text-white font-bold ml-1"
+                >
+                  {captionExpanded ? ' less' : ' more'}
+                </button>
+              )}
+            </p>
+          </div>
+
+          {/* Hashtags */}
+          <div className="flex flex-wrap gap-1">
+            {reel.hashtags.slice(0, 3).map((hashtag, index) => (
+              <span key={index} className="text-white text-sm font-bold">
+                {hashtag}
+              </span>
+            ))}
+          </div>
+
+          {/* Sound info */}
+          <div className="flex items-center gap-2 mt-3">
+            <Music2 className="h-4 w-4 text-white" />
+            <span className="text-white text-sm">
+              Original sound - {reel.user.displayName}
+            </span>
+          </div>
         </div>
-        <p className="text-xs text-white/80 drop-shadow-lg">
-          {reel.hashtags.slice(0, 3).join(' ')}
-        </p>
       </div>
     </div>
   );
