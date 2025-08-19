@@ -1,52 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Home, Search, Plus, MessageCircle, User } from 'lucide-react';
 
-interface BottomNavProps {
-  className?: string;
-}
-
-interface NavItemProps {
-  icon: React.ReactNode;
-  label: string;
-  path: string;
-  isActive: boolean;
-  onClick: () => void;
-  badge?: boolean;
-}
-
-function NavItem({ icon, label, isActive, onClick, badge }: NavItemProps) {
-  return (
-    <button
-      onClick={onClick}
-      className={`nav-item ${isActive ? 'active' : ''}`}
-      aria-label={label}
-    >
-      <div className="relative">
-        <div className="nav-icon">
-          {icon}
-        </div>
-        {badge && <div className="nav-badge" />}
-      </div>
-      <span className="nav-label">{label}</span>
-    </button>
-  );
-}
-
-function CenterFAB({ onClick }: { onClick: () => void }) {
-  return (
-    <div className="center-fab">
-      <button
-        onClick={onClick}
-        className="fab"
-        aria-label="Create content"
-      >
-        <Plus className="fab-icon" />
-      </button>
-    </div>
-  );
-}
-
-export default function BottomNav({ className = '' }: BottomNavProps) {
+export default function BottomNav(){
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -60,7 +15,7 @@ export default function BottomNav({ className = '' }: BottomNavProps) {
   const handleNavigation = (path: string) => {
     // If already on the page, scroll to top
     if (isActive(path)) {
-      const contentElement = document.querySelector('.app-content');
+      const contentElement = document.querySelector('.content') || document.querySelector('#feed');
       if (contentElement) {
         contentElement.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -69,62 +24,75 @@ export default function BottomNav({ className = '' }: BottomNavProps) {
     }
   };
 
-  const navItems = [
-    {
-      icon: <Home className="w-full h-full" />,
-      label: 'Home',
-      path: '/reels',
-    },
-    {
-      icon: <Search className="w-full h-full" />,
-      label: 'Explore',
-      path: '/search',
-    },
-    {
-      icon: null, // Center FAB
-      label: 'Create',
-      path: '/create',
-    },
-    {
-      icon: <MessageCircle className="w-full h-full" />,
-      label: 'Inbox',
-      path: '/inbox',
-      badge: true, // Show notification badge
-    },
-    {
-      icon: <User className="w-full h-full" />,
-      label: 'Me',
-      path: '/profile',
-    },
-  ];
-
   return (
-    <nav className={`bottom-nav ${className}`}>
-      <div className="bottom-nav-content">
-        {navItems.map((item, index) => {
-          // Handle center FAB separately
-          if (index === 2) {
-            return (
-              <CenterFAB
-                key={item.path}
-                onClick={() => handleNavigation(item.path)}
-              />
-            );
-          }
-
-          return (
-            <NavItem
-              key={item.path}
-              icon={item.icon}
-              label={item.label}
-              path={item.path}
-              isActive={isActive(item.path)}
-              onClick={() => handleNavigation(item.path)}
-              badge={item.badge}
-            />
-          );
-        })}
+    <nav className="bottomnav">
+      <div className="row">
+        <Item
+          icon={<Home className="w-6 h-6" />}
+          label="Home"
+          active={isActive('/reels')}
+          onClick={() => handleNavigation('/reels')}
+        />
+        <Item
+          icon={<Search className="w-6 h-6" />}
+          label="Explore"
+          onClick={() => handleNavigation('/search')}
+        />
+        <Fab onClick={() => handleNavigation('/create')} />
+        <Item
+          icon={<MessageCircle className="w-6 h-6" />}
+          label="Inbox"
+          badge={3}
+          onClick={() => handleNavigation('/inbox')}
+        />
+        <Item
+          icon={<User className="w-6 h-6" />}
+          label="Me"
+          onClick={() => handleNavigation('/profile')}
+        />
       </div>
     </nav>
+  );
+}
+
+function Item({icon,label,active=false,badge,onClick}:{icon:React.ReactNode,label:string,active?:boolean,badge?:number,onClick?:()=>void}){
+  return (
+    <button
+      className="relative flex flex-col items-center gap-1"
+      onClick={onClick}
+      style={{
+        color: active ? 'white' : '#8a92b2',
+        background: 'none',
+        border: 'none',
+        padding: '8px',
+        cursor: 'pointer'
+      }}
+    >
+      <div className="relative">
+        {icon}
+        {badge ? <span className="absolute -top-1 -right-2 text-[10px] bg-[#ff3b30] text-white rounded-full px-1 min-w-[16px] h-4 flex items-center justify-center text-center leading-none">{badge}</span> : null}
+      </div>
+      <span style={{fontSize: '11px', fontWeight: 500}}>{label}</span>
+    </button>
+  );
+}
+
+function Fab({onClick}:{onClick?:()=>void}){
+  return (
+    <button
+      className="h-12 w-12 rounded-2xl font-bold"
+      style={{
+        background:`linear-gradient(135deg, var(--tz-accent), var(--tz-gold))`,
+        color:'#0b1022',
+        boxShadow:'0 8px 20px rgba(106,90,205,.35)',
+        border: 'none',
+        cursor: 'pointer',
+        fontSize: '24px'
+      }}
+      aria-label="Create"
+      onClick={onClick}
+    >
+      +
+    </button>
   );
 }
