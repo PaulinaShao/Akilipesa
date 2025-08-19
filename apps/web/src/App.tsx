@@ -418,9 +418,9 @@ function App() {
           <Route path="/live/:channelId" element={<LivePage />} />
 
           <Route path="/wallet" element={
-            <MobileLayout>
+            <AppShell>
               <WalletPage />
-            </MobileLayout>
+            </AppShell>
           } />
 
           <Route path="/add-funds" element={<AddFundsPage />} />
