@@ -463,9 +463,28 @@ html, body, #app-root {
   margin: 0;
 }
 
+/* Remove heavy dark band overlays; use only top gradient */
+.reel .dark-overlay,
+.feed-item .dark-overlay,
+.bottom-fade {
+  display: none !important;
+}
+
+/* Subtle top gradient for text legibility only */
+.reel::before,
+.feed-item::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 120px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0));
+  z-index: 1;
+}
+
 /* Desktop: match background under bottom nav */
 @media (min-width: 769px){
-  body, #app-root{ background: #0f1329; }
+  body, #app-root{ background: var(--tz-bg); }
   .app-footer-underlay{
     position: fixed;
     left: 0;
