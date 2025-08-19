@@ -429,9 +429,9 @@ function App() {
           <Route path="/payment-methods" element={<PaymentMethodsPage />} />
 
           <Route path="/settings" element={
-            <MobileLayout>
+            <AppShell>
               <SettingsPage />
-            </MobileLayout>
+            </AppShell>
           } />
 
           {/* Profile sub-pages */}
