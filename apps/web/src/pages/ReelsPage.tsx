@@ -853,7 +853,11 @@ export default function ReelsPage() {
 
       <div
         ref={containerRef}
-        className="h-full overflow-y-auto snap-y snap-mandatory"
+        className="h-screen overflow-y-auto snap-y snap-mandatory pt-[100px]"
+        style={{
+          scrollSnapType: 'y mandatory',
+          WebkitOverflowScrolling: 'touch'
+        }}
       >
         {reels.map((reel, index) => (
           <div
