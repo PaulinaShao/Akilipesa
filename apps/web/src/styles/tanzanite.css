@@ -159,6 +159,41 @@ html, body, #app-root {
   border-bottom-color: rgba(255, 255, 255, 0.5);
 }
 
+/* Professional AkiliPesa Logo Styling */
+.logo-container {
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.akilipesa-logo {
+  height: 36px;
+  width: auto;
+  max-width: 180px;
+  filter: brightness(1.1) contrast(1.05);
+  transition: all 0.3s ease;
+  object-fit: contain;
+}
+
+.akilipesa-logo:hover {
+  filter: brightness(1.2) contrast(1.1);
+  transform: scale(1.02);
+}
+
+/* Enhance logo visibility on dark backgrounds */
+@media (max-width: 640px) {
+  .akilipesa-logo {
+    height: 32px;
+    max-width: 150px;
+  }
+}
+
+/* Ensure logo is always crisp */
+.akilipesa-logo {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
 /* Scrollable feed area with snap scrolling */
 .content, .app-content{
   overflow: auto;
