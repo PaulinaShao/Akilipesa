@@ -62,15 +62,15 @@ html, body, #app-root {
   overscroll-behavior-y: contain; /* avoids rubber-band scroll pulling bars */
 }
 
-/* Top bar */
+/* Top bar - TikTok style transparent navigation */
 .topbar, .top-bar{
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 30;
-  background: linear-gradient(180deg, rgba(15,19,41,.95), rgba(15,19,41,.65));
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  padding: max(10px, var(--safe-top)) 12px 8px;
+  background: transparent;
+  padding: max(10px, var(--safe-top)) 16px 8px;
   height: var(--topbar-h);
   display: flex;
   align-items: center;
@@ -92,7 +92,31 @@ html, body, #app-root {
 .top-bar-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* TikTok-style navigation tabs */
+.top-nav-tabs {
+  display: flex;
+  gap: 24px;
+  margin-left: 24px;
+}
+
+.nav-tab {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 4px;
+  transition: all 0.2s ease;
+}
+
+.nav-tab.active {
+  color: white;
+  border-bottom-color: white;
 }
 
 .logo {
@@ -101,34 +125,50 @@ html, body, #app-root {
 }
 
 .plan-pill {
-  background: var(--tz-pleochroic);
-  color: #0b1022;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   position: relative;
+  backdrop-filter: blur(10px);
 }
 
 .wallet-balance {
-  color: var(--tz-gold);
+  color: white;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
-/* Scrollable feed area */
+/* Sign Up button style */
+.sign-up-btn {
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.sign-up-btn:hover {
+  border-bottom-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Scrollable feed area with snap scrolling */
 .content, .app-content{
   overflow: auto;
-  padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 20px);
-  scroll-padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 20px);
+  padding: 0;
+  margin: 0;
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
   max-width: none;
-  padding-left: 0;
-  padding-right: 0;
-  margin: 0;
+  height: 100vh;
+  overscroll-behavior-y: contain;
 }
 
 /* Bottom nav — FIXED and LIFTED above system bar */
@@ -254,24 +294,27 @@ html, body, #app-root {
   height: 24px;
 }
 
-/* Feed items - Full-bleed TikTok/Instagram style */
+/* Feed items - Full viewport TikTok/Instagram style with snap */
 .feed-item, .feed-card, .reel{
   scroll-snap-align: start;
   background: #000;
   overflow: hidden;
   position: relative;
   margin: 0;
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-/* Single, consistent reel size across feeds - Cross-browser hardened */
+/* Full viewport height minus bottom nav space */
 @supports(height: 100dvh){
   .feed-item, .feed-card, .reel{
-    height: calc(100dvh - var(--topbar-h, 56px));
+    height: calc(100dvh - calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift)));
   }
 }
 @supports not (height: 100dvh){
   .feed-item, .feed-card, .reel{
-    height: calc(100svh - var(--topbar-h, 56px));
+    height: calc(100svh - calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift)));
   }
 }
 
@@ -339,33 +382,33 @@ html, body, #app-root {
 
 /* Enhanced Tanzanite Action Icons with Refined Styling */
 
-/* Right-side rail container */
+/* Right-side rail container - positioned from bottom with precise spacing */
 .right-rail, .actions-rail{
   position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
+  right: 12px;
+  bottom: 80px;
   display: flex;
   flex-direction: column;
   gap: var(--rail-gap);
   z-index: 5;
-  /* ensure it never touches nav area */
-  margin-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 12px);
+  align-items: center;
 }
 
-/* Each action button - Tanzanite styled */
+/* Each action button - TikTok sized with touch targets */
 .ak-action, .rail-btn{
-  width: var(--action-diam);
-  height: var(--action-diam);
-  border-radius: 9999px;
-  display: grid;
-  place-items: center;
-  background: rgba(12, 16, 36, .35);          /* translucent pill */
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,.18);     /* subtle border */
-  box-shadow: 0 6px 18px rgba(0,0,0,.25);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,.3);
   position: relative;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 /* Tanzanite ring highlight */
@@ -384,15 +427,14 @@ html, body, #app-root {
     radial-gradient(circle at center, transparent calc(50% - 2px), #000 calc(50% - 1px));
 }
 
-/* Icon glyph */
+/* Icon glyph - TikTok sizing */
 .ak-action i, .ak-action svg,
 .rail-btn i, .rail-btn svg{
-  width: var(--icon-size);
-  height: var(--icon-size);
+  width: 28px;
+  height: 28px;
   z-index: 1;
-  color: #fff;                                  /* default on dark */
-  /* visibility halo so it reads over any content */
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,.7)) drop-shadow(0 4px 14px rgba(0,0,0,.35));
+  color: #fff;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,.8));
 }
 
 /* Count labels */
@@ -424,12 +466,25 @@ html, body, #app-root {
   /* default styles already on-dark; keep for clarity */
 }
 
-/* Scale down on short screens */
+/* Responsive adjustments for different screen sizes */
 @media (max-height: 700px){
   .actions-rail, .right-rail {
-    transform: translateY(-50%) scale(.92);
-    transform-origin: center right;
+    bottom: 70px;
     gap: 8px;
+  }
+
+  .caption, .caption-block {
+    bottom: 70px;
+  }
+}
+
+@media (min-height: 900px){
+  .actions-rail, .right-rail {
+    bottom: 100px;
+  }
+
+  .caption, .caption-block {
+    bottom: 100px;
   }
 }
 
@@ -492,32 +547,46 @@ html, body, #app-root {
   }
 }
 
-/* Bottom-left avatar + caption (never hidden) */
+/* Bottom-left avatar + caption positioned above nav */
 .caption, .caption-block{
   position: absolute;
-  left: 12px;
-  right: 92px;
+  left: 16px;
+  right: 88px;
   z-index: 5;
-  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 22px);
-  display: grid;
-  grid-template-columns: 40px 1fr;
-  gap: 10px;
-  align-items: end;
+  bottom: 80px;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
 }
 
 .caption-block .avatar {
   width: 40px;
   height: 40px;
-  border-radius: 9999px;
+  min-width: 40px;
+  border-radius: 50%;
   overflow: hidden;
-  box-shadow: 0 6px 16px rgba(0,0,0,.35);
+  box-shadow: 0 4px 12px rgba(0,0,0,.5);
+  border: 2px solid white;
 }
 
 .caption-block .text {
   color: #fff;
+  font-size: 13px;
+  line-height: 1.3;
+  text-shadow: 0 1px 3px rgba(0,0,0,.8);
+  font-weight: 600;
+}
+
+.caption-block .text .username {
   font-size: 14px;
-  line-height: 1.2;
-  text-shadow: 0 2px 8px rgba(0,0,0,.5);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.caption-block .text .caption-text {
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.95;
 }
 
 /* Caption user styling */
@@ -555,6 +624,18 @@ html, body, #app-root {
   font-size: 12px;
 }
 
+
+/* Text gradient overlay for caption readability */
+.caption-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 200px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 40%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
 
 /* Utility Classes */
 .text-white { color: white; }
