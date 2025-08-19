@@ -119,13 +119,6 @@ export default function FeedItem(p: Props){
         </div>
       </div>
 
-      {/* Add spinning animation */}
-      <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </section>
   );
 }
