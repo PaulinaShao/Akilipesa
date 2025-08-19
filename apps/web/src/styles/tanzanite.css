@@ -215,24 +215,19 @@ html, body, #app-root {
   image-rendering: crisp-edges;
 }
 
-/* Scrollable feed area - TRUE full bleed from top edge */
+/* Clean content area - allow children to break out */
 .content, .app-content{
   overflow: auto;
   padding: 0 !important;
   margin: 0 !important;
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
-  max-width: none !important;
   width: 100% !important;
   height: 100vh !important;
   overscroll-behavior-y: contain;
   position: relative;
-  /* Start from absolute top */
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  /* Remove any box-sizing constraints */
+  /* Allow horizontal overflow for full-bleed */
+  overflow-x: visible !important;
   box-sizing: border-box;
 }
 
