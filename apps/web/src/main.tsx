@@ -3,14 +3,32 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-// JS fallback for older Android (viewport stability)
+// Viewport stability and header auto-hide
 (function(){
-  const setVH = () => {
-    document.documentElement.style.setProperty('--vh', window.innerHeight + 'px');
-  };
+  // Stable vh
+  const setVH = () => document.documentElement.style.setProperty('--vh', window.innerHeight + 'px');
   setVH();
-  window.addEventListener('resize', setVH, { passive: true });
-  window.addEventListener('orientationchange', setVH, { passive: true });
+  addEventListener('resize', setVH, {passive:true});
+
+  // Header auto-hide (wait for DOM to be ready)
+  document.addEventListener('DOMContentLoaded', () => {
+    const h = document.querySelector('.auto-hide-header');
+    let last = scrollY, ticking = false;
+    const run = () => {
+      const y = scrollY;
+      if (Math.abs(y-last)>4){
+        y>last ? h?.classList.add('hidden') : h?.classList.remove('hidden');
+        last=y;
+      }
+      ticking=false;
+    };
+    addEventListener('scroll', ()=>{
+      if(!ticking){
+        requestAnimationFrame(run);
+        ticking=true;
+      }
+    }, {passive:true});
+  });
 })();
 
 // Import RTC test in development (disabled to prevent frame errors)
