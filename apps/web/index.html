@@ -239,14 +239,27 @@
               const r = parseFloat(cs.borderRadius) || 0;
               const pos = cs.position;
 
-              // Check if element has greenish background
+              // Check if element has greenish background (more aggressive detection)
               const isGreenish = (() => {
+                if (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') return false;
+
+                // Check for common green patterns
+                if (bg.includes('green') || bg.includes('#1db954') || bg.includes('#00ff00') || bg.includes('#008000')) {
+                  console.log('AkiliPesa: Found explicit green color:', bg, el);
+                  return true;
+                }
+
                 if (!/rgb/.test(bg)) return false;
                 const match = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
                 if (!match) return false;
                 const [red, green, blue] = [+match[1], +match[2], +match[3]];
-                // Green channel significantly higher than red and blue
-                return green > red + 25 && green > blue + 25;
+
+                // More aggressive green detection
+                const isSignificantlyGreen = green > red + 20 && green > blue + 20 && green > 100;
+                if (isSignificantlyGreen) {
+                  console.log('AkiliPesa: Found greenish element:', {bg, red, green, blue}, el);
+                }
+                return isSignificantlyGreen;
               })();
 
               // Check if it's pill/bar-like dimensions
