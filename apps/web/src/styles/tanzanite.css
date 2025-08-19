@@ -41,6 +41,8 @@ html,body,#root{height:100%; background:var(--tnz-bg); color:var(--tnz-fg);}
   right: 0;
   z-index: 60;
   padding-top: env(safe-area-inset-top);
+  background: transparent;
+  backdrop-filter: none;
 }
 .app-header.auto-hide{ will-change: transform; transition: transform .18s ease; }
 .app-header.hidden{ transform: translateY(-100%); }
