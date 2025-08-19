@@ -2,6 +2,7 @@
 // This ensures Firebase uses the original fetch function and isn't affected by any wrappers
 
 let originalFetch: typeof fetch;
+let cleanupInterval: NodeJS.Timeout | null = null;
 
 export function isolateFirebaseFromFetchWrappers() {
   // Use the preserved original fetch from the HTML script
@@ -14,27 +15,32 @@ export function isolateFirebaseFromFetchWrappers() {
 
   // Create a clean fetch function for Firebase
   const cleanFetch = originalFetch;
+  const wrappedFetch = window.fetch;
 
-  // Override fetch temporarily during Firebase initialization
-  const currentFetch = window.fetch;
-  
   // Check if fetch has been wrapped (multiple times)
-  if (currentFetch.toString().includes('eval') || 
-      currentFetch.toString().includes('messageHandler') ||
-      currentFetch.name !== 'fetch') {
-    
-    console.warn('🔧 Detected wrapped fetch function, isolating Firebase...');
-    
-    // Temporarily restore original fetch for Firebase operations
+  if (wrappedFetch.toString().includes('eval') ||
+      wrappedFetch.toString().includes('messageHandler') ||
+      wrappedFetch.name !== 'fetch') {
+
+    console.warn('🔧 Detected wrapped fetch function, permanently isolating Firebase...');
+
+    // Permanently restore original fetch for Firebase operations
     window.fetch = cleanFetch;
-    
-    // Set up a promise to restore the wrapped fetch after a short delay
-    setTimeout(() => {
-      if (window.fetch === cleanFetch) {
-        window.fetch = currentFetch;
-        console.log('🔧 Restored wrapped fetch after Firebase isolation');
+
+    // Clean up any existing interval
+    if (cleanupInterval) {
+      clearInterval(cleanupInterval);
+    }
+
+    // Continuously monitor and maintain the clean fetch for Firebase
+    cleanupInterval = setInterval(() => {
+      if (window.fetch !== cleanFetch) {
+        console.warn('🔧 Re-applying clean fetch for Firebase (fetch was re-wrapped)');
+        window.fetch = cleanFetch;
       }
-    }, 2000);
+    }, 1000);
+
+    console.log('🔧 Permanently using clean fetch to prevent Firebase network errors');
   }
 }
 
