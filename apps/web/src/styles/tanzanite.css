@@ -64,7 +64,7 @@
 }
 @supports (height: 100dvh){ :root{ --vh: 100dvh; } }
 
-/* Every scrollable screen/page wrapper */
+/* Universal scrollable page wrapper */
 .scroll-screen{
   min-height: var(--vh);
   padding-top: calc(var(--header-h) + env(safe-area-inset-top));
@@ -72,29 +72,28 @@
   -webkit-overflow-scrolling: touch;
 }
 
-/* Right action rail and bottom caption overlays respect the nav */
-.feed-right-rail{
-  position: absolute;
-  right: 12px;
-  bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 12px);
-  z-index: 50;
+/* App shell layering */
+.header{ z-index: 60; }
+.bottom-nav{ z-index: 9999; position:fixed; bottom:0; left:0; right:0; height:var(--nav-h); padding-bottom:calc(env(safe-area-inset-bottom) + 10px); }
+.feed-right-rail, .feed-caption, .feed-bottom-glass{ z-index:50; position:absolute; }
+
+/* Overlays placed inside each feed item */
+.feed-right-rail{ right:12px; bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 12px); }
+.feed-caption{ left:12px; right:12px; bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 12px); }
+.feed-bottom-glass{
+  left:0; right:0;
+  bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));
+  height:120px;
+  background:linear-gradient(to top, rgba(0,0,0,.7), rgba(0,0,0,.25), transparent);
+  pointer-events:none; /* don't block taps */
 }
 
-.feed-bottom-overlay{
-  position: absolute;
-  left: 0; right: 0;
-  bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
-  pointer-events: none; /* don't block nav taps */
-  background: linear-gradient(to top, rgba(0,0,0,.7), rgba(0,0,0,.2), transparent);
-}
+/* Top chips below status bar + header */
+.top-chips{ top:calc(env(safe-area-inset-top) + var(--header-h) + 8px); left:16px; right:16px; }
 
-/* Top chips respect the status bar + header */
-.top-chips{
-  position: absolute;
-  top: calc(env(safe-area-inset-top) + 8px + var(--header-h));
-  left: 16px; right: 16px;
-  z-index: 60;
-}
+/* Auto-hide header */
+.auto-hide-header{ will-change: transform; transition: transform .2s ease-out; }
+.auto-hide-header.hidden{ transform: translateY(-100%); }
 
 /* glossy tanzanite "glass" - enhanced version */
 .tnz-glass{
