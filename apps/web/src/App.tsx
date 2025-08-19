@@ -359,11 +359,7 @@ function App() {
           <Route path="/" element={<Navigate to="/reels" replace />} />
 
           {/* Public routes (guest accessible) - Show immediately, no auth required */}
-          <Route path="/reels" element={
-            <MobileLayout>
-              <ReelsPage />
-            </MobileLayout>
-          } />
+          <Route path="/reels" element={<FeedScreen />} />
 
           <Route path="/home-feed" element={
             <HomeFeedPage />
