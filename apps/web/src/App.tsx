@@ -104,6 +104,16 @@ function AppContent() {
 
   return (
     <>
+      {/* Global AutoHide Header at the top of the app */}
+      {!shouldHideNav && (
+        <AutoHideHeader
+          onProfileClick={() => {
+            // Navigate to profile page
+            window.location.href = '/profile';
+          }}
+        />
+      )}
+
       <Routes>
         {/* All existing routes */}
         {/* Public routes */}
