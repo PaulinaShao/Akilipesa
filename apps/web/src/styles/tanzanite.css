@@ -119,7 +119,7 @@ html,body,#root{height:100%; background:var(--tnz-bg); color:var(--tnz-fg);}
 .bottom-fade{
   position:absolute; left:0; right:0;
   bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
-  height: 120px; pointer-events:none;
+  height: 140px; pointer-events:none;
   background: linear-gradient(0deg, rgba(0,0,0,.72), rgba(0,0,0,.24), transparent);
 }
 .caption{
