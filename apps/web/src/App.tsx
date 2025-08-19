@@ -92,6 +92,64 @@ function AdminRoute({ children, user }: { children: React.ReactNode; user: User 
 }
 
 
+// AppContent component to access useLocation inside Router
+function AppContent() {
+  const location = useLocation();
+
+  // Only hide nav on specific auth routes
+  const shouldHideNav = location.pathname === '/login' ||
+    location.pathname === '/auth/login' ||
+    location.pathname === '/auth/verify';
+
+  return (
+    <>
+      <Routes>
+        {/* All existing routes */}
+        {/* Public routes */}
+        <Route path="/splash" element={<SplashPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/auth/login" element={<LoginPage />} />
+        <Route path="/auth/verify" element={<LoginPage />} />
+
+        {/* Default route - always go to reels (TikTok-style) */}
+        <Route path="/" element={<Navigate to="/reels" replace />} />
+
+        {/* Routes with MobileLayout */}
+        <Route path="/reels" element={
+          <MobileLayout>
+            <ReelsPage />
+          </MobileLayout>
+        } />
+        <Route path="/search" element={
+          <MobileLayout>
+            <SearchPage />
+          </MobileLayout>
+        } />
+        <Route path="/create" element={
+          <MobileLayout>
+            <CreatePage />
+          </MobileLayout>
+        } />
+        <Route path="/inbox" element={
+          <MobileLayout>
+            <InboxPage />
+          </MobileLayout>
+        } />
+        <Route path="/profile" element={
+          <MobileLayout>
+            <ProfilePage />
+          </MobileLayout>
+        } />
+        {/* Add other routes as needed */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+      {/* Bottom navigation - ALWAYS render as direct child of root */}
+      {!shouldHideNav && <BottomNav />}
+    </>
+  );
+}
+
 function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
