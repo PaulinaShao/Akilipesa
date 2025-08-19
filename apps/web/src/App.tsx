@@ -37,6 +37,7 @@ import '@/styles/util.css';
 import SplashPage from '@/pages/SplashPage';
 import LoginPage from '@/pages/LoginPage';
 import ReelsPage from '@/pages/ReelsPage';
+import FeedScreen from '@/features/feed/FeedScreen';
 import HomeFeedPage from '@/pages/HomeFeedPage';
 import SearchPage from '@/pages/SearchPage';
 import CreatePage from '@/pages/CreatePage';
