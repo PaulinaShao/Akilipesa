@@ -19,7 +19,14 @@ async function enhancedFetch(
     url.includes('google.com') ||
     url.includes('gstatic.com') ||
     url.includes('fullstory.com') ||
-    url.includes('builder.io')
+    url.includes('builder.io') ||
+    url.includes('firebase') ||
+    url.includes('firestore') ||
+    // Check if it's a data URL or blob URL
+    url.startsWith('data:') ||
+    url.startsWith('blob:') ||
+    // Check if it has Firebase-specific headers or patterns
+    (init?.headers && JSON.stringify(init.headers).includes('firebase'))
   );
 
   // If this is a critical service request, use original fetch directly
