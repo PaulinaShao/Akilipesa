@@ -31,11 +31,13 @@ export default function TopBar({ className = '' }: TopBarProps) {
       <div className="top-bar-content">
         {/* Left: AkiliPesa Logo */}
         <div className="top-bar-left">
-          <img
-            src="https://cdn.builder.io/api/v1/image/assets%2Fd3b228cddfa346f0aa1ed35137c6f24e%2F2e2320ae55384c21ba22df27af161694?format=webp&width=800"
-            alt="AkiliPesa"
-            className="h-8 w-auto"
-          />
+          <div className="logo-container">
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2Fd3b228cddfa346f0aa1ed35137c6f24e%2F6d889672dba44d67810beb12835dca8c?format=webp&width=800"
+              alt="AkiliPesa"
+              className="akilipesa-logo"
+            />
+          </div>
         </div>
 
         {/* Right: FREE badge, wallet balance, Sign Up */}
