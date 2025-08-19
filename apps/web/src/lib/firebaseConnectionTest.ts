@@ -37,21 +37,31 @@ export async function testFirebaseConnection(): Promise<boolean> {
 }
 
 // Run connection test with retry logic
-export async function testFirebaseConnectionWithRetry(maxRetries = 3): Promise<boolean> {
+export async function testFirebaseConnectionWithRetry(maxRetries = 2): Promise<boolean> {
   for (let i = 0; i < maxRetries; i++) {
     try {
       const success = await testFirebaseConnection();
-      if (success) return true;
-      
+      if (success) {
+        console.log('✅ Firebase connection verified');
+        return true;
+      }
+
       if (i < maxRetries - 1) {
         console.log(`🔄 Retrying Firebase connection test (${i + 1}/${maxRetries})...`);
-        await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+        await new Promise(resolve => setTimeout(resolve, 500)); // Shorter delay
       }
-    } catch (error) {
-      console.error(`Firebase connection test attempt ${i + 1} failed:`, error);
+    } catch (error: any) {
+      console.error(`Firebase connection test attempt ${i + 1} failed:`, error?.message || error);
+
+      // If it's a permissions error, don't retry - connection is actually working
+      if (error?.code === 'permission-denied' ||
+          error?.message?.includes('Missing or insufficient permissions')) {
+        console.log('✅ Firebase connection is working (permissions error is normal for unauthenticated access)');
+        return true;
+      }
     }
   }
-  
-  console.error('❌ All Firebase connection test attempts failed');
-  return false;
+
+  console.warn('⚠️ Firebase connection test completed with issues, but app may still function');
+  return false; // Don't fail the app, just warn
 }
