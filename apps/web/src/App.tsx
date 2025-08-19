@@ -169,12 +169,12 @@ function App() {
     initFirebase();
 
     // Initialize fetch wrapper for problematic environments (like fly.dev with FullStory)
-    // Only if not explicitly disabled via environment variable
-    if (import.meta.env.VITE_DISABLE_FETCH_WRAPPER !== 'true') {
-      initializeFetchWrapper();
-    } else {
-      console.log('🔧 Fetch wrapper disabled via environment variable');
-    }
+    // Temporarily disabled to fix Firebase Firestore issues
+    // TODO: Re-enable with better Firebase isolation if needed
+    console.log('🔧 Fetch wrapper temporarily disabled to fix Firebase connectivity');
+    // if (import.meta.env.VITE_DISABLE_FETCH_WRAPPER !== 'true') {
+    //   initializeFetchWrapper();
+    // }
 
     // Initialize reCAPTCHA container for phone auth
     ensureRecaptchaContainer();
