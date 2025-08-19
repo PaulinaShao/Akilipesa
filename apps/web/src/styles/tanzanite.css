@@ -101,14 +101,15 @@ html, body, #app-root {
 }
 
 .plan-pill {
-  background: linear-gradient(135deg, var(--tz-accent), var(--tz-gold));
-  color: var(--tz-bg);
+  background: var(--tz-pleochroic);
+  color: #0b1022;
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  position: relative;
 }
 
 .wallet-balance {
