@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import AppShell from "../../components/AppShell";
 import FeedItem from "./FeedItem";
 import { initiateCall } from "@/lib/callUtils";
 import { useNavigate } from "react-router-dom";
