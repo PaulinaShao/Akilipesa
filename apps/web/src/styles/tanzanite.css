@@ -1173,3 +1173,40 @@ html, body, #app-root, .app, main, .content {
   margin-right: calc((100vw - 100%) / -2) !important;
   width: 100vw !important;
 }
+
+/* ===== CSS GRID FULL-BLEED TECHNIQUE ===== */
+/* This is the most reliable technique used by professional sites */
+.content {
+  display: grid !important;
+  grid-template-columns: 1fr min(100%, 100vw) 1fr !important;
+  grid-column-gap: 0 !important;
+  width: 100vw !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.content > * {
+  grid-column: 2 !important;
+}
+
+/* Feed items span the full grid */
+.feed-item, .feed-card, .reel {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Alternative: CSS Container approach */
+@supports (container-type: inline-size) {
+  .content {
+    container-type: inline-size;
+    width: 100vw !important;
+  }
+
+  .feed-item, .feed-card, .reel {
+    width: 100cqw !important;
+    max-width: 100cqw !important;
+  }
+}
