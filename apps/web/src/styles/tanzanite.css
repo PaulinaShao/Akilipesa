@@ -382,11 +382,21 @@ html, body, #app-root {
   height: calc(var(--vhpx, 100vh) - var(--topbar-h, 56px));
 }
 
-/* Mobile: Keep rounded corners for app-like feel */
+/* Mobile: Keep rounded corners for app-like feel and ensure full width */
 @media (max-width: 768px) {
   .feed-item, .feed-card {
     border-radius: 16px;
     height: 100svh;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Mobile content should be full width */
+  .content, .app-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
   }
 }
 
