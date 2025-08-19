@@ -70,6 +70,14 @@
               message.includes('firestore') ||
               message.includes('firebase')) {
             console.warn('Network/Firebase promise rejection caught:', message);
+
+            // Apply emergency fetch fix for Firebase issues
+            console.warn('🚨 Applying emergency fetch restoration for Firebase');
+            if (window._originalFetch && window.fetch !== window._originalFetch) {
+              window.fetch = window._originalFetch;
+              console.log('🔧 Emergency fetch restoration applied');
+            }
+
             // Log but don't prevent default - let Firebase handle its own retries
             return;
           }
