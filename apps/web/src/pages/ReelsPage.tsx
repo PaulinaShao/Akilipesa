@@ -874,15 +874,15 @@ export default function ReelsPage() {
         ))}
       </div>
 
-      {/* Progress indicator */}
-      <div className="absolute top-4 right-4 z-10">
-        <div className="flex flex-col space-y-1">
+      {/* TikTok-style progress indicator */}
+      <div className="absolute top-20 right-2 z-50">
+        <div className="flex flex-col space-y-2">
           {reels.map((_, index) => (
             <div
               key={index}
               className={cn(
-                "w-1 h-8 rounded-full transition-all duration-300",
-                index === currentIndex ? 'bg-primary' : 'bg-white/20'
+                "w-0.5 h-6 rounded-full transition-all duration-300",
+                index === currentIndex ? 'bg-white' : 'bg-white/30'
               )}
             />
           ))}
