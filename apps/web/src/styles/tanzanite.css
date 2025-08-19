@@ -353,13 +353,12 @@ html, body, #app-root {
   position: absolute;
   left: 12px;
   right: 88px; /* leaves room for the actions rail */
-  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 22px);
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 16px);
   z-index: 5;
   color: white;
-  display: grid;
-  grid-template-columns: 40px 1fr;
-  gap: 10px;
-  align-items: end;
+  /* Clean layout for avatar + caption */
+  display: block;
+  padding: 8px 0;
 }
 
 .caption-block .avatar{
