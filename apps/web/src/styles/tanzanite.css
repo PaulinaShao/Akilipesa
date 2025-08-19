@@ -10,7 +10,7 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
   --nav-h: 64px; /* visual height of bottom nav (without safe-area) */
-  --extra-lift: 22px; /* additional lift above safe area - increased for better visibility */
+  --extra-lift: 26px; /* additional lift above safe area - increased for better visibility */
   --top-h: 56px; /* top bar height */
 }
 
@@ -91,8 +91,8 @@ html, body, #app-root {
    We reserve space so content never hides behind the fixed bottom nav. */
 .content, .app-content{
   overflow: auto;
-  padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 16px);
-  scroll-padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 16px);
+  padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 18px);
+  scroll-padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 18px);
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
 }
@@ -225,12 +225,12 @@ html, body, #app-root {
 /* Right Action Rail */
 .right-rail, .actions-rail{
   position: absolute;
-  right: 12px;
-  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 12px);
+  right: 8px;
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 14px);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  z-index: 40;
+  gap: 10px;
+  z-index: 5;
 }
 
 .rail-btn{
@@ -277,13 +277,31 @@ html, body, #app-root {
   background: linear-gradient(0deg, rgba(0,0,0,.72), rgba(0,0,0,.24), transparent);
 }
 
-.caption{
+.caption, .caption-block{
   position: absolute;
-  left: 16px;
-  right: calc(48px + 16px + 20px);
-  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 20px);
-  z-index: 40;
+  left: 12px;
+  right: 88px; /* leaves room for the actions rail */
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 16px);
+  z-index: 5;
   color: white;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 10px;
+  align-items: end;
+}
+
+.caption-block .avatar{
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0,0,0,.35);
+}
+
+.caption-block .text{
+  color: #fff;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0,0,0,.5);
 }
 
 .caption .user{ 
@@ -315,20 +333,29 @@ html, body, #app-root {
   .top-bar-content, .bottom-nav-content {
     padding: 0 12px;
   }
-  
-  .right-rail {
+
+  .right-rail, .actions-rail {
     right: 8px;
     gap: 8px;
   }
-  
+
   .rail-btn {
     width: 44px;
     height: 44px;
   }
-  
-  .caption {
+
+  .caption, .caption-block {
     left: 12px;
     right: calc(44px + 12px + 16px);
+  }
+}
+
+/* Optional: shrink the rail on very short screens */
+@media (max-height: 700px){
+  .actions-rail{
+    gap: 8px;
+    transform: scale(.95);
+    transform-origin: bottom right;
   }
 }
 
