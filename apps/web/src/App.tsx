@@ -5,7 +5,7 @@ import { auth } from '@/lib/firebaseEnhanced';
 import { mockUser } from '@/lib/mock-data';
 import MobileLayout from '@/components/layout/MobileLayout';
 import BottomNav from '@/components/layout/BottomNav';
-import AutoHideHeader from '@/components/AutoHideHeader';
+import AutoHideHeader from '@/components/layout/AutoHideHeader';
 import { ToastProvider } from '@/hooks/useToast';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/lib/queryClient';
