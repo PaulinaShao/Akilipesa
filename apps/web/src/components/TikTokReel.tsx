@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Heart, MessageCircle, Share2, Sparkles, Radio } from "lucide-react";
+import { Heart, MessageCircle, Share2, Plus, Music2 } from "lucide-react";
 import VideoPlayer from "@/components/VideoPlayer";
 import { cn } from '@/lib/utils';
 
