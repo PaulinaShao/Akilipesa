@@ -71,11 +71,28 @@
       // Store original fetch before FullStory or other wrappers modify it
       window._originalFetch = window.fetch.bind(window);
 
+      // Also store XMLHttpRequest in case we need it
+      window._originalXMLHttpRequest = window.XMLHttpRequest;
+
       // Optional: Disable FullStory if it's causing fetch issues
       if (new URLSearchParams(window.location.search).get('disable-fullstory') === 'true') {
         console.log('🔧 FullStory disabled via URL parameter');
         window.FS = { identify: () => {}, getCurrentSession: () => null };
       }
+
+      // Monitor fetch wrapping and warn if it happens
+      let fetchWrapCount = 0;
+      const originalFetchStr = window.fetch.toString();
+
+      setInterval(() => {
+        if (window.fetch.toString() !== originalFetchStr) {
+          fetchWrapCount++;
+          if (fetchWrapCount === 1) {
+            console.warn('🚨 Fetch function has been wrapped (likely by FullStory)');
+            console.warn('🔧 Firebase isolation will handle this automatically');
+          }
+        }
+      }, 2000);
 
       // Set --vh to the true visual viewport height (prevents URL bar jump)
       if ('visualViewport' in window) {
