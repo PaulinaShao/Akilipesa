@@ -1277,14 +1277,30 @@ html, body {
   left: 0 !important;
 }
 
-/* Additional left-side coverage */
+/* COMPREHENSIVE EDGE COVERAGE: Top, Left, Right, Bottom */
 .feed-item::before, .feed-card::before, .reel::before {
   content: '';
   position: absolute;
-  left: -2px !important;
-  top: 0;
-  bottom: 0;
-  width: 2px;
+  /* Cover ALL edges with extended coverage */
+  left: -3px !important;
+  right: -3px !important;
+  top: -3px !important;
+  bottom: -3px !important;
+  background: #000;
+  z-index: -1;
+  /* Ensure it covers any rounding errors */
+  width: calc(100% + 6px) !important;
+  height: calc(100% + 6px) !important;
+}
+
+/* Alternative: Top edge specific coverage */
+.feed-item::after, .feed-card::after, .reel::after {
+  content: '';
+  position: absolute;
+  left: -5px !important;
+  right: -5px !important;
+  top: -5px !important;
+  height: 10px !important;
   background: #000;
   z-index: -1;
 }
