@@ -219,6 +219,18 @@
           const isSuspiciousGreenOverlay = (el) => {
             if (!el || !(el instanceof HTMLElement)) return false;
 
+            // Skip legitimate elements
+            if (el.hasAttribute('data-legitimate') ||
+                el.hasAttribute('data-component') ||
+                el.closest('[data-legitimate]') ||
+                el.closest('[data-component]') ||
+                el.closest('.right-rail') ||
+                el.closest('.caption-block') ||
+                el.closest('.bottomnav') ||
+                el.closest('.topbar')) {
+              return false;
+            }
+
             try {
               const cs = getComputedStyle(el);
               const bg = cs.backgroundColor.toLowerCase();
@@ -234,21 +246,26 @@
                 if (!match) return false;
                 const [red, green, blue] = [+match[1], +match[2], +match[3]];
                 // Green channel significantly higher than red and blue
-                return green > red + 30 && green > blue + 30;
+                return green > red + 25 && green > blue + 25;
               })();
 
               // Check if it's pill/bar-like dimensions
-              const isPillLike = (r > 8) && (w > 80) && (h >= 20 && h <= 100);
+              const isPillLike = (r > 6) && (w > 60) && (h >= 16 && h <= 120);
 
               // Check if positioned in suspicious area (bottom-right quadrant)
               const rect = el.getBoundingClientRect();
-              const isInSuspiciousArea = (rect.right > (window.innerWidth * 0.5)) &&
-                                       (rect.bottom > (window.innerHeight * 0.5));
+              const isInSuspiciousArea = (rect.right > (window.innerWidth * 0.4)) &&
+                                       (rect.bottom > (window.innerHeight * 0.4));
 
               // Check if it's positioned/floating
               const isPositioned = ['fixed', 'absolute'].includes(pos);
 
-              return isGreenish && isPillLike && isInSuspiciousArea && isPositioned;
+              // Additional heuristics for common green overlay patterns
+              const hasDebugClasses = /debug|overlay|progress|highlight|status|indicator/i.test(el.className);
+              const hasDebugId = /debug|overlay|progress|highlight|status|indicator/i.test(el.id || '');
+
+              return (isGreenish && isPillLike && isInSuspiciousArea && isPositioned) ||
+                     (isGreenish && (hasDebugClasses || hasDebugId));
 
             } catch (e) {
               return false;
