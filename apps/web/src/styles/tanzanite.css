@@ -289,6 +289,13 @@ html, body, #app-root {
   background: #000;
 }
 
+/* Specific reel media rules for full coverage */
+.reel video, .reel img, .reel canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* Right Action Rail - Perfectly centered like TikTok */
 .right-rail, .actions-rail{
   position: absolute;
