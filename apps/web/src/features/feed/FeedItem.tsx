@@ -102,48 +102,40 @@ export default function FeedItem(p: Props){
 
       </aside>
 
-      {/* Caption with Profile */}
-      <div className="caption">
-        {/* Profile Avatar */}
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "8px"
-        }}>
-          <button
-            onClick={p.onProfile}
-            style={{
-              width: "32px",
-              height: "32px",
-              borderRadius: "50%",
-              border: "2px solid white",
-              background: "linear-gradient(45deg, #6da8ff, #7d6bff)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              fontSize: "14px",
+      {/* Caption Block with Avatar */}
+      <div className="caption-block">
+        <button
+          className="avatar"
+          onClick={p.onProfile}
+          style={{
+            border: "2px solid white",
+            background: "linear-gradient(45deg, #6da8ff, #7d6bff)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            fontSize: "16px",
+            color: "white"
+          }}
+          aria-label={`View ${p.user}'s profile`}
+        >
+          @
+        </button>
+        <div className="text">
+          <div style={{ marginBottom: "4px" }}>
+            <span style={{ fontWeight: "600" }}>@{p.user}</span>
+            {p.live && <span style={{
+              background: "#ff3b30",
               color: "white",
-              marginRight: "10px"
-            }}
-            aria-label={`View ${p.user}'s profile`}
-          >
-            @
-          </button>
+              padding: "2px 6px",
+              borderRadius: "4px",
+              fontSize: "11px",
+              fontWeight: "600",
+              marginLeft: "6px"
+            }}>LIVE</span>}
+          </div>
           <div>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <span className="user">@{p.user}</span>
-              {p.live && <span className="live">LIVE</span>}
-            </div>
-            <div style={{
-              marginTop: 2,
-              lineHeight: 1.2,
-              fontSize: "13px",
-              color: "white",
-              textShadow: "0 2px 8px rgba(0,0,0,0.7)"
-            }}>
-              {truncatedCaption}
-            </div>
+            {truncatedCaption}
           </div>
         </div>
       </div>
