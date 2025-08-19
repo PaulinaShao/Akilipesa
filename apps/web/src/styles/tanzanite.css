@@ -414,6 +414,11 @@ html, body, #app-root {
   position: relative;
 }
 
+/* Hide first icon in action rail as fallback */
+.actions-rail > :first-child{
+  display: none !important;
+}
+
 /* Legacy support */
 @supports not (height: 100svh) {
   #app-root {
