@@ -75,55 +75,15 @@ export default function TikTokReel({
       />
 
 
-      {/* Right action rail */}
-      <aside className="feed-right-rail flex flex-col items-center gap-4">
+      {/* Right action rail - TikTok style */}
+      <aside className="absolute right-3 bottom-20 flex flex-col items-center gap-4 z-50">
+        {/* Creator avatar with follow button */}
         <div className="flex flex-col items-center">
-          <button
-            onClick={onLike}
-            className={cn(
-              "rail-btn",
-              reel.interactions.liked && "bg-red-500/20"
-            )}
-          >
-            <Heart className={cn(
-              "h-6 w-6 transition-colors",
-              reel.interactions.liked ? "fill-red-500 text-red-500" : "text-white"
-            )} />
-          </button>
-          <span className="text-white text-xs mt-1 font-medium">
-            {formatNumber(reel.stats.likes)}
-          </span>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <button onClick={onComment} className="rail-btn">
-            <MessageCircle className="h-6 w-6 text-white" />
-          </button>
-          <span className="text-white text-xs mt-1 font-medium">
-            {formatNumber(reel.stats.comments)}
-          </span>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <button onClick={onShare} className="rail-btn">
-            <Share2 className="h-6 w-6 text-white" />
-          </button>
-          <span className="text-white text-xs mt-1 font-medium">
-            {formatNumber(reel.stats.shares)}
-          </span>
-        </div>
-
-        <button onClick={onFollow} className="rail-btn">
-          <Sparkles className="h-6 w-6 text-white" />
-        </button>
-
-        {/* Creator avatar */}
-        <div className="mt-2">
-          <button onClick={onProfile} className="relative">
+          <button onClick={onProfile} className="relative mb-2">
             <img
               src={reel.user.avatar}
               alt={reel.user.displayName}
-              className="w-12 h-12 rounded-full border-2 border-white/30 object-cover"
+              className="w-12 h-12 rounded-full border-2 border-white object-cover"
             />
             {reel.user.isLive && (
               <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
@@ -131,6 +91,55 @@ export default function TikTokReel({
               </div>
             )}
           </button>
+          <button
+            onClick={onFollow}
+            className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center -mt-3 border-2 border-white"
+          >
+            <Plus className="h-4 w-4 text-white" />
+          </button>
+        </div>
+
+        {/* Like button */}
+        <div className="flex flex-col items-center">
+          <button
+            onClick={onLike}
+            className="w-12 h-12 flex items-center justify-center"
+          >
+            <Heart className={cn(
+              "h-8 w-8 transition-all duration-200",
+              reel.interactions.liked ? "fill-red-500 text-red-500 scale-110" : "text-white"
+            )} />
+          </button>
+          <span className="text-white text-xs font-semibold">
+            {formatNumber(reel.stats.likes)}
+          </span>
+        </div>
+
+        {/* Comment button */}
+        <div className="flex flex-col items-center">
+          <button onClick={onComment} className="w-12 h-12 flex items-center justify-center">
+            <MessageCircle className="h-8 w-8 text-white" />
+          </button>
+          <span className="text-white text-xs font-semibold">
+            {formatNumber(reel.stats.comments)}
+          </span>
+        </div>
+
+        {/* Share button */}
+        <div className="flex flex-col items-center">
+          <button onClick={onShare} className="w-12 h-12 flex items-center justify-center">
+            <Share2 className="h-8 w-8 text-white" />
+          </button>
+          <span className="text-white text-xs font-semibold">
+            {formatNumber(reel.stats.shares)}
+          </span>
+        </div>
+
+        {/* Animated disc/album art */}
+        <div className="mt-2">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 border-2 border-white/20 flex items-center justify-center animate-spin-slow">
+            <Music2 className="h-6 w-6 text-white" />
+          </div>
         </div>
       </aside>
 
