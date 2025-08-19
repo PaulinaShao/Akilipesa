@@ -1,4 +1,4 @@
-import { Home, Compass, Bell, User2, Plus } from "lucide-react";
+import { Home, Search, Plus, MessageCircle, User } from "lucide-react";
 import { useAuthStatus } from "@/auth/useAuthStatus";
 import { useLocation, useNavigate } from 'react-router-dom';
 
