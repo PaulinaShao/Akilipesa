@@ -67,11 +67,36 @@
   :root{ --vh: 100dvh; }      /* modern Safari/Chrome */
 }
 
-/* All scrollable screens must reserve space for the bottom nav */
+/* Every scrollable screen/page wrapper */
 .scroll-screen{
   min-height: var(--vh);
+  padding-top: calc(var(--header-h) + env(safe-area-inset-top));
   padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
   -webkit-overflow-scrolling: touch;
+}
+
+/* Right action rail and bottom caption overlays respect the nav */
+.feed-right-rail{
+  position: absolute;
+  right: 12px;
+  bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 12px);
+  z-index: 50;
+}
+
+.feed-bottom-overlay{
+  position: absolute;
+  left: 0; right: 0;
+  bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
+  pointer-events: none; /* don't block nav taps */
+  background: linear-gradient(to top, rgba(0,0,0,.7), rgba(0,0,0,.2), transparent);
+}
+
+/* Top chips respect the status bar + header */
+.top-chips{
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 8px + var(--header-h));
+  left: 16px; right: 16px;
+  z-index: 60;
 }
 
 /* glossy tanzanite "glass" - enhanced version */
