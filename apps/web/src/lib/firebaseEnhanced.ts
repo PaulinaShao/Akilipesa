@@ -50,9 +50,9 @@ export function getFirebaseApp(): FirebaseApp {
 
 export function getDb(): Firestore {
   if (dbInstance) return dbInstance;
-  
+
   const app = getFirebaseApp();
-  
+
   // Try to initialize once with your preferred options…
   try {
     console.log('🗄️ Initializing Firestore with persistent cache...');
@@ -62,13 +62,25 @@ export function getDb(): Firestore {
       }),
     });
     console.log('✅ Firestore initialized with persistent cache');
-  } catch (error) {
-    // …but if another module already initialized with different options,
-    // fall back to the existing instance to avoid the crash.
-    console.warn('⚠️ Firestore already initialized, using existing instance:', error);
-    dbInstance = getFirestore(app);
+  } catch (error: any) {
+    // Handle network errors or initialization conflicts
+    console.warn('⚠️ Firestore initialization failed, using fallback:', error?.message || error);
+    try {
+      dbInstance = getFirestore(app);
+      console.log('✅ Firestore fallback initialization successful');
+    } catch (fallbackError: any) {
+      console.error('❌ Firestore fallback initialization also failed:', fallbackError?.message || fallbackError);
+      // Try one more time with basic initialization
+      try {
+        dbInstance = initializeFirestore(app, {});
+        console.log('✅ Firestore basic initialization successful');
+      } catch (basicError: any) {
+        console.error('❌ All Firestore initialization attempts failed:', basicError?.message || basicError);
+        throw new Error('Failed to initialize Firestore after multiple attempts');
+      }
+    }
   }
-  
+
   return dbInstance;
 }
 
