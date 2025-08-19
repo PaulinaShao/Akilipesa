@@ -46,10 +46,11 @@ html,body,#root{height:100%; background:var(--tnz-bg); color:var(--tnz-fg);}
 .app-header.hidden{ transform: translateY(-100%); }
 
 .app-content{
-  min-height: 0;
+  flex: 1;
   overflow: auto;
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
+  padding-top: calc(var(--header-h) + env(safe-area-inset-top));
   padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
 }
 
