@@ -104,19 +104,6 @@ function AppContent() {
 
   return (
     <>
-      {/* TikTok-style Header at the top of the app */}
-      {!shouldHideNav && (
-        <TikTokHeader
-          onTabChange={(tab) => {
-            console.log('Tab changed to:', tab);
-            // Handle tab navigation logic here
-          }}
-          onSearchFocus={() => {
-            console.log('Search focused');
-            // Handle search focus logic here
-          }}
-        />
-      )}
 
       <Routes>
         {/* All existing routes */}
