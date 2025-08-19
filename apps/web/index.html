@@ -32,12 +32,23 @@
           return true;
         }
 
-        // Check if it's a network error
+        // Check if it's a network error - handle more aggressively for Firebase
         if (event.error && event.error.message &&
             (event.error.message.includes('Failed to fetch') ||
              event.error.message.includes('NetworkError') ||
              event.error.message.includes('fetch'))) {
           console.warn('Network error caught and handled:', event.error.message);
+
+          // If it's a Firebase-related fetch error, try to apply fix
+          if (event.error.message.includes('firestore') ||
+              event.error.message.includes('firebase') ||
+              event.error.stack?.includes('firebase')) {
+            console.warn('🚨 Firebase network error detected, applying emergency fix');
+            if (window._originalFetch) {
+              window.fetch = window._originalFetch;
+            }
+          }
+
           // Don't prevent default for network errors, but log them
           return false;
         }
