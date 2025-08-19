@@ -328,41 +328,30 @@ html, body, #app-root {
   height: 24px;
 }
 
-/* Feed items - Full viewport TikTok/Instagram style with snap */
+/* Feed items - Full viewport TikTok/Instagram style with proper alignment */
 .feed-item, .feed-card, .reel{
   scroll-snap-align: start;
   background: #000;
   overflow: hidden;
   position: relative;
   margin: 0;
-  width: 100vw;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 100%;
+  min-height: 100vh;
+  border-radius: 16px;
 }
 
 /* Full viewport height minus bottom nav space */
 @supports(height: 100dvh){
   .feed-item, .feed-card, .reel{
     height: calc(100dvh - calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift)));
+    min-height: calc(100dvh - calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift)));
   }
 }
 @supports not (height: 100dvh){
   .feed-item, .feed-card, .reel{
     height: calc(100svh - calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift)));
+    min-height: calc(100svh - calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift)));
   }
-}
-
-/* Base reel styling - consistent across all feeds */
-.feed-item, .feed-card, .reel{
-  width: 100vw;
-  left: 50%;
-  transform: translateX(-50%);
-  position: relative;
-  margin: 0;
-  border-radius: 16px;
-  overflow: hidden;
-  background: #000;
-  scroll-snap-align: start;
 }
 
 /* Desktop: flat edges for full-bleed */
