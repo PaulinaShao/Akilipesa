@@ -267,20 +267,20 @@ html, body, #app-root {
 
 /* Caption Area */
 .bottom-fade{
-  position: absolute; 
-  left: 0; 
+  position: absolute;
+  left: 0;
   right: 0;
-  bottom: calc(var(--nav-h) + var(--safe-bottom));
-  height: 120px; 
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift));
+  height: 120px;
   pointer-events: none;
   background: linear-gradient(0deg, rgba(0,0,0,.72), rgba(0,0,0,.24), transparent);
 }
 
 .caption{
-  position: absolute; 
-  left: 16px; 
+  position: absolute;
+  left: 16px;
   right: calc(48px + 16px + 20px);
-  bottom: calc(var(--nav-h) + var(--safe-bottom) + 20px);
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 20px);
   z-index: 40;
   color: white;
 }
