@@ -47,7 +47,7 @@ export default function FeedItem(p: Props){
   const truncatedCaption = cleanCaption(p.caption);
 
   return (
-    <section className="feed-item">
+    <section className="feed-item" data-component="feed-item">
       {p.media.type === "video" ? (
         <video
           ref={ref}
@@ -57,16 +57,17 @@ export default function FeedItem(p: Props){
           muted
           playsInline
           loop
+          data-legitimate="true"
         />
       ) : (
-        <img className="feed-media" src={p.media.src} alt="" />
+        <img className="feed-media" src={p.media.src} alt="" data-legitimate="true" />
       )}
 
       {/* Subtle gradient overlay for text readability */}
-      <div className="caption-overlay" aria-hidden="true" />
+      <div className="caption-overlay" aria-hidden="true" data-legitimate="true" />
 
       {/* Right action rail */}
-      <aside className="right-rail">
+      <aside className="right-rail" data-component="action-rail" data-legitimate="true">
         <RailButton
           icon={<Heart className={`${p.liked ? 'fill-current text-red-400' : 'text-white'}`} size={28} />}
           count={p.counts.likes}
@@ -98,7 +99,7 @@ export default function FeedItem(p: Props){
       </aside>
 
       {/* Caption Block with Avatar */}
-      <div className="caption-block">
+      <div className="caption-block" data-component="caption" data-legitimate="true">
         <button
           className="avatar"
           onClick={p.onProfile}
@@ -113,14 +114,15 @@ export default function FeedItem(p: Props){
             border: "none"
           }}
           aria-label={`View ${p.user}'s profile`}
+          data-legitimate="true"
         >
           @
         </button>
-        <div className="text">
+        <div className="text" data-legitimate="true">
           <div className="username">
             @{p.user}
             {p.live && (
-              <span className="ml-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold">
+              <span className="ml-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold" data-legitimate="true">
                 LIVE
               </span>
             )}
