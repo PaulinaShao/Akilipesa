@@ -104,12 +104,16 @@ function AppContent() {
 
   return (
     <>
-      {/* Global AutoHide Header at the top of the app */}
+      {/* TikTok-style Header at the top of the app */}
       {!shouldHideNav && (
-        <AutoHideHeader
-          onProfileClick={() => {
-            // Navigate to profile page
-            window.location.href = '/profile';
+        <TikTokHeader
+          onTabChange={(tab) => {
+            console.log('Tab changed to:', tab);
+            // Handle tab navigation logic here
+          }}
+          onSearchFocus={() => {
+            console.log('Search focused');
+            // Handle search focus logic here
           }}
         />
       )}
