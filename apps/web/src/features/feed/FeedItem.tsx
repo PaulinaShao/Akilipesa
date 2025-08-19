@@ -122,44 +122,14 @@ export default function FeedItem(p: Props){
           <span className="user">@{p.user}</span>
           {p.live && <span className="live">LIVE</span>}
         </div>
-        <div style={{marginTop:6, lineHeight:1.35}}>
-          {captionExpanded ? p.caption : truncatedCaption}
-          {shouldShowMore && (
-            <button 
-              onClick={() => setCaptionExpanded(!captionExpanded)}
-              className="more"
-              style={{ 
-                background: 'none', 
-                border: 'none', 
-                color: 'inherit',
-                textDecoration: 'none'
-              }}
-            >
-              {captionExpanded ? ' less' : ' more'}
-            </button>
-          )}
-        </div>
-        {p.hashtags?.length ? (
-          <div style={{opacity:.9, marginTop:6}}>
-            {p.hashtags.map((h,i) => (
-              <span key={i} style={{marginRight:8, color: 'var(--tnz-accent)'}}>
-                #{h}
-              </span>
-            ))}
-          </div>
-        ) : null}
-        
-        {/* Sound info */}
         <div style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "6px",
-          marginTop: "8px",
-          opacity: 0.8,
-          fontSize: "12px"
+          marginTop: 6,
+          lineHeight: 1.35,
+          fontSize: "14px",
+          color: "white",
+          textShadow: "0 2px 8px rgba(0,0,0,0.5)"
         }}>
-          <Music className="h-3 w-3" />
-          <span>Original sound - {p.user}</span>
+          {truncatedCaption}
         </div>
       </div>
 
