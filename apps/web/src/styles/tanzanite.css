@@ -1,76 +1,82 @@
+/* Root vars - TikTok-style safe area handling */
 :root{
-  /* Layout tokens - TikTok style viewport */
-  --vh: 100svh;
-  --header-h: 44px;  /* Minimal header height like TikTok */
-  --nav-h: 50px;     /* Compact nav height */
-  --rail-gap: 12px;
-  --bottom-safe: max(env(safe-area-inset-bottom), 20px);
+  /* squeeze the top bar a bit on mobile without crushing it */
+  --header-h: clamp(44px, 7svh, 56px);
+  --bottom-nav-h: 64px;
 
-  /* Theme */
-  --tnz-bg: #070f1e;
+  /* safe-area fallbacks for non-notch devices */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* Tanzanite theme */
+  --app-bg: #070f1e;
+  --header-bg: transparent;
+  --bottom-bg: #070f1e;
   --tnz-fg: #eaf1ff;
   --tnz-glass: rgba(9,16,33,.6);
   --tnz-accent: #6da8ff;
   --tnz-danger: #ff627e;
-
   --tnz-border: rgba(150,170,255,.20);
   --tnz-glow: 0 10px 30px rgba(86,121,255,.25);
-}
-@supports(height: 100dvh){ :root{ --vh: 100dvh; } }
-
-html,body,#root{height:100%; background:var(--tnz-bg); color:var(--tnz-fg);}
-
-.tnz-glass{
-  backdrop-filter: saturate(140%) blur(16px);
-  background: linear-gradient(180deg, rgba(120,134,255,.18), rgba(120,134,255,.08)), var(--tnz-glass);
-  border: 1px solid var(--tnz-border);
-  box-shadow: var(--tnz-glow);
+  
+  --rail-gap: 12px;
+  --content-max-w: 720px;
 }
 
-.app-shell{
-  height: var(--vh);
-  display: flex;
-  flex-direction: column;
-  position: relative;
+/* Prevent weird fixed-position behavior */
+html, body { height: 100%; }
+html, body { transform: none !important; } /* ensure no ancestor transforms */
+
+body{
+  /* dynamic viewport so address bar show/hide doesn't shift layout */
+  min-height: 100dvh;
+  /* make room for fixed bars without touching feed card CSS */
+  padding-top: calc(var(--header-h) + var(--safe-top));
+  padding-bottom: calc(var(--bottom-nav-h) + var(--safe-bottom));
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+  -webkit-tap-highlight-color: transparent;
+  background: var(--app-bg);
+  color: var(--tnz-fg);
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
+/* Header (top navigation) */
 .app-header{
+  position: fixed;
+  top: 0; left: 0; right: 0;
   height: var(--header-h);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 60;
-  padding-top: env(safe-area-inset-top);
-  background: transparent;
-  backdrop-filter: none;
-}
-.app-header.auto-hide{ will-change: transform; transition: transform .18s ease; }
-.app-header.hidden{ transform: translateY(-100%); }
-
-.app-content{
-  flex: 1;
-  overflow: auto;
-  scroll-snap-type: y mandatory;
-  -webkit-overflow-scrolling: touch;
-  padding-top: calc(var(--header-h) + env(safe-area-inset-top));
-  padding-bottom: calc(var(--nav-h) + var(--bottom-safe));
-  overscroll-behavior: none;
+  padding-top: var(--safe-top);
+  z-index: 1000;
+  background: var(--header-bg);
+  border-bottom: 1px solid color-mix(in oklab, currentColor 10%, transparent);
 }
 
-/* Bottom nav (always visible) */
-.bottom-nav{
+/* Header auto-hide animation */
+.app-header.auto-hide{ 
+  will-change: transform; 
+  transition: transform .18s ease; 
+}
+.app-header.hidden{ 
+  transform: translateY(-100%); 
+}
+
+/* Bottom navigation (AkiliPesa) */
+.app-bottom-nav{
   position: fixed;
-  bottom: var(--bottom-safe);
-  left: 0;
-  right: 0;
-  height: var(--nav-h);
-  z-index: 9999;
-  background: var(--tnz-bg);
-  border-top: 1px solid rgba(255,255,255,0.1);
+  left: 0; right: 0; bottom: 0;
+  height: var(--bottom-nav-h);
+  /* keep above device navigation; give a small minimum cushion too */
+  padding-bottom: max(12px, var(--safe-bottom));
+  z-index: 1000;
+  background: var(--bottom-bg);
+  border-top: 1px solid color-mix(in oklab, currentColor 10%, transparent);
   box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
 }
-.bottom-nav ul{
+
+/* Bottom nav content styling */
+.app-bottom-nav ul{
   height: 100%;
   display: grid;
   grid-auto-flow: column;
@@ -79,61 +85,100 @@ html,body,#root{height:100%; background:var(--tnz-bg); color:var(--tnz-fg);}
   font-size: clamp(10px, 1.8vw, 12px);
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 16px;
 }
 
-/* Feed item */
+/* Main content wrapper (feeds) — do NOT change card sizes */
+.main{
+  max-width: var(--content-max-w);
+  margin: 0 auto;
+}
+
+/* App shell layout */
+.app-shell{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.app-content{
+  flex: 1;
+  overflow: auto;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+}
+
+/* If your feed container has its own scrolling, keep it within the visible viewport */
+.feed-scroll{
+  height: calc(100dvh - var(--header-h) - var(--bottom-nav-h) - var(--safe-top) - var(--safe-bottom));
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Feed item - full screen */
 .feed-item{
   position: relative;
-  height: var(--vh);
+  height: 100vh;
   scroll-snap-align: start;
   overflow: hidden;
 }
+
 .feed-media{
   position:absolute; inset:0;
   width:100%; height:100%; object-fit:cover;
 }
 
-/* Right action rail + caption are offset above the nav */
+/* Right action rail */
 .right-rail{
   position:absolute; right: 12px;
-  bottom: calc(var(--nav-h) + var(--bottom-safe) + 20px);
+  bottom: calc(var(--bottom-nav-h) + max(12px, var(--safe-bottom)) + 20px);
   display:flex; flex-direction:column; gap: var(--rail-gap);
   z-index: 50;
 }
+
 .rail-btn{
   width:56px; height:56px; border-radius:16px;
   display:grid; place-items:center;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
 }
+
 .rail-btn:hover{
   transform: scale(1.05);
 }
+
 .rail-btn:active{
   transform: scale(0.95);
 }
+
 .rail-count{ 
   font-size:12px; text-align:center; opacity:.9; margin-top:4px; 
   color: var(--tnz-fg);
   font-weight: 600;
 }
 
-/* Caption + bottom fade (never block taps) */
+/* Caption + bottom fade */
 .bottom-fade{
   position:absolute; left:0; right:0;
-  bottom: calc(var(--nav-h) + var(--bottom-safe));
+  bottom: calc(var(--bottom-nav-h) + max(12px, var(--safe-bottom)));
   height: 140px; pointer-events:none;
   background: linear-gradient(0deg, rgba(0,0,0,.72), rgba(0,0,0,.24), transparent);
 }
+
 .caption{
   position:absolute; left: 16px; right: 16px;
-  bottom: calc(var(--nav-h) + var(--bottom-safe) + 20px);
+  bottom: calc(var(--bottom-nav-h) + max(12px, var(--safe-bottom)) + 20px);
   padding:12px 14px; border-radius:14px; z-index:50;
   max-width:min(720px, 92vw);
   font-size: clamp(12px, 2.2vw, 14px);
 }
+
 .caption .user{ font-weight:700; margin-right:8px;}
 .caption .live{ color: var(--tnz-danger); font-weight:700; margin-left:4px;}
 .caption .more{ opacity:.8; margin-left:6px; cursor: pointer; }
@@ -143,24 +188,37 @@ html,body,#root{height:100%; background:var(--tnz-bg); color:var(--tnz-fg);}
   display:flex; gap:18px; align-items:center; justify-content:center;
   height:100%;
   font-weight:600;
+  padding: 0 16px;
 }
+
 .tab{ 
   opacity:.7; position:relative; 
   cursor: pointer;
   padding: 8px 12px;
   transition: opacity 0.2s ease;
+  color: var(--tnz-fg);
 }
+
 .tab:hover{
   opacity: 0.9;
 }
-.tab.active{ opacity:1; }
+
+.tab.active{ 
+  opacity:1; 
+}
+
 .tab.active::after{
   content:""; position:absolute; left:0; right:0; bottom:-8px; height:3px;
   border-radius:2px; background: linear-gradient(90deg, #8bd3ff, #7d6bff);
 }
 
-/* Kill any rogue container clipping the nav */
-*[style*="overflow: hidden"] .bottom-nav{ position: sticky !important; }
+/* Tanzanite glass treatment */
+.tnz-glass{
+  backdrop-filter: saturate(140%) blur(16px);
+  background: linear-gradient(180deg, rgba(120,134,255,.18), rgba(120,134,255,.08)), var(--tnz-glass);
+  border: 1px solid var(--tnz-border);
+  box-shadow: var(--tnz-glow);
+}
 
 /* Additional responsive improvements */
 @media (max-width: 480px) {
@@ -197,4 +255,40 @@ html,body,#root{height:100%; background:var(--tnz-bg); color:var(--tnz-fg);}
     display: flex;
     align-items: center;
   }
+}
+
+/* Legacy fallback for browsers without 100dvh support */
+@supports not (height: 100dvh){
+  body{ min-height: calc(var(--vh, 1vh) * 100); }
+  .feed-scroll{ height: calc(var(--vh, 1vh) * 100 - var(--header-h) - var(--bottom-nav-h) - var(--safe-top) - var(--safe-bottom)); }
+}
+
+/* Kill any rogue container clipping the nav */
+*[style*="overflow: hidden"] .app-bottom-nav{ position: fixed !important; }
+
+/* Animations */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin 10s linear infinite;
+}
+
+/* Smooth snap scrolling */
+.snap-y {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.snap-start {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* Improved touch scrolling on mobile */
+.overflow-y-auto {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
