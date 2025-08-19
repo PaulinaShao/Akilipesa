@@ -141,6 +141,9 @@ export default function TikTokReel({
         </div>
       </aside>
 
+      {/* Bottom glass background for readability */}
+      <div className="feed-bottom-glass"></div>
+
       {/* Bottom caption area - clean overlay lifted above nav */}
       <div className="feed-caption">
         <div className="flex items-center gap-2 mb-1">
