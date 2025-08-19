@@ -957,3 +957,39 @@ html, body, #app-root {
 .content [aria-label*="status"] {
   display: none !important;
 }
+
+/* NUCLEAR OPTION: Remove ANY green-colored elements in bottom area */
+* {
+  /* Reset any potential green background that might leak through */
+}
+
+/* Target specific bottom area green elements */
+.content *[style*="background"],
+.content *[class*="green"],
+.content *[id*="green"],
+div[style*="background"][style*="position: absolute"],
+div[style*="background"][style*="position: fixed"] {
+  /* Check if in bottom area and green */
+}
+
+/* Ultra-specific: any element with green background in bottom 40% of screen */
+.content *[style*="#1db954"],
+.content *[style*="#00ff00"],
+.content *[style*="#008000"],
+.content *[style*="rgb(0, 255, 0"],
+.content *[style*="rgb(0,255,0"],
+.content *[style*="rgba(0, 255, 0"],
+.content *[style*="rgba(0,255,0"],
+.content *[style*="green"],
+*[style*="#1db954"],
+*[style*="#00ff00"],
+*[style*="#008000"],
+*[style*="background: green"],
+*[style*="background-color: green"],
+*[style*="rgb(0, 255, 0"],
+*[style*="rgba(0, 255, 0"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  opacity: 0 !important;
+  display: none !important;
+}
