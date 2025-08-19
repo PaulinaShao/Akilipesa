@@ -1141,3 +1141,32 @@ html, body {
   border: none !important;
   outline: none !important;
 }
+
+/* ===== IFRAME ENVIRONMENT FIX (Builder.io) ===== */
+/* Detect if running in iframe and apply different strategy */
+@media screen {
+  /* Alternative approach for iframe/embedded environments */
+  .feed-item, .feed-card, .reel {
+    width: calc(100vw - 0px) !important;
+    max-width: calc(100vw - 0px) !important;
+    min-width: calc(100vw - 0px) !important;
+    /* Use transform for precise positioning */
+    transform: translateX(calc(-50vw + 50%)) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    left: calc(50vw - 50%) !important;
+    position: relative !important;
+  }
+}
+
+/* Force parent containers to allow overflow */
+html, body, #app-root, .app, main, .content {
+  overflow-x: visible !important;
+}
+
+/* Alternative technique: use negative margins to break out */
+.feed-item, .feed-card, .reel {
+  margin-left: calc((100vw - 100%) / -2) !important;
+  margin-right: calc((100vw - 100%) / -2) !important;
+  width: 100vw !important;
+}
