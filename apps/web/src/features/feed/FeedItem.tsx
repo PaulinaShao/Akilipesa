@@ -36,14 +36,12 @@ export default function FeedItem(p: Props){
     return () => io.disconnect();
   }, [p.media.type]);
 
-  // Clean caption: remove hashtags and keep exactly 3 words
+  // Clean caption: remove hashtags and keep exactly 3 words (performance optimized)
   const cleanCaption = (str: string) => {
     if (!str) return "";
-    // Remove hashtags
-    const noHash = str.replace(/#[^\s#]+/g, "").trim();
-    // Take first 3 words
-    const words = noHash.split(/\s+/).filter(Boolean).slice(0, 3);
-    return words.join(" ");
+    // Remove hashtags and take first 3 words in one pass
+    const cleaned = str.replace(/#[^\s#]+/g, "").trim().split(/\s+/).filter(Boolean).slice(0, 3).join(" ");
+    return cleaned;
   };
 
   const truncatedCaption = cleanCaption(p.caption);
