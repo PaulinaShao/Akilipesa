@@ -129,7 +129,7 @@ export default function SplashPage() {
             <div className="w-full h-full bg-gradient-to-r from-[var(--tz-gem-500)]/30 via-[var(--tz-royal-500)]/20 to-[var(--tz-ice-400)]/30 rounded-full blur-3xl" />
           </motion.div>
 
-          {/* Main Lottie Logo */}
+          {/* Tanzanite A Icon Only */}
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -141,11 +141,89 @@ export default function SplashPage() {
             }}
             className="relative z-10"
           >
-            <Brand
-              size="lg"
-              showWordmark={true}
-              animated={true}
-            />
+            <div className="flex items-center justify-center">
+              <motion.svg
+                className="w-24 h-24"
+                viewBox="0 0 100 100"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 200,
+                  damping: 20,
+                  delay: 0.5
+                }}
+              >
+                <defs>
+                  <linearGradient id="tanzanite-splash-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--tz-blue-deep)" />
+                    <stop offset="55%" stopColor="var(--tz-indigo)" />
+                    <stop offset="100%" stopColor="var(--tz-violet)" />
+                  </linearGradient>
+                  {/* Tanzania flag stripe for splash */}
+                  <linearGradient id="tz-splash-stripe" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#1db954" />    {/* green */}
+                    <stop offset="20%" stopColor="#c9a24a" />   {/* yellow */}
+                    <stop offset="40%" stopColor="#000" />      {/* black */}
+                    <stop offset="60%" stopColor="#c9a24a" />   {/* yellow */}
+                    <stop offset="80%" stopColor="#0052cc" />   {/* blue */}
+                  </linearGradient>
+                </defs>
+                {/* Main "A" shape */}
+                <motion.path
+                  d="M50 10L75 90H65L62 80H38L35 90H25L50 10Z M45 55H55L50 35L45 55Z"
+                  fill="url(#tanzanite-splash-gradient)"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ delay: 0.8, duration: 1 }}
+                />
+                {/* Flag stripe on A leg with animation */}
+                <motion.rect
+                  x="32"
+                  y="65"
+                  width="4"
+                  height="25"
+                  fill="url(#tz-splash-stripe)"
+                  opacity="0.9"
+                  initial={{ scaleY: 0 }}
+                  animate={{ scaleY: 1 }}
+                  transition={{ delay: 1.2, duration: 0.6 }}
+                />
+                {/* AI node cluster (animated) */}
+                <motion.circle
+                  cx="50"
+                  cy="45"
+                  r="3"
+                  fill="white"
+                  opacity="0.8"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 1.5, duration: 0.3 }}
+                />
+                <motion.circle
+                  cx="45"
+                  cy="50"
+                  r="2"
+                  fill="white"
+                  opacity="0.6"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 1.7, duration: 0.3 }}
+                />
+                <motion.circle
+                  cx="55"
+                  cy="50"
+                  r="2"
+                  fill="white"
+                  opacity="0.6"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 1.9, duration: 0.3 }}
+                />
+              </motion.svg>
+            </div>
           </motion.div>
         </motion.div>
 
