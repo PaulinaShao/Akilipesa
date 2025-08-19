@@ -375,9 +375,9 @@ function App() {
           } />
 
           <Route path="/search" element={
-            <MobileLayout>
+            <AppShell>
               <SearchPage />
-            </MobileLayout>
+            </AppShell>
           } />
 
           <Route path="/create" element={
