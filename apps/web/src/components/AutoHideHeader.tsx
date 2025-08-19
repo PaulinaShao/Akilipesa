@@ -46,7 +46,7 @@ export default function AutoHideHeader({
   }, []);
 
   return (
-    <header className={`header auto-hide-header sticky top-0 h-[var(--header-h)] tnz-glass ${!isVisible ? 'hidden' : ''}`}>
+    <header className={`header auto-hide-header fixed top-0 left-0 right-0 h-[var(--header-h)] tnz-glass ${!isVisible ? 'hidden' : ''}`}>
       {/* Top veil for legibility */}
       <div className="absolute inset-0 tz-top-veil" />
       
