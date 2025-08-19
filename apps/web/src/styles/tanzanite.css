@@ -360,10 +360,20 @@ html, body, #app-root {
   }
 }
 
-/* Desktop: flat edges for full-bleed */
+/* Desktop: flat edges for full-bleed and ensure full width */
 @media (min-width: 769px){
   .feed-item, .feed-card, .reel{
     border-radius: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Ensure no padding on content area */
+  .content, .app-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
   }
 }
 
