@@ -49,19 +49,19 @@ export default function AutoHideHeader({
     <header className={`header auto-hide-header fixed top-0 left-0 right-0 h-[var(--header-h)] tnz-glass ${!isVisible ? 'hidden' : ''}`}>
       {/* Top veil for legibility */}
       <div className="absolute inset-0 tz-top-veil" />
-      <div className="flex items-center justify-between px-4 h-full">
-        <div className="flex items-center gap-3">
+      <div className="relative flex items-center justify-between px-3 h-full">
+        <div className="flex items-center gap-2">
           <TanzaniteLogo />
           {showLiveInfo && (
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-red-400 font-semibold animate-pulse">LIVE</span>
-              <span className="flex items-center gap-1 text-xs text-white/80">
+            <>
+              <span className="ml-2 text-xs text-red-400 font-semibold animate-pulse">LIVE</span>
+              <span className="ml-1 flex items-center gap-1 text-xs text-white/80">
                 👁 {viewerCount}
               </span>
-            </div>
+            </>
           )}
         </div>
-        
+
         <div>
           <ProfileButton onClick={onProfileClick} />
         </div>
