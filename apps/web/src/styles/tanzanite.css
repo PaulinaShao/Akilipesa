@@ -1,4 +1,4 @@
-/* THEME (Tanzanite) */
+/* THEME (Tanzanite) - Comprehensive TikTok/Instagram Layout */
 :root{
   --tz-bg:#0f1329;
   --tz-card:#141a36;
@@ -10,9 +10,9 @@
   --tz-nav-bg: rgba(20,26,54,.92);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
-  --nav-h: 64px; /* visual height of bottom nav (without safe-area) */
-  --extra-lift: 30px; /* additional lift above safe area - increased for better visibility */
-  --top-h: 56px; /* top bar height */
+  --topbar-h: 56px; /* top bar height */
+  --nav-h: 64px; /* inner nav row height */
+  --extra-lift: 30px; /* lift nav above OS bar so labels are visible */
 }
 
 /* App fills the dynamic viewport; avoids URL bar bugs */
@@ -35,14 +35,14 @@ html, body, #app-root {
 
 /* Top bar */
 .topbar, .top-bar{
-  position: sticky; 
-  top: 0; 
+  position: sticky;
+  top: 0;
   z-index: 30;
   background: linear-gradient(180deg, rgba(15,19,41,.95), rgba(15,19,41,.65));
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(255,255,255,.06);
   padding: max(10px, var(--safe-top)) 12px 8px;
-  height: var(--top-h);
+  height: var(--topbar-h);
   display: flex;
   align-items: center;
 }
@@ -88,15 +88,13 @@ html, body, #app-root {
   font-size: 14px;
 }
 
-/* Scrollable feed area.
-   We reserve space so content never hides behind the fixed bottom nav. */
+/* Scrollable feed area */
 .content, .app-content{
   overflow: auto;
   padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 20px);
   scroll-padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 20px);
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
-  /* Full-bleed setup */
   max-width: none;
   padding-left: 0;
   padding-right: 0;
@@ -129,14 +127,17 @@ html, body, #app-root {
   z-index: -1;
 }
 
-/* Inner row of items - Move icons up for better visibility */
-.bottomnav .row, .bottom-nav-content{
+/* Inner row of items - fixed naming and positioning */
+.bottomnav .row, .bottomnav .nav-row, .bottom-nav-content{
   height: var(--nav-h);
   display: flex;
   align-items: center;
   justify-content: space-around;
   padding: 0 16px;
-  /* Move icons up by 6px inside the nav container */
+}
+
+/* Nudge icons/labels up inside the bar for better visibility */
+.bottomnav .row > *, .bottomnav .nav-row > * {
   transform: translateY(-6px);
 }
 
@@ -222,24 +223,37 @@ html, body, #app-root {
   height: 24px;
 }
 
-/* Feed items - Clean content cards without dark highlight */
-.feed-item, .feed-card{
+/* Feed items - Full-bleed TikTok/Instagram style */
+.feed-item, .feed-card, .reel{
   scroll-snap-align: start;
-  background: transparent; /* Remove dark background for clean view */
+  background: #000;
   overflow: hidden;
   position: relative;
-  /* Full-bleed positioning */
-  width: 100vw;
-  max-width: 100%;
   margin: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  /* Height management */
-  height: 100svh; /* Mobile-first with small viewport height */
-  min-height: 100vh; /* Fallback for older browsers */
+}
 
-  /* Rounded corners on mobile only, flat on desktop */
-  border-radius: 0;
+/* Mobile full-bleed (remove black gutters) */
+@media (max-width: 768px){
+  .feed-item, .feed-card, .reel{
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    height: calc(100svh - var(--topbar-h));
+    border-radius: 16px;
+    background: #000;
+  }
+}
+
+/* Desktop */
+@media (min-width: 769px){
+  .feed-item, .feed-card, .reel{
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    height: calc(100vh - var(--topbar-h));
+    border-radius: 0;
+    background: #000;
+  }
 }
 
 /* Mobile: Keep rounded corners for app-like feel */
@@ -260,40 +274,45 @@ html, body, #app-root {
   }
 }
 
-/* Media inside feed items - Ensure perfect fill and edge-to-edge coverage */
-.feed-media, .feed-item video, .feed-item img, .feed-item canvas{
+/* Media coverage - perfect fill without gaps */
+.feed-media, .feed-item video, .feed-item img, .feed-item canvas,
+.reel video, .reel img, .reel canvas,
+.feed-card video, .feed-card img, .feed-card canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Remove background to eliminate black spaces */
-  background: transparent;
-  /* Ensure video bleeds to edges properly */
-  min-width: 100%;
-  min-height: 100%;
+  background: #000;
 }
 
-/* Ensure all media types fill properly */
-.reel video, .reel img, .reel canvas,
-.feed-card video, .feed-card img, .feed-card canvas {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Right Action Rail - Vertically Centered */
+/* Right Action Rail - Perfectly centered like TikTok */
 .right-rail, .actions-rail{
   position: absolute;
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  /* safety when the rail grows: never collide with nav */
-  margin-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 14px);
   display: flex;
   flex-direction: column;
   gap: 10px;
   z-index: 5;
+  /* ensure it never touches nav area */
+  margin-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 12px);
+}
+
+/* Scale down on short screens */
+@media (max-height: 700px){
+  .actions-rail, .right-rail {
+    transform: translateY(-50%) scale(.92);
+    transform-origin: center right;
+    gap: 8px;
+  }
+}
+
+/* Remove first action icon (circled icon) */
+.actions-rail > :first-child,
+.right-rail > :first-child {
+  display: none !important;
 }
 
 .rail-btn{
@@ -349,16 +368,32 @@ html, body, #app-root {
   }
 }
 
+/* Bottom-left avatar + caption (never hidden) */
 .caption, .caption-block{
   position: absolute;
   left: 12px;
-  right: 88px; /* leaves room for the actions rail */
-  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 16px);
+  right: 92px; /* room for action rail */
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 22px);
   z-index: 5;
-  color: white;
-  /* Clean layout for avatar + caption */
-  display: block;
-  padding: 8px 0;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 10px;
+  align-items: end;
+}
+
+.caption-block .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0,0,0,.35);
+}
+
+.caption-block .text {
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0,0,0,.5);
 }
 
 /* Caption text styling */
