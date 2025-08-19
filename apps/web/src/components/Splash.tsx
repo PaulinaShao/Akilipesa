@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Brand from "./Brand";
+import LoadingIcon from "./LoadingIcon";
 
 type Props = {
   durationMs?: number;
@@ -20,17 +20,18 @@ export default function Splash({
   }, [durationMs, onDone]);
 
   return (
-    <div className="fixed inset-0 z-[9999] grid place-items-center bg-[var(--bg)]">
-      <div className="relative w-[140px] h-[140px]">
-        {/* glow */}
-        <div className="absolute inset-0 rounded-full blur-2xl opacity-70"
-             style={{ background: "radial-gradient(closest-side, rgba(105,77,255,.45), rgba(0,0,0,0))" }} />
-        {/* Tanzanite logo with sparkles */}
-        <div className="relative z-10 w-full h-full">
-          <Brand size="lg" showWordmark={true} animated={true} />
+    <div className="fixed inset-0 z-[9999] grid place-items-center bg-[var(--tz-bg)]">
+      <div className="relative">
+        {/* Tanzanite glow effect */}
+        <div className="absolute inset-0 -m-8 rounded-full blur-3xl opacity-60"
+             style={{ background: "radial-gradient(closest-side, var(--tz-indigo), transparent)" }} />
+
+        {/* Tanzanite A Icon with animation */}
+        <div className="relative z-10">
+          <LoadingIcon size="lg" />
         </div>
       </div>
-      <p className="mt-6 text-sm tracking-wide text-white/70">AkiliPesa</p>
+      <p className="mt-8 text-lg font-medium tz-gem-text">AkiliPesa</p>
     </div>
   );
 }
