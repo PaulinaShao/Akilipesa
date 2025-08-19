@@ -83,35 +83,35 @@ export default function FeedItem(p: Props){
           </button>
         </div>
 
-        <RailButton 
-          icon={<Heart className={`h-7 w-7 ${p.liked ? 'fill-current text-red-500' : 'text-white'}`} />} 
-          count={p.counts.likes} 
+        <RailButton
+          icon={<Heart className={`w-6 h-6 ${p.liked ? 'fill-current text-red-400' : 'text-white'}`} />}
+          count={p.counts.likes}
           onClick={p.onLike}
           title="Like"
         />
-        <RailButton 
-          icon={<MessageCircle className="h-7 w-7 text-white" />} 
-          count={p.counts.comments} 
+        <RailButton
+          icon={<MessageCircle className="w-6 h-6 text-white" />}
+          count={p.counts.comments}
           onClick={p.onComment}
           title="Comment"
         />
-        <RailButton 
-          icon={<Share className="h-7 w-7 text-white" />} 
-          count={p.counts.shares} 
+        <RailButton
+          icon={<Share className="w-6 h-6 text-white" />}
+          count={p.counts.shares}
           onClick={p.onShare}
           title="Share"
         />
-        
-        {/* Call buttons - WhatsApp style */}
-        <RailButton 
-          icon={<Phone className="h-6 w-6 text-white" />} 
+
+        {/* Call buttons - AkiliPesa style */}
+        <RailButton
+          icon={<Phone className="w-5 h-5 text-white" />}
           onClick={p.onAudioCall}
-          title="Audio call" 
+          title="Audio call"
         />
-        <RailButton 
-          icon={<Video className="h-6 w-6 text-white" />} 
+        <RailButton
+          icon={<Video className="w-5 h-5 text-white" />}
           onClick={p.onVideoCall}
-          title="Video call" 
+          title="Video call"
         />
 
         {/* Spinning music disc */}
