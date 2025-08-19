@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import { Heart, MessageCircle, Share2, Sparkles, Radio } from "lucide-react";
-import AutoHideHeader from "@/components/AutoHideHeader";
 import VideoPlayer from "@/components/VideoPlayer";
 import { cn } from '@/lib/utils';
 
@@ -75,12 +74,6 @@ export default function TikTokReel({
         className="absolute inset-0"
       />
 
-      {/* Auto-hide header */}
-      <AutoHideHeader
-        onProfileClick={onProfile}
-        showLiveInfo={reel.user.isLive}
-        viewerCount="1.2k"
-      />
 
       {/* Right action rail */}
       <aside className="feed-right-rail flex flex-col items-center gap-4">
