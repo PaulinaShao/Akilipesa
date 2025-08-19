@@ -226,18 +226,19 @@ html, body, #app-root {
 .fab {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, var(--tz-accent), var(--tz-gold));
+  background: var(--tz-pleochroic);
   border: none;
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--tz-bg);
+  color: #0b1022;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 8px 20px rgba(106,90,205,.35);
   font-weight: bold;
   font-size: 24px;
+  position: relative;
 }
 
 .fab:hover {
