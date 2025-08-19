@@ -10,6 +10,9 @@
 /* Import layout-safe styles for persistent navigation */
 @import './styles/layout-safe.css';
 
+/* Import clean app shell styles */
+@import './styles/app-shell.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
