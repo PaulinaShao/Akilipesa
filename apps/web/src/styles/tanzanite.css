@@ -80,7 +80,7 @@ html,body,#root{height:100%; background:var(--tnz-bg); color:var(--tnz-fg);}
 /* Feed item */
 .feed-item{
   position: relative;
-  height: calc(var(--vh) - var(--header-h));
+  height: var(--vh);
   scroll-snap-align: start;
   overflow: hidden;
 }
