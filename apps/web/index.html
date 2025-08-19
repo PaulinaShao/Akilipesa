@@ -71,6 +71,12 @@
       // Store original fetch before FullStory or other wrappers modify it
       window._originalFetch = window.fetch.bind(window);
 
+      // Optional: Disable FullStory if it's causing fetch issues
+      if (new URLSearchParams(window.location.search).get('disable-fullstory') === 'true') {
+        console.log('🔧 FullStory disabled via URL parameter');
+        window.FS = { identify: () => {}, getCurrentSession: () => null };
+      }
+
       // Set --vh to the true visual viewport height (prevents URL bar jump)
       if ('visualViewport' in window) {
         const vv = window.visualViewport;
