@@ -65,7 +65,7 @@ export default function TikTokReel({
   };
 
   return (
-    <div className="relative w-full overflow-hidden tz-bg" style={{ height: '100%', minHeight: '100vh' }}>
+    <div className="feed-item relative w-full overflow-hidden" style={{ minHeight: 'calc(var(--vh) - var(--header-h))' }}>
       {/* Performance-optimized video player */}
       <VideoPlayer
         src={reel.videoUrl}
