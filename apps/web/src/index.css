@@ -231,17 +231,51 @@
     @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
   }
   
-  /* Reel specific styles */
+  /* Reel specific styles - Full-bleed edge-to-edge */
   .reel-container {
-    @apply h-full w-full relative overflow-hidden bg-black;
+    @apply h-full w-full relative overflow-hidden;
+    background: #0f1329; /* Match app background */
     scroll-snap-type: y mandatory;
+    max-width: none;
+    padding: 0;
+    margin: 0;
   }
 
   .reel-card {
-    @apply h-full w-full relative flex-shrink-0;
+    @apply relative flex-shrink-0;
     scroll-snap-align: start;
-    min-height: 100vh;
-    min-height: 100dvh;
+    /* Full-bleed positioning */
+    width: 100vw;
+    max-width: 100%;
+    margin: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    /* Height management */
+    height: 100svh; /* Mobile-first with small viewport height */
+    min-height: 100vh; /* Fallback for older browsers */
+    background: #000; /* Pure black for video content */
+    overflow: hidden;
+
+    /* Rounded corners on mobile only, flat on desktop */
+    border-radius: 0;
+  }
+
+  /* Mobile: Keep rounded corners for app-like feel */
+  @media (max-width: 768px) {
+    .reel-card {
+      border-radius: 16px;
+      height: 100svh;
+    }
+  }
+
+  /* Desktop: Full-bleed flat edges */
+  @media (min-width: 769px) {
+    .reel-card {
+      border-radius: 0;
+      height: 100vh;
+      /* Account for nav bars if needed */
+      height: calc(100vh - 56px);
+    }
   }
   
   .reel-video {
