@@ -43,7 +43,9 @@ export default function AppShell({children}: PropsWithChildren) {
       </div>
 
       <main className="app-content">
-        {children}
+        <div className="main">
+          {children}
+        </div>
       </main>
 
       <nav className="app-bottom-nav">
