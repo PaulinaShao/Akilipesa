@@ -270,9 +270,9 @@
               const isInSuspiciousArea = (rect.right > (window.innerWidth * 0.4)) &&
                                        (rect.bottom > (window.innerHeight * 0.4));
 
-              // Special check for elements above bottom navigation (common problem area)
-              const isAboveBottomNav = rect.bottom > (window.innerHeight * 0.8) &&
-                                     rect.right > (window.innerWidth * 0.6);
+              // Special check for elements above bottom navigation (expanded area)
+              const isAboveBottomNav = rect.bottom > (window.innerHeight * 0.7) &&
+                                     rect.right > (window.innerWidth * 0.5);
 
               // Check if it's positioned/floating
               const isPositioned = ['fixed', 'absolute'].includes(pos);
