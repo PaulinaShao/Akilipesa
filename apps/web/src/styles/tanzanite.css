@@ -24,9 +24,10 @@ html, body, #app-root {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
-#app-root { 
+#app-root {
   min-height: 100svh;  /* use small viewport to prevent jumping */
-  display: grid; 
+  min-height: calc(var(--vh, 1svh) * 100); /* fallback for older iOS */
+  display: grid;
   grid-template-rows: auto 1fr; /* bottom nav is fixed, not in grid */
   overscroll-behavior-y: contain; /* avoids rubber-band scroll pulling bars */
 }
