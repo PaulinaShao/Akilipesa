@@ -90,7 +90,8 @@ html, body, #app-root {
    We reserve space so content never hides behind the fixed bottom nav. */
 .content, .app-content{
   overflow: auto;
-  padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px);
+  padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 16px);
+  scroll-padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 16px);
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
 }
