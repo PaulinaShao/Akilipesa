@@ -222,12 +222,12 @@ html, body, #app-root {
 }
 
 /* Right Action Rail */
-.right-rail{
-  position: absolute; 
+.right-rail, .actions-rail{
+  position: absolute;
   right: 12px;
-  bottom: calc(var(--nav-h) + var(--safe-bottom) + 20px);
-  display: flex; 
-  flex-direction: column; 
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 12px);
+  display: flex;
+  flex-direction: column;
   gap: 12px;
   z-index: 40;
 }
