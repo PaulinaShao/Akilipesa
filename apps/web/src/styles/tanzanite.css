@@ -416,22 +416,28 @@ html, body, #app-root {
   }
 }
 
-/* Media coverage - perfect fill without gaps */
+/* Media coverage - FORCE perfect fill without gaps */
 .feed-media, .feed-item video, .feed-item img, .feed-item canvas,
 .reel video, .reel img, .reel canvas,
 .feed-card video, .feed-card img, .feed-card canvas {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
   object-fit: cover;
   background: #000;
+  border: none;
+  outline: none;
 }
 
 /* Specific reel media rules for full coverage */
 .reel video, .reel img, .reel canvas {
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
   object-fit: cover;
 }
 
