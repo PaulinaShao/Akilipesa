@@ -262,8 +262,8 @@
                 return isSignificantlyGreen;
               })();
 
-              // Check if it's pill/bar-like dimensions
-              const isPillLike = (r > 6) && (w > 60) && (h >= 16 && h <= 120);
+              // Check if it's pill/bar-like dimensions (expanded to catch more cases)
+              const isPillLike = (r > 3) && (w > 40) && (h >= 12 && h <= 200);
 
               // Check if positioned in suspicious area (bottom-right quadrant or above bottom nav)
               const rect = el.getBoundingClientRect();
