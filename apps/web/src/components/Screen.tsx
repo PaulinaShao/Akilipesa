@@ -49,7 +49,7 @@ export default function Screen({ id, children, className = "" }: Props) {
   return (
     <main
       ref={ref}
-      className={`scroll-screen relative tz-bg ${className}`}
+      className={`scroll-screen ${className}`}
     >
       {children}
     </main>
