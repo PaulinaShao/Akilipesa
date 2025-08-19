@@ -4,9 +4,12 @@
 let originalFetch: typeof fetch;
 
 export function isolateFirebaseFromFetchWrappers() {
+  // Use the preserved original fetch from the HTML script
+  const preservedFetch = (window as any)._originalFetch;
+
   // Store the original fetch before any wrappers are applied
   if (!originalFetch) {
-    originalFetch = window.fetch.bind(window);
+    originalFetch = preservedFetch || window.fetch.bind(window);
   }
 
   // Create a clean fetch function for Firebase
