@@ -59,13 +59,13 @@ html,body,#root{height:100%; background:var(--tnz-bg); color:var(--tnz-fg);}
 /* Bottom nav (always visible) */
 .bottom-nav{
   position: fixed;
-  bottom: 0;
+  bottom: max(env(safe-area-inset-bottom), 20px);
   left: 0;
   right: 0;
-  height: calc(var(--nav-h) + env(safe-area-inset-bottom));
+  height: var(--nav-h);
   z-index: 9999;
-  padding-bottom: env(safe-area-inset-bottom);
   background: var(--tnz-bg);
+  border-top: 1px solid rgba(255,255,255,0.1);
 }
 .bottom-nav ul{
   height: 100%;
