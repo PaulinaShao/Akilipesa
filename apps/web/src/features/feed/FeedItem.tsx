@@ -36,8 +36,11 @@ export default function FeedItem(p: Props){
     return () => io.disconnect();
   }, [p.media.type]);
 
-  const truncatedCaption = p.caption.length > 100 ? p.caption.substring(0, 100) + '...' : p.caption;
-  const shouldShowMore = p.caption.length > 100;
+  // Keep caption to three words only for TikTok-style brevity
+  const words = p.caption.split(' ');
+  const threeWordCaption = words.slice(0, 3).join(' ');
+  const truncatedCaption = words.length > 3 ? threeWordCaption + '...' : p.caption;
+  const shouldShowMore = words.length > 3;
 
   return (
     <section className="feed-item">
