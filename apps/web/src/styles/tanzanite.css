@@ -843,41 +843,112 @@ html, body, #app-root {
   bottom: max(calc(var(--safe-bottom) + var(--extra-lift)), 20px);
 }
 
-/* Hide any unwanted overlays that might appear */
-[data-test-id*="debug"],
-[class*="debug"],
-[id*="debug"],
-.debug-overlay,
-.debug-panel,
-.recording-indicator,
-.live-indicator,
-video::-webkit-media-controls,
-video::-webkit-media-controls-panel,
-video::-webkit-media-controls-start-playback-button,
-video::-webkit-media-controls-play-button,
-video::-webkit-media-controls-timeline,
-video::-webkit-media-controls-current-time-display,
-video::-webkit-media-controls-time-remaining-display,
-video::-webkit-media-controls-mute-button,
-video::-webkit-media-controls-volume-slider,
-video::-webkit-media-controls-fullscreen-button {
+/* COMPREHENSIVE GREEN OVERLAY KILL-SWITCH */
+
+/* 1) Nuke obvious green bars and debug elements */
+.content .kill-green,
+.content .debug,
+.content .overlay-progress,
+.content .highlight,
+.content [data-debug],
+.content [data-overlay="progress"],
+.content [data-test-id="progress"],
+.content [aria-label="progress"],
+.content [data-test-id*="debug"],
+.content [class*="debug"],
+.content [id*="debug"],
+.content .debug-overlay,
+.content .debug-panel,
+.content .recording-indicator,
+.content .live-indicator {
   display: none !important;
   opacity: 0 !important;
   visibility: hidden !important;
 }
 
-/* Hide any green overlays or indicators */
-.green-overlay,
-.status-indicator,
-.connection-indicator,
-[style*="background: green"],
-[style*="background-color: green"],
-[style*="bg-green"] {
+/* 2) Hide video controls that might show overlays */
+.content video::-webkit-media-controls,
+.content video::-webkit-media-controls-panel,
+.content video::-webkit-media-controls-start-playback-button,
+.content video::-webkit-media-controls-play-button,
+.content video::-webkit-media-controls-timeline,
+.content video::-webkit-media-controls-current-time-display,
+.content video::-webkit-media-controls-time-remaining-display,
+.content video::-webkit-media-controls-mute-button,
+.content video::-webkit-media-controls-volume-slider,
+.content video::-webkit-media-controls-fullscreen-button {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* 3) Target suspicious overlay classes within feed items */
+.content .feed-item .overlay,
+.content .feed-item [class*="overlay"],
+.content .feed-item [class*="progress"],
+.content .feed-item [class*="highlight"],
+.content .feed-item [class*="bar"],
+.content .feed-item [class*="indicator"] {
+  pointer-events: none;
+}
+
+/* 4) Heuristic blocker: green backgrounds in bottom-right quadrant */
+.content .feed-item ._green-bar_,
+.content .feed-item [style*="background: rgb(34"],
+.content .feed-item [style*="background: rgb(0, 128, 0"],
+.content .feed-item [style*="background: rgb(0,128,0"],
+.content .feed-item [style*="background:rgba(0, 128, 0"],
+.content .feed-item [style*="background: rgba(0,128,0"],
+.content .feed-item [style*="background-color: rgb(34"],
+.content .feed-item [style*="background-color: rgb(0, 128, 0"],
+.content .feed-item [style*="background-color: rgb(0,128,0"],
+.content .feed-item [style*="background-color: rgba(0, 128, 0"],
+.content .feed-item [style*="background-color: rgba(0,128,0"],
+.content .feed-item [style*="background: green"],
+.content .feed-item [style*="background-color: green"],
+.content [style*="bg-green"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* 5) Nuclear option: any suspicious fixed/absolute elements */
+.content div[style*="position: fixed"][style*="bottom"][style*="right"],
+.content div[style*="position: absolute"][style*="bottom"][style*="right"] {
+  /* Only hide if they have green/suspicious characteristics */
+}
+
+.content div[style*="position: fixed"][style*="bottom"][style*="right"][style*="green"],
+.content div[style*="position: absolute"][style*="bottom"][style*="right"][style*="green"],
+.content div[style*="position: fixed"][style*="background: rgb(0"],
+.content div[style*="position: absolute"][style*="background: rgb(0"] {
   display: none !important;
 }
 
-/* Ensure no external debugging tools show up */
-div[style*="position: fixed"][style*="bottom"][style*="right"][style*="green"],
-div[style*="position: absolute"][style*="bottom"][style*="right"][style*="green"] {
+/* 6) Ensure proper z-index hierarchy */
+.content .actions-rail {
+  z-index: 5 !important;
+}
+.content .caption-block {
+  z-index: 5 !important;
+}
+.content .bottomnav {
+  z-index: 50 !important;
+}
+
+/* 7) Hide common shape/progress elements */
+.content .shape,
+.content .rectangle,
+.content .progress-bar,
+.content .status-bar,
+.content .green-overlay,
+.content .status-indicator,
+.content .connection-indicator,
+.content [data-shape],
+.content [data-progress],
+.content [data-overlay],
+.content [aria-label*="progress"],
+.content [aria-label*="loading"],
+.content [aria-label*="status"] {
   display: none !important;
 }
