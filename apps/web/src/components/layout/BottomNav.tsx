@@ -28,9 +28,7 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className="bottom-nav fixed bottom-0 inset-x-0 h-[var(--nav-h)]
-                   px-4 pt-2 pb-[calc(env(safe-area-inset-bottom)+10px)]
-                   tnz-glass backdrop-saturate-150">
+    <nav className="bottom-nav tnz-glass backdrop-saturate-150 px-4 pt-2">
       <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-1 items-center justify-items-center min-h-[52px]">
         <Item
           icon={<Home className="h-6 w-6" />}
