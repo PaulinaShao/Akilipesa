@@ -36,11 +36,17 @@ export default function FeedItem(p: Props){
     return () => io.disconnect();
   }, [p.media.type]);
 
-  // Keep caption to three words only for TikTok-style brevity
-  const words = p.caption.split(' ');
-  const threeWordCaption = words.slice(0, 3).join(' ');
-  const truncatedCaption = words.length > 3 ? threeWordCaption + '...' : p.caption;
-  const shouldShowMore = words.length > 3;
+  // Clean caption: remove hashtags and keep exactly 3 words
+  const cleanCaption = (str: string) => {
+    if (!str) return "";
+    // Remove hashtags
+    const noHash = str.replace(/#[^\s#]+/g, "").trim();
+    // Take first 3 words
+    const words = noHash.split(/\s+/).filter(Boolean).slice(0, 3);
+    return words.join(" ");
+  };
+
+  const truncatedCaption = cleanCaption(p.caption);
 
   return (
     <section className="feed-item">
