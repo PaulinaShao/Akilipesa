@@ -253,7 +253,7 @@
     /* Height management */
     height: 100svh; /* Mobile-first with small viewport height */
     min-height: 100vh; /* Fallback for older browsers */
-    background: #000; /* Pure black for video content */
+    background: transparent; /* Remove dark background for clean view */
     overflow: hidden;
 
     /* Rounded corners on mobile only, flat on desktop */
@@ -280,7 +280,10 @@
   
   .reel-video, .reel-card video, .reel-card img, .reel-card canvas {
     @apply absolute inset-0 w-full h-full object-cover;
-    background: #000; /* Avoid white flashes during load */
+    background: transparent; /* Remove black background */
+    /* Ensure perfect edge-to-edge fit */
+    min-width: 100%;
+    min-height: 100%;
   }
   
   .reel-overlay {
