@@ -54,9 +54,9 @@ export default function FeedItem(p: Props){
           playsInline
           loop
           style={{
-            left: "-6px",
-            top: "-39px",
-            width: "726px"
+            left: "-335px",
+            top: "58px",
+            width: "738px"
           }}
         />
       ) : (
@@ -122,7 +122,13 @@ export default function FeedItem(p: Props){
       </aside>
 
       {/* Caption */}
-      <div className="caption">
+      <div
+        className="caption"
+        style={{
+          left: "536px",
+          top: "746px"
+        }}
+      >
         <div style={{ marginBottom: "6px" }}>
           <span className="user">@{p.user}</span>
           {p.live && <span className="live">LIVE</span>}
