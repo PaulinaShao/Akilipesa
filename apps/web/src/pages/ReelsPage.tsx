@@ -862,7 +862,11 @@ export default function ReelsPage() {
         {reels.map((reel, index) => (
           <div
             key={reel.id}
-            className="h-screen snap-start"
+            className="h-screen snap-start flex items-center justify-center"
+            style={{
+              scrollSnapAlign: 'start',
+              scrollSnapStop: 'always'
+            }}
             {...(index === 1 ? { 'data-second-reel': 'true' } : {})}
           >
             <TikTokReel
