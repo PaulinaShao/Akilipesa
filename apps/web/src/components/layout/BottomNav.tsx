@@ -96,10 +96,10 @@ function NavItem({ icon, label, active = false, showDot = false, onClick }: {
   return (
     <button
       onClick={onClick}
-      className={`relative flex flex-col items-center gap-1 p-2 transition-all duration-200 min-h-[50px] min-w-[50px] ${
-        active 
-          ? 'text-white' 
-          : 'text-gray-300 hover:text-white'
+      className={`relative flex flex-col items-center gap-1 p-1 transition-all duration-200 min-h-[50px] min-w-[50px] ${
+        active
+          ? 'text-white'
+          : 'text-gray-400 hover:text-white'
       }`}
       aria-label={label}
     >
