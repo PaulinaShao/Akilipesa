@@ -130,5 +130,82 @@
     </script>
 
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Auto-contrast script for action icons -->
+    <script>
+/**
+ * Auto-contrast per icon: adds .on-light or .on-dark to .ak-action
+ * Call after the reel loads & on slide changes.
+ */
+(function(){
+  const THRESH = 0.6; // luminance threshold (0-1). >0.6 = bright
+
+  function luminanceOf(rgb){
+    const [r,g,b] = rgb.map(v => {
+      v/=255;
+      return v<=0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4);
+    });
+    return 0.2126*r + 0.7152*g + 0.0722*b;
+  }
+
+  function sampleBehind(el){
+    // Create an offscreen canvas to sample an area (8x8) under the element, if it's a <video> or <img> background.
+    const reel = el.closest('.reel, .feed-item');
+    const video = reel && reel.querySelector('video');
+    const img   = reel && reel.querySelector('img');
+
+    const rect = el.getBoundingClientRect();
+    const rr   = reel.getBoundingClientRect();
+    const xRel = Math.max(0, Math.min((rect.left + rect.width/2) - rr.left, rr.width-1));
+    const yRel = Math.max(0, Math.min((rect.top + rect.height/2)  - rr.top,  rr.height-1));
+
+    const c = document.createElement('canvas');
+    c.width = c.height = 8; const ctx = c.getContext('2d', { willReadFrequently:true });
+
+    try{
+      if (video && video.readyState >= 2){
+        ctx.drawImage(video, xRel/video.clientWidth * video.videoWidth,
+                              yRel/video.clientHeight* video.videoHeight, 8,8, 0,0,8,8);
+      } else if (img && img.complete){
+        ctx.drawImage(img, xRel/img.clientWidth * img.naturalWidth,
+                           yRel/img.clientHeight* img.naturalHeight, 8,8, 0,0,8,8);
+      } else {
+        return null;
+      }
+      const data = ctx.getImageData(0,0,8,8).data;
+      let r=0,g=0,b=0,count=0;
+      for(let i=0;i<data.length;i+=4){ r+=data[i]; g+=data[i+1]; b+=data[i+2]; count++; }
+      return luminanceOf([r/count, g/count, b/count]);
+    }catch(e){ return null; }
+  }
+
+  function applyContrast(){
+    document.querySelectorAll('.ak-action, .rail-btn').forEach(el=>{
+      const L = sampleBehind(el);
+      el.classList.remove('on-light','on-dark');
+      el.classList.add((L!==null && L>THRESH) ? 'on-light' : 'on-dark');
+    });
+  }
+
+  // Re-run when a reel comes into view
+  const io = new IntersectionObserver((ents)=>{
+    if(ents.some(e=>e.isIntersecting)) requestAnimationFrame(applyContrast);
+  }, {threshold:[0.2,0.5,0.8]});
+
+  // Observe both .reel and .feed-item containers
+  const observer = setInterval(() => {
+    document.querySelectorAll('.reel, .feed-item').forEach(r => {
+      if (!r.hasAttribute('data-contrast-observed')) {
+        io.observe(r);
+        r.setAttribute('data-contrast-observed', 'true');
+      }
+    });
+  }, 1000);
+
+  // Also re-run on resize and when video frames update a bit later
+  window.addEventListener('resize', ()=>requestAnimationFrame(applyContrast));
+  setInterval(applyContrast, 1200); // lightweight periodic refresh
+})();
+    </script>
   </body>
 </html>
