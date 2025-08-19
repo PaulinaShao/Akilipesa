@@ -146,7 +146,7 @@ export default function FeedScreen() {
   };
 
   return (
-    <AppShell>
+    <>
       {feedData.map((item) => (
         <FeedItem 
           key={item.id}
@@ -165,6 +165,6 @@ export default function FeedScreen() {
           onProfile={() => handleProfile(item.user)}
         />
       ))}
-    </AppShell>
+    </>
   );
 }
