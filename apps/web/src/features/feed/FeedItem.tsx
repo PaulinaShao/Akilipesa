@@ -70,19 +70,19 @@ export default function FeedItem(p: Props){
       {/* Right action rail */}
       <aside className="right-rail">
         <RailButton
-          icon={<Heart className={`w-6 h-6 ${p.liked ? 'fill-current text-red-400' : 'text-white'}`} />}
+          icon={<Heart className={`w-7 h-7 ${p.liked ? 'fill-current text-red-400' : 'text-white'}`} />}
           count={p.counts.likes}
           onClick={p.onLike}
           title="Like"
         />
         <RailButton
-          icon={<MessageCircle className="w-6 h-6 text-white" />}
+          icon={<MessageCircle className="w-7 h-7 text-white" />}
           count={p.counts.comments}
           onClick={p.onComment}
           title="Comment"
         />
         <RailButton
-          icon={<Share className="w-6 h-6 text-white" />}
+          icon={<Share className="w-7 h-7 text-white" />}
           count={p.counts.shares}
           onClick={p.onShare}
           title="Share"
@@ -90,12 +90,12 @@ export default function FeedItem(p: Props){
 
         {/* Call buttons - AkiliPesa style */}
         <RailButton
-          icon={<Phone className="w-5 h-5 text-white" />}
+          icon={<Phone className="w-7 h-7 text-white" />}
           onClick={p.onAudioCall}
           title="Audio call"
         />
         <RailButton
-          icon={<Video className="w-5 h-5 text-white" />}
+          icon={<Video className="w-7 h-7 text-white" />}
           onClick={p.onVideoCall}
           title="Video call"
         />
@@ -158,7 +158,7 @@ function RailButton({
   return (
     <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
       <button
-        className="rail-btn"
+        className="rail-btn ak-action"
         aria-label={title ?? "Button"}
         onClick={onClick}
       >
