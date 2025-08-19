@@ -62,42 +62,39 @@ export default function FeedItem(p: Props){
         <img className="feed-media" src={p.media.src} alt="" />
       )}
 
-      {/* bottom fade never blocks taps */}
-      <div className="bottom-fade" aria-hidden />
+      {/* Subtle gradient overlay for text readability */}
+      <div className="caption-overlay" aria-hidden="true" />
 
       {/* Right action rail */}
       <aside className="right-rail">
         <RailButton
-          icon={<Heart className={`w-7 h-7 ${p.liked ? 'fill-current text-red-400' : 'text-white'}`} />}
+          icon={<Heart className={`${p.liked ? 'fill-current text-red-400' : 'text-white'}`} size={28} />}
           count={p.counts.likes}
           onClick={p.onLike}
           title="Like"
         />
         <RailButton
-          icon={<MessageCircle className="w-7 h-7 text-white" />}
+          icon={<MessageCircle className="text-white" size={28} />}
           count={p.counts.comments}
           onClick={p.onComment}
           title="Comment"
         />
         <RailButton
-          icon={<Share className="w-7 h-7 text-white" />}
+          icon={<Share className="text-white" size={28} />}
           count={p.counts.shares}
           onClick={p.onShare}
           title="Share"
         />
-
-        {/* Call buttons - AkiliPesa style */}
         <RailButton
-          icon={<Phone className="w-7 h-7 text-white" />}
+          icon={<Phone className="text-white" size={28} />}
           onClick={p.onAudioCall}
           title="Audio call"
         />
         <RailButton
-          icon={<Video className="w-7 h-7 text-white" />}
+          icon={<Video className="text-white" size={28} />}
           onClick={p.onVideoCall}
           title="Video call"
         />
-
       </aside>
 
       {/* Caption Block with Avatar */}
@@ -106,38 +103,33 @@ export default function FeedItem(p: Props){
           className="avatar"
           onClick={p.onProfile}
           style={{
-            border: "2px solid white",
             background: "linear-gradient(45deg, #6da8ff, #7d6bff)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
             fontSize: "16px",
-            color: "white"
+            color: "white",
+            border: "none"
           }}
           aria-label={`View ${p.user}'s profile`}
         >
           @
         </button>
         <div className="text">
-          <div style={{ marginBottom: "4px" }}>
-            <span style={{ fontWeight: "600" }}>@{p.user}</span>
-            {p.live && <span style={{
-              background: "#ff3b30",
-              color: "white",
-              padding: "2px 6px",
-              borderRadius: "4px",
-              fontSize: "11px",
-              fontWeight: "600",
-              marginLeft: "6px"
-            }}>LIVE</span>}
+          <div className="username">
+            @{p.user}
+            {p.live && (
+              <span className="ml-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold">
+                LIVE
+              </span>
+            )}
           </div>
-          <div>
+          <div className="caption-text">
             {truncatedCaption}
           </div>
         </div>
       </div>
-
     </section>
   );
 }
