@@ -169,7 +169,12 @@ function App() {
     initFirebase();
 
     // Initialize fetch wrapper for problematic environments (like fly.dev with FullStory)
-    initializeFetchWrapper();
+    // Only if not explicitly disabled via environment variable
+    if (import.meta.env.VITE_DISABLE_FETCH_WRAPPER !== 'true') {
+      initializeFetchWrapper();
+    } else {
+      console.log('🔧 Fetch wrapper disabled via environment variable');
+    }
 
     // Initialize reCAPTCHA container for phone auth
     ensureRecaptchaContainer();
