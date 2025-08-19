@@ -198,5 +198,105 @@
   window.addEventListener('resize',()=>requestAnimationFrame(apply));
 })();
     </script>
+    <!-- Green Overlay Kill Script - Runtime Guard -->
+    <script>
+      (function() {
+        'use strict';
+
+        // Wait for DOM ready
+        function onReady(fn) {
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', fn);
+          } else {
+            fn();
+          }
+        }
+
+        onReady(function() {
+          const scope = document.querySelector('.content, #feed, [data-page="reels"], .reels-page, .reels') || document;
+
+          // Detect suspicious green overlays
+          const isSuspiciousGreenOverlay = (el) => {
+            if (!el || !(el instanceof HTMLElement)) return false;
+
+            try {
+              const cs = getComputedStyle(el);
+              const bg = cs.backgroundColor.toLowerCase();
+              const w = el.offsetWidth;
+              const h = el.offsetHeight;
+              const r = parseFloat(cs.borderRadius) || 0;
+              const pos = cs.position;
+
+              // Check if element has greenish background
+              const isGreenish = (() => {
+                if (!/rgb/.test(bg)) return false;
+                const match = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+                if (!match) return false;
+                const [red, green, blue] = [+match[1], +match[2], +match[3]];
+                // Green channel significantly higher than red and blue
+                return green > red + 30 && green > blue + 30;
+              })();
+
+              // Check if it's pill/bar-like dimensions
+              const isPillLike = (r > 8) && (w > 80) && (h >= 20 && h <= 100);
+
+              // Check if positioned in suspicious area (bottom-right quadrant)
+              const rect = el.getBoundingClientRect();
+              const isInSuspiciousArea = (rect.right > (window.innerWidth * 0.5)) &&
+                                       (rect.bottom > (window.innerHeight * 0.5));
+
+              // Check if it's positioned/floating
+              const isPositioned = ['fixed', 'absolute'].includes(pos);
+
+              return isGreenish && isPillLike && isInSuspiciousArea && isPositioned;
+
+            } catch (e) {
+              return false;
+            }
+          };
+
+          // Remove suspicious elements
+          const zapSuspiciousElements = (root) => {
+            const elements = root.querySelectorAll('*');
+            elements.forEach(el => {
+              if (isSuspiciousGreenOverlay(el)) {
+                console.warn('AkiliPesa: Removing suspicious green overlay:', el);
+                el.remove();
+              }
+            });
+          };
+
+          // Initial cleanup
+          zapSuspiciousElements(scope);
+
+          // Watch for dynamically added elements
+          const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+              mutation.addedNodes.forEach(node => {
+                if (node.nodeType === 1) { // Element node
+                  if (isSuspiciousGreenOverlay(node)) {
+                    console.warn('AkiliPesa: Removing dynamically added green overlay:', node);
+                    node.remove();
+                  } else {
+                    // Check children of added node
+                    zapSuspiciousElements(node);
+                  }
+                }
+              });
+            });
+          });
+
+          observer.observe(scope, {
+            childList: true,
+            subtree: true
+          });
+
+          // Periodic cleanup (every 2 seconds)
+          setInterval(() => zapSuspiciousElements(scope), 2000);
+
+          console.log('AkiliPesa: Green overlay guard active');
+        });
+      })();
+    </script>
   </body>
 </html>
