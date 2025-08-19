@@ -171,6 +171,8 @@ function App() {
     // Detect and fix fetch wrapping issues before Firebase init
     if (detectFetchIssues()) {
       isolateFirebaseFromFetchWrappers();
+      // Also apply enhanced isolation as backup
+      enhanceFirebaseNetworkIsolation();
     }
 
     // Initialize Firebase first
