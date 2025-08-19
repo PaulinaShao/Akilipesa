@@ -26,7 +26,7 @@ export default function BottomNav(){
 
   return (
     <nav className="bottomnav">
-      <div className="row">
+      <div className="row nav-row">
         <Item
           icon={<Home className="w-6 h-6" />}
           label="Home"
