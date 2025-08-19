@@ -1,14 +1,13 @@
 import { useEffect, useRef } from "react";
 
-type Props = {
-  id?: string;
+type Props = { 
+  id?: string; 
   children: React.ReactNode;
   className?: string;
 };
 
-/**
- * Wrap each page with <Screen>...</Screen>
- * Keeps scroll + nav spacing everywhere
+/** 
+ * Clean scroll-screen wrapper for all pages
  */
 export default function Screen({ id, children, className = "" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
@@ -16,11 +15,11 @@ export default function Screen({ id, children, className = "" }: Props) {
   // Restore remembered scroll position for this screen (if id provided)
   useEffect(() => {
     if (!id) return;
-
+    
     const key = `scroll:${id}`;
     const y = Number(sessionStorage.getItem(key) ?? 0);
     const el = ref.current;
-
+    
     if (el) {
       // Use requestAnimationFrame to ensure DOM is ready
       requestAnimationFrame(() => {
@@ -34,7 +33,7 @@ export default function Screen({ id, children, className = "" }: Props) {
       const saveScroll = () => {
         sessionStorage.setItem(key, String(el.scrollTop));
       };
-
+      
       if ('requestIdleCallback' in window) {
         requestIdleCallback(saveScroll);
       } else {
@@ -47,7 +46,7 @@ export default function Screen({ id, children, className = "" }: Props) {
   }, [id]);
 
   return (
-    <main
+    <main 
       ref={ref}
       className={`scroll-screen ${className}`}
     >
