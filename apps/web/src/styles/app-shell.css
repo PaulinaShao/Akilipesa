@@ -1,10 +1,10 @@
 /* --- Tanzanite App Shell tokens --- */
 :root{
   --vh: 100svh;            /* stable viewport height */
-  --nav-h: 64px;           /* bottom nav height */
-  --header-h: 56px;        /* header height */
+  --nav-h: 60px;           /* bottom nav height (TikTok style) */
+  --header-h: 100px;       /* header height (TikTok header with tabs and search) */
   --gap: 12px;             /* base gap */
-  --tnz-bg: #080f1f;       /* deep Tanzanite night */
+  --tnz-bg: #000000;       /* TikTok black background */
   --tnz-glass: rgba(8,15,31,.6);
   --tnz-glow: 0 10px 30px rgba(67,97,238,.25);
 }
