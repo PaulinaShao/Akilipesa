@@ -721,15 +721,18 @@ html, body, #app-root {
 /* Remove max-width restrictions from parent containers */
 .content, .app-content {
   max-width: none; /* Allow full-width content */
-  padding-left: 0; /* Remove side padding */
-  padding-right: 0; /* Remove side padding */
+  width: 100%;
+  padding: 0; /* Remove all padding */
+  margin: 0; /* Remove all margins */
 }
 
 /* Ensure feed container doesn't restrict width */
 #feed {
   max-width: none;
+  width: 100%;
   padding: 0;
   margin: 0;
+  overflow-x: hidden;
 }
 
 /* Remove heavy dark band overlays; use only top gradient */
