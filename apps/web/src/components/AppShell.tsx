@@ -3,18 +3,11 @@ import TopBar from "./layout/TopBar";
 import BottomNav from "./layout/BottomNav";
 import "../styles/tanzanite.css";
 
-export default function AppShell({children}: PropsWithChildren) {
+export default function AppShell({ children }: PropsWithChildren) {
   return (
-    <div className="app-shell">
-      {/* Top Bar */}
+    <div id="app-root" className="app">
       <TopBar />
-
-      {/* Main Content Area */}
-      <main className="app-content">
-        {children}
-      </main>
-
-      {/* Bottom Navigation */}
+      <main id="feed" className="content">{children}</main>
       <BottomNav />
     </div>
   );
