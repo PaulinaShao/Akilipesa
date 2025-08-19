@@ -38,7 +38,7 @@ export default function AppShell({children}: PropsWithChildren) {
 
   return (
     <div className="app-shell">
-      <div ref={headerRef} className="app-header auto-hide tnz-glass">
+      <div ref={headerRef} className="app-header auto-hide">
         <HeaderTabs />
       </div>
 
