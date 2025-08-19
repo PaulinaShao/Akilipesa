@@ -401,9 +401,9 @@ function App() {
           } />
 
           <Route path="/profile/:userId" element={
-            <MobileLayout>
+            <AppShell>
               <ProfilePage />
-            </MobileLayout>
+            </AppShell>
           } />
 
           {/* Core routes (guest accessible) */}
