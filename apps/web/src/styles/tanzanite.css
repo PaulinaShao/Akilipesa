@@ -197,18 +197,20 @@ html, body, #app-root {
   image-rendering: crisp-edges;
 }
 
-/* Scrollable feed area with snap scrolling - full bleed */
+/* Scrollable feed area - NUCLEAR full bleed override */
 .content, .app-content{
   overflow: auto;
-  padding: 0;
-  margin: 0;
+  padding: 0 !important;
+  margin: 0 !important;
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
-  max-width: none;
-  width: 100%;
+  max-width: none !important;
+  width: 100% !important;
   height: 100vh;
   overscroll-behavior-y: contain;
   position: relative;
+  /* Remove any box-sizing constraints */
+  box-sizing: border-box;
 }
 
 /* Bottom nav — FIXED and LIFTED above system bar */
