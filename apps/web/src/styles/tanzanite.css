@@ -363,17 +363,27 @@ html, body, #app-root {
   box-sizing: border-box !important;
 }
 
-/* Full viewport height minus bottom nav space */
+/* TRUE FULL VIEWPORT: TikTok-style implementation without top gaps */
 @supports(height: 100dvh){
   .feed-item, .feed-card, .reel{
-    height: calc(100dvh - calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift)));
-    min-height: calc(100dvh - calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift)));
+    /* Use full viewport height - let content extend under top bar */
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    /* Position to cover from very top */
+    top: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
   }
 }
 @supports not (height: 100dvh){
   .feed-item, .feed-card, .reel{
-    height: calc(100svh - calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift)));
-    min-height: calc(100svh - calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift)));
+    /* Use full viewport height - let content extend under top bar */
+    height: 100svh !important;
+    min-height: 100svh !important;
+    /* Position to cover from very top */
+    top: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
   }
 }
 
