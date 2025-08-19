@@ -28,8 +28,9 @@ html,body,#root{height:100%; background:var(--tnz-bg); color:var(--tnz-fg);}
 
 .app-shell{
   height: var(--vh);
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 .app-header{
