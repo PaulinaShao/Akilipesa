@@ -46,7 +46,7 @@ export default function AppShell({children}: PropsWithChildren) {
         {children}
       </main>
 
-      <nav className="bottom-nav tnz-glass">
+      <nav className="bottom-nav">
         <BottomNav />
       </nav>
     </div>
