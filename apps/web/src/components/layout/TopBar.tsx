@@ -29,40 +29,50 @@ export default function TopBar({ className = '' }: TopBarProps) {
   return (
     <div className={`top-bar ${className}`}>
       <div className="top-bar-content">
-        {/* Left: AkiliPesa Logo */}
+        {/* Left: AkiliPesa Wordmark with Tanzanite Gradient */}
         <div className="top-bar-left">
-          <div className="flex items-center gap-2">
-            {/* Logo SVG - Tanzanite variant */}
-            <svg 
-              className="logo" 
-              viewBox="0 0 120 32" 
-              fill="none" 
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {/* AkiliPesa logo with Tanzanite colors */}
-              <defs>
-                <linearGradient id="tanzanite-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--tz-accent)" />
-                  <stop offset="100%" stopColor="var(--tz-gold)" />
-                </linearGradient>
-              </defs>
-              <circle cx="16" cy="16" r="12" fill="url(#tanzanite-gradient)" />
-              <path 
-                d="M12 12h8l-2 8h-4l-2-8z" 
-                fill="white" 
-                opacity="0.9"
-              />
-              <text 
-                x="36" 
-                y="20" 
-                fill="white" 
-                fontSize="14" 
-                fontWeight="600" 
-                fontFamily="var(--font-primary)"
+          <div className="flex items-center gap-3">
+            {/* Tanzanite "A" Icon with flag stripe */}
+            <div className="relative">
+              <svg
+                className="w-8 h-8"
+                viewBox="0 0 32 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                AkiliPesa
-              </text>
-            </svg>
+                <defs>
+                  <linearGradient id="tanzanite-pleochroic" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--tz-blue-deep)" />
+                    <stop offset="55%" stopColor="var(--tz-indigo)" />
+                    <stop offset="100%" stopColor="var(--tz-violet)" />
+                  </linearGradient>
+                  {/* Tanzania flag stripe */}
+                  <linearGradient id="tz-flag-stripe" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#1db954" />    {/* green */}
+                    <stop offset="20%" stopColor="#c9a24a" />   {/* yellow */}
+                    <stop offset="40%" stopColor="#000" />      {/* black */}
+                    <stop offset="60%" stopColor="#c9a24a" />   {/* yellow */}
+                    <stop offset="80%" stopColor="#0052cc" />   {/* blue */}
+                  </linearGradient>
+                </defs>
+                {/* Main "A" shape */}
+                <path
+                  d="M16 4L24 28H20L18.5 24H13.5L12 28H8L16 4Z M15 16H17L16 12L15 16Z"
+                  fill="url(#tanzanite-pleochroic)"
+                />
+                {/* Flag stripe on A leg */}
+                <rect x="12" y="20" width="2" height="8" fill="url(#tz-flag-stripe)" opacity="0.8" />
+                {/* AI node cluster (subtle) */}
+                <circle cx="16" cy="14" r="1.5" fill="white" opacity="0.6" />
+                <circle cx="14" cy="16" r="1" fill="white" opacity="0.4" />
+                <circle cx="18" cy="16" r="1" fill="white" opacity="0.4" />
+              </svg>
+            </div>
+
+            {/* Wordmark with Tanzanite gradient */}
+            <div className="tz-gem-text text-xl font-bold tracking-tight">
+              AkiliPesa
+            </div>
           </div>
         </div>
 
