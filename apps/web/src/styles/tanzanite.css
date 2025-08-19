@@ -1,8 +1,8 @@
 :root{
   /* Layout tokens */
   --vh: 100svh;
-  --header-h: 56px;
-  --nav-h: 64px;
+  --header-h: 48px;  /* Reduced header height */
+  --nav-h: 60px;     /* Slightly reduced nav height */
   --rail-gap: 12px;
 
   /* Theme */
