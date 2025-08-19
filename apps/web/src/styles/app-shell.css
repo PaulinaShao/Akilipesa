@@ -61,3 +61,20 @@ html,body{height:100%; background:var(--tnz-bg); color:#eaf1ff;}
 .animate-spin-slow {
   animation: spin-slow 10s linear infinite;
 }
+
+/* TikTok-style smooth snap scrolling */
+.snap-y {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.snap-start {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* Improved touch scrolling on mobile */
+.overflow-y-auto {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
