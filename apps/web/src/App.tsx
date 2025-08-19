@@ -398,11 +398,7 @@ function App() {
           } />
 
           {/* Core routes (guest accessible) */}
-          <Route path="/reel/:id" element={
-            <MobileLayout>
-              <ReelsPage />
-            </MobileLayout>
-          } />
+          <Route path="/reel/:id" element={<FeedScreen />} />
 
           <Route path="/product/:id" element={
             <MobileLayout>
