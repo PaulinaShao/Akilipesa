@@ -425,31 +425,14 @@ html, body, #app-root {
   height: calc(var(--vhpx, 100vh) - var(--topbar-h, 56px));
 }
 
-/* Mobile: FORCE full-width with viewport override */
+/* Mobile: Consistent full-bleed */
 @media (max-width: 768px) {
   .feed-item, .feed-card {
     border-radius: 16px;
-    height: 100svh;
+    /* Same reliable technique */
     width: 100vw !important;
-    max-width: 100vw !important;
-    min-width: 100vw !important;
-    left: 50%;
-    margin-left: -50vw;
-  }
-
-  /* FORCE mobile content to be full width */
-  .content, .app-content {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* Mobile body constraints override */
-  body, html {
-    overflow-x: hidden !important;
-    width: 100% !important;
-    max-width: 100% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
   }
 }
 
