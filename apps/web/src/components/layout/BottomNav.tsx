@@ -28,15 +28,15 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="bottom-nav tnz-glass"
+      className="bottom-nav"
       style={{
-        backgroundColor: 'rgba(255, 0, 0, 0.8)', // BRIGHT RED FOR DEBUGGING
-        border: '3px solid yellow', // YELLOW BORDER FOR DEBUGGING
+        backgroundColor: 'black',
         zIndex: 9999,
         position: 'fixed',
         bottom: 0,
         left: 0,
-        right: 0
+        right: 0,
+        height: '60px'
       }}
     >
       <div 
