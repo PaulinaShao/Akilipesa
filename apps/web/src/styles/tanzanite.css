@@ -7,10 +7,11 @@
   --tz-primary:#1c2b5a;
   --tz-gold:#c9a24a;
   --tz-muted: #8a92b2;
+  --tz-nav-bg: rgba(20,26,54,.92);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
   --nav-h: 64px; /* visual height of bottom nav (without safe-area) */
-  --extra-lift: 26px; /* additional lift above safe area - increased for better visibility */
+  --extra-lift: 30px; /* additional lift above safe area - increased for better visibility */
   --top-h: 56px; /* top bar height */
 }
 
@@ -91,8 +92,8 @@ html, body, #app-root {
    We reserve space so content never hides behind the fixed bottom nav. */
 .content, .app-content{
   overflow: auto;
-  padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 18px);
-  scroll-padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 18px);
+  padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 20px);
+  scroll-padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 20px);
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
 }
@@ -104,10 +105,9 @@ html, body, #app-root {
   right: 0;
   bottom: calc(var(--safe-bottom) + var(--extra-lift));
   z-index: 50;
-  /* Improved padding for better icon visibility - icons positioned higher like TikTok */
-  padding: 6px 0 4px 0;
-  padding-bottom: max(8px, var(--safe-bottom));
-  background: rgba(20,26,54,.92);
+  /* More padding for better label visibility */
+  padding: 10px 0;
+  background: var(--tz-nav-bg);
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255,255,255,.06);
 }
@@ -120,7 +120,7 @@ html, body, #app-root {
   right: 0;
   top: 100%;
   height: calc(var(--safe-bottom) + var(--extra-lift));
-  background: rgba(20,26,54,.92);
+  background: var(--tz-nav-bg);
   z-index: -1;
 }
 
@@ -137,8 +137,8 @@ html, body, #app-root {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 4px 8px 2px 8px;
+  gap: 4px;
+  padding: 8px;
   text-decoration: none;
   color: var(--tz-muted);
   transition: color 0.2s ease;
@@ -146,7 +146,6 @@ html, body, #app-root {
   background: none;
   border: none;
   cursor: pointer;
-  transform: translateY(-2px); /* Move icons slightly up like TikTok */
 }
 
 .nav-item.active {
@@ -235,11 +234,14 @@ html, body, #app-root {
   object-fit: cover;
 }
 
-/* Right Action Rail */
+/* Right Action Rail - Vertically Centered */
 .right-rail, .actions-rail{
   position: absolute;
   right: 8px;
-  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  /* safety when the rail grows: never collide with nav */
+  margin-bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 14px);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -294,7 +296,7 @@ html, body, #app-root {
   position: absolute;
   left: 12px;
   right: 88px; /* leaves room for the actions rail */
-  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 16px);
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 22px);
   z-index: 5;
   color: white;
   display: grid;
@@ -363,13 +365,53 @@ html, body, #app-root {
   }
 }
 
-/* Optional: shrink the rail on very short screens */
+/* Short screens: scale rail smaller and keep centered */
 @media (max-height: 700px){
   .actions-rail{
+    transform: translateY(-50%) scale(.92);
+    transform-origin: center right;
     gap: 8px;
-    transform: scale(.95);
-    transform-origin: bottom right;
   }
+}
+
+/* Full-bleed content on mobile */
+@media (max-width: 768px){
+  .feed-item{
+    margin: 0;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    height: calc(100svh - 56px); /* adjust if you keep a top bar */
+    border-radius: 16px;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .feed-item video, .feed-item img, .feed-item canvas{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* Desktop: match background under bottom nav */
+@media (min-width: 769px){
+  body, #app-root{ background: #0f1329; }
+  .app-footer-underlay{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 120px;
+    background: var(--tz-nav-bg);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+/* Make reel container relative for absolute positioning */
+.feed-item {
+  position: relative;
 }
 
 /* Legacy support */
