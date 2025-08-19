@@ -387,9 +387,9 @@ function App() {
           } />
 
           <Route path="/inbox" element={
-            <MobileLayout>
+            <AppShell>
               <InboxPage />
-            </MobileLayout>
+            </AppShell>
           } />
 
           <Route path="/inbox/:threadId" element={<InboxThreadPage />} />
