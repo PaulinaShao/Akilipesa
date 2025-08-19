@@ -268,8 +268,9 @@
               const hasDebugClasses = /debug|overlay|progress|highlight|status|indicator/i.test(el.className);
               const hasDebugId = /debug|overlay|progress|highlight|status|indicator/i.test(el.id || '');
 
-              return (isGreenish && isPillLike && isInSuspiciousArea && isPositioned) ||
-                     (isGreenish && (hasDebugClasses || hasDebugId));
+              return (isGreenish && isPillLike && (isInSuspiciousArea || isAboveBottomNav) && isPositioned) ||
+                     (isGreenish && (hasDebugClasses || hasDebugId)) ||
+                     (isGreenish && isAboveBottomNav);
 
             } catch (e) {
               return false;
