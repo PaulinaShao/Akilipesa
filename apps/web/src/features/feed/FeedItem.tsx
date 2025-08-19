@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Heart, MessageCircle, Share, Phone, Video, Music } from "lucide-react";
+import { Heart, MessageCircle, Share, Phone, Video } from "lucide-react";
 
 type Props = {
   media: { type: "video"|"image"; src: string; poster?: string };
