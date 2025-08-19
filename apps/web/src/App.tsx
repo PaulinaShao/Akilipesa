@@ -168,6 +168,11 @@ function App() {
   const { setConfig: setTrialConfig, config: trialConfig, isLoaded: configLoaded } = useTrialConfigStore();
 
   useEffect(() => {
+    // Detect and fix fetch wrapping issues before Firebase init
+    if (detectFetchIssues()) {
+      isolateFirebaseFromFetchWrappers();
+    }
+
     // Initialize Firebase first
     initFirebase();
 
