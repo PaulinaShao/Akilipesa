@@ -1,18 +1,47 @@
-/* THEME (Tanzanite) - Comprehensive TikTok/Instagram Layout */
+/* THEME (Tanzanite) - Comprehensive Brand Refresh with Pleochroism */
 :root{
-  --tz-bg:#0f1329;
-  --tz-card:#141a36;
-  --tz-ink:#e8ecff;
-  --tz-accent:#6a5acd;
-  --tz-primary:#1c2b5a;
-  --tz-gold:#c9a24a;
+  /* Tanzanite Core Palette */
+  --tz-blue-deep: #1c2b5a;
+  --tz-indigo:    #3f3aa4;
+  --tz-violet:    #6a5acd;
+  --tz-gold:      #c9a24a;
+
+  /* Pleochroic gradient (rotated lightly on scroll/touch) */
+  --tz-pleochroic: linear-gradient(135deg, var(--tz-blue-deep), var(--tz-indigo) 55%, var(--tz-violet));
+
+  /* Legacy aliases for compatibility */
+  --tz-bg: #0f1329;     /* app bg */
+  --tz-ink: #e8ecff;    /* default text */
+  --tz-card: #141a36;
+  --tz-accent: var(--tz-violet);
+  --tz-primary: var(--tz-blue-deep);
   --tz-muted: #8a92b2;
   --tz-nav-bg: rgba(20,26,54,.92);
+
+  /* Layout tokens */
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
-  --topbar-h: 56px; /* top bar height */
-  --nav-h: 64px; /* inner nav row height */
-  --extra-lift: 30px; /* lift nav above OS bar so labels are visible */
+  --topbar-h: 56px;
+  --nav-h: 64px;
+  --extra-lift: 30px;
+
+  /* Action icon sizing */
+  --action-diam: 56px;
+  --icon-size: 28px;
+  --rail-gap: 10px;
+}
+
+/* Tanzanite utility classes */
+.tz-gem-text{
+  background: var(--tz-pleochroic);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tz-gem-fill{
+  background: var(--tz-pleochroic);
+  color: #0b1022;
 }
 
 /* App fills the dynamic viewport; avoids URL bar bugs */
@@ -296,13 +325,7 @@ html, body, #app-root {
   object-fit: cover;
 }
 
-/* Tanzanite Action Icons - TikTok-sized with AkiliPesa styling */
-:root{
-  /* TikTok-ish sizing */
-  --action-diam: 56px;     /* outer pill diameter (TT ~56) */
-  --icon-size:   28px;     /* glyph size (TT ~28-30) */
-  --rail-gap:    10px;
-}
+/* Enhanced Tanzanite Action Icons with Refined Styling */
 
 /* Right-side rail container */
 .right-rail, .actions-rail{
