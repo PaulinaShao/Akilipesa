@@ -334,15 +334,21 @@ html, body, #app-root {
   height: 24px;
 }
 
-/* Feed items - Full viewport TikTok/Instagram style with proper alignment */
+/* NUCLEAR FIX: Feed items - True full-bleed with viewport width override */
 .feed-item, .feed-card, .reel{
   scroll-snap-align: start;
   background: #000;
   overflow: hidden;
   position: relative;
   margin: 0;
-  width: 100%;
-  min-height: 100vh;
+  padding: 0;
+  /* FORCE full viewport width */
+  width: 100vw !important;
+  max-width: 100vw !important;
+  min-width: 100vw !important;
+  /* Position to cover any container constraints */
+  left: 50%;
+  margin-left: -50vw;
   border-radius: 16px;
 }
 
