@@ -36,13 +36,6 @@ export default function TopBar({ className = '' }: TopBarProps) {
             alt="AkiliPesa"
             className="h-8 w-auto"
           />
-
-          {/* TikTok-style navigation tabs */}
-          <div className="top-nav-tabs">
-            <a href="#" className="nav-tab">Following</a>
-            <a href="#" className="nav-tab">Friends</a>
-            <a href="#" className="nav-tab active">For You</a>
-          </div>
         </div>
 
         {/* Right: FREE badge, wallet balance, Sign Up */}
