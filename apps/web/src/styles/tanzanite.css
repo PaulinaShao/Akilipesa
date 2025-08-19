@@ -1218,3 +1218,43 @@ html, body, #app-root, .app, main, .content {
     max-width: 100cqw !important;
   }
 }
+
+/* ===== LEFT-SIDE SPECIFIC FIX ===== */
+/* Ensure no left-side gaps by using additional techniques */
+.feed-item, .feed-card, .reel {
+  /* Multiple approaches to ensure left coverage */
+  margin-left: calc(-50vw + 50%) !important;
+  /* Alternative left positioning */
+  left: calc(50% - 50vw) !important;
+  /* Force start from viewport edge */
+  margin-left: calc((100vw - 100%) / -2) !important;
+  /* Ensure no rounding errors */
+  margin-left: -1px !important;
+  padding-left: 1px !important;
+}
+
+/* Body and container fixes for left-side */
+html, body {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  border-left: none !important;
+}
+
+#app-root, .app, .content {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  border-left: none !important;
+  left: 0 !important;
+}
+
+/* Additional left-side coverage */
+.feed-item::before, .feed-card::before, .reel::before {
+  content: '';
+  position: absolute;
+  left: -2px !important;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #000;
+  z-index: -1;
+}
