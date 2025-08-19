@@ -125,7 +125,7 @@ html, body, #app-root {
 }
 
 .plan-pill {
-  background: rgba(255, 255, 255, 0.15);
+  background: #1e7ef8;
   color: white;
   padding: 4px 10px;
   border-radius: 12px;
@@ -134,7 +134,7 @@ html, body, #app-root {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   position: relative;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(30, 126, 248, 0.3);
 }
 
 .wallet-balance {
