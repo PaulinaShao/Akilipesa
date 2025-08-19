@@ -30,7 +30,7 @@ export default function MobileLayout({ children, hideBottomNav = false }: Mobile
       <AIAssistantButton />
 
       {/* Bottom navigation - ALWAYS render as direct fixed child */}
-      {!shouldHideNav && <BottomNav />}
+      <BottomNav />
     </div>
   );
 }
