@@ -10,7 +10,7 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
   --nav-h: 64px; /* visual height of bottom nav (without safe-area) */
-  --extra-lift: 12px; /* additional lift above safe area */
+  --extra-lift: 22px; /* additional lift above safe area - increased for better visibility */
   --top-h: 56px; /* top bar height */
 }
 
