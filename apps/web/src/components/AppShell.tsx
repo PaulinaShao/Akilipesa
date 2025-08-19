@@ -9,6 +9,7 @@ export default function AppShell({ children }: PropsWithChildren) {
       <TopBar />
       <main id="feed" className="content">{children}</main>
       <BottomNav />
+      <div className="app-footer-underlay" aria-hidden="true" />
     </div>
   );
 }
