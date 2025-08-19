@@ -56,14 +56,15 @@
   will-change: background-position; /* performance hint */
 }
 
-/* Global viewport and navigation variables */
 :root{
-  --nav-h: 64px;         /* bottom nav height */
-  --vh: 100svh;          /* stable mobile viewport */
+  --nav-h: 64px;              /* bottom nav height */
+  --header-h: 56px;           /* visible header height when shown */
+  --vh: 100svh;               /* stable viewport unit */
   --tnz-surface: 16,25,48;
 }
+
 @supports (height: 100dvh){
-  :root{ --vh: 100dvh; } /* Safari/Chrome modern fix */
+  :root{ --vh: 100dvh; }      /* modern Safari/Chrome */
 }
 
 /* All scrollable screens must reserve space for the bottom nav */
