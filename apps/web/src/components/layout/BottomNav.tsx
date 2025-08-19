@@ -39,10 +39,11 @@ export default function BottomNav() {
         left: 0,
         right: 0,
         zIndex: 9999,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        backgroundColor: 'rgba(255, 0, 0, 0.9)', // BRIGHT RED FOR DEBUGGING
         display: 'block',
         visibility: 'visible',
-        opacity: 1
+        opacity: 1,
+        border: '3px solid yellow' // BRIGHT BORDER FOR DEBUGGING
       }}
     >
       <div className="mx-auto max-w-screen-sm grid grid-cols-5 gap-1 items-center justify-items-center min-h-[52px]">
