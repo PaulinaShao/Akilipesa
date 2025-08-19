@@ -301,9 +301,15 @@ export default function LoginPage() {
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="mb-8"
+              className="mb-8 text-center"
             >
-              <Brand size="lg" showWordmark={true} animated={true} />
+              {/* Wordmark Only - Clean Text */}
+              <div className="tz-gem-text text-4xl font-bold tracking-tight">
+                AkiliPesa
+              </div>
+              <div className="mt-2 text-sm text-[var(--tz-muted)]">
+                AI Financial Assistant
+              </div>
             </motion.div>
 
             <p className="text-[var(--tz-muted)] text-center mb-6">
