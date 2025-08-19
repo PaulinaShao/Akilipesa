@@ -63,10 +63,14 @@ html, body, #app-root {
   min-height: calc(var(--vh, 1svh) * 100); /* fallback for older iOS */
   width: 100vw !important;
   max-width: 100vw !important;
-  display: grid;
-  grid-template-rows: auto 1fr; /* bottom nav is fixed, not in grid */
+  /* Remove grid layout to prevent spacing */
+  display: block !important;
   overscroll-behavior-y: contain; /* avoids rubber-band scroll pulling bars */
   position: relative;
+  /* Ensure no top spacing */
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  top: 0 !important;
 }
 
 /* Top bar - TikTok style floating transparent navigation */
