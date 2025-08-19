@@ -232,6 +232,18 @@ function App() {
       setLoading(false);
     });
 
+    // Test Firebase connection
+    const testConnection = async () => {
+      try {
+        const connectionSuccess = await testFirebaseConnectionWithRetry(2);
+        if (!connectionSuccess) {
+          console.warn('⚠️ Firebase connection issues detected, app may have limited functionality');
+        }
+      } catch (error: any) {
+        console.error('Firebase connection test error:', error?.message || error);
+      }
+    };
+
     // Initialize trial system
     const initTrialSystem = async () => {
       try {
