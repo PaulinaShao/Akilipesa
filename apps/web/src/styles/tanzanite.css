@@ -157,31 +157,20 @@
   backface-visibility: hidden; /* prevent flicker */
 }
 
-/* Z-index contract for proper stacking - STRICT HIERARCHY */
-/* Bottom-nav: z-[9999] (highest - always visible) */
-/* Header: z-[60] (top bars, headers) */
-/* Right action rail: z-[50] (interactive elements) */
-/* Bottom overlays / caption glass: z-[40] (or less) */
-/* Content: default (z-auto) */
+/* Z-index contract */
+.header        { z-index: 60; }
+.feed-right-rail,
+.feed-bottom-overlay { z-index: 50; }
+.bottom-nav    { z-index: 9999; }  /* nav always on top */
 
-/* Enforce bottom nav visibility */
-.bottom-nav {
-  z-index: 9999 !important;
-}
+/* Auto-hide header styles */
+.auto-hide-header.hidden { transform: translateY(-100%); }
 
-/* Header elements */
-.header-element {
-  z-index: 60 !important;
-}
-
-/* Action rails */
-.action-rail {
-  z-index: 50 !important;
-}
-
-/* Feed overlays */
-.feed-overlay {
-  z-index: 40 !important;
+/* Top glass overlay limit */
+.top-glass-fixed{
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  pointer-events: none;       /* avoid blocking taps */
 }
 
 /* Action button optimizations */
