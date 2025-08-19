@@ -381,9 +381,9 @@ function App() {
           } />
 
           <Route path="/create" element={
-            <MobileLayout>
+            <AppShell>
               <CreatePage />
-            </MobileLayout>
+            </AppShell>
           } />
 
           <Route path="/inbox" element={
