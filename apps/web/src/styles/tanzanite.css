@@ -382,11 +382,11 @@ html, body, #app-root {
 
 /* Enhanced Tanzanite Action Icons with Refined Styling */
 
-/* Right-side rail container - positioned from bottom with precise spacing */
+/* Right-side rail container - positioned just above bottom navigation */
 .right-rail, .actions-rail{
   position: absolute;
   right: 12px;
-  bottom: 80px;
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 10px);
   display: flex;
   flex-direction: column;
   gap: var(--rail-gap);
@@ -469,22 +469,22 @@ html, body, #app-root {
 /* Responsive adjustments for different screen sizes */
 @media (max-height: 700px){
   .actions-rail, .right-rail {
-    bottom: 70px;
+    bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 5px);
     gap: 8px;
   }
 
   .caption, .caption-block {
-    bottom: 70px;
+    bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 5px);
   }
 }
 
 @media (min-height: 900px){
   .actions-rail, .right-rail {
-    bottom: 100px;
+    bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 15px);
   }
 
   .caption, .caption-block {
-    bottom: 100px;
+    bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 15px);
   }
 }
 
@@ -547,13 +547,13 @@ html, body, #app-root {
   }
 }
 
-/* Bottom-left avatar + caption positioned above nav */
+/* Bottom-left avatar + caption positioned just above bottom navigation */
 .caption, .caption-block{
   position: absolute;
   left: 16px;
   right: 88px;
   z-index: 5;
-  bottom: 80px;
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 10px);
   display: flex;
   align-items: flex-end;
   gap: 12px;
@@ -796,13 +796,13 @@ html, body, #app-root {
 
   .actions-rail, .right-rail {
     right: 8px;
-    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 8px);
   }
 
   .caption, .caption-block {
     left: 12px;
     right: 76px;
-    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 8px);
   }
 }
 
@@ -826,11 +826,11 @@ html, body, #app-root {
 @media (orientation: landscape) and (max-height: 500px) {
   .actions-rail, .right-rail {
     gap: 6px;
-    bottom: 60px;
+    bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 5px);
   }
 
   .caption, .caption-block {
-    bottom: 60px;
+    bottom: calc(var(--nav-h) + var(--safe-bottom) + var(--extra-lift) + 5px);
   }
 
   .rail-btn {
