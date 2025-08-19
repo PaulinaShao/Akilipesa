@@ -16,9 +16,9 @@
 }
 
 /* App fills the dynamic viewport; avoids URL bar bugs */
-html, body, #app-root { 
-  height: 100%; 
-  background: var(--tz-bg); 
+html, body, #app-root {
+  height: 100%;
+  background: #0f1329; /* Match nav/footer background for consistency */
   color: var(--tz-ink);
   margin: 0;
   padding: 0;
@@ -215,22 +215,59 @@ html, body, #app-root {
   height: 24px;
 }
 
-/* Feed items */
+/* Feed items - Full-bleed edge-to-edge like Instagram/TikTok */
 .feed-item, .feed-card{
   scroll-snap-align: start;
-  background: var(--tz-card); 
-  border-radius: 16px; 
+  background: #000; /* Pure black background for video content */
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0,0,0,.35);
   position: relative;
-  height: 100vh;
+  /* Full-bleed positioning */
+  width: 100vw;
+  max-width: 100%;
+  margin: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Height management */
+  height: 100svh; /* Mobile-first with small viewport height */
+  min-height: 100vh; /* Fallback for older browsers */
+
+  /* Rounded corners on mobile only, flat on desktop */
+  border-radius: 0;
 }
 
-.feed-media{
-  position: absolute; 
+/* Mobile: Keep rounded corners for app-like feel */
+@media (max-width: 768px) {
+  .feed-item, .feed-card {
+    border-radius: 16px;
+    height: 100svh;
+  }
+}
+
+/* Desktop: Full-bleed flat edges */
+@media (min-width: 769px) {
+  .feed-item, .feed-card {
+    border-radius: 0;
+    height: 100vh;
+    /* Account for nav bars if needed */
+    height: calc(100vh - var(--top-h, 56px));
+  }
+}
+
+/* Media inside feed items - Ensure perfect fill */
+.feed-media, .feed-item video, .feed-item img, .feed-item canvas{
+  position: absolute;
   inset: 0;
-  width: 100%; 
-  height: 100%; 
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000; /* Avoid white flashes during load */
+}
+
+/* Ensure all media types fill properly */
+.reel video, .reel img, .reel canvas,
+.feed-card video, .feed-card img, .feed-card canvas {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -374,24 +411,18 @@ html, body, #app-root {
   }
 }
 
-/* Full-bleed content on mobile */
-@media (max-width: 768px){
-  .feed-item{
-    margin: 0;
-    width: 100vw;
-    left: 50%;
-    transform: translateX(-50%);
-    height: calc(100svh - 56px); /* adjust if you keep a top bar */
-    border-radius: 16px;
-    overflow: hidden;
-    background: #000;
-  }
+/* Remove max-width restrictions from parent containers */
+.content, .app-content {
+  max-width: none; /* Allow full-width content */
+  padding-left: 0; /* Remove side padding */
+  padding-right: 0; /* Remove side padding */
+}
 
-  .feed-item video, .feed-item img, .feed-item canvas{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+/* Ensure feed container doesn't restrict width */
+#feed {
+  max-width: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* Desktop: match background under bottom nav */
@@ -406,6 +437,12 @@ html, body, #app-root {
     background: var(--tz-nav-bg);
     pointer-events: none;
     z-index: 0;
+  }
+
+  /* Desktop: Ensure no container restrictions */
+  .content, .app-content {
+    max-width: none;
+    padding: 0;
   }
 }
 
