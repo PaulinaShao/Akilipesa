@@ -362,7 +362,7 @@ html, body, #app-root {
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, var(--tz-accent), var(--tz-gold));
+  background: linear-gradient(135deg, var(--tz-indigo), var(--tz-gold));
   opacity: .25;
   z-index: 0;
   pointer-events: none;
