@@ -66,8 +66,11 @@
       });
     </script>
 
-    <!-- Visual viewport support for stable navigation -->
+    <!-- Preserve original fetch before any wrappers -->
     <script>
+      // Store original fetch before FullStory or other wrappers modify it
+      window._originalFetch = window.fetch.bind(window);
+
       // Set --vh to the true visual viewport height (prevents URL bar jump)
       if ('visualViewport' in window) {
         const vv = window.visualViewport;
