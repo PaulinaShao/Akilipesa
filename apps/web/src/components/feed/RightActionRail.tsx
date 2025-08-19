@@ -25,7 +25,7 @@ export default function RightActionRail({
     <aside
       className="
         pointer-events-auto
-        fixed right-2 top-1/2 -translate-y-1/2 z-[50]
+        fixed right-2 top-1/2 -translate-y-1/2 z-[50] action-rail
         flex flex-col items-center gap-3
       "
       aria-label="Actions"
