@@ -51,7 +51,7 @@ export default function FeedItem(p: Props){
       {p.media.type === "video" ? (
         <video
           ref={ref}
-          className="feed-media"
+          className="tiktok-media"
           src={p.media.src}
           poster={p.media.poster}
           muted
@@ -60,14 +60,14 @@ export default function FeedItem(p: Props){
           data-legitimate="true"
         />
       ) : (
-        <img className="feed-media" src={p.media.src} alt="" data-legitimate="true" />
+        <img className="tiktok-media" src={p.media.src} alt="" data-legitimate="true" />
       )}
 
       {/* Subtle gradient overlay for text readability */}
       <div className="caption-overlay" aria-hidden="true" data-legitimate="true" />
 
       {/* Right action rail */}
-      <aside className="right-rail" data-component="action-rail" data-legitimate="true">
+      <aside className="tiktok-right-rail" data-component="action-rail" data-legitimate="true">
         <RailButton
           icon={<Heart className={`${p.liked ? 'fill-current text-red-400' : 'text-white'}`} size={28} />}
           count={p.counts.likes}
