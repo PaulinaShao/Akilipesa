@@ -29,14 +29,10 @@ export default function TopBar({ className = '' }: TopBarProps) {
   return (
     <div className={`top-bar ${className}`}>
       <div className="top-bar-content">
-        {/* Left: AkiliPesa Logo */}
+        {/* Left: AkiliPesa Text */}
         <div className="top-bar-left">
-          <div className="logo-container">
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets%2Fd3b228cddfa346f0aa1ed35137c6f24e%2F6d889672dba44d67810beb12835dca8c?format=webp&width=800"
-              alt="AkiliPesa"
-              className="akilipesa-logo"
-            />
+          <div className="akilipesa-text">
+            AkiliPesa
           </div>
         </div>
 
