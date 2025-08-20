@@ -34,6 +34,7 @@ import { ensureRecaptchaContainer } from '@/lib/ensureRecaptchaContainer';
 import Splash from '@/components/Splash';
 import NotFound from '@/components/NotFound';
 import '@/styles/util.css';
+import '@/styles/tiktok-layout.css';
 
 // Import pages
 import SplashPage from '@/pages/SplashPage';
