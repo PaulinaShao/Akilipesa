@@ -145,9 +145,9 @@ export default function FeedScreen() {
   };
 
   return (
-    <>
+    <div className="tiktok-feed-container">
       {feedData.map((item) => (
-        <FeedItem 
+        <FeedItem
           key={item.id}
           media={item.media}
           user={item.user}
@@ -164,6 +164,6 @@ export default function FeedScreen() {
           onProfile={() => handleProfile(item.user)}
         />
       ))}
-    </>
+    </div>
   );
 }
