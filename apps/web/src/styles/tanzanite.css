@@ -204,8 +204,8 @@ html, body, #app-root {
 /* Enhance logo visibility on dark backgrounds */
 @media (max-width: 640px) {
   .akilipesa-logo {
-    height: 20px;
-    max-width: 110px;
+    height: 26px;
+    max-width: 130px;
   }
 }
 
