@@ -58,21 +58,17 @@ export default function BottomNav(){
 function Item({icon,label,active=false,badge,onClick}:{icon:React.ReactNode,label:string,active?:boolean,badge?:number,onClick?:()=>void}){
   return (
     <button
-      className="relative flex flex-col items-center gap-1"
+      className="tiktok-nav-item"
       onClick={onClick}
       style={{
-        color: active ? 'white' : '#8a92b2',
-        background: 'none',
-        border: 'none',
-        padding: '8px',
-        cursor: 'pointer'
+        color: active ? 'white' : 'rgba(255, 255, 255, 0.7)'
       }}
     >
-      <div className="relative">
+      <div className="tiktok-nav-icon">
         {icon}
         {badge ? <span className="absolute -top-1 -right-2 text-[10px] bg-[#ff3b30] text-white rounded-full px-1 min-w-[16px] h-4 flex items-center justify-center text-center leading-none">{badge}</span> : null}
       </div>
-      <span style={{fontSize: '11px', fontWeight: 500}}>{label}</span>
+      <span>{label}</span>
     </button>
   );
 }
