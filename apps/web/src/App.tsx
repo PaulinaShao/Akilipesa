@@ -368,11 +368,7 @@ function App() {
           <Route path="/" element={<Navigate to="/reels" replace />} />
 
           {/* Public routes (guest accessible) - Show immediately, no auth required */}
-          <Route path="/reels" element={
-            <AppShell>
-              <FeedScreen />
-            </AppShell>
-          } />
+          <Route path="/reels" element={<TikTokFeedScreen />} />
 
           <Route path="/home-feed" element={
             <HomeFeedPage />
