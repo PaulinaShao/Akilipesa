@@ -99,9 +99,9 @@ export default function FeedItem(p: Props){
       </aside>
 
       {/* Caption Block with Avatar */}
-      <div className="caption-block" data-component="caption" data-legitimate="true">
+      <div className="tiktok-caption" data-component="caption" data-legitimate="true">        <div className="tiktok-user-info">
         <button
-          className="avatar"
+          className="tiktok-avatar"
           onClick={p.onProfile}
           style={{
             background: "linear-gradient(45deg, #6da8ff, #7d6bff)",
@@ -118,16 +118,16 @@ export default function FeedItem(p: Props){
         >
           @
         </button>
-        <div className="text" data-legitimate="true">
-          <div className="username">
+        </div>        <div className="tiktok-caption-text" data-legitimate="true">
+          <div className="tiktok-username">
             @{p.user}
             {p.live && (
-              <span className="ml-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold" data-legitimate="true">
+              <span className="tiktok-live-badge" data-legitimate="true">
                 LIVE
               </span>
             )}
           </div>
-          <div className="caption-text">
+          <div>
             {truncatedCaption}
           </div>
         </div>
