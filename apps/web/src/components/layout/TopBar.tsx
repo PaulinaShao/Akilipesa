@@ -27,34 +27,30 @@ export default function TopBar({ className = '' }: TopBarProps) {
   };
 
   return (
-    <div className={`top-bar ${className}`}>
-      <div className="top-bar-content">
-        {/* Left: AkiliPesa Text */}
-        <div className="top-bar-left">
-          <div className="akilipesa-text">
-            AkiliPesa
-          </div>
+    <div className={`tiktok-topbar ${className}`}>
+      {/* Left: AkiliPesa Logo */}
+      <div className="tiktok-logo">
+        AkiliPesa
+      </div>
+
+      {/* Right: FREE badge, wallet balance, Sign In */}
+      <div className="tiktok-top-right">
+        {/* FREE Badge */}
+        <div className="tiktok-free-badge">
+          {planDisplay}
         </div>
 
-        {/* Right: FREE badge, wallet balance, Sign In */}
-        <div className="top-bar-right">
-          {/* FREE Badge */}
-          <div className="plan-pill">
-            {planDisplay}
-          </div>
-
-          {/* Wallet Balance */}
-          <div className="wallet-balance">
-            {formatBalance(userBalance)}
-          </div>
-
-          {/* Sign In Label - only show if user is not signed in */}
-          {!user && (
-            <a href="/auth" className="sign-in-label">
-              Sign In
-            </a>
-          )}
+        {/* Wallet Balance */}
+        <div className="tiktok-balance">
+          {formatBalance(userBalance)}
         </div>
+
+        {/* Sign In Label - only show if user is not signed in */}
+        {!user && (
+          <a href="/auth" className="tiktok-balance">
+            Sign In
+          </a>
+        )}
       </div>
     </div>
   );
