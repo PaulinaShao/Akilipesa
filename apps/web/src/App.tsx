@@ -35,6 +35,7 @@ import Splash from '@/components/Splash';
 import NotFound from '@/components/NotFound';
 import '@/styles/util.css';
 import '@/styles/tiktok-layout.css';
+import '@/styles/tiktok-perfect.css';
 
 // Import pages
 import SplashPage from '@/pages/SplashPage';
