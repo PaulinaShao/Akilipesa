@@ -25,7 +25,7 @@ export default function BottomNav(){
   };
 
   return (
-    <nav className="bottomnav">
+    <nav className="tiktok-bottomnav">
       <div className="row nav-row">
         <Item
           icon={<Home className="w-6 h-6" />}
