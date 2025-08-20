@@ -47,7 +47,7 @@ export default function FeedItem(p: Props){
   const truncatedCaption = cleanCaption(p.caption);
 
   return (
-    <section className="feed-item" data-component="feed-item">
+    <section className="tiktok-feed-item" data-component="feed-item">
       {p.media.type === "video" ? (
         <video
           ref={ref}
