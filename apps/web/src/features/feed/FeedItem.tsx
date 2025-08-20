@@ -150,7 +150,7 @@ function RailButton({
   return (
     <div className="flex flex-col items-center">
       <button
-        className="rail-btn ak-action"
+        className="tiktok-action-btn"
         aria-label={title ?? "Button"}
         onClick={onClick}
       >
