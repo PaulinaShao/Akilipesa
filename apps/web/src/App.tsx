@@ -123,11 +123,7 @@ function AppContent() {
         <Route path="/" element={<Navigate to="/reels" replace />} />
 
         {/* Routes with MobileLayout */}
-        <Route path="/reels" element={
-          <MobileLayout>
-            <ReelsPage />
-          </MobileLayout>
-        } />
+        <Route path="/reels" element={<TikTokFeedScreen />} />
         <Route path="/search" element={
           <MobileLayout>
             <SearchPage />
