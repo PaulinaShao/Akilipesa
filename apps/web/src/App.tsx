@@ -42,6 +42,7 @@ import SplashPage from '@/pages/SplashPage';
 import LoginPage from '@/pages/LoginPage';
 import ReelsPage from '@/pages/ReelsPage';
 import { FeedScreen } from '@/features/feed';
+import TikTokFeedScreen from '@/features/feed/TikTokFeedScreen';
 import HomeFeedPage from '@/pages/HomeFeedPage';
 import SearchPage from '@/pages/SearchPage';
 import CreatePage from '@/pages/CreatePage';
