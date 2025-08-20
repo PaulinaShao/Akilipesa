@@ -180,20 +180,90 @@ html, body, #app-root {
   opacity: 0.8;
 }
 
-/* AkiliPesa Text Styling - matches FREE badge */
+/* TikTok-style Shining AkiliPesa Text with Tanzanite Theme */
 .akilipesa-text {
-  color: white;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  letter-spacing: 0.8px;
   padding: 4px 0;
-  transition: opacity 0.2s ease;
+  position: relative;
+  cursor: pointer;
+
+  /* Base Tanzanite gradient text */
+  background: var(--tz-pleochroic);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  /* Enhanced text shadow for depth */
+  filter: drop-shadow(0 2px 4px rgba(28, 43, 90, 0.6));
+
+  /* Smooth gradient animation */
+  animation: tanzaniteShift 3s ease-in-out infinite;
 }
 
+/* Animated shimmer effect overlay */
+.akilipesa-text::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2.5s ease-in-out infinite;
+  z-index: 1;
+}
+
+/* TikTok-style glow effect on hover */
 .akilipesa-text:hover {
-  opacity: 0.9;
+  filter: drop-shadow(0 2px 4px rgba(28, 43, 90, 0.6))
+          drop-shadow(0 0 12px rgba(106, 90, 205, 0.5));
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+}
+
+/* Tanzanite gradient shifting animation */
+@keyframes tanzaniteShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Shimmer sweep animation */
+@keyframes shimmer {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+/* Enhanced mobile version */
+@media (max-width: 640px) {
+  .akilipesa-text {
+    font-size: 14px;
+    letter-spacing: 0.6px;
+  }
 }
 
 /* Clean content area - allow children to break out */
