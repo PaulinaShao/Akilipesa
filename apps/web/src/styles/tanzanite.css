@@ -188,9 +188,9 @@ html, body, #app-root {
 }
 
 .akilipesa-logo {
-  height: 20px;
+  height: 28px;
   width: auto;
-  max-width: 120px;
+  max-width: 140px;
   filter: brightness(1.1) contrast(1.05);
   transition: all 0.3s ease;
   object-fit: contain;
